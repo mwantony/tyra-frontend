@@ -2,7 +2,7 @@
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
-import { AuthProvider, useAuth } from "@/contexts/AuthProvider";
+import { AuthProvider, useAuth } from "@/contexts/auth-provider";
 import CustomLayout from "@/components/custom-layout";
 import LoginPage from "@/app/login/page";
 import { Spinner } from "./ui/spinner";

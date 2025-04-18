@@ -10,6 +10,15 @@
   scrollbar-width: thin;
   scrollbar-color: var(--sidebar-accent) transparent;
 }
+@layer base {
+  button,
+  [role="button"],
+  .btn,
+  .Button,
+  .button {
+    @apply cursor-pointer;
+  }
+}
 
 @custom-variant dark (&:is(.dark *));
 

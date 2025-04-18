@@ -23,7 +23,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useAuth } from "@/contexts/AuthProvider";
+import { useAuth } from "@/contexts/auth-provider";
 import { Dialog,  DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog"; // Importando o Dialog
 import { useState } from "react";
 import { Button } from "./ui/button";
