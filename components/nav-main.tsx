@@ -43,13 +43,16 @@ export function NavMain({
 
             return (
               <SidebarMenuItem key={item.title}>
-                <Link href={item.url} className="flex items-center gap-2 w-full">
+                <Link
+                  href={item.url}
+                  className="flex items-center gap-2 w-full"
+                >
                   <SidebarMenuButton
                     tooltip={item.title}
                     className={`w-full ${
                       isActive
                         ? "bg-muted text-primary" // estilo quando ativo
-                        : "hover:bg-muted"
+                        : "hover:bg-muted cursor-pointer" // Adicionado cursor-pointer no hover
                     }`}
                   >
                     {item.icon && <item.icon />}
