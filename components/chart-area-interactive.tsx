@@ -4,14 +4,14 @@ import { Bar, BarChart, CartesianGrid, XAxis, Tooltip, ResponsiveContainer } fro
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-export function ChartAreaInteractive({ grafico }) {
+const dadosDoGrafico = [
+  { data: "2025-04-17", valor: 10 },
+];
+
+export function ChartAreaInteractive() {
   const [intervaloDeTempo, setIntervaloDeTempo] = React.useState("30d");
 
-  // Combina os labels e values para criar um formato adequado para o gráfico
-  const dadosDoGrafico = grafico.labels.map((label, index) => ({
-    data: label,
-    valor: grafico.values[index],
-  }));
+  const dadosFiltrados = dadosDoGrafico; // Já que seus dados estão filtrados, pode usar diretamente
 
   return (
     <Card>
@@ -33,7 +33,7 @@ export function ChartAreaInteractive({ grafico }) {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={250}>
-          <BarChart data={dadosDoGrafico}>
+          <BarChart data={dadosFiltrados}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               dataKey="data"
