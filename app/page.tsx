@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { ChartAreaInteractive } from "@/components/chart-area-interactive";
@@ -53,10 +54,11 @@ export default function Page() {
             totalFaturado={vendaFiltrada?.total_faturado}
             totalVendas={vendaFiltrada?.total_vendas}
             mediaVendasPorDia={vendaFiltrada?.media_vendas_por_dia}
+            
           />
 
           <div className="px-4 lg:px-6">
-            <ChartAreaInteractive />
+            <ChartAreaInteractive grafico={vendaFiltrada?.grafico}/>
           </div>
 
           {/* Utilize a variável data como fallback caso vendaFiltrada não tenha dados */}

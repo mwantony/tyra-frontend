@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { subDays, format } from "date-fns";
+import { format, subDays } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 import { ptBR } from "date-fns/locale";
@@ -25,19 +25,29 @@ export function DatePickerWithRange({
   onChange?: (date: DateRange) => void;
 }) {
   // Utiliza um estado controlado com fallback para o valor inicial
-  const [date, setDate] = React.useState<DateRange | undefined>(value);
-
+  const [date, setDate] = React.useState<DateRange>({
+    from: subDays(new Date(), 7), // Data de 7 dias atrás
+    to: new Date(), // Data atual
+  });
   React.useEffect(() => {
     // Se o value prop for alterado fora do componente, atualize o estado
-    if (value && value !== date) {
-      setDate(value);
+    if (value && (value.from?.toISOString() !== date.from || value.to?.toISOString() !== date.to)) {
+      setDate({
+        from: value.from || undefined,
+        to: value.to || undefined,
+      });
     }
-  }, [value]); // Atualiza quando o value prop mudar
+  }, [date.from, date.to, value]); // Atualiza quando o value prop mudar
 
-  const handleDateSelect = (newDate: DateRange) => {
-    setDate(newDate);
-    if (onChange) {
-      onChange(newDate); // Envia as novas datas para o componente pai
+  const handleDateSelect = (newDate: DateRange | undefined) => {
+    if (newDate) {
+      setDate({
+        from: newDate.from || undefined,
+        to: newDate.to || undefined,
+      });
+      if (onChange) {
+        onChange(newDate); // Envia as novas datas para o componente pai
+      }
     }
   };
 
@@ -80,7 +90,7 @@ export function DatePickerWithRange({
             onSelect={handleDateSelect} // Altera o estado ao selecionar as datas
             locale={ptBR}
             numberOfMonths={2}
-            defaultMonth={date?.from}
+            defaultMonth={date?.from || undefined}
           />
         </PopoverContent>
       </Popover>
