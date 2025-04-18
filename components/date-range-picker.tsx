@@ -17,22 +17,40 @@ import {
 
 export function DatePickerWithRange({
   className,
-}: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: subDays(new Date(), 7),
-    to: new Date(),
-  });
+  value,
+  onChange,
+}: {
+  className?: string;
+  value?: DateRange;
+  onChange?: (date: DateRange) => void;
+}) {
+  // Utiliza um estado controlado com fallback para o valor inicial
+  const [date, setDate] = React.useState<DateRange | undefined>(value);
+
+  React.useEffect(() => {
+    // Se o value prop for alterado fora do componente, atualize o estado
+    if (value && value !== date) {
+      setDate(value);
+    }
+  }, [value]); // Atualiza quando o value prop mudar
+
+  const handleDateSelect = (newDate: DateRange) => {
+    setDate(newDate);
+    if (onChange) {
+      onChange(newDate); // Envia as novas datas para o componente pai
+    }
+  };
 
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
-        <PopoverTrigger  asChild>
+        <PopoverTrigger asChild>
           <Button
             id="date"
-            variant={"outline"}
+            variant="outline"
             className={cn(
               "w-[300px] justify-start text-left font-normal",
-              !date && "text-muted-foreground"
+              !date?.from && "text-muted-foreground"
             )}
           >
             <CalendarIcon />
@@ -46,7 +64,7 @@ export function DatePickerWithRange({
                 format(date.from, "LLL dd, y")
               )
             ) : (
-              <span>Pick a date</span>
+              <span>Escolha uma data</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -54,11 +72,11 @@ export function DatePickerWithRange({
           <Calendar
             initialFocus
             mode="range"
-            defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
+            onSelect={handleDateSelect} // Altera o estado ao selecionar as datas
             locale={ptBR}
             numberOfMonths={2}
+            defaultMonth={date?.from}
           />
         </PopoverContent>
       </Popover>
