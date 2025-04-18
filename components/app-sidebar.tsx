@@ -3,23 +3,11 @@
 import * as React from "react";
 import {
   AlignHorizontalDistributeCenter,
-  ArrowUpCircleIcon,
-  BarChartIcon,
-  CameraIcon,
-  ClipboardListIcon,
-  DatabaseIcon,
-  FileCodeIcon,
-  FileIcon,
-  FileTextIcon,
-  FolderIcon,
-  HelpCircleIcon,
+
   LayoutDashboardIcon,
-  ListIcon,
   Package,
   ScanBarcode,
-  SearchIcon,
   SettingsIcon,
-  UsersIcon,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";

@@ -1,7 +1,8 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import CustomLayout from "@/components/custom-layout";
+import AuthWrapper from "@/components/auth-wrapper"; // <- certifique-se do caminho correto
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,11 +25,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-br">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <CustomLayout>{children}</CustomLayout>
+        <AuthWrapper>{children}</AuthWrapper>
       </body>
     </html>
   );

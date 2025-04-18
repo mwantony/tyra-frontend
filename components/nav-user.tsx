@@ -1,18 +1,13 @@
-"use client"
+"use client";
 
 import {
-  BellIcon,
   CreditCardIcon,
   LogOutIcon,
   MoreVerticalIcon,
   UserCircleIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,24 +16,35 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { useAuth } from "@/contexts/AuthProvider";
+import { Dialog,  DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog"; // Importando o Dialog
+import { useState } from "react";
+import { Button } from "./ui/button";
 
 export function NavUser({
   user,
 }: {
   user: {
-    name: string
-    email: string
-    avatar: string
-  }
+    name: string;
+    email: string;
+    avatar: string;
+  };
 }) {
-  const { isMobile } = useSidebar()
+  const { isMobile } = useSidebar();
+  const { restaurante, logout } = useAuth();
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    setOpenDialog(false); // Fecha o modal após o logout
+  };
 
   return (
     <SidebarMenu>
@@ -54,9 +60,9 @@ export function NavUser({
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate font-medium">{restaurante.nome}</span>
                 <span className="truncate text-xs text-muted-foreground">
-                  {user.email}
+                  {restaurante.email}
                 </span>
               </div>
               <MoreVerticalIcon className="ml-auto size-4" />
@@ -92,16 +98,31 @@ export function NavUser({
                 <CreditCardIcon />
                 Cobrança
               </DropdownMenuItem>
-              
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setOpenDialog(true)}>
               <LogOutIcon />
               Sair
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
+
+      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Tem certeza de que deseja sair?</DialogTitle>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="secondary" onClick={() => setOpenDialog(false)}>
+                Cancelar
+              </Button>
+            </DialogClose>
+            <Button onClick={handleLogout}>Confirmar</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </SidebarMenu>
-  )
+  );
 }
