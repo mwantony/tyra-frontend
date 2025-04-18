@@ -10,7 +10,7 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const restaurante = localStorage.getItem("restaurante");
-    const token = JSON.parse(restaurante || "{}").token?.plainTextToken;
+    const token = JSON.parse(restaurante || "{}").token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

@@ -41,6 +41,11 @@ export function DatePickerWithRange({
     }
   };
 
+  // Formatação personalizada para exibir as datas no formato 'yyyy-MM-dd'
+  const formatDate = (date: Date | undefined) => {
+    return date ? format(date, "yyyy-MM-dd") : "";
+  };
+
   return (
     <div className={cn("grid gap-2", className)}>
       <Popover>
@@ -57,11 +62,10 @@ export function DatePickerWithRange({
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(date.from, "LLL dd, y")} -{" "}
-                  {format(date.to, "LLL dd, y")}
+                  {formatDate(date.from)} - {formatDate(date.to)}
                 </>
               ) : (
-                format(date.from, "LLL dd, y")
+                formatDate(date.from)
               )
             ) : (
               <span>Escolha uma data</span>
