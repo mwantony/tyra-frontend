@@ -48,9 +48,7 @@ export default function Page() {
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-4 lg:px-6">
           {/* Botão de Nova Comanda */}
           <div className="flex justify-end mb-4">
-            <Button onClick={handleNovaComanda}>
-              Nova Comanda
-            </Button>
+            <Button onClick={handleNovaComanda}>Nova Comanda</Button>
           </div>
 
           {/* Exibição da tabela ou skeleton durante o carregamento */}
@@ -75,18 +73,14 @@ export default function Page() {
           <h3 className="text-lg font-bold">Confirmar Criação de Comanda</h3>
           <p>Você tem certeza que deseja criar uma nova comanda?</p>
           <div className="flex justify-end space-x-4 mt-4">
-            <button
-              onClick={() => setModalOpen(false)}
-              className="px-4 py-2 bg-gray-300 text-black rounded-md"
-            >
+            <Button variant="outline" onClick={() => setModalOpen(false)}>
               Cancelar
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleConfirmacaoCriacao}
-              className="px-4 py-2 bg-black text-white rounded-md"
             >
               Confirmar
-            </button>
+            </Button>
           </div>
         </div>
       </CustomModal>
