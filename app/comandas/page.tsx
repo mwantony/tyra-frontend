@@ -4,7 +4,7 @@
 
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { toast } from "sonner"
+import { toast } from "sonner";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { getComandas, postComanda } from "@/services/comandas";
@@ -36,11 +36,11 @@ export default function Page() {
 
   const handleConfirmacaoCriacao = async () => {
     try {
-      await postComanda()
+      await postComanda();
       toast.success("Comanda criada com Sucesso!", {
         description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
       });
-      
+
       await recarregarComandas();
     } catch (error) {
       alert("Ocorreu um erro ao criar a comanda. Tente novamente.");
@@ -68,8 +68,12 @@ export default function Page() {
               <Skeleton className="h-10 w-full" />
               <Skeleton className="h-10 w-full" />
             </div>
-          ) : (
+          ) : comandas.length > 0 ? (
             <DataTableComandas data={comandas} onDelete={recarregarComandas} />
+          ) : (
+            <div className="text-center text-muted-foreground text-sm py-10">
+              Nenhuma comanda encontrada.
+            </div>
           )}
         </div>
       </div>
@@ -83,11 +87,7 @@ export default function Page() {
             <Button variant="outline" onClick={() => setModalOpen(false)}>
               Cancelar
             </Button>
-            <Button
-              onClick={handleConfirmacaoCriacao}
-            >
-              Confirmar
-            </Button>
+            <Button onClick={handleConfirmacaoCriacao}>Confirmar</Button>
           </div>
         </div>
       </CustomModal>

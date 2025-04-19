@@ -48,54 +48,65 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({ data }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data?.map((produto) => (
-            <TableRow key={produto.id}>
-              <TableCell>{produto.id}</TableCell>
-              <TableCell>{produto.nome}</TableCell>
-              <TableCell>
-                {new Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                }).format(Number(produto.preco))}
-              </TableCell>
-              <TableCell>{produto.tipo}</TableCell>
-              <TableCell>{produto.ean}</TableCell>
-              <TableCell>{produto.descricao}</TableCell>
-              <TableCell>
-                {dayjs(produto.created_at).format("DD/MM/YYYY HH:mm")}
-              </TableCell>
-              <TableCell className="text-right">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button className="p-2 rounded-md hover:bg-muted transition-colors">
-                      <MoreHorizontal className="w-5 h-5 text-muted-foreground" />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-44">
-                    <DropdownMenuItem
-                      onClick={() => console.log("Editar", produto.id)}
-                    >
-                      <Pencil className="w-4 h-4 mr-2" />
-                      Editar
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => console.log("Duplicar", produto.id)}
-                    >
-                      <Copy className="w-4 h-4 mr-2" />
-                      Duplicar
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      onClick={() => console.log("Deletar", produto.id)}
-                      className="text-red-600 focus:text-red-600"
-                    >
-                      <Trash2 className="w-4 h-4 mr-2 text-red-600 " />
-                      Excluir
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+          {data && data.length > 0 ? (
+            data.map((produto) => (
+              <TableRow key={produto.id}>
+                <TableCell>{produto.id}</TableCell>
+                <TableCell>{produto.nome}</TableCell>
+                <TableCell>
+                  {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(Number(produto.preco))}
+                </TableCell>
+                <TableCell>{produto.tipo}</TableCell>
+                <TableCell>{produto.ean}</TableCell>
+                <TableCell>{produto.descricao}</TableCell>
+                <TableCell>
+                  {dayjs(produto.created_at).format("DD/MM/YYYY HH:mm")}
+                </TableCell>
+                <TableCell className="text-right">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className="p-2 rounded-md hover:bg-muted transition-colors">
+                        <MoreHorizontal className="w-5 h-5 text-muted-foreground" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-44">
+                      <DropdownMenuItem
+                        onClick={() => console.log("Editar", produto.id)}
+                      >
+                        <Pencil className="w-4 h-4 mr-2" />
+                        Editar
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => console.log("Duplicar", produto.id)}
+                      >
+                        <Copy className="w-4 h-4 mr-2" />
+                        Duplicar
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => console.log("Deletar", produto.id)}
+                        className="text-red-600 focus:text-red-600"
+                      >
+                        <Trash2 className="w-4 h-4 mr-2 text-red-600 " />
+                        Excluir
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell
+                colSpan={8}
+                className="text-center text-muted-foreground text-sm py-10"
+              >
+                Nenhum produto encontrado.
               </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
     </div>

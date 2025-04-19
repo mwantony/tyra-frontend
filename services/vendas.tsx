@@ -11,6 +11,7 @@ export async function getVendas() {
   }
 }
 
+
 export async function filtrarVendas(inicio: string, fim: string) {
   try {
     const response = await api.post("/vendas/filtrar", {

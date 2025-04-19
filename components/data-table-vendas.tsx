@@ -37,23 +37,31 @@ export const DataTableVendas: React.FC<DataTableProps> = ({ data }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data?.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell>{item.id}</TableCell>
-              <TableCell>
-                <Badge variant='outline'>{item.comanda_id}</Badge>
-              </TableCell>
-              <TableCell>
-                {new Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                }).format(Number(item.total))}
-              </TableCell>
-              <TableCell>
-                {dayjs(item.data_venda).format("DD/MM/YYYY HH:mm")}
+          {data && data.length > 0 ? (
+            data.map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.id}</TableCell>
+                <TableCell>
+                  <Badge variant="outline">{item.comanda_id}</Badge>
+                </TableCell>
+                <TableCell>
+                  {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(Number(item.total))}
+                </TableCell>
+                <TableCell>
+                  {dayjs(item.data_venda).format("DD/MM/YYYY HH:mm")}
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={4} className="text-center text-muted-foreground">
+                Nenhuma venda encontrada.
               </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
     </div>

@@ -1,45 +1,182 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import * as React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getComandas } from "@/services/comandas";
+import { getProdutos } from "@/services/produtos";
+import { comandaAdicionar } from "@/services/comandas";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
-import { DataTableVendas } from "@/components/data-table-vendas";
-import { Skeleton } from "@/components/ui/skeleton";
-import { getVendas } from "@/services/vendas"; // Atualize para o caminho correto
+export default function NovaVendaPage() {
+  const [comandas, setComandas] = useState<any[]>([]);
+  const [produtos, setProdutos] = useState<any[]>([]);
+  const [comandaSelecionada, setComandaSelecionada] = useState<string>("");
+  const [itensSelecionados, setItensSelecionados] = useState<
+    { produto_id: string; quantidade: number }[]
+  >([]);
+  const [loading, setLoading] = useState(true);
 
-export default function Page() {
-  const [vendas, setVendas] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [buscaComanda, setBuscaComanda] = useState("");
+  const [buscaProduto, setBuscaProduto] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      const resposta = await getVendas(); // Busca todas as vendas
-      setVendas(resposta);
+      const todasComandas = await getComandas();
+      const produtos = await getProdutos();
+      setComandas(todasComandas.filter((c) => c.status === "fechada"));
+      setProdutos(produtos);
       setLoading(false);
     };
 
     fetchData();
   }, []);
 
+  const adicionarProduto = (produtoId: string) => {
+    setItensSelecionados((prev) => [
+      ...prev,
+      { produto_id: produtoId, quantidade: 1 },
+    ]);
+  };
+
+  const atualizarQuantidade = (index: number, quantidade: number) => {
+    setItensSelecionados((prev) => {
+      const atualizados = [...prev];
+      atualizados[index].quantidade = quantidade;
+      return atualizados;
+    });
+  };
+
+  const removerProduto = (index: number) => {
+    setItensSelecionados((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSalvarVenda = async () => {
+    if (!comandaSelecionada || itensSelecionados.length === 0) {
+      toast.error("Selecione uma comanda e ao menos um produto.");
+      return;
+    }
+
+    try {
+      await comandaAdicionar(comandaSelecionada, {produtos: [...itensSelecionados]});
+      toast.success("Venda adicionada com sucesso!");
+      setComandaSelecionada("");
+      setItensSelecionados([]);
+    } catch (err) {
+      toast.error("Erro ao criar venda.");
+    }
+  };
+
+  if (loading) return <p>Carregando...</p>;
+
+  // Filtros:
+  const comandasFiltradas = comandas.filter((c) =>
+    c.numero_comanda.toString().includes(buscaComanda)
+  );
+
+  const produtosFiltrados = produtos.filter((p) =>
+    p.nome.toLowerCase().includes(buscaProduto.toLowerCase())
+  );
+
   return (
-    <div className="flex flex-1 flex-col">
-      <div className="@container/main flex flex-1 flex-col gap-2">
-        <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-4 lg:px-6">
-          {loading ? (
-            <div className="space-y-4">
-              <Skeleton className="h-8 w-1/3" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-            </div>
-          ) : (
-            <DataTableVendas data={vendas} />
-          )}
+    <div className="p-6 space-y-6 max-w-3xl mx-auto">
+      <h1 className="text-2xl font-bold">Adicionar Nova Venda</h1>
+
+      <div className="space-y-2">
+        <Label htmlFor="buscaComanda">Buscar Comanda</Label>
+        <Input
+          id="buscaComanda"
+          placeholder="Digite o número da comanda..."
+          value={buscaComanda}
+          onChange={(e) => setBuscaComanda(e.target.value)}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="comanda">Comanda (fechada)</Label>
+        <Select
+          value={comandaSelecionada}
+          onValueChange={setComandaSelecionada}
+        >
+          <SelectTrigger className="w-full">
+            Selecione uma comanda
+          </SelectTrigger>
+          <SelectContent>
+            {comandasFiltradas.map((comanda) => (
+              <SelectItem key={comanda.id} value={comanda.id.toString()}>
+                #{comanda.numero_comanda}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="buscaProduto">Buscar Produto</Label>
+        <Input
+          id="buscaProduto"
+          placeholder="Digite o nome do produto..."
+          value={buscaProduto}
+          onChange={(e) => setBuscaProduto(e.target.value)}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label>Produtos</Label>
+        <div className="grid grid-cols-2 gap-2">
+          {produtosFiltrados.map((produto) => (
+            <Button
+              key={produto.id}
+              variant="outline"
+              onClick={() => adicionarProduto(produto.id)}
+            >
+              {produto.nome}
+            </Button>
+          ))}
         </div>
       </div>
+
+      <div className="space-y-4">
+        <h2 className="text-lg font-semibold">Itens Selecionados</h2>
+        {itensSelecionados.map((item, index) => {
+          const produto = produtos.find((p) => p.id === item.produto_id);
+          return (
+            <div key={index} className="flex items-center gap-4">
+              <span className="w-32">{produto?.nome}</span>
+              <Input
+                type="number"
+                min={1}
+                value={item.quantidade}
+                onChange={(e) =>
+                  atualizarQuantidade(index, parseInt(e.target.value))
+                }
+                className="w-20"
+              />
+              <Button
+                variant="ghost"
+                className="text-red-500"
+                onClick={() => removerProduto(index)}
+              >
+                Remover
+              </Button>
+            </div>
+          );
+        })}
+      </div>
+
+      <Button
+        onClick={handleSalvarVenda}
+        disabled={!comandaSelecionada || itensSelecionados.length === 0}
+      >
+        Salvar Venda
+      </Button>
     </div>
   );
 }
