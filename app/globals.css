@@ -19,6 +19,9 @@
     @apply cursor-pointer;
   }
 }
+[data-slot="dropdown-menu-item"] {
+  cursor: pointer !important;
+}
 
 @custom-variant dark (&:is(.dark *));
 

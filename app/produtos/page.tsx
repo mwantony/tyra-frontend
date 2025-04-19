@@ -4,19 +4,19 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
-import { DataTableVendas } from "@/components/data-table-vendas";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getVendas } from "@/services/vendas"; // Atualize para o caminho correto
+import { getProdutos } from "@/services/produtos"; // Atualize para o caminho correto
+import { DataTableProdutos } from "@/components/data-table-produtos";
 
 export default function Page() {
-  const [vendas, setVendas] = useState<any[]>([]);
+  const [produtos, setProdutos] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const resposta = await getVendas(); // Busca todas as vendas
-      setVendas(resposta);
+      const resposta = await getProdutos(); // Busca todos os produtos
+      setProdutos(resposta);
       setLoading(false);
     };
 
@@ -37,7 +37,7 @@ export default function Page() {
               <Skeleton className="h-10 w-full" />
             </div>
           ) : (
-            <DataTableVendas data={vendas} />
+            <DataTableProdutos data={produtos} />
           )}
         </div>
       </div>
