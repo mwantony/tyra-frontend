@@ -115,7 +115,7 @@ export function NavUser({
         <h2 className="text-lg font-semibold mb-4">
           Tem certeza de que deseja sair?
         </h2>
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-end gap-4">
           <Button variant="outline" onClick={() => setOpenDialog(false)}>
             Cancelar
           </Button>

@@ -19,6 +19,7 @@ import { MoreHorizontal, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { deleteComanda } from "@/services/comandas";
 import CustomModal from "@/components/custom-modal";
+import { Button } from "./ui/button";
 
 type Comanda = {
   id: number;
@@ -36,7 +37,10 @@ interface DataTableProps {
   onDelete?: () => void; // ✅ Nova prop opcional
 }
 
-export const DataTableComandas: React.FC<DataTableProps> = ({ data, onDelete }) => {
+export const DataTableComandas: React.FC<DataTableProps> = ({
+  data,
+  onDelete,
+}) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [comandaToDelete, setComandaToDelete] = useState<string | null>(null);
 
@@ -130,24 +134,22 @@ export const DataTableComandas: React.FC<DataTableProps> = ({ data, onDelete }) 
       <CustomModal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
         <div>
           <h3 className="text-lg font-bold">Confirmar Exclusão</h3>
-          <p>Você tem certeza que deseja excluir a comanda {comandaToDelete}?</p>
+          <p>
+            Você tem certeza que deseja excluir a comanda {comandaToDelete}?
+          </p>
           <div className="flex justify-end space-x-4 mt-4">
-            <button
-              onClick={() => setModalOpen(false)}
-              className="px-4 py-2 bg-gray-500 text-white rounded"
-            >
+            <Button variant="outline" onClick={() => setModalOpen(false)}>
               Cancelar
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => {
                 if (comandaToDelete) {
                   handleDelete(comandaToDelete);
                 }
               }}
-              className="px-4 py-2 bg-red-600 text-white rounded"
             >
               Confirmar
-            </button>
+            </Button>
           </div>
         </div>
       </CustomModal>

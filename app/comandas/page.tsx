@@ -1,14 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import * as React from "react";
 import { useEffect, useState } from "react";
+import { toast } from "sonner"
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { getComandas, postComanda } from "@/services/comandas";
 import { DataTableComandas } from "@/components/data-table-comandas";
 import { Button } from "@/components/ui/button";
 import CustomModal from "@/components/custom-modal";
+import dayjs from "dayjs";
 
 export default function Page() {
   const [comandas, setComandas] = useState<any[]>([]);
@@ -33,7 +36,11 @@ export default function Page() {
 
   const handleConfirmacaoCriacao = async () => {
     try {
-      await postComanda();
+      await postComanda()
+      toast.success("Comanda criada com Sucesso!", {
+        description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
+      });
+      
       await recarregarComandas();
     } catch (error) {
       alert("Ocorreu um erro ao criar a comanda. Tente novamente.");
@@ -47,7 +54,7 @@ export default function Page() {
       <div className="@container/main flex flex-1 flex-col gap-2">
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-4 lg:px-6">
           {/* Botão de Nova Comanda */}
-          <div className="flex justify-end mb-4">
+          <div className="flex justify-end">
             <Button onClick={handleNovaComanda}>Nova Comanda</Button>
           </div>
 
