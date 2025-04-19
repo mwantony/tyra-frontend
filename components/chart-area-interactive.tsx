@@ -1,39 +1,41 @@
 import * as React from "react";
-import { Bar, BarChart, CartesianGrid, XAxis, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  AreaChart,
+  Area,
+  CartesianGrid,
+  XAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 
-const dadosDoGrafico = [
-  { data: "2025-04-17", valor: 10 },
-];
-
-export function ChartAreaInteractive() {
-  const [intervaloDeTempo, setIntervaloDeTempo] = React.useState("30d");
-
-  const dadosFiltrados = dadosDoGrafico; // Já que seus dados estão filtrados, pode usar diretamente
+export function ChartAreaInteractive({ grafico }) {
+  const dadosConvertidos = grafico?.labels.map((label, index) => ({
+    data: label,
+    valor: grafico.values[index],
+  }));
+  const formatarReal = (valor) =>
+    new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(valor);
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Vendas no Período</CardTitle>
         <CardDescription>Vendas totais no período selecionado</CardDescription>
-        <div className="absolute right-4 top-4">
-          <Select value={intervaloDeTempo} onValueChange={setIntervaloDeTempo}>
-            <SelectTrigger>
-              <SelectValue placeholder="Últimos 3 meses" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="90d">Últimos 3 meses</SelectItem>
-              <SelectItem value="30d">Últimos 30 dias</SelectItem>
-              <SelectItem value="7d">Últimos 7 dias</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={250}>
-          <BarChart data={dadosFiltrados}>
+          <AreaChart data={dadosConvertidos}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               dataKey="data"
@@ -48,13 +50,25 @@ export function ChartAreaInteractive() {
                 });
               }}
             />
-            <Tooltip />
-            <Bar
+            <Tooltip
+              formatter={(valor) => formatarReal(valor)}
+              labelFormatter={(label) => {
+                const data = new Date(label);
+                return data.toLocaleDateString("pt-BR", {
+                  weekday: "short",
+                  day: "numeric",
+                  month: "short",
+                });
+              }}
+            />{" "}
+            <Area
+              type="monotone"
               dataKey="valor"
-              fill="#8884d8"
               stroke="#8884d8"
+              fill="#8884d8"
+              fillOpacity={0.3}
             />
-          </BarChart>
+          </AreaChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>
