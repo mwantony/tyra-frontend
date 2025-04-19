@@ -31,12 +31,9 @@ export async function postComanda() {
     throw error;
   }
 }
-export async function comandaAdicionar(
-  comandaId: string,
-  produtos: { produto_id: number; quantidade: number }[]
-) {
+export async function comandaAdicionar(numeroComanda, produtos) {
   try {
-    const response = await api.post(`/comandas/${comandaId}/adicionar`, {
+    const response = await api.post(`/comandas/${numeroComanda}/adicionar`, {
       produtos,
     });
     console.log("Produtos adicionados:", response.data);
