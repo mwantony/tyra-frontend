@@ -5,28 +5,55 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { getComandas } from "@/services/comandas"; // Atualize para o caminho correto
-import { DataTableComandas } from "@/components/data-table-comandas"; // Atualize para o caminho correto
+import { getComandas, postComanda } from "@/services/comandas";
+import { DataTableComandas } from "@/components/data-table-comandas";
+import { Button } from "@/components/ui/button";
+import CustomModal from "@/components/custom-modal";
 
 export default function Page() {
   const [comandas, setComandas] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+
+  // Função para carregar ou recarregar as comandas
+  const recarregarComandas = async () => {
+    setLoading(true);
+    const resposta = await getComandas();
+    setComandas(resposta);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const resposta = await getComandas(); // Busca todas as comandas
-      setComandas(resposta);
-      setLoading(false);
-    };
-
-    fetchData();
+    recarregarComandas();
   }, []);
+
+  const handleNovaComanda = () => {
+    setModalOpen(true);
+  };
+
+  const handleConfirmacaoCriacao = async () => {
+    try {
+      await postComanda();
+      await recarregarComandas();
+    } catch (error) {
+      alert("Ocorreu um erro ao criar a comanda. Tente novamente.");
+    } finally {
+      setModalOpen(false);
+    }
+  };
 
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-4 lg:px-6">
+          {/* Botão de Nova Comanda */}
+          <div className="flex justify-end mb-4">
+            <Button onClick={handleNovaComanda}>
+              Nova Comanda
+            </Button>
+          </div>
+
+          {/* Exibição da tabela ou skeleton durante o carregamento */}
           {loading ? (
             <div className="space-y-4">
               <Skeleton className="h-10 w-full" />
@@ -37,10 +64,32 @@ export default function Page() {
               <Skeleton className="h-10 w-full" />
             </div>
           ) : (
-            <DataTableComandas data={comandas} />
+            <DataTableComandas data={comandas} onDelete={recarregarComandas} />
           )}
         </div>
       </div>
+
+      {/* Modal de Confirmação */}
+      <CustomModal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+        <div className="p-2">
+          <h3 className="text-lg font-bold">Confirmar Criação de Comanda</h3>
+          <p>Você tem certeza que deseja criar uma nova comanda?</p>
+          <div className="flex justify-end space-x-4 mt-4">
+            <button
+              onClick={() => setModalOpen(false)}
+              className="px-4 py-2 bg-gray-300 text-black rounded-md"
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={handleConfirmacaoCriacao}
+              className="px-4 py-2 bg-black text-white rounded-md"
+            >
+              Confirmar
+            </button>
+          </div>
+        </div>
+      </CustomModal>
     </div>
   );
 }

@@ -24,9 +24,9 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/auth-provider";
-import { Dialog,  DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog"; // Importando o Dialog
 import { useState } from "react";
 import { Button } from "./ui/button";
+import CustomModal from "./custom-modal"; // Importando seu modal customizado
 
 export function NavUser({
   user,
@@ -43,7 +43,7 @@ export function NavUser({
 
   const handleLogout = () => {
     logout();
-    setOpenDialog(false); // Fecha o modal após o logout
+    setOpenDialog(false);
   };
 
   return (
@@ -100,29 +100,28 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => setOpenDialog(true)}>
-              <LogOutIcon />
+            <DropdownMenuItem
+              className="text-red-600 focus:text-red-600"
+              onClick={() => setOpenDialog(true)}
+            >
+              <LogOutIcon className="text-red-600 focus:text-red-600" />
               Sair
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
 
-      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Tem certeza de que deseja sair?</DialogTitle>
-          </DialogHeader>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="secondary" onClick={() => setOpenDialog(false)}>
-                Cancelar
-              </Button>
-            </DialogClose>
-            <Button onClick={handleLogout}>Confirmar</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <CustomModal isOpen={openDialog} onClose={() => setOpenDialog(false)}>
+        <h2 className="text-lg font-semibold mb-4">
+          Tem certeza de que deseja sair?
+        </h2>
+        <div className="flex justify-end gap-2">
+          <Button variant="secondary" onClick={() => setOpenDialog(false)}>
+            Cancelar
+          </Button>
+          <Button onClick={handleLogout}>Confirmar</Button>
+        </div>
+      </CustomModal>
     </SidebarMenu>
   );
 }
