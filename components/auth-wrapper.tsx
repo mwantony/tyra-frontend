@@ -21,7 +21,7 @@ function ProtectedApp({ children }: { children: ReactNode }) {
     return <Spinner></Spinner>;
   }
 
-  if (restaurante?.nome) {
+  if (restaurante?.nome_fantasia) {
     return <CustomLayout>{children}</CustomLayout>;
   } else {
     return <LoginPage />;

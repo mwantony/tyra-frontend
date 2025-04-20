@@ -12,7 +12,7 @@ import { SectionCards } from "@/components/section-cards";
 import { DatePickerWithRange } from "@/components/date-range-picker";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { filtrarVendas } from "@/services/vendas";
+import { filtrarVendas, gerarPdf } from "@/services/vendas";
 
 export default function Page() {
   const [date, setDate] = React.useState({
@@ -28,6 +28,9 @@ export default function Page() {
       from: dayjs(newDateRange.from).format("YYYY-MM-DD"),
       to: dayjs(newDateRange.to).format("YYYY-MM-DD"),
     });
+  };
+  const handleGerarPdf = async () => {
+    await gerarPdf(date.from, date.to).then(res => console.log(res))
   };
 
   useEffect(() => {
@@ -47,7 +50,7 @@ export default function Page() {
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
           <div className="flex justify-end items-center gap-x-4 px-4 lg:px-6">
             <DatePickerWithRange onChange={handleDateChange} />
-            <Button>Download</Button>
+            <Button onClick={() => handleGerarPdf()}>Download</Button>
           </div>
 
           {loading ? (

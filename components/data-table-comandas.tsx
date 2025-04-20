@@ -103,10 +103,6 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
             <TableHead>ID</TableHead>
             <TableHead>Número da Comanda</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead>Fechada em</TableHead>
-            <TableHead>Criado em</TableHead>
-            <TableHead>Atualizado em</TableHead>
-            <TableHead>Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -115,17 +111,7 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
               <TableCell>{comanda.id}</TableCell>
               <TableCell>{comanda.numero_comanda}</TableCell>
               <TableCell>{getStatusBadge(comanda.status)}</TableCell>
-              <TableCell>
-                {comanda.fechada_em
-                  ? dayjs(comanda.fechada_em).format("DD/MM/YYYY HH:mm")
-                  : "Ainda aberta"}
-              </TableCell>
-              <TableCell>
-                {dayjs(comanda.created_at).format("DD/MM/YYYY HH:mm")}
-              </TableCell>
-              <TableCell>
-                {dayjs(comanda.updated_at).format("DD/MM/YYYY HH:mm")}
-              </TableCell>
+
               <TableCell className="text-right">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>

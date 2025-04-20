@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge"; // Ajuste conforme o caminho corr
 type Venda = {
   id: number;
   comanda_id: number;
+  numero_comanda: string;
   restaurante_id: number;
   total: string;
   data_venda: string;
@@ -42,7 +43,7 @@ export const DataTableVendas: React.FC<DataTableProps> = ({ data }) => {
               <TableRow key={item.id}>
                 <TableCell>{item.id}</TableCell>
                 <TableCell>
-                  <Badge variant="outline">{item.comanda_id}</Badge>
+                  <Badge variant="outline">{item.numero_comanda}</Badge>
                 </TableCell>
                 <TableCell>
                   {new Intl.NumberFormat("pt-BR", {
@@ -57,7 +58,10 @@ export const DataTableVendas: React.FC<DataTableProps> = ({ data }) => {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={4} className="text-center text-muted-foreground">
+              <TableCell
+                colSpan={4}
+                className="text-center text-muted-foreground"
+              >
                 Nenhuma venda encontrada.
               </TableCell>
             </TableRow>

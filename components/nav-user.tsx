@@ -56,14 +56,19 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg grayscale">
-                <AvatarImage src={user.avatar} alt={restaurante.nome} />
+                <AvatarImage
+                  src={user.avatar}
+                  alt={restaurante.nome_fantasia}
+                />
                 <AvatarFallback className="rounded-lg">
                   {" "}
-                  {restaurante.nome?.charAt(0).toUpperCase()}
+                  {restaurante.nome_fantasia?.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{restaurante.nome}</span>
+                <span className="truncate font-medium">
+                  {restaurante.nome_fantasia}
+                </span>
                 <span className="truncate text-xs text-muted-foreground">
                   {restaurante.email}
                 </span>
@@ -82,12 +87,12 @@ export function NavUser({
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user.avatar} alt={user.name} />
                   <AvatarFallback className="rounded-lg">
-                    {restaurante.nome?.charAt(0).toUpperCase()}
+                    {restaurante.nome_fantasia?.charAt(0).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">
-                    {restaurante.nome}
+                    {restaurante.nome_fantasia}
                   </span>
                   <span className="truncate text-xs text-muted-foreground">
                     {restaurante.email}
@@ -103,7 +108,7 @@ export function NavUser({
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCardIcon />
-                Cobrança
+                Cobranças
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
@@ -119,9 +124,9 @@ export function NavUser({
       </SidebarMenuItem>
 
       <CustomModal isOpen={openDialog} onClose={() => setOpenDialog(false)}>
-        <h2 className="text-lg font-semibold mb-4">
+        <h4 className="text-lg font-semibold mb-4">
           Tem certeza de que deseja sair?
-        </h2>
+        </h4>
         <div className="flex justify-end gap-4">
           <Button variant="outline" onClick={() => setOpenDialog(false)}>
             Cancelar

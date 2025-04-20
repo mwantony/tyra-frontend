@@ -31,7 +31,11 @@ export function DatePickerWithRange({
   });
   React.useEffect(() => {
     // Se o value prop for alterado fora do componente, atualize o estado
-    if (value && (value.from?.toISOString() !== date.from || value.to?.toISOString() !== date.to)) {
+    if (
+      value &&
+      (value.from?.toISOString() !== date.from ||
+        value.to?.toISOString() !== date.to)
+    ) {
       setDate({
         from: value.from || undefined,
         to: value.to || undefined,
@@ -91,6 +95,7 @@ export function DatePickerWithRange({
             locale={ptBR}
             numberOfMonths={2}
             defaultMonth={date?.from || undefined}
+           
           />
         </PopoverContent>
       </Popover>

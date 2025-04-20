@@ -237,7 +237,7 @@ export default function NovaVendaPage() {
                   onClick={handleSalvarVenda}
                   disabled={itensSelecionados.length === 0}
                 >
-                  Salvar Venda
+                  Adicionar à Comanda
                 </Button>
               </div>
             </div>
