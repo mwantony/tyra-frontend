@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import api from "./api";
 
 export async function getProdutos() {
@@ -10,4 +11,45 @@ export async function getProdutos() {
     throw error;
   }
 }
+export async function getProduto(id: any) {
+  try {
+    const response = await api.get(`/produtos/${id}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar produtos:", error);
+    throw error;
+  }
+}
 
+export async function putProduto(id: any, produto: any) {
+  try {
+    const response = await api.put(`/produtos/${id}`, produto);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar produto:", error);
+    throw error;
+  }
+}
+export async function postProduto(produto: any) {
+  try {
+    const response = await api.post(`/produtos`, produto);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar produto:", error);
+    throw error;
+  }
+}
+
+export async function deleteProduto(id: any) {
+  try {
+    const response = await api.delete(`/produtos/${id}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao deletar produto:", error);
+    throw error;
+  }
+}

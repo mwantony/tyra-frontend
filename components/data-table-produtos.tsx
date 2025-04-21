@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from "react";
 import {
   Table,
@@ -14,7 +16,11 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Pencil, Copy, Trash2 } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import CustomModal from "@/components/custom-modal"; // Assumindo que você tem um modal personalizado
+import { deleteProduto } from "@/services/produtos"; // Assumindo que você tem essa função
+import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
 type Produto = {
   id: number;
@@ -30,10 +36,19 @@ type Produto = {
 
 interface DataTableProps {
   data: Produto[];
+  fetchProdutos: () => Promise<void>; // Função para recarregar os produtos
 }
 
-export const DataTableProdutos: React.FC<DataTableProps> = ({ data }) => {
+export const DataTableProdutos: React.FC<DataTableProps> = ({
+  data,
+  fetchProdutos,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false); // Para controlar a visibilidade do modal
+  const [produtoIdToDelete, setProdutoIdToDelete] = useState<number | null>(
+    null
+  ); // ID do produto a ser deletado
+  const router = useRouter();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -44,6 +59,26 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({ data }) => {
       produto.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
       produto.ean.includes(searchTerm)
   );
+
+  const handleDeleteClick = (id: number) => {
+    setProdutoIdToDelete(id);
+    setIsModalOpen(true); // Abre o modal ao clicar em excluir
+  };
+  const handleEditClick = (id: number) => {
+    router.push(`/produtos/editar/${id}`);
+  };
+
+  const handleDeleteProduto = async () => {
+    if (produtoIdToDelete !== null) {
+      try {
+        await deleteProduto(produtoIdToDelete);
+        setIsModalOpen(false); // Fecha o modal
+        await fetchProdutos(); // Recarrega os produtos após a exclusão
+      } catch (err) {
+        console.error("Erro ao excluir produto:", err);
+      }
+    }
+  };
 
   return (
     <div className="rounded-md border">
@@ -95,19 +130,14 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({ data }) => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-44">
                       <DropdownMenuItem
-                        onClick={() => console.log("Editar", produto.id)}
+                        onClick={() => handleEditClick(produto.id)}
                       >
                         <Pencil className="w-4 h-4 mr-2" />
                         Editar
                       </DropdownMenuItem>
+
                       <DropdownMenuItem
-                        onClick={() => console.log("Duplicar", produto.id)}
-                      >
-                        <Copy className="w-4 h-4 mr-2" />
-                        Duplicar
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => console.log("Deletar", produto.id)}
+                        onClick={() => handleDeleteClick(produto.id)} // Abre o modal ao clicar em excluir
                         className="text-red-600 focus:text-red-600"
                       >
                         <Trash2 className="w-4 h-4 mr-2 text-red-600 " />
@@ -130,6 +160,19 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({ data }) => {
           )}
         </TableBody>
       </Table>
+
+      {/* Modal de confirmação de exclusão */}
+      <CustomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <h4 className="text-lg font-semibold mb-4">
+          Deseja deletar o produto?
+        </h4>
+        <div className="flex justify-end gap-4">
+          <Button variant="outline" onClick={() => setIsModalOpen(false)}>
+            Cancelar
+          </Button>
+          <Button onClick={handleDeleteProduto}>Confirmar</Button>
+        </div>
+      </CustomModal>
     </div>
   );
 };

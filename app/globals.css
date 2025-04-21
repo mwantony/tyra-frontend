@@ -22,8 +22,12 @@
 [data-slot="dropdown-menu-item"] {
   cursor: pointer !important;
 }
+label {
+  margin-bottom: 0.5rem;
+}
 
 @custom-variant dark (&:is(.dark *));
+
 
 @theme inline {
   --color-background: var(--background);
