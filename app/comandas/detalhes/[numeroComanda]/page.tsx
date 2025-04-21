@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useParams } from "next/navigation";
@@ -32,7 +33,8 @@ export default function DetalhesComandaPage() {
 
   const calcularTotal = () => {
     return comanda?.produtos?.reduce(
-      (acc: number, produto: any) => acc + Number(produto.preco),
+      (acc: number, produto: any) => 
+        acc + Number(produto.preco) * produto.pivot.quantidade, // Multiplicando preço pela quantidade
       0
     );
   };
@@ -98,7 +100,7 @@ export default function DetalhesComandaPage() {
             {comanda.produtos.map((produto: any) => (
               <li
                 key={produto.id}
-                className="border rounded-lg p-4 shadow-sm bg-white"
+                className="border rounded-lg p-4 shadow-sm"
               >
                 <p className="font-medium">{produto.nome}</p>
                 <p className="text-sm text-muted-foreground">{produto.tipo}</p>
@@ -106,6 +108,7 @@ export default function DetalhesComandaPage() {
                   Preço: R$ {Number(produto.preco).toFixed(2)}
                 </p>
                 <p className="text-sm">Descrição: {produto.descricao}</p>
+                <p className="text-sm">Quantidade: {produto.pivot.quantidade}</p>
               </li>
             ))}
           </ul>
