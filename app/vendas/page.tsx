@@ -6,16 +6,23 @@ import { useEffect, useState } from "react";
 
 import { DataTableVendas } from "@/components/data-table-vendas";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getVendas } from "@/services/vendas"; // Atualize para o caminho correto
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { getVendas } from "@/services/vendas";
 
-export default function Page() {
+export default function VendasPage() {
   const [vendas, setVendas] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const resposta = await getVendas(); // Busca todas as vendas
+      const resposta = await getVendas();
       setVendas(resposta);
       setLoading(false);
     };
@@ -23,24 +30,102 @@ export default function Page() {
     fetchData();
   }, []);
 
+  const filteredVendas = vendas.filter(venda =>
+    Object.values(venda).some(
+      value =>
+        value &&
+        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
   return (
-    <div className="flex flex-1 flex-col">
-      <div className="@container/main flex flex-1 flex-col gap-2">
-        <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-4 lg:px-6">
-          {loading ? (
-            <div className="space-y-4">
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-            </div>
-          ) : (
-            <DataTableVendas data={vendas} />
-          )}
+    <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold tracking-tight">Vendas</h1>
+        <div className="flex items-center gap-2">
+          <Input
+            placeholder="Filtrar vendas..."
+            className="max-w-sm"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Button>
+            <Plus className="mr-2 h-4 w-4" />
+            Nova Venda
+          </Button>
         </div>
       </div>
+
+      <Tabs defaultValue="all">
+        <TabsList>
+          <TabsTrigger value="all">
+            Todas <Badge className="ml-2">{vendas.length}</Badge>
+          </TabsTrigger>
+          <TabsTrigger value="pending">
+            Pendentes <Badge className="ml-2">0</Badge>
+          </TabsTrigger>
+          <TabsTrigger value="completed">
+            Concluídas <Badge className="ml-2">0</Badge>
+          </TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="all">
+          <Card>
+            <CardHeader>
+              <CardTitle>Relatório de Vendas</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="space-y-4">
+                  {[...Array(6)].map((_, i) => (
+                    <Skeleton key={i} className="h-12 w-full rounded-lg" />
+                  ))}
+                </div>
+              ) : (
+                <DataTableVendas data={filteredVendas} />
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="pending">
+          <Card>
+            <CardHeader>
+              <CardTitle>Vendas Pendentes</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="space-y-4">
+                  {[...Array(3)].map((_, i) => (
+                    <Skeleton key={i} className="h-12 w-full rounded-lg" />
+                  ))}
+                </div>
+              ) : (
+                <DataTableVendas data={filteredVendas.filter(v => v.status === 'pending')} />
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="completed">
+          <Card>
+            <CardHeader>
+              <CardTitle>Vendas Concluídas</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="space-y-4">
+                  {[...Array(3)].map((_, i) => (
+                    <Skeleton key={i} className="h-12 w-full rounded-lg" />
+                  ))}
+                </div>
+              ) : (
+                <DataTableVendas data={filteredVendas.filter(v => v.status === 'completed')} />
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
