@@ -1,13 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fechaComanda, getComanda } from "@/services/comandas";
+import { getProdutos } from "@/services/produtos";
+import { comandaAdicionar } from "@/services/comandas";
 import { Skeleton } from "@/components/ui/skeleton";
 import dayjs from "dayjs";
 import { Button } from "@/components/ui/button";
-import CustomModal from "@/components/custom-modal"; // certifique-se que está no caminho certo
+import CustomModal from "@/components/custom-modal";
 import { toast } from "sonner";
 
 export default function DetalhesComandaPage() {
@@ -15,6 +16,9 @@ export default function DetalhesComandaPage() {
   const [comanda, setComanda] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [modalProdutosOpen, setModalProdutosOpen] = useState(false);
+  const [produtosDisponiveis, setProdutosDisponiveis] = useState<any[]>([]);
+  const [quantidades, setQuantidades] = useState<any>({});
 
   useEffect(() => {
     const fetchComanda = async () => {
@@ -33,8 +37,8 @@ export default function DetalhesComandaPage() {
 
   const calcularTotal = () => {
     return comanda?.produtos?.reduce(
-      (acc: number, produto: any) => 
-        acc + Number(produto.preco) * produto.pivot.quantidade, // Multiplicando preço pela quantidade
+      (acc: number, produto: any) =>
+        acc + Number(produto.preco) * produto.pivot.quantidade,
       0
     );
   };
@@ -51,6 +55,43 @@ export default function DetalhesComandaPage() {
       });
     });
     setShowModal(false);
+  };
+
+  const abrirModalAdicionarProdutos = async () => {
+    try {
+      const produtos = await getProdutos();
+      setProdutosDisponiveis(produtos);
+      setModalProdutosOpen(true);
+    } catch (err) {
+      toast.error("Erro ao buscar produtos.");
+    }
+  };
+
+  const handleQuantidadeChange = (produtoId: number, quantidade: number) => {
+    setQuantidades((prevQuantidades) => ({
+      ...prevQuantidades,
+      [produtoId]: quantidade,
+    }));
+  };
+
+  const handleAdicionarProduto = async () => {
+    // Preparando os dados no formato correto
+    const produtosParaAdicionar = produtosDisponiveis.map((produto: any) => ({
+      produto_id: produto.id, // Utiliza o id do produto
+      quantidade: quantidades[produto.id] || 1, // Pega a quantidade do estado ou assume 1
+    }));
+
+    try {
+      // Enviando os dados para a API
+      await comandaAdicionar(comanda.numero_comanda, produtosParaAdicionar);
+
+      // Fechando o modal e mostrando uma mensagem de sucesso
+      setModalProdutosOpen(false);
+      toast.success("Produtos adicionados com sucesso!");
+    } catch (err) {
+      console.error("Erro ao adicionar produtos à comanda:", err);
+      toast.error("Erro ao adicionar produtos.");
+    }
   };
 
   if (loading) {
@@ -82,7 +123,9 @@ export default function DetalhesComandaPage() {
           <Button variant={"outline"} onClick={handleFecharComanda}>
             Fechar Comanda
           </Button>
-          <Button>Adicionar Produtos</Button>
+          <Button onClick={abrirModalAdicionarProdutos}>
+            Adicionar Produtos
+          </Button>
         </div>
       </div>
 
@@ -115,7 +158,7 @@ export default function DetalhesComandaPage() {
         )}
       </div>
 
-      {/* Modal de confirmação */}
+      {/* Modal de confirmação de fechamento */}
       <CustomModal isOpen={showModal} onClose={() => setShowModal(false)}>
         <div className="space-y-4">
           <p>Deseja realmente fechar esta comanda e registrar a venda?</p>
@@ -128,6 +171,38 @@ export default function DetalhesComandaPage() {
             </Button>
             <Button onClick={handleConfirmarFechamento}>Confirmar</Button>
           </div>
+        </div>
+      </CustomModal>
+
+      {/* Modal de adicionar produtos */}
+      <CustomModal isOpen={modalProdutosOpen} onClose={() => setModalProdutosOpen(false)}>
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Selecionar Produtos</h2>
+          {produtosDisponiveis.length === 0 ? (
+            <p className="text-muted-foreground">Nenhum produto disponível.</p>
+          ) : (
+            <ul className="space-y-2 max-h-[400px] overflow-y-auto">
+              {produtosDisponiveis.map((produto) => (
+                <li key={produto.id} className="border p-4 rounded-md">
+                  <p className="font-medium">{produto.nome}</p>
+                  <p className="text-sm">R$ {Number(produto.preco).toFixed(2)}</p>
+                  <input
+                    type="number"
+                    value={quantidades[produto.id] || 1}
+                    min="1"
+                    onChange={(e) => handleQuantidadeChange(produto.id, +e.target.value)}
+                    className="mt-2 p-1 border rounded"
+                  />
+                  <Button
+                    className="mt-2"
+                    onClick={() => handleAdicionarProduto()}
+                  >
+                    Adicionar
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </CustomModal>
     </div>

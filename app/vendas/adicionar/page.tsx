@@ -97,7 +97,7 @@ export default function NovaVendaPage() {
   return (
     <div>
       <div className="p-8">
-        <h1 className="text-3xl font-bold text-center text-gray-800">
+        <h1 className="text-3xl font-bold text-center ">
           Nova Venda
         </h1>
 
@@ -176,7 +176,7 @@ export default function NovaVendaPage() {
                   className="mb-2"
                 />
                 {buscaProduto && (
-                  <div className="border rounded-lg bg-white shadow max-h-40 overflow-y-auto">
+                  <div className="border rounded-lg shadow max-h-40 overflow-y-auto">
                     {produtosFiltrados.length === 0 ? (
                       <p className="p-2 text-sm text-gray-500">
                         Nenhum produto encontrado
@@ -186,7 +186,7 @@ export default function NovaVendaPage() {
                         <div
                           key={produto.id}
                           onClick={() => adicionarProduto(produto.id)}
-                          className="p-2 cursor-pointer hover:bg-gray-100 text-sm"
+                          className="p-2 cursor-pointer hover:bg-gray-950 text-sm"
                         >
                           {produto.nome}
                         </div>
@@ -198,7 +198,7 @@ export default function NovaVendaPage() {
 
               {itensSelecionados.length > 0 && (
                 <div className="space-y-4">
-                  <h2 className="text-xl font-semibold text-gray-800">
+                  <h2 className="text-xl font-semibold ">
                     Itens Selecionados
                   </h2>
                   {itensSelecionados.map((item, index) => {
@@ -208,7 +208,7 @@ export default function NovaVendaPage() {
                     return (
                       <div
                         key={index}
-                        className="flex items-center gap-4 bg-gray-100 p-3 rounded-lg"
+                        className="flex items-center gap-4 p-3 rounded-lg"
                       >
                         <span className="w-40">{produto?.nome}</span>
                         <Input
