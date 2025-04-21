@@ -49,7 +49,7 @@ export default function DetalhesComandaPage() {
 
   useEffect(() => {
     if (numeroComanda) fetchComanda();
-  }, [numeroComanda]);
+  });
 
   const calcularTotal = () => {
     return comanda?.produtos?.reduce(
