@@ -17,8 +17,10 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
+import { Spinner } from "@/components/ui/spinner";
+import { CustomSpinner } from "@/components/custom-spinner";
 
-export default function NovaVendaPage() {
+export default function Page() {
   const [comandas, setComandas] = useState<any[]>([]);
   const [produtos, setProdutos] = useState<any[]>([]);
   const [comandaSelecionada, setComandaSelecionada] = useState<string>("");
@@ -29,18 +31,23 @@ export default function NovaVendaPage() {
   const [buscaComanda, setBuscaComanda] = useState("");
   const [buscaProduto, setBuscaProduto] = useState("");
   const [etapa, setEtapa] = useState<1 | 2>(1);
-
   useEffect(() => {
     const fetchData = async () => {
       const todasComandas = await getComandas();
       const produtos = await getProdutos();
-      setComandas(todasComandas.filter((c) => c.status === "fechada"));
+      
+      const comandasFiltradas = todasComandas.filter(
+        (c) => c.status === "fechada" || c.status === "cancelada"
+      );
+  
+      setComandas(comandasFiltradas);
       setProdutos(produtos);
       setLoading(false);
     };
-
+  
     fetchData();
   }, []);
+  
 
   const adicionarProduto = (produtoId: string) => {
     setItensSelecionados((prev) => [
@@ -84,15 +91,20 @@ export default function NovaVendaPage() {
   };
 
   if (loading)
-    return <p className="text-center mt-20 text-lg">Carregando...</p>;
+    return <CustomSpinner></CustomSpinner>;
 
   const comandasFiltradas = comandas.filter((c) =>
     c.numero_comanda.toString().includes(buscaComanda)
   );
 
-  const produtosFiltrados = produtos.filter((p) =>
-    p.nome.toLowerCase().includes(buscaProduto.toLowerCase())
-  );
+  const produtosFiltrados = produtos.filter((p) => {
+    const termo = buscaProduto.toLowerCase();
+    return (
+      p.nome.toLowerCase().includes(termo) ||
+      (p.ean && p.ean.toLowerCase().includes(termo))
+    );
+  });
+  
 
   return (
     <div>
@@ -133,7 +145,7 @@ export default function NovaVendaPage() {
                   </SelectTrigger>
                   <SelectContent>
                     {comandasFiltradas.length === 0 ? (
-                      <p className="p-2 text-sm text-gray-500">
+                      <p className="p-2 text-sm ">
                         Nenhuma encontrada
                       </p>
                     ) : (
@@ -170,7 +182,7 @@ export default function NovaVendaPage() {
                 <Label htmlFor="buscaProduto">Buscar Produto</Label>
                 <Input
                   id="buscaProduto"
-                  placeholder="Digite para buscar..."
+                  placeholder="Digite o nome ou EAN para buscar..."
                   value={buscaProduto}
                   onChange={(e) => setBuscaProduto(e.target.value)}
                   className="mb-2"
@@ -178,7 +190,7 @@ export default function NovaVendaPage() {
                 {buscaProduto && (
                   <div className="border rounded-lg shadow max-h-40 overflow-y-auto">
                     {produtosFiltrados.length === 0 ? (
-                      <p className="p-2 text-sm text-gray-500">
+                      <p className="p-2 text-sm ">
                         Nenhum produto encontrado
                       </p>
                     ) : (
@@ -186,7 +198,7 @@ export default function NovaVendaPage() {
                         <div
                           key={produto.id}
                           onClick={() => adicionarProduto(produto.id)}
-                          className="p-2 cursor-pointer hover:bg-gray-950 text-sm"
+                          className="p-2 cursor-pointer text-sm"
                         >
                           {produto.nome}
                         </div>

@@ -4,13 +4,27 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { fechaComanda, getComanda, comandaAdicionar } from "@/services/comandas";
+import {
+  fechaComanda,
+  getComanda,
+  comandaAdicionar,
+  cancelaComanda,
+} from "@/services/comandas";
 import { getProdutos } from "@/services/produtos";
 import { Skeleton } from "@/components/ui/skeleton";
 import dayjs from "dayjs";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import CustomModal from "@/components/custom-modal";
 import { toast } from "sonner";
+import { MoreHorizontal } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function DetalhesComandaPage() {
   const { numeroComanda } = useParams();
@@ -44,9 +58,7 @@ export default function DetalhesComandaPage() {
     );
   };
 
-  const handleFecharComanda = () => {
-    setShowModal(true);
-  };
+  const handleFecharComanda = () => setShowModal(true);
 
   const handleConfirmarFechamento = async () => {
     try {
@@ -55,7 +67,7 @@ export default function DetalhesComandaPage() {
         description: `Valor total: R$ ${calcularTotal().toFixed(2)}`,
         duration: 3000,
       });
-      await fetchComanda(); // Atualiza os dados após fechamento
+      await fetchComanda();
     } catch (err) {
       toast.error("Erro ao fechar comanda.");
     } finally {
@@ -74,30 +86,33 @@ export default function DetalhesComandaPage() {
   };
 
   const handleQuantidadeChange = (produtoId: number, quantidade: number) => {
-    setQuantidades((prevQuantidades) => ({
-      ...prevQuantidades,
+    setQuantidades((prev) => ({
+      ...prev,
       [produtoId]: quantidade,
     }));
   };
 
   const handleAdicionarProduto = async (produtoId: number) => {
     const quantidade = quantidades[produtoId] || 1;
-
     try {
       await comandaAdicionar(comanda.numero_comanda, {
-        produtos: [
-          {
-            produto_id: produtoId,
-            quantidade,
-          },
-        ],
+        produtos: [{ produto_id: produtoId, quantidade }],
       });
       toast.success("Produto adicionado com sucesso!");
       setModalProdutosOpen(false);
-      await fetchComanda(); // Atualiza os dados após adicionar produto
+      await fetchComanda();
     } catch (err) {
-      console.error("Erro ao adicionar produto à comanda:", err);
       toast.error("Erro ao adicionar produto.");
+    }
+  };
+
+  const handleCancelarComanda = async (numeroComanda: string) => {
+    try {
+      await cancelaComanda(numeroComanda);
+      toast.success("Comanda cancelada com sucesso!");
+      await fetchComanda();
+    } catch (err) {
+      toast.error("Erro ao cancelar comanda.");
     }
   };
 
@@ -123,50 +138,62 @@ export default function DetalhesComandaPage() {
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">
-          Comanda #{comanda.numero_comanda}
-        </h1>
-        <div className="flex space-x-2">
-          <Button variant={"outline"} onClick={handleFecharComanda}>
-            Fechar Comanda
-          </Button>
-          <Button onClick={abrirModalAdicionarProdutos}>
-            Adicionar Produtos
-          </Button>
-        </div>
+        <h1 className="text-2xl font-bold">Comanda #{comanda.numero_comanda}</h1>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon">
+              <MoreHorizontal className="w-5 h-5" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={handleFecharComanda}>
+              Fechar Comanda
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={abrirModalAdicionarProdutos}>
+              Adicionar Produtos
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => handleCancelarComanda(comanda.numero_comanda)}
+              className="text-red-600"
+            >
+              Cancelar Comanda
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
-      <p>
-        Status: <strong>{comanda.status}</strong>
-      </p>
-      <p>Criada em: {dayjs(comanda.created_at).format("DD/MM/YYYY HH:mm")}</p>
+      <div className="space-y-1 text-sm text-muted-foreground">
+        <p>Status: <strong className="text-primary">{comanda.status}</strong></p>
+        <p>Criada em: {dayjs(comanda.created_at).format("DD/MM/YYYY HH:mm")}</p>
+      </div>
 
-      <div className="mt-6">
+      <div>
         <h2 className="text-lg font-semibold mb-2">Produtos</h2>
         {comanda.produtos.length === 0 ? (
           <p className="text-muted-foreground">Nenhum produto nesta comanda.</p>
         ) : (
-          <ul className="space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {comanda.produtos.map((produto: any) => (
-              <li key={produto.id} className="border rounded-lg p-4 shadow-sm">
-                <p className="font-medium">{produto.nome}</p>
-                <p className="text-sm text-muted-foreground">{produto.tipo}</p>
-                <p className="text-sm">
-                  Preço: R$ {Number(produto.preco).toFixed(2)}
-                </p>
-                <p className="text-sm">Descrição: {produto.descricao}</p>
-                <p className="text-sm">
-                  Quantidade: {produto.pivot.quantidade}
-                </p>
-              </li>
+              <Card key={produto.id}>
+                <CardHeader>
+                  <CardTitle>{produto.nome}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-1 text-sm text-muted-foreground">
+                  <p>Tipo: {produto.tipo}</p>
+                  <p>Preço: R$ {Number(produto.preco).toFixed(2)}</p>
+                  <p>Descrição: {produto.descricao}</p>
+                  <p>Quantidade: {produto.pivot.quantidade}</p>
+                </CardContent>
+              </Card>
             ))}
-          </ul>
+          </div>
         )}
       </div>
 
       {/* Modal de confirmação de fechamento */}
       <CustomModal isOpen={showModal} onClose={() => setShowModal(false)}>
         <div className="space-y-4">
+          <h2 className="text-lg font-semibold">Confirmar fechamento</h2>
           <p>Deseja realmente fechar esta comanda e registrar a venda?</p>
           <p>
             Valor total: <strong>R$ {calcularTotal().toFixed(2)}</strong>
@@ -190,24 +217,29 @@ export default function DetalhesComandaPage() {
           {produtosDisponiveis.length === 0 ? (
             <p className="text-muted-foreground">Nenhum produto disponível.</p>
           ) : (
-            <ul className="space-y-2 max-h-[400px] overflow-y-auto">
+            <ul className="space-y-4 max-h-[400px] overflow-y-auto">
               {produtosDisponiveis.map((produto) => (
-                <li key={produto.id} className="border p-4 rounded-md">
-                  <p className="font-medium">{produto.nome}</p>
-                  <p className="text-sm">
-                    R$ {Number(produto.preco).toFixed(2)}
-                  </p>
-                  <input
+                <li
+                  key={produto.id}
+                  className="border p-4 rounded-md shadow-sm space-y-2"
+                >
+                  <div>
+                    <p className="font-medium">{produto.nome}</p>
+                    <p className="text-sm text-muted-foreground">
+                      R$ {Number(produto.preco).toFixed(2)}
+                    </p>
+                  </div>
+                  <Input
                     type="number"
                     value={quantidades[produto.id] || 1}
                     min="1"
                     onChange={(e) =>
                       handleQuantidadeChange(produto.id, +e.target.value)
                     }
-                    className="mt-2 p-1 border rounded"
                   />
                   <Button
-                    className="mt-2"
+                    size="sm"
+                    className="w-full"
                     onClick={() => handleAdicionarProduto(produto.id)}
                   >
                     Adicionar
