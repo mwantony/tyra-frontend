@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { getVendas } from "@/services/vendas";
+import Link from "next/link";
 
 export default function VendasPage() {
   const [vendas, setVendas] = useState<any[]>([]);
@@ -30,9 +31,9 @@ export default function VendasPage() {
     fetchData();
   }, []);
 
-  const filteredVendas = vendas.filter(venda =>
+  const filteredVendas = vendas.filter((venda) =>
     Object.values(venda).some(
-      value =>
+      (value) =>
         value &&
         value.toString().toLowerCase().includes(searchTerm.toLowerCase())
     )
@@ -49,10 +50,12 @@ export default function VendasPage() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <Button>
-            <Plus className="mr-2 h-4 w-4" />
-            Nova Venda
-          </Button>
+          <Link href={"/vendas/adicionar"}>
+            <Button>
+              <Plus className="mr-2 h-4 w-4" />
+              Nova Venda
+            </Button>
+          </Link>
         </div>
       </div>
 
@@ -68,7 +71,7 @@ export default function VendasPage() {
             Concluídas <Badge className="ml-2">{vendas.length}</Badge>
           </TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="all">
           <Card>
             <CardHeader>
@@ -87,7 +90,7 @@ export default function VendasPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="pending">
           <Card>
             <CardHeader>
@@ -101,14 +104,16 @@ export default function VendasPage() {
                   ))}
                 </div>
               ) : (
-                <DataTableVendas data={filteredVendas.filter(v => v.status === 'pending')} />
+                <DataTableVendas
+                  data={filteredVendas.filter((v) => v.status === "pending")}
+                />
               )}
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="completed">
-        <Card>
+          <Card>
             <CardHeader>
               <CardTitle>Relatório de Vendas</CardTitle>
             </CardHeader>
