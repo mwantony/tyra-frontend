@@ -33,9 +33,20 @@ export async function postComanda() {
 }
 export async function comandaAdicionar(numeroComanda, produtos) {
   try {
-    const response = await api.post(`/comandas/${numeroComanda}/adicionar`, {
-      produtos,
-    });
+    const response = await api.post(
+      `/comandas/${numeroComanda}/adicionar`,
+      produtos
+    );
+    console.log("Produtos adicionados:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao adicionar produtos na comanda:", error);
+    throw error;
+  }
+}
+export async function fechaComanda(numeroComanda) {
+  try {
+    const response = await api.put(`/comandas/${numeroComanda}/fechar`);
     console.log("Produtos adicionados:", response.data);
     return response.data;
   } catch (error) {

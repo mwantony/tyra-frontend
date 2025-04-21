@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -14,7 +14,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Pencil, Copy, Trash2 } from "lucide-react"; // ⬅️ Ícones adicionados aqui
+import { MoreHorizontal, Pencil, Copy, Trash2 } from "lucide-react";
 
 type Produto = {
   id: number;
@@ -33,8 +33,29 @@ interface DataTableProps {
 }
 
 export const DataTableProdutos: React.FC<DataTableProps> = ({ data }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredData = data.filter(
+    (produto) =>
+      produto.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      produto.ean.includes(searchTerm)
+  );
+
   return (
     <div className="rounded-md border">
+      <div className="p-4">
+        <input
+          type="text"
+          placeholder="Pesquisar por nome ou EAN"
+          value={searchTerm}
+          onChange={handleSearch}
+          className="p-2 rounded-md border w-full"
+        />
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -48,8 +69,8 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({ data }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data && data.length > 0 ? (
-            data.map((produto) => (
+          {filteredData.length > 0 ? (
+            filteredData.map((produto) => (
               <TableRow key={produto.id}>
                 <TableCell>{produto.id}</TableCell>
                 <TableCell>{produto.nome}</TableCell>

@@ -69,6 +69,7 @@ export default function NovaVendaPage() {
     }
 
     try {
+      console.log(itensSelecionados)
       await comandaAdicionar(comandaSelecionada, {
         produtos: itensSelecionados,
       });

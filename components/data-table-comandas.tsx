@@ -22,6 +22,7 @@ import { deleteComanda, getComandaCodigo } from "@/services/comandas";
 import CustomModal from "@/components/custom-modal";
 import { Button } from "./ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"; // Importando os Tabs
+import Link from "next/link";
 
 type Comanda = {
   id: number;
@@ -111,6 +112,11 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
               <TableCell>{comanda.id}</TableCell>
               <TableCell>{comanda.numero_comanda}</TableCell>
               <TableCell>{getStatusBadge(comanda.status)}</TableCell>
+              <TableCell>
+                <Link href={`/comandas/detalhes/${comanda.numero_comanda}`}>
+                  <Button variant='outline'>Detalhes</Button>
+                </Link>
+              </TableCell>
 
               <TableCell className="text-right">
                 <DropdownMenu>
