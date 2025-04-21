@@ -44,7 +44,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
         }}
       >
         <div
-          className={`bg-white p-5 rounded-lg shadow-lg w-[600px] max-w-full relative transition-all duration-300 ease-in-out transform ${
+          className={`bg-white dark:bg-black p-5 rounded-lg shadow-lg w-[600px] max-w-full relative transition-all duration-300 ease-in-out transform ${
             isOpen ? "scale-100" : "scale-95"
           }`}
         >
