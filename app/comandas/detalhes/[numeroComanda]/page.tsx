@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useParams } from "next/navigation";
@@ -83,7 +85,9 @@ export default function DetalhesComandaPage() {
 
     try {
       // Enviando os dados para a API
-      await comandaAdicionar(comanda.numero_comanda, produtosParaAdicionar);
+      await comandaAdicionar(comanda.numero_comanda, {
+        produtos: produtosParaAdicionar,
+      });
 
       // Fechando o modal e mostrando uma mensagem de sucesso
       setModalProdutosOpen(false);
@@ -141,17 +145,16 @@ export default function DetalhesComandaPage() {
         ) : (
           <ul className="space-y-2">
             {comanda.produtos.map((produto: any) => (
-              <li
-                key={produto.id}
-                className="border rounded-lg p-4 shadow-sm"
-              >
+              <li key={produto.id} className="border rounded-lg p-4 shadow-sm">
                 <p className="font-medium">{produto.nome}</p>
                 <p className="text-sm text-muted-foreground">{produto.tipo}</p>
                 <p className="text-sm">
                   Preço: R$ {Number(produto.preco).toFixed(2)}
                 </p>
                 <p className="text-sm">Descrição: {produto.descricao}</p>
-                <p className="text-sm">Quantidade: {produto.pivot.quantidade}</p>
+                <p className="text-sm">
+                  Quantidade: {produto.pivot.quantidade}
+                </p>
               </li>
             ))}
           </ul>
@@ -175,7 +178,10 @@ export default function DetalhesComandaPage() {
       </CustomModal>
 
       {/* Modal de adicionar produtos */}
-      <CustomModal isOpen={modalProdutosOpen} onClose={() => setModalProdutosOpen(false)}>
+      <CustomModal
+        isOpen={modalProdutosOpen}
+        onClose={() => setModalProdutosOpen(false)}
+      >
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Selecionar Produtos</h2>
           {produtosDisponiveis.length === 0 ? (
@@ -185,12 +191,16 @@ export default function DetalhesComandaPage() {
               {produtosDisponiveis.map((produto) => (
                 <li key={produto.id} className="border p-4 rounded-md">
                   <p className="font-medium">{produto.nome}</p>
-                  <p className="text-sm">R$ {Number(produto.preco).toFixed(2)}</p>
+                  <p className="text-sm">
+                    R$ {Number(produto.preco).toFixed(2)}
+                  </p>
                   <input
                     type="number"
                     value={quantidades[produto.id] || 1}
                     min="1"
-                    onChange={(e) => handleQuantidadeChange(produto.id, +e.target.value)}
+                    onChange={(e) =>
+                      handleQuantidadeChange(produto.id, +e.target.value)
+                    }
                     className="mt-2 p-1 border rounded"
                   />
                   <Button
