@@ -17,6 +17,7 @@ export default function Page() {
   const [comandas, setComandas] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
+  const [termoBusca, setTermoBusca] = useState<string>("");
 
   // Função para carregar ou recarregar as comandas
   const recarregarComandas = async () => {
@@ -49,12 +50,24 @@ export default function Page() {
     }
   };
 
+  // Filtrar comandas com base no termo de busca
+  const comandasFiltradas = comandas.filter((comanda) =>
+    JSON.stringify(comanda).toLowerCase().includes(termoBusca.toLowerCase())
+  );
+
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-4 lg:px-6">
-          {/* Botão de Nova Comanda */}
-          <div className="flex justify-end">
+          {/* Barra de busca e botão de nova comanda */}
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <input
+              type="text"
+              placeholder="Buscar comanda..."
+              value={termoBusca}
+              onChange={(e) => setTermoBusca(e.target.value)}
+              className="border border-input bg-background rounded-md px-3 py-2 text-sm w-full sm:w-64"
+            />
             <Button onClick={handleNovaComanda}>Nova Comanda</Button>
           </div>
 
@@ -68,8 +81,8 @@ export default function Page() {
               <Skeleton className="h-10 w-full" />
               <Skeleton className="h-10 w-full" />
             </div>
-          ) : comandas.length > 0 ? (
-            <DataTableComandas data={comandas} onDelete={recarregarComandas} />
+          ) : comandasFiltradas.length > 0 ? (
+            <DataTableComandas data={comandasFiltradas} onDelete={recarregarComandas} />
           ) : (
             <div className="text-center text-muted-foreground text-sm py-10">
               Nenhuma comanda encontrada.
