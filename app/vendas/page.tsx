@@ -65,7 +65,7 @@ export default function VendasPage() {
             Pendentes <Badge className="ml-2">0</Badge>
           </TabsTrigger>
           <TabsTrigger value="completed">
-            Concluídas <Badge className="ml-2">0</Badge>
+            Concluídas <Badge className="ml-2">{vendas.length}</Badge>
           </TabsTrigger>
         </TabsList>
         
@@ -108,19 +108,19 @@ export default function VendasPage() {
         </TabsContent>
         
         <TabsContent value="completed">
-          <Card>
+        <Card>
             <CardHeader>
-              <CardTitle>Vendas Concluídas</CardTitle>
+              <CardTitle>Relatório de Vendas</CardTitle>
             </CardHeader>
             <CardContent>
               {loading ? (
                 <div className="space-y-4">
-                  {[...Array(3)].map((_, i) => (
+                  {[...Array(6)].map((_, i) => (
                     <Skeleton key={i} className="h-12 w-full rounded-lg" />
                   ))}
                 </div>
               ) : (
-                <DataTableVendas data={filteredVendas.filter(v => v.status === 'completed')} />
+                <DataTableVendas data={filteredVendas} />
               )}
             </CardContent>
           </Card>
