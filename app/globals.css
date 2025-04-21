@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-@import "tailwindcss";
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+ */@import "tailwindcss";
 @import "tw-animate-css";
 
 
@@ -25,7 +25,9 @@
 label {
   margin-bottom: 0.5rem;
 }
-
+html {
+  font-family: var(--font-poppins) !important;
+}
 @custom-variant dark (&:is(.dark *));
 
 
@@ -70,6 +72,7 @@ label {
 }
 
 :root {
+  --font-poppins: "Poppins", sans-serif;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -147,6 +150,3 @@ label {
   }
 }
 
-html {
-  font-family: "Poppins" !important;
-}
