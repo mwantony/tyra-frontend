@@ -4,9 +4,8 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { fechaComanda, getComanda } from "@/services/comandas";
+import { fechaComanda, getComanda, comandaAdicionar } from "@/services/comandas";
 import { getProdutos } from "@/services/produtos";
-import { comandaAdicionar } from "@/services/comandas";
 import { Skeleton } from "@/components/ui/skeleton";
 import dayjs from "dayjs";
 import { Button } from "@/components/ui/button";
@@ -22,18 +21,18 @@ export default function DetalhesComandaPage() {
   const [produtosDisponiveis, setProdutosDisponiveis] = useState<any[]>([]);
   const [quantidades, setQuantidades] = useState<any>({});
 
-  useEffect(() => {
-    const fetchComanda = async () => {
-      try {
-        const resultado = await getComanda(numeroComanda);
-        setComanda(resultado);
-      } catch (err) {
-        console.error("Erro ao buscar comanda:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchComanda = async () => {
+    try {
+      const resultado = await getComanda(numeroComanda);
+      setComanda(resultado);
+    } catch (err) {
+      console.error("Erro ao buscar comanda:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     if (numeroComanda) fetchComanda();
   }, [numeroComanda]);
 
@@ -50,13 +49,18 @@ export default function DetalhesComandaPage() {
   };
 
   const handleConfirmarFechamento = async () => {
-    await fechaComanda(comanda.numero_comanda).then(() => {
+    try {
+      await fechaComanda(comanda.numero_comanda);
       toast.success("Comanda fechada com sucesso!", {
         description: `Valor total: R$ ${calcularTotal().toFixed(2)}`,
         duration: 3000,
       });
-    });
-    setShowModal(false);
+      await fetchComanda(); // Atualiza os dados após fechamento
+    } catch (err) {
+      toast.error("Erro ao fechar comanda.");
+    } finally {
+      setShowModal(false);
+    }
   };
 
   const abrirModalAdicionarProdutos = async () => {
@@ -76,25 +80,24 @@ export default function DetalhesComandaPage() {
     }));
   };
 
-  const handleAdicionarProduto = async () => {
-    // Preparando os dados no formato correto
-    const produtosParaAdicionar = produtosDisponiveis.map((produto: any) => ({
-      produto_id: produto.id, // Utiliza o id do produto
-      quantidade: quantidades[produto.id] || 1, // Pega a quantidade do estado ou assume 1
-    }));
+  const handleAdicionarProduto = async (produtoId: number) => {
+    const quantidade = quantidades[produtoId] || 1;
 
     try {
-      // Enviando os dados para a API
       await comandaAdicionar(comanda.numero_comanda, {
-        produtos: produtosParaAdicionar,
+        produtos: [
+          {
+            produto_id: produtoId,
+            quantidade,
+          },
+        ],
       });
-
-      // Fechando o modal e mostrando uma mensagem de sucesso
+      toast.success("Produto adicionado com sucesso!");
       setModalProdutosOpen(false);
-      toast.success("Produtos adicionados com sucesso!");
+      await fetchComanda(); // Atualiza os dados após adicionar produto
     } catch (err) {
-      console.error("Erro ao adicionar produtos à comanda:", err);
-      toast.error("Erro ao adicionar produtos.");
+      console.error("Erro ao adicionar produto à comanda:", err);
+      toast.error("Erro ao adicionar produto.");
     }
   };
 
@@ -205,7 +208,7 @@ export default function DetalhesComandaPage() {
                   />
                   <Button
                     className="mt-2"
-                    onClick={() => handleAdicionarProduto()}
+                    onClick={() => handleAdicionarProduto(produto.id)}
                   >
                     Adicionar
                   </Button>
