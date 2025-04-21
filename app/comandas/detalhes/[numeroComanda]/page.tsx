@@ -34,6 +34,7 @@ export default function DetalhesComandaPage() {
   const [modalProdutosOpen, setModalProdutosOpen] = useState(false);
   const [produtosDisponiveis, setProdutosDisponiveis] = useState<any[]>([]);
   const [quantidades, setQuantidades] = useState<any>({});
+  const [termoPesquisa, setTermoPesquisa] = useState("");
 
   const fetchComanda = async () => {
     try {
@@ -80,6 +81,7 @@ export default function DetalhesComandaPage() {
       const produtos = await getProdutos();
       setProdutosDisponiveis(produtos);
       setModalProdutosOpen(true);
+      setTermoPesquisa(""); // Resetar pesquisa ao abrir modal
     } catch (err) {
       toast.error("Erro ao buscar produtos.");
     }
@@ -115,6 +117,15 @@ export default function DetalhesComandaPage() {
       toast.error("Erro ao cancelar comanda.");
     }
   };
+
+  // Filtrar produtos por nome ou código EAN
+  const produtosFiltrados = produtosDisponiveis.filter((produto) => {
+    const termo = termoPesquisa.toLowerCase();
+    return (
+      produto.nome.toLowerCase().includes(termo) ||
+      (produto.ean && produto.ean.toString().includes(termo))
+    );
+  });
 
   if (loading) {
     return (
@@ -181,6 +192,7 @@ export default function DetalhesComandaPage() {
                 <CardContent className="space-y-1 text-sm text-muted-foreground">
                   <p>Tipo: {produto.tipo}</p>
                   <p>Preço: R$ {Number(produto.preco).toFixed(2)}</p>
+                  {produto.codigo_ean && <p>EAN: {produto.codigo_ean}</p>}
                   <p>Descrição: {produto.descricao}</p>
                   <p>Quantidade: {produto.pivot.quantidade}</p>
                 </CardContent>
@@ -214,20 +226,35 @@ export default function DetalhesComandaPage() {
       >
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Selecionar Produtos</h2>
-          {produtosDisponiveis.length === 0 ? (
-            <p className="text-muted-foreground">Nenhum produto disponível.</p>
+          
+          {/* Campo de pesquisa */}
+          <Input
+            placeholder="Pesquisar por nome ou código EAN..."
+            value={termoPesquisa}
+            onChange={(e) => setTermoPesquisa(e.target.value)}
+            className="mb-4"
+          />
+          
+          {produtosFiltrados.length === 0 ? (
+            <p className="text-muted-foreground">
+              {termoPesquisa ? 
+                "Nenhum produto encontrado com o termo pesquisado." : 
+                "Nenhum produto disponível."
+              }
+            </p>
           ) : (
             <ul className="space-y-4 max-h-[400px] overflow-y-auto">
-              {produtosDisponiveis.map((produto) => (
+              {produtosFiltrados.map((produto) => (
                 <li
                   key={produto.id}
                   className="border p-4 rounded-md shadow-sm space-y-2"
                 >
                   <div>
                     <p className="font-medium">{produto.nome}</p>
-                    <p className="text-sm text-muted-foreground">
-                      R$ {Number(produto.preco).toFixed(2)}
-                    </p>
+                    <div className="flex justify-between text-sm text-muted-foreground">
+                      <p>R$ {Number(produto.preco).toFixed(2)}</p>
+                      {produto.codigo_ean && <p>EAN: {produto.codigo_ean}</p>}
+                    </div>
                   </div>
                   <Input
                     type="number"
