@@ -10,23 +10,32 @@ import Image from "next/image";
 import { useAuth } from "@/contexts/auth-provider";
 import Link from "next/link";
 
-export function LoginForm({
+export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [cnpj, setCnpj] = useState("");
+  const [nomeFantasia, setNomeFantasia] = useState("");
+  const [razaoSocial, setRazaoSocial] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { login } = useAuth();
+  const { signup } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await login(email, password);
+      await signup({
+        cnpj,
+        nome_fantasia: nomeFantasia,
+        razao_social: razaoSocial,
+        email,
+        password,
+      });
     } catch (error) {
-      console.error("Erro ao fazer login:", error);
+      console.error("Erro ao cadastrar:", error);
     } finally {
       setLoading(false);
     }
@@ -39,12 +48,49 @@ export function LoginForm({
           <form onSubmit={handleSubmit} className="p-6 md:p-8">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
-                <h1 className="text-2xl font-bold">Seja bem-vindo!</h1>
+                <h1 className="text-2xl font-bold">Criar uma conta</h1>
                 <p className="text-balance text-muted-foreground">
-                  Faça login na sua conta
+                  Preencha os dados para se cadastrar
                 </p>
               </div>
-              <div className="grid gap-1">
+
+              <div className="grid gap-2">
+                <Label htmlFor="cnpj">CNPJ</Label>
+                <Input
+                  id="cnpj"
+                  type="text"
+                  placeholder="Digite o CNPJ"
+                  required
+                  value={cnpj}
+                  onChange={(e) => setCnpj(e.target.value)}
+                />
+              </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="nomeFantasia">Nome Fantasia</Label>
+                <Input
+                  id="nomeFantasia"
+                  type="text"
+                  placeholder="Digite o nome fantasia"
+                  required
+                  value={nomeFantasia}
+                  onChange={(e) => setNomeFantasia(e.target.value)}
+                />
+              </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="razaoSocial">Razão Social</Label>
+                <Input
+                  id="razaoSocial"
+                  type="text"
+                  placeholder="Digite a razão social"
+                  required
+                  value={razaoSocial}
+                  onChange={(e) => setRazaoSocial(e.target.value)}
+                />
+              </div>
+
+              <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
@@ -55,33 +101,27 @@ export function LoginForm({
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              <div className="grid gap-1">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Senha</Label>
-                  <a
-                    href="#"
-                    className="ml-auto text-sm underline-offset-2 hover:underline"
-                  >
-                    Esqueceu a senha?
-                  </a>
-                </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="password">Senha</Label>
                 <Input
                   id="password"
-                  placeholder="Digite sua senha"
                   type="password"
+                  placeholder="Crie uma senha"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
+
               <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? "Entrando..." : "Entrar"}
+                {loading ? "Cadastrando..." : "Cadastrar"}
               </Button>
 
               <div className="text-center text-sm">
-                Ainda não tem conta?{" "}
-                <Link href="/signup" className="underline underline-offset-4">
-                  Cadastrar
+                Já tem uma conta?{" "}
+                <Link href="/login" className="underline underline-offset-4">
+                  Fazer login
                 </Link>
               </div>
             </div>
@@ -100,7 +140,7 @@ export function LoginForm({
       </Card>
 
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-        Ao clicar em continuar, você concorda com nossos{" "}
+        Ao se cadastrar, você concorda com nossos{" "}
         <a href="#">Termos de Serviço</a> e{" "}
         <a href="#">Política de Privacidade</a>.
       </div>

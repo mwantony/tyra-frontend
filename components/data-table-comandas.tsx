@@ -46,7 +46,7 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
 }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [comandaToDelete, setComandaToDelete] = useState<string | null>(null);
-  const [currentTab, setCurrentTab] = useState("abertas");
+  const [currentTab, setCurrentTab] = useState("todas");
 
   const getStatusBadge = (status: string) => {
     switch (status) {

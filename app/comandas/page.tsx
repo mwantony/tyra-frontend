@@ -79,7 +79,7 @@ export default function ComandasPage() {
   });
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:gap-6 md:p-6 lg:p-8">
+    <div className="flex flex-col gap-4 p-4 md:gap-6 md:p-6 lg:p-6">
       {/* Cabeçalho */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>

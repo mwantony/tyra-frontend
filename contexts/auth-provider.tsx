@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client"
+"use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
 import api from "../services/api";
@@ -10,7 +10,9 @@ export const AuthProvider = ({ children }: any) => {
   const [restaurante, setRestaurante] = useState(null);
 
   useEffect(() => {
-    const storedRestaurante = JSON.parse(localStorage.getItem("restaurante") || "{}");
+    const storedRestaurante = JSON.parse(
+      localStorage.getItem("restaurante") || "{}"
+    );
     if (storedRestaurante) {
       setRestaurante(storedRestaurante.restaurante);
     }
@@ -23,12 +25,34 @@ export const AuthProvider = ({ children }: any) => {
         password,
       });
       const token = response.data;
-      console.log(token)
+      console.log(token);
       localStorage.setItem("restaurante", JSON.stringify(token));
 
       window.location.href = "/";
     } catch (error) {
       alert("Email ou senha inválidos!");
+      throw new Error(String(error));
+    }
+  };
+  const signup = async ({
+    cnpj,
+    nome_fantasia,
+    razao_social,
+    email,
+    password,
+  }) => {
+    try {
+      await api.post("/signup", {
+        cnpj,
+        nome_fantasia,
+        razao_social,
+        email,
+        password,
+      });
+
+      window.location.href = "/login";
+    } catch (error) {
+      alert("Erro ao cadastrar. Verifique os dados e tente novamente!");
       throw new Error(String(error));
     }
   };
@@ -62,7 +86,14 @@ export const AuthProvider = ({ children }: any) => {
 
   return (
     <AuthContext.Provider
-      value={{ restaurante, login, logout, updateRestaurante, refreshRestaurante }}
+      value={{
+        restaurante,
+        login,
+        signup,
+        logout,
+        updateRestaurante,
+        refreshRestaurante,
+      }}
     >
       {children}
     </AuthContext.Provider>
