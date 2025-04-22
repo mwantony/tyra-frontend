@@ -1,4 +1,4 @@
-import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
+import { TrendingDownIcon, TrendingUpIcon,  TrendingUpDownIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -17,25 +17,65 @@ export function SectionCards({
   totalVendas: number;
   mediaVendasPorDia: number;
 }) {
-  // Função para determinar o texto de tendência
+  // Função para determinar o texto de tendência com lógica aprimorada
   const renderTendencyText = (value: number, type: "faturado" | "vendas" | "media") => {
+    const absoluteValue = Math.abs(value);
+    let intensity = "";
+    
+    if (absoluteValue > 20) intensity = "Significativa ";
+    else if (absoluteValue > 10) intensity = "";
+    else if (absoluteValue > 5) intensity = "Ligeira ";
+    else intensity = "Pequena ";
+
     if (value > 0) {
+      const variations = {
+        faturado: {
+          text: `${intensity}Alta no faturamento`,
+          detail: absoluteValue > 15 ? "Excelente desempenho financeiro" : "Bom desempenho financeiro"
+        },
+        vendas: {
+          text: `${intensity}Aumento nas vendas`,
+          detail: absoluteValue > 15 ? "Demanda em crescimento" : "Vendas consistentes"
+        },
+        media: {
+          text: `${intensity}Alta na média diária`,
+          detail: absoluteValue > 15 ? "Clientes mais ativos" : "Engajamento estável"
+        }
+      };
+      
       return {
-        text: type === "faturado" ? "Tendência de alta neste mês" : type === "vendas" ? "Aumento nas vendas" : "Retenção de usuários forte",
+        ...variations[type],
         icon: <TrendingUpIcon className="size-4" />,
         badge: <Badge variant="outline" className="flex gap-1 rounded-lg text-xs"><TrendingUpIcon className="size-3" />+{value}%</Badge>,
       };
     } else if (value < 0) {
+      const variations = {
+        faturado: {
+          text: `${intensity}queda no faturamento`,
+          detail: absoluteValue > 15 ? "Revisar estratégias" : "Monitorar tendência"
+        },
+        vendas: {
+          text: `${intensity}redução nas vendas`,
+          detail: absoluteValue > 15 ? "Necessidade de ações" : "Observar comportamento"
+        },
+        media: {
+          text: `${intensity}baixa na média diária`,
+          detail: absoluteValue > 15 ? "Clientes menos ativos" : "Leve redução no engajamento"
+        }
+      };
+      
       return {
-        text: type === "faturado" ? "Tendência de queda neste mês" : type === "vendas" ? "Queda nas vendas" : "Retenção abaixo da meta",
+        ...variations[type],
         icon: <TrendingDownIcon className="size-4" />,
-        badge: <Badge variant="outline" className="flex gap-1 rounded-lg text-xs"><TrendingDownIcon className="size-3" />-{Math.abs(value)}%</Badge>,
+        badge: <Badge variant="outline" className="flex gap-1 rounded-lg text-xs"><TrendingDownIcon className="size-3" />-{absoluteValue}%</Badge>,
       };
     } else {
       return {
-        text: "Sem alteração significativa",
-        icon: null,
-        badge: null,
+        text: "estabilidade",
+        detail: type === "faturado" ? "Faturamento consistente" : 
+               type === "vendas" ? "Vendas estáveis" : "Média diária mantida",
+        icon: <TrendingUpDownIcon className="size-4" />,
+        badge: <Badge variant="outline" className="flex gap-1 rounded-lg text-xs"><TrendingUpDownIcon className="size-3" />0%</Badge>,
       };
     }
   };
@@ -65,7 +105,7 @@ export function SectionCards({
           <div className="line-clamp-1 flex gap-2 font-medium">
             {faturadoTendency.text} {faturadoTendency.icon}
           </div>
-          <div className="text-muted-foreground">Visitas nos últimos 6 meses</div>
+          <div className="text-muted-foreground">{faturadoTendency.detail}</div>
         </CardFooter>
       </Card>
 
@@ -84,7 +124,7 @@ export function SectionCards({
           <div className="line-clamp-1 flex gap-2 font-medium">
             {vendasTendency.text} {vendasTendency.icon}
           </div>
-          <div className="text-muted-foreground">Aquisição necessita de atenção</div>
+          <div className="text-muted-foreground">{vendasTendency.detail}</div>
         </CardFooter>
       </Card>
 
@@ -106,7 +146,7 @@ export function SectionCards({
           <div className="line-clamp-1 flex gap-2 font-medium">
             {mediaTendency.text} {mediaTendency.icon}
           </div>
-          <div className="text-muted-foreground">O engajamento superou as metas</div>
+          <div className="text-muted-foreground">{mediaTendency.detail}</div>
         </CardFooter>
       </Card>
     </div>

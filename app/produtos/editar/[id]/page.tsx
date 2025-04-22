@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -13,8 +14,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { toast } from "sonner";
+import { CustomSpinner } from "@/components/custom-spinner";
 
-// Função para buscar produto por EAN
 const fetchProdutoByEAN = async (ean: string) => {
   const response = await fetch(
     `https://world.openfoodfacts.org/api/v0/product/${ean}.json`
@@ -26,6 +30,8 @@ const fetchProdutoByEAN = async (ean: string) => {
 export default function Page() {
   const router = useRouter();
   const id = useParams().id;
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFetchingEAN, setIsFetchingEAN] = useState(false);
 
   const [form, setForm] = useState({
     nome: "",
@@ -36,22 +42,29 @@ export default function Page() {
   });
 
   useEffect(() => {
-    const fetchData = async () => {
+    const loadProduto = async () => {
       if (id) {
-        const produto = await getProduto(id);
-        if (produto) {
-          setForm({
-            nome: produto.nome || "",
-            preco: produto.preco?.toString() || "",
-            tipo: produto.tipo || "prato",
-            ean: produto.ean || "",
-            descricao: produto.descricao || "",
-          });
+        setIsLoading(true);
+        try {
+          const produto = await getProduto(id);
+          if (produto) {
+            setForm({
+              nome: produto.nome || "",
+              preco: produto.preco?.toString() || "",
+              tipo: produto.tipo || "prato",
+              ean: produto.ean || "",
+              descricao: produto.descricao || "",
+            });
+          }
+        } catch (error) {
+          toast.error("Erro ao carregar produto");
+        } finally {
+          setIsLoading(false);
         }
       }
     };
 
-    fetchData();
+    loadProduto();
   }, [id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +80,7 @@ export default function Page() {
     setForm({ ...form, ean });
 
     if (ean.length === 13) {
+      setIsFetchingEAN(true);
       try {
         const produtoData = await fetchProdutoByEAN(ean);
         if (produtoData) {
@@ -76,92 +90,144 @@ export default function Page() {
             descricao: produtoData.description || prevForm.descricao,
             preco: produtoData.price || prevForm.preco,
           }));
+          toast.success("Dados do produto carregados automaticamente");
         }
       } catch (err) {
-        console.error("Erro ao buscar produto por EAN:", err);
+        toast.warning("Produto não encontrado na base de dados");
+      } finally {
+        setIsFetchingEAN(false);
       }
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       if (id) {
         await putProduto(id, {
           ...form,
           preco: parseFloat(form.preco),
         });
-        router.push("/produtos");
+        toast.success("Produto atualizado com sucesso!");
+        setTimeout(() => router.push("/produtos"), 1000);
       }
     } catch (err) {
+      toast.error("Erro ao atualizar produto");
       console.error("Erro ao atualizar produto:", err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center px-4 py-6">
-      <div className="w-full max-w-lg">
-        <h1 className="text-2xl font-bold mb-6">Editar Produto</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="ean">EAN</Label>
-            <Input
-              name="ean"
-              placeholder="Digite o código EAN"
-              value={form.ean}
-              onChange={handleEANChange}
-            />
+    <div className="container mx-auto px-4 py-8">
+      <Card className="mx-auto max-w-2xl">
+        <CardHeader>
+          <div className="flex items-center space-x-3">
+            <CardTitle className="text-2xl">Editar Produto</CardTitle>
           </div>
-          <div>
-            <Label htmlFor="nome">Nome</Label>
-            <Input
-              name="nome"
-              placeholder="Digite o nome do produto"
-              value={form.nome}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="preco">Preço</Label>
-            <Input
-              name="preco"
-              placeholder="Digite o preço do produto"
-              value={form.preco}
-              onChange={handleChange}
-              required
-              type="number"
-              step="0.01"
-            />
-          </div>
-          <div>
-            <Label htmlFor="tipo">Tipo</Label>
-            <Select value={form.tipo} onValueChange={handleTipoChange}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Selecione o tipo" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="prato">Prato</SelectItem>
-                <SelectItem value="bebida">Bebida</SelectItem>
-                <SelectItem value="sobremesa">Sobremesa</SelectItem>
-                <SelectItem value="outros">Outros</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label htmlFor="descricao">Descrição</Label>
-            <Input
-              placeholder="Digite a descrição do produto"
-              name="descricao"
-              value={form.descricao}
-              onChange={handleChange}
-            />
-          </div>
-          <Button type="submit" className="mt-4 w-full">
-            Atualizar
-          </Button>
-        </form>
-      </div>
+        </CardHeader>
+
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              {/* Código EAN */}
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="ean">Código EAN</Label>
+                <div className="relative">
+                  <Input
+                    name="ean"
+                    placeholder="Digite o código de barras"
+                    value={form.ean}
+                    onChange={handleEANChange}
+                    disabled={isLoading}
+                  />
+                  {isFetchingEAN && <CustomSpinner></CustomSpinner>}
+                </div>
+              </div>
+
+              {/* Nome do Produto */}
+              <div className="space-y-2">
+                <Label htmlFor="nome">Nome do Produto</Label>
+                <Input
+                  name="nome"
+                  placeholder="Nome do produto"
+                  value={form.nome}
+                  onChange={handleChange}
+                  required
+                  disabled={isLoading}
+                />
+              </div>
+
+              {/* Preço */}
+              <div className="space-y-2">
+                <Label htmlFor="preco">Preço (R$)</Label>
+                <Input
+                  name="preco"
+                  placeholder="0,00"
+                  value={form.preco}
+                  onChange={handleChange}
+                  required
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  disabled={isLoading}
+                />
+              </div>
+
+              {/* Categoria */}
+              <div className="space-y-2">
+                <Label htmlFor="tipo">Categoria</Label>
+                <Select
+                  value={form.tipo}
+                  onValueChange={handleTipoChange}
+                  disabled={isLoading}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Selecione" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="prato">Prato</SelectItem>
+                    <SelectItem value="bebida">Bebida</SelectItem>
+                    <SelectItem value="sobremesa">Sobremesa</SelectItem>
+                    <SelectItem value="outros">Outros</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Descrição */}
+              <div className="space-y-2 md:col-span-2">
+                <Label htmlFor="descricao">Descrição</Label>
+                <Input
+                  placeholder="Informações adicionais sobre o produto"
+                  name="descricao"
+                  value={form.descricao}
+                  onChange={handleChange}
+                  disabled={isLoading}
+                />
+              </div>
+            </div>
+
+            <Separator />
+
+            <div className="flex justify-end gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.push("/produtos")}
+                disabled={isLoading}
+              >
+                Cancelar
+              </Button>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading && <CustomSpinner></CustomSpinner>}
+                Atualizar Produto
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }
