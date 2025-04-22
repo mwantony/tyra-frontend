@@ -87,8 +87,13 @@ export function LoginForm({
             </div>
           </form>
 
-          <div className="flex justify-center items-center bg-transparent">
-            <Image src={logo} alt="Imagem" className="max-w-[150px] h-auto" />
+          <div className="flex flex-col justify-center items-center bg-transparent">
+            <Image
+              src={logo}
+              alt="Imagem"
+              className="max-w-[150px] h-auto mb-2"
+            />
+            <h2 className="font-bold text-lg">Tyra</h2>
           </div>
         </CardContent>
       </Card>
@@ -98,6 +103,7 @@ export function LoginForm({
         <a href="#">Termos de Serviço</a> e{" "}
         <a href="#">Política de Privacidade</a>.
       </div>
+
     </div>
   );
 }

@@ -105,11 +105,11 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <UserCircleIcon />
-                Conta
+                <Link href={"/conta"}>Conta</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCardIcon />
-                <Link href={'/cobrancas'}>Cobranças</Link>
+                <Link href={"/cobrancas"}>Cobranças</Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

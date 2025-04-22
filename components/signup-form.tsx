@@ -37,7 +37,7 @@ export function SignUpForm({
         razao_social: razaoSocial,
         email,
         password,
-      })
+      });
       toast.error("Erro ao cadastrar", {
         description: "Verifique os dados e tente novamente",
       });
@@ -186,8 +186,13 @@ export function SignUpForm({
             </div>
           </form>
 
-          <div className="flex justify-center items-center bg-transparent">
-            <Image src={logo} alt="Imagem" className="max-w-[200px] h-auto" />
+          <div className="flex flex-col justify-center items-center bg-transparent">
+            <Image
+              src={logo}
+              alt="Imagem"
+              className="max-w-[150px] h-auto mb-2"
+            />
+            <h2 className="font-bold text-lg">Tyra</h2>
           </div>
         </CardContent>
       </Card>

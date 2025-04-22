@@ -44,7 +44,7 @@ export function SiteHeader() {
           <BreadcrumbList>
             {breadcrumbItems.map((item, index) => (
               <>
-                <BreadcrumbItem key={item.href}>
+                <BreadcrumbItem key={index}>
                   <BreadcrumbLink href={item.href}>
                     {item.label}
                   </BreadcrumbLink>
