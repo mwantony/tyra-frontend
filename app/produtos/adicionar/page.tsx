@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -13,6 +14,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
+import { useTranslate } from "@/hooks/use-translate";
 
 // Função para buscar o produto na API do Open Food Facts
 const fetchProdutoByEAN = async (ean: string) => {
@@ -33,6 +37,7 @@ export default function Page() {
     ean: "",
     descricao: "",
   });
+  const { translate } = useTranslate();
 
   // Função para lidar com as mudanças no formulário
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,14 +86,19 @@ export default function Page() {
         ...form,
         preco: parseFloat(form.preco),
       });
+
       router.push("/produtos");
-    } catch (err) {
+    } catch (err: any) {
+      toast.error("Erro ao cadastrar produto", {  
+        description: await translate(err.response.data.message),
+      });
       console.error("Erro ao cadastrar produto:", err);
     }
   };
 
   return (
     <div className="flex justify-center items-center px-4 py-6">
+      <Toaster></Toaster>
       <div className="w-full max-w-lg">
         <h1 className="text-2xl font-bold mb-6">Cadastrar Produto</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -97,9 +107,10 @@ export default function Page() {
             <Label htmlFor="ean">EAN</Label>
             <Input
               name="ean"
-              placeholder="Digite o código EAN (Opcional)"
+              placeholder="Digite o código EAN"
               value={form.ean}
-              onChange={handleEANChange} // Chama a função que busca os dados
+              onChange={handleEANChange}
+              required
             />
           </div>
           <div>

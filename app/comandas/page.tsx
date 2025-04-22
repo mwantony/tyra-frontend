@@ -23,6 +23,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function ComandasPage() {
   const [comandas, setComandas] = useState<any[]>([]);
@@ -80,6 +81,8 @@ export default function ComandasPage() {
 
   return (
     <div className="flex flex-col gap-4 p-4 md:gap-6 md:p-6 lg:p-6">
+      {" "}
+      <Toaster />
       {/* Cabeçalho */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -88,7 +91,7 @@ export default function ComandasPage() {
             Gerencie todas as comandas do estabelecimento
           </p>
         </div>
-        
+
         <div className="flex flex-col gap-3 sm:flex-row">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -105,7 +108,6 @@ export default function ComandasPage() {
           </Button>
         </div>
       </div>
-
       {/* Card principal */}
       <Card>
         <CardHeader>
@@ -113,15 +115,14 @@ export default function ComandasPage() {
             <span>Lista de Comandas</span>
             <div className="flex items-center gap-2">
               <Badge variant="secondary">
-                {comandasFiltradas.length} {comandasFiltradas.length === 1 ? "item" : "itens"}
+                {comandasFiltradas.length}{" "}
+                {comandasFiltradas.length === 1 ? "item" : "itens"}
               </Badge>
-              <Badge variant="outline">
-                Total: {comandas.length}
-              </Badge>
+              <Badge variant="outline">Total: {comandas.length}</Badge>
             </div>
           </CardTitle>
         </CardHeader>
-        
+
         <CardContent>
           {loading ? (
             <div className="space-y-4">
@@ -130,9 +131,9 @@ export default function ComandasPage() {
               ))}
             </div>
           ) : comandasFiltradas.length > 0 ? (
-            <DataTableComandas 
-              data={comandasFiltradas} 
-              onDelete={recarregarComandas} 
+            <DataTableComandas
+              data={comandasFiltradas}
+              onDelete={recarregarComandas}
             />
           ) : (
             <div className="flex flex-col items-center justify-center py-10 gap-2 text-center">
@@ -141,8 +142,8 @@ export default function ComandasPage() {
                 Nenhuma comanda encontrada
               </p>
               {termoBusca && (
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   onClick={() => setTermoBusca("")}
                   className="mt-2"
                 >
@@ -153,23 +154,21 @@ export default function ComandasPage() {
           )}
         </CardContent>
       </Card>
-
       {/* Modal de Confirmação */}
       <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Criar nova comanda</DialogTitle>
             <DialogDescription>
-              Esta ação irá criar uma nova comanda vazia. Você pode adicionar itens depois.
+              Esta ação irá criar uma nova comanda vazia. Você pode adicionar
+              itens depois.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setModalOpen(false)}>
               Cancelar
             </Button>
-            <Button onClick={handleConfirmacaoCriacao}>
-              Confirmar
-            </Button>
+            <Button onClick={handleConfirmacaoCriacao}>Confirmar</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

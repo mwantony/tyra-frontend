@@ -55,6 +55,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function DetalhesComandaPage() {
   const { numeroComanda } = useParams();
@@ -191,6 +192,7 @@ export default function DetalhesComandaPage() {
 
   return (
     <div className="p-6 space-y-6">
+      <Toaster></Toaster>
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">

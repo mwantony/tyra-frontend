@@ -18,17 +18,13 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { X, Search, ArrowLeft } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function NovaVendaPage() {
   const [comandas, setComandas] = useState<any[]>([]);
@@ -47,7 +43,7 @@ export default function NovaVendaPage() {
       try {
         const [todasComandas, produtos] = await Promise.all([
           getComandas(),
-          getProdutos()
+          getProdutos(),
         ]);
 
         const comandasFiltradas = todasComandas.filter(
@@ -67,11 +63,11 @@ export default function NovaVendaPage() {
   }, []);
 
   const adicionarProduto = (produtoId: string) => {
-    if (itensSelecionados.some(item => item.produto_id === produtoId)) {
+    if (itensSelecionados.some((item) => item.produto_id === produtoId)) {
       toast.warning("Este produto já foi adicionado");
       return;
     }
-    
+
     setItensSelecionados((prev) => [
       ...prev,
       { produto_id: produtoId, quantidade: 1 },
@@ -154,12 +150,13 @@ export default function NovaVendaPage() {
 
   return (
     <div className="p-4 md:p-8 w-full">
+      <Toaster></Toaster>
       <div className="max-w-7xl mx-auto">
         <Card>
           <CardHeader>
             <CardTitle className="text-center text-2xl">Nova Venda</CardTitle>
           </CardHeader>
-          
+
           <CardContent>
             <motion.div
               key={etapa}
@@ -208,7 +205,10 @@ export default function NovaVendaPage() {
                                 >
                                   <div className="flex items-center gap-2 w-full">
                                     <span>#{comanda.numero_comanda}</span>
-                                    <Badge variant="outline" className="capitalize">
+                                    <Badge
+                                      variant="outline"
+                                      className="capitalize"
+                                    >
                                       {comanda.status}
                                     </Badge>
                                   </div>
@@ -223,12 +223,16 @@ export default function NovaVendaPage() {
 
                   <div className="bg-muted/50 rounded-lg p-6 flex items-center justify-center">
                     <div className="text-center text-muted-foreground max-w-md">
-                      <h3 className="font-medium text-lg mb-2">Como funciona?</h3>
+                      <h3 className="font-medium text-lg mb-2">
+                        Como funciona?
+                      </h3>
                       <p className="mb-4">
-                        Selecione uma comanda fechada ou cancelada para registrar uma nova venda.
+                        Selecione uma comanda fechada ou cancelada para
+                        registrar uma nova venda.
                       </p>
                       <p>
-                        Na próxima etapa você poderá adicionar os produtos vendidos.
+                        Na próxima etapa você poderá adicionar os produtos
+                        vendidos.
                       </p>
                     </div>
                   </div>
@@ -238,15 +242,17 @@ export default function NovaVendaPage() {
                   <div className="space-y-6">
                     <div className="flex justify-between items-center">
                       <div className="flex items-center gap-2">
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           onClick={() => setEtapa(1)}
                         >
                           <ArrowLeft className="h-4 w-4" />
                         </Button>
                         <div>
-                          <Label className="text-muted-foreground">Comanda selecionada</Label>
+                          <Label className="text-muted-foreground">
+                            Comanda selecionada
+                          </Label>
                           <p className="font-semibold text-lg">
                             #{comandaSelecionada}
                           </p>
@@ -317,7 +323,9 @@ export default function NovaVendaPage() {
                                   className="p-4 flex items-center justify-between"
                                 >
                                   <div className="flex-1">
-                                    <p className="font-medium">{produto?.nome}</p>
+                                    <p className="font-medium">
+                                      {produto?.nome}
+                                    </p>
                                     {produto?.ean && (
                                       <p className="text-xs text-muted-foreground">
                                         EAN: {produto.ean}
@@ -327,14 +335,22 @@ export default function NovaVendaPage() {
 
                                   <div className="flex items-center gap-4">
                                     <div className="flex items-center gap-2">
-                                      <Label htmlFor={`quantidade-${index}`} className="text-sm">Qtd:</Label>
+                                      <Label
+                                        htmlFor={`quantidade-${index}`}
+                                        className="text-sm"
+                                      >
+                                        Qtd:
+                                      </Label>
                                       <Input
                                         id={`quantidade-${index}`}
                                         type="number"
                                         min={1}
                                         value={item.quantidade}
                                         onChange={(e) =>
-                                          atualizarQuantidade(index, parseInt(e.target.value))
+                                          atualizarQuantidade(
+                                            index,
+                                            parseInt(e.target.value)
+                                          )
                                         }
                                         className="w-16 text-center"
                                       />
@@ -356,7 +372,7 @@ export default function NovaVendaPage() {
                         </Card>
 
                         <div className="flex justify-end">
-                          <Button 
+                          <Button
                             onClick={handleSalvarVenda}
                             className="w-full md:w-auto"
                             size="lg"
@@ -369,7 +385,9 @@ export default function NovaVendaPage() {
                       <Card className="h-40 flex items-center justify-center">
                         <div className="p-8 text-center text-muted-foreground">
                           <p>Nenhum produto adicionado</p>
-                          <p className="text-sm">Busque e adicione produtos ao lado</p>
+                          <p className="text-sm">
+                            Busque e adicione produtos ao lado
+                          </p>
                         </div>
                       </Card>
                     )}
