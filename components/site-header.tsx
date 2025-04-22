@@ -4,24 +4,32 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 export function SiteHeader() {
   const pathname = usePathname();
 
-  const title = useMemo(() => {
-    const path = pathname.split("/")[1]; // pega o primeiro segmento da rota
-    switch (path) {
-      case "":
-        return "Dashboard";
-      case "vendas":
-        return "Vendas";
-      case "produtos":
-        return "Produtos";
-      case "comandas":
-        return "Comandas";
-      default:
-        return path.charAt(0).toUpperCase() + path.slice(1); // capitaliza
+  const breadcrumbItems = useMemo(() => {
+    const paths = pathname.split("/").filter(Boolean); // remove strings vazias
+    
+    // Se não houver paths, retorna apenas "Dashboard"
+    if (paths.length === 0) {
+      return [
+        { href: "/", label: "Dashboard" }
+      ];
     }
+
+    return paths.map((path, index) => {
+      const href = `/${paths.slice(0, index + 1).join("/")}`;
+      const label = path.charAt(0).toUpperCase() + path.slice(1);
+      return { href, label };
+    });
   }, [pathname]);
 
   return (
@@ -32,7 +40,22 @@ export function SiteHeader() {
           orientation="vertical"
           className="mx-2 data-[orientation=vertical]:h-4"
         />
-        <h1 className="text-base font-medium">{title}</h1>
+        <Breadcrumb>
+          <BreadcrumbList>
+            {breadcrumbItems.map((item, index) => (
+              <>
+                <BreadcrumbItem key={item.href}>
+                  <BreadcrumbLink href={item.href}>
+                    {item.label}
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                {index < breadcrumbItems.length - 1 && (
+                  <BreadcrumbSeparator />
+                )}
+              </>
+            ))}
+          </BreadcrumbList>
+        </Breadcrumb>
       </div>
     </header>
   );

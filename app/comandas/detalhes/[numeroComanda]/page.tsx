@@ -212,7 +212,6 @@ export default function DetalhesComandaPage() {
         <div className="flex gap-2">
           <Button
             variant="outline"
-            size="sm"
             onClick={abrirModalAdicionarProdutos}
             className="gap-1"
           >
@@ -222,7 +221,7 @@ export default function DetalhesComandaPage() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" >
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -408,7 +407,6 @@ export default function DetalhesComandaPage() {
                           className="w-20"
                         />
                         <Button
-                          size="sm"
                           className="flex-1"
                           onClick={() => handleAdicionarProduto(produto.id)}
                         >

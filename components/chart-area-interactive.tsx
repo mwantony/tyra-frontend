@@ -35,23 +35,32 @@ export function ChartAreaInteractive({ grafico }) {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={250}>
-          <AreaChart  data={dadosConvertidos}>
+          <AreaChart data={dadosConvertidos}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis 
+            <XAxis
               dataKey="data"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               tickFormatter={(valor) => {
                 return dayjs(valor).format("DD/YYYY");
-                
               }}
             />
             <Tooltip
+              contentStyle={{
+                backgroundColor: "var(--background)",
+                borderRadius: "8px",
+                border: "none",
+                padding: "8px",
+                color: "var(--primary)",
+                fontSize: "14px",
+                fontWeight: "500",
+                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
+                
+              }}
               formatter={(valor) => formatarReal(valor)}
               labelFormatter={(label) => {
                 return dayjs(label).format("DD/MM");
-
               }}
             />{" "}
             <Area

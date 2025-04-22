@@ -92,7 +92,7 @@ export const DataTableVendas: React.FC<DataTableProps> = ({ data }) => {
 
   return (
     <Table className="relative">
-      <TableHeader className="sticky top-0 bg-background z-10">
+      <TableHeader className="sticky top-0 z-10">
         <TableRow>
           <TableHead>
             <button

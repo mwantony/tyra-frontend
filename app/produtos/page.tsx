@@ -44,8 +44,8 @@ export default function ProdutosPage() {
     );
     
     if (activeTab === "all") return matchesSearch;
-    if (activeTab === "active") return matchesSearch && produto.ativo;
-    if (activeTab === "inactive") return matchesSearch && !produto.ativo;
+    if (activeTab === "active") return matchesSearch && !produto.ativo;
+    if (activeTab === "inactive") return matchesSearch && produto.ativo;
     
     return matchesSearch;
   });

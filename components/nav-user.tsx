@@ -27,6 +27,7 @@ import { useAuth } from "@/contexts/auth-provider";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import CustomModal from "./custom-modal"; // Importando seu modal customizado
+import Link from "next/link";
 
 export function NavUser({
   user,
@@ -108,7 +109,7 @@ export function NavUser({
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCardIcon />
-                Cobranças
+                <Link href={'/cobrancas'}>Cobranças</Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
