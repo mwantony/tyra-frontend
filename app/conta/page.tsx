@@ -1,22 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useEffect, useState } from "react";
-import { getPlano } from "@/services/planos";
 import { useAuth } from "@/contexts/auth-provider";
-;
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { toast } from "sonner";
 
 export default function RestaurantAccountPage() {
-  
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [restaurantData, setRestaurantData] = useState({
@@ -34,12 +36,11 @@ export default function RestaurantAccountPage() {
       setIsLoading(true);
       try {
         // Carrega plano atual
-       
 
         // Preenche dados do restaurante
         if (restaurante) {
           setRestaurantData({
-            name: restaurante.nome || "",
+            name: restaurante.nome_fantasia || "",
             email: restaurante.email || "",
             phone: restaurante.telefone || "",
             address: restaurante.endereco || "",
@@ -48,11 +49,6 @@ export default function RestaurantAccountPage() {
         }
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
-        toast({
-          title: "Erro",
-          description: "Não foi possível carregar os dados da conta",
-          variant: "destructive",
-        });
       } finally {
         setIsLoading(false);
       }
@@ -60,25 +56,14 @@ export default function RestaurantAccountPage() {
     fetchData();
   }, [restaurante]);
 
-
- 
   const handleSaveChanges = async () => {
     setIsLoading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-  
-      toast({
-        title: "Sucesso!",
-        description: "Dados atualizados com sucesso",
-      });
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       setIsEditing(false);
     } catch (error) {
       console.error("Erro ao atualizar dados:", error);
-      toast({
-        title: "Erro",
-        description: "Não foi possível atualizar os dados",
-        variant: "destructive",
-      });
     } finally {
       setIsLoading(false);
     }
@@ -86,7 +71,7 @@ export default function RestaurantAccountPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setRestaurantData(prev => ({
+    setRestaurantData((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -120,11 +105,10 @@ export default function RestaurantAccountPage() {
                 <div className="flex items-center space-x-4">
                   <Avatar className="h-16 w-16">
                     <AvatarImage src="/restaurant-placeholder.jpg" />
-                    <AvatarFallback>{restaurantData.name.charAt(0)}</AvatarFallback>
+                    <AvatarFallback>
+                      {restaurantData.name.charAt(0)}
+                    </AvatarFallback>
                   </Avatar>
-                  <Button variant="outline" size="sm">
-                    Alterar Logo
-                  </Button>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -140,7 +124,9 @@ export default function RestaurantAccountPage() {
                       />
                     ) : (
                       <div className="py-2 px-3 border rounded-md text-sm">
-                        {restaurantData.name || <Skeleton className="h-4 w-[200px]" />}
+                        {restaurantData.name || (
+                          <Skeleton className="h-4 w-[200px]" />
+                        )}
                       </div>
                     )}
                   </div>
@@ -157,7 +143,9 @@ export default function RestaurantAccountPage() {
                       />
                     ) : (
                       <div className="py-2 px-3 border rounded-md text-sm">
-                        {restaurantData.email || <Skeleton className="h-4 w-[200px]" />}
+                        {restaurantData.email || (
+                          <Skeleton className="h-4 w-[200px]" />
+                        )}
                       </div>
                     )}
                   </div>
@@ -176,23 +164,9 @@ export default function RestaurantAccountPage() {
                       />
                     ) : (
                       <div className="py-2 px-3 border rounded-md text-sm">
-                        {restaurantData.phone || <Skeleton className="h-4 w-[200px]" />}
-                      </div>
-                    )}
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="address">Endereço</Label>
-                    {isEditing ? (
-                      <Input
-                        id="address"
-                        name="address"
-                        value={restaurantData.address}
-                        onChange={handleInputChange}
-                        disabled={isLoading}
-                      />
-                    ) : (
-                      <div className="py-2 px-3 border rounded-md text-sm">
-                        {restaurantData.address || <Skeleton className="h-4 w-[200px]" />}
+                        {restaurantData.phone || (
+                          <Skeleton className="h-4 w-[200px]" />
+                        )}
                       </div>
                     )}
                   </div>
@@ -208,7 +182,10 @@ export default function RestaurantAccountPage() {
                   <Switch
                     checked={restaurantData.notificationEnabled}
                     onCheckedChange={(checked) =>
-                      setRestaurantData({ ...restaurantData, notificationEnabled: checked })
+                      setRestaurantData({
+                        ...restaurantData,
+                        notificationEnabled: checked,
+                      })
                     }
                     disabled={!isEditing || isLoading}
                   />
@@ -224,10 +201,7 @@ export default function RestaurantAccountPage() {
                       >
                         Cancelar
                       </Button>
-                      <Button
-                        onClick={handleSaveChanges}
-                        disabled={isLoading}
-                      >
+                      <Button onClick={handleSaveChanges} disabled={isLoading}>
                         {isLoading ? "Salvando..." : "Salvar Alterações"}
                       </Button>
                     </>
@@ -250,15 +224,6 @@ export default function RestaurantAccountPage() {
             <CardContent>
               <div className="space-y-4">
                 <Button variant="outline">Alterar Senha</Button>
-                <div className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <Label>Autenticação de dois fatores</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Adicione uma camada extra de segurança
-                    </p>
-                  </div>
-                  <Switch />
-                </div>
               </div>
             </CardContent>
           </Card>
@@ -266,7 +231,6 @@ export default function RestaurantAccountPage() {
 
         {/* Coluna 2: Plano de Assinatura */}
         <div className="space-y-6">
-         
           {/* Card de Suporte */}
           <Card>
             <CardHeader>
@@ -284,10 +248,6 @@ export default function RestaurantAccountPage() {
         </div>
       </div>
 
-      {/* Modal de seleção de planos */}
-   
-
-      {/* Modal de confirmação */}
       
     </div>
   );
