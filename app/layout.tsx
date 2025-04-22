@@ -1,6 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Poppins } from "next/font/google";
+import { Geist, Geist_Mono, Poppins, Manrope } from "next/font/google";
 
 import "./globals.css";
 import AuthWrapper from "@/components/auth-wrapper"; // <- certifique-se do caminho correto
@@ -19,6 +19,12 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-poppins",
+  display: "swap",
+});
+const manrope = Manrope({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-manrope",
   display: "swap",
 });
 // Exportação de metadata deve estar em um Server Component
