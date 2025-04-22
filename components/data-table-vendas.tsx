@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -16,7 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Info } from "lucide-react";
+import { Info, ArrowUp, ArrowDown } from "lucide-react";
 
 type Venda = {
   id: number;
@@ -29,38 +29,118 @@ type Venda = {
   updated_at: string;
 };
 
+type SortableField = "id" | "total" | "data_venda";
+
 interface DataTableProps {
   data: Venda[];
 }
 
 export const DataTableVendas: React.FC<DataTableProps> = ({ data }) => {
+  const [sortConfig, setSortConfig] = useState<{
+    key: SortableField;
+    direction: "ascending" | "descending";
+  } | null>();
+
+  const sortedData = React.useMemo(() => {
+    if (!sortConfig) return data;
+
+    return [...data].sort((a, b) => {
+      // Lógica de comparação para cada tipo de campo
+      let aValue, bValue;
+
+      if (sortConfig.key === "total") {
+        aValue = Number(a.total);
+        bValue = Number(b.total);
+      } else if (sortConfig.key === "data_venda") {
+        aValue = new Date(a.data_venda).getTime();
+        bValue = new Date(b.data_venda).getTime();
+      } else {
+        // Para o ID
+        aValue = a.id;
+        bValue = b.id;
+      }
+
+      if (aValue < bValue) {
+        return sortConfig.direction === "ascending" ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortConfig.direction === "ascending" ? 1 : -1;
+      }
+      return 0;
+    });
+  }, [data, sortConfig]);
+
+  const requestSort = (key: SortableField) => {
+    let direction: "ascending" | "descending" = "ascending";
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getSortIcon = (key: SortableField) => {
+    if (!sortConfig || sortConfig.key !== key) return null;
+    return sortConfig.direction === "ascending" ? (
+      <ArrowUp className="h-3 w-3 ml-1" />
+    ) : (
+      <ArrowDown className="h-3 w-3 ml-1" />
+    );
+  };
+
   return (
     <div className="rounded-lg border shadow-sm">
       <ScrollArea className="h-[calc(80vh-220px)]">
         <Table className="relative">
           <TableHeader className="sticky top-0 bg-background z-10">
             <TableRow>
-              <TableHead className="w-[100px]">ID</TableHead>
+              <TableHead>
+                <button
+                  type="button"
+                  onClick={() => requestSort("id")}
+                  className="flex items-center hover:text-primary focus:outline-none"
+                >
+                  ID
+                  {getSortIcon("id")}
+                </button>
+              </TableHead>
               <TableHead>Comanda</TableHead>
-              <TableHead>Total</TableHead>
-              <TableHead className="flex items-center gap-1">
-                Data da Venda
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Info className="h-4 w-4 text-muted-foreground" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Data e hora do fechamento da comanda</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+              <TableHead>
+                <button
+                  type="button"
+                  onClick={() => requestSort("total")}
+                  className="flex items-center hover:text-primary focus:outline-none"
+                >
+                  Total
+                  {getSortIcon("total")}
+                </button>
+              </TableHead>
+              <TableHead>
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => requestSort("data_venda")}
+                    className="flex items-center hover:text-primary focus:outline-none"
+                  >
+                    Data da Venda
+                    {getSortIcon("data_venda")}
+                  </button>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info className="h-4 w-4 text-muted-foreground" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Data e hora do fechamento da comanda</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data && data.length > 0 ? (
-              data.map((item) => (
+            {sortedData && sortedData.length > 0 ? (
+              sortedData.map((item) => (
                 <TableRow key={item.id} className="hover:bg-muted/50">
                   <TableCell className="font-medium">{item.id}</TableCell>
                   <TableCell>
