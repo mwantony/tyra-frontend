@@ -236,9 +236,9 @@ export default function DetalhesComandaPage() {
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={handleCancelarComanda}
-                className="gap-2 text-destructive"
+                className="gap-2 text-destructive focus:text-destructive"
               >
-                <XCircle className="h-4 w-4" />
+                <XCircle className="h-4 w-4 text-destructive focus:text-destructive" />
                 Cancelar Comanda
               </DropdownMenuItem>
             </DropdownMenuContent>

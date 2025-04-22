@@ -9,7 +9,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { getVendas } from "@/services/vendas";
@@ -18,6 +17,7 @@ import Link from "next/link";
 export default function VendasPage() {
   const [vendas, setVendas] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {

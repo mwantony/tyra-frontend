@@ -12,6 +12,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
 import { Toaster } from "./ui/sonner";
+import logo from "@/assets/img/logo.png";
 
 export function SignUpForm({
   className,
@@ -182,14 +183,8 @@ export function SignUpForm({
             </div>
           </form>
 
-          <div className="relative hidden bg-muted md:block">
-            <Image
-              src="/placeholder.svg"
-              alt="Imagem"
-              width={100}
-              height={100}
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-            />
+          <div className="flex justify-center items-center bg-transparent">
+            <Image src={logo} alt="Imagem" className="max-w-[200px] h-auto" />
           </div>
         </CardContent>
       </Card>

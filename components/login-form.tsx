@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { useAuth } from "@/contexts/auth-provider";
 import Link from "next/link";
-import logo from '@/assets/img/logo.png';
+import logo from "@/assets/img/logo.png";
 export function LoginForm({
   className,
   ...props
@@ -87,14 +87,8 @@ export function LoginForm({
             </div>
           </form>
 
-          <div className="flex justify-content-center align-content-center relative hidden bg-transparent bg-muted md:block">
-            <Image
-              src={logo}
-              alt="Imagem"
-              width={100}
-              height={100}
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-            />
+          <div className="flex justify-center items-center bg-transparent">
+            <Image src={logo} alt="Imagem" className="max-w-[200px] h-auto" />
           </div>
         </CardContent>
       </Card>

@@ -113,10 +113,10 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="text-red-600 focus:text-red-600"
+              className="text-destructive focus:text-destructive"
               onClick={() => setOpenDialog(true)}
             >
-              <LogOutIcon className="text-red-600 focus:text-red-600" />
+              <LogOutIcon className="text-destructive focus:text-destructive"></LogOutIcon>
               Sair
             </DropdownMenuItem>
           </DropdownMenuContent>
