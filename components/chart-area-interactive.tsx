@@ -15,12 +15,14 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import dayjs from "dayjs";
 
 export function ChartAreaInteractive({ grafico }) {
   const dadosConvertidos = grafico?.labels.map((label, index) => ({
     data: label,
     valor: grafico.values[index],
   }));
+  console.log(dadosConvertidos)
   const formatarReal = (valor) =>
     new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -43,22 +45,15 @@ export function ChartAreaInteractive({ grafico }) {
               axisLine={false}
               tickMargin={8}
               tickFormatter={(valor) => {
-                const data = new Date(valor);
-                return data.toLocaleDateString("pt-BR", {
-                  month: "short",
-                  day: "numeric",
-                });
+                return dayjs(valor).format("DD/MM");
+                
               }}
             />
             <Tooltip
               formatter={(valor) => formatarReal(valor)}
               labelFormatter={(label) => {
-                const data = new Date(label);
-                return data.toLocaleDateString("pt-BR", {
-                  weekday: "short",
-                  day: "numeric",
-                  month: "short",
-                });
+                return dayjs(label).format("DD/MM");
+
               }}
             />{" "}
             <Area
