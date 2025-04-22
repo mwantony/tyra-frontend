@@ -15,13 +15,17 @@ function ProtectedApp({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading) {
-      setIsAuthChecked(true);
-      if (!restaurante?.nome_fantasia && pathname !== "/signup") {
-        router.push("/login");
-      }
+    if (loading) return;
+  
+    setIsAuthChecked(true);
+  console.log(restaurante)
+    if (restaurante === null) return;
+  
+    if (!restaurante?.nome_fantasia && pathname !== "/signup" ) {
+      router.push("/login");
     }
   }, [loading, restaurante, pathname, router]);
+  
 
   if (!isAuthChecked) {
     return <Spinner />;

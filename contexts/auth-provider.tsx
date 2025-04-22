@@ -34,24 +34,13 @@ export const AuthProvider = ({ children }: any) => {
       throw new Error(String(error));
     }
   };
-  const signup = async ({
-    cnpj,
-    nome_fantasia,
-    razao_social,
-    email,
-    password,
-  }) => {
+  const signup = async (dados) => {
     try {
-      await api.post("/signup", {
-        cnpj,
-        nome_fantasia,
-        razao_social,
-        email,
-        password,
-      });
+      await api.post("/signup", dados);
 
       window.location.href = "/login";
     } catch (error) {
+      console.log(error)
       alert("Erro ao cadastrar. Verifique os dados e tente novamente!");
       throw new Error(String(error));
     }
@@ -60,6 +49,7 @@ export const AuthProvider = ({ children }: any) => {
   const logout = async () => {
     setRestaurante(null);
     localStorage.removeItem("restaurante");
+    window.location.reload()
   };
   const updateRestaurante = async (restaurante: any) => {
     await api
