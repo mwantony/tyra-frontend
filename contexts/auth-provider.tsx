@@ -29,8 +29,7 @@ export const AuthProvider = ({ children }: any) => {
 
       window.location.href = "/";
     } catch (error) {
-      alert("Email ou senha inválidos!");
-      throw new Error(String(error));
+      return error
     }
   };
   const signup = async (dados) => {

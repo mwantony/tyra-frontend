@@ -38,6 +38,9 @@ export function SignUpForm({
         email,
         password,
       })
+      toast.error("Erro ao cadastrar", {
+        description: "Verifique os dados e tente novamente",
+      });
     } catch (error: any) {
       toast.error("Erro ao cadastrar", {
         description: "Verifique os dados e tente novamente",

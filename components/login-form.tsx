@@ -88,7 +88,7 @@ export function LoginForm({
           </form>
 
           <div className="flex justify-center items-center bg-transparent">
-            <Image src={logo} alt="Imagem" className="max-w-[200px] h-auto" />
+            <Image src={logo} alt="Imagem" className="max-w-[150px] h-auto" />
           </div>
         </CardContent>
       </Card>
