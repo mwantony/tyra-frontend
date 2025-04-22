@@ -21,6 +21,7 @@ import CustomModal from "@/components/custom-modal"; // Assumindo que você tem 
 import { deleteProduto } from "@/services/produtos"; // Assumindo que você tem essa função
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import { Input } from "./ui/input";
 
 type Produto = {
   id: number;
@@ -83,7 +84,7 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
   return (
     <div className="rounded-md border">
       <div className="p-4">
-        <input
+        <Input
           type="text"
           placeholder="Pesquisar por nome ou EAN"
           value={searchTerm}
