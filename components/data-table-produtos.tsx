@@ -139,9 +139,9 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
 
                       <DropdownMenuItem
                         onClick={() => handleDeleteClick(produto.id)} // Abre o modal ao clicar em excluir
-                        className="text-red-600 focus:text-red-600"
+                        className="text-destructive focus:text-destructive"
                       >
-                        <Trash2 className="w-4 h-4 mr-2 text-red-600 " />
+                        <Trash2 className="w-4 h-4 mr-2 text-destructive" />
                         Excluir
                       </DropdownMenuItem>
                     </DropdownMenuContent>

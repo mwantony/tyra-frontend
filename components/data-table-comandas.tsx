@@ -134,9 +134,9 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => openDeleteModal(comanda.numero_comanda)}
-                      className="text-red-600 focus:text-red-600"
+                      className="text-destructive focus:text-destructive"
                     >
-                      <Trash2 className="w-4 h-4 mr-2 text-red-600" />
+                      <Trash2 className="w-4 h-4 mr-2 text-destructive" />
                       Excluir
                     </DropdownMenuItem>
                   </DropdownMenuContent>
