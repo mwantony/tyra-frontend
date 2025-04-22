@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -9,6 +10,8 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/auth-provider";
 import Link from "next/link";
 import Image from "next/image";
+import { toast } from "sonner";
+import { Toaster } from "./ui/sonner";
 
 export function SignUpForm({
   className,
@@ -21,7 +24,6 @@ export function SignUpForm({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
   const { signup } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -34,8 +36,11 @@ export function SignUpForm({
         razao_social: razaoSocial,
         email,
         password,
+      })
+    } catch (error: any) {
+      toast.error("Erro ao cadastrar", {
+        description: "Verifique os dados e tente novamente",
       });
-    } catch (error) {
       console.error("Erro ao cadastrar:", error);
     } finally {
       setLoading(false);
@@ -109,12 +114,23 @@ export function SignUpForm({
       case 3:
         return (
           <div className="flex flex-col gap-4 text-sm">
-            <h3 className="text-lg font-medium text-center">Confirme seus dados</h3>
+            <h3 className="text-lg font-medium text-center">
+              Confirme seus dados
+            </h3>
             <div className="space-y-2">
-              <p><span className="font-medium">CNPJ:</span> {cnpj}</p>
-              <p><span className="font-medium">Nome Fantasia:</span> {nomeFantasia}</p>
-              <p><span className="font-medium">Razão Social:</span> {razaoSocial}</p>
-              <p><span className="font-medium">Email:</span> {email}</p>
+              <p>
+                <span className="font-medium">CNPJ:</span> {cnpj}
+              </p>
+              <p>
+                <span className="font-medium">Nome Fantasia:</span>{" "}
+                {nomeFantasia}
+              </p>
+              <p>
+                <span className="font-medium">Razão Social:</span> {razaoSocial}
+              </p>
+              <p>
+                <span className="font-medium">Email:</span> {email}
+              </p>
             </div>
           </div>
         );
@@ -123,6 +139,7 @@ export function SignUpForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
+      <Toaster></Toaster>
       <Card className="overflow-hidden">
         <CardContent className="grid p-0 md:grid-cols-2">
           <form onSubmit={handleSubmit} className="p-6 md:p-8">
@@ -157,7 +174,7 @@ export function SignUpForm({
                     Próximo
                   </Button>
                 ) : (
-                  <Button type="submit"  disabled={loading}>
+                  <Button type="submit" disabled={loading}>
                     {loading ? "Cadastrando..." : "Finalizar Cadastro"}
                   </Button>
                 )}
@@ -179,7 +196,10 @@ export function SignUpForm({
 
       <div className="text-balance text-center text-xs text-muted-foreground">
         Já tem uma conta?{" "}
-        <Link href="/login" className="underline underline-offset-4 hover:text-primary">
+        <Link
+          href="/login"
+          className="underline underline-offset-4 hover:text-primary"
+        >
           Faça login
         </Link>
       </div>

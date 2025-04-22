@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { useAuth } from "@/contexts/auth-provider";
 import Link from "next/link";
-
+import logo from '@/assets/img/logo.png';
 export function LoginForm({
   className,
   ...props
@@ -87,9 +87,9 @@ export function LoginForm({
             </div>
           </form>
 
-          <div className="relative hidden bg-muted md:block">
+          <div className="flex justify-content-center align-content-center relative hidden bg-transparent bg-muted md:block">
             <Image
-              src="/placeholder.svg"
+              src={logo}
               alt="Imagem"
               width={100}
               height={100}

@@ -39,17 +39,16 @@ export const AuthProvider = ({ children }: any) => {
       await api.post("/signup", dados);
 
       window.location.href = "/login";
-    } catch (error) {
-      console.log(error)
-      alert("Erro ao cadastrar. Verifique os dados e tente novamente!");
-      throw new Error(String(error));
+    } catch (error: any) {
+      console.error(error);
+      return error;
     }
   };
 
   const logout = async () => {
     setRestaurante(null);
     localStorage.removeItem("restaurante");
-    window.location.reload()
+    window.location.reload();
   };
   const updateRestaurante = async (restaurante: any) => {
     await api
