@@ -18,7 +18,6 @@ function ProtectedApp({ children }: { children: ReactNode }) {
     if (loading) return;
   
     setIsAuthChecked(true);
-  console.log(restaurante)
     if (restaurante === null) return;
   
     if (!restaurante?.nome_fantasia && pathname !== "/signup" ) {

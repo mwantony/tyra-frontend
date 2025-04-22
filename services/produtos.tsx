@@ -4,7 +4,7 @@ import api from "./api";
 export async function getProdutos() {
   try {
     const response = await api.get("/produtos");
-    console.log(response.data);
+   
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar produtos:", error);
@@ -14,7 +14,6 @@ export async function getProdutos() {
 export async function getProduto(id: any) {
   try {
     const response = await api.get(`/produtos/${id}`);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar produtos:", error);
@@ -25,7 +24,7 @@ export async function getProduto(id: any) {
 export async function putProduto(id: any, produto: any) {
   try {
     const response = await api.put(`/produtos/${id}`, produto);
-    console.log(response.data);
+   
     return response.data;
   } catch (error) {
     console.error("Erro ao atualizar produto:", error);
@@ -35,7 +34,7 @@ export async function putProduto(id: any, produto: any) {
 export async function postProduto(produto: any) {
   try {
     const response = await api.post(`/produtos`, produto);
-    console.log(response.data);
+   
     return response.data;
   } catch (error) {
     console.error("Erro ao atualizar produto:", error);
@@ -46,7 +45,7 @@ export async function postProduto(produto: any) {
 export async function deleteProduto(id: any) {
   try {
     const response = await api.delete(`/produtos/${id}`);
-    console.log(response.data);
+   
     return response.data;
   } catch (error) {
     console.error("Erro ao deletar produto:", error);

@@ -24,7 +24,6 @@ const fetchProdutoByEAN = async (ean: string) => {
     `https://world.openfoodfacts.org/api/v0/product/${ean}.json`
   );
   const data = await response.json();
-  console.log(data);
   return data.product;
 };
 
@@ -69,7 +68,6 @@ export default function Page() {
             preco: produtoData.price || "",
           });
         } else {
-          console.log("Produto não encontrado");
         }
       } catch (error) {
         console.error("Erro ao buscar o produto:", error);
@@ -81,7 +79,6 @@ export default function Page() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      console.log(form);
       await postProduto({
         ...form,
         preco: parseFloat(form.preco),

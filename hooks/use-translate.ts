@@ -16,7 +16,6 @@ export function useTranslate() {
       });
 
       const translated = response.data?.responseData?.translatedText;
-      console.log(translated);
       return translated || text;
     } catch (error) {
       console.error('Erro ao traduzir:', error);

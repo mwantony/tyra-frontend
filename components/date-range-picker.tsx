@@ -24,24 +24,24 @@ export function DatePickerWithRange({
   value?: DateRange;
   onChange?: (date: DateRange) => void;
 }) {
-  // Utiliza um estado controlado com fallback para o valor inicial
   const [date, setDate] = React.useState<DateRange>({
-    from: subDays(new Date(), 7), // Data de 7 dias atrás
-    to: new Date(), // Data atual
+    from: subDays(new Date(), 7),
+    to: new Date(),
   });
+
+  // Atualiza o estado se o valor externo mudar
   React.useEffect(() => {
-    // Se o value prop for alterado fora do componente, atualize o estado
     if (
       value &&
-      (value.from?.toISOString() !== date.from ||
-        value.to?.toISOString() !== date.to)
+      (value.from?.toISOString() !== date.from?.toISOString() ||
+        value.to?.toISOString() !== date.to?.toISOString())
     ) {
       setDate({
         from: value.from || undefined,
         to: value.to || undefined,
       });
     }
-  }, [date.from, date.to, value]); // Atualiza quando o value prop mudar
+  }, [value]);
 
   const handleDateSelect = (newDate: DateRange | undefined) => {
     if (newDate) {
@@ -50,14 +50,9 @@ export function DatePickerWithRange({
         to: newDate.to || undefined,
       });
       if (onChange) {
-        onChange(newDate); // Envia as novas datas para o componente pai
+        onChange(newDate);
       }
     }
-  };
-
-  // Formatação personalizada para exibir as datas no formato 'yyyy-MM-dd'
-  const formatDate = (date: Date | undefined) => {
-    return date ? format(date, "yyyy-MM-dd") : "";
   };
 
   return (
@@ -72,14 +67,14 @@ export function DatePickerWithRange({
               !date?.from && "text-muted-foreground"
             )}
           >
-            <CalendarIcon />
+            <CalendarIcon className="mr-2 h-4 w-4" />
             {date?.from ? (
               date.to ? (
                 <>
-                  {formatDate(date.from)} - {formatDate(date.to)}
+                  {format(date.from, "dd/MM/yyyy")} - {format(date.to, "dd/MM/yyyy")}
                 </>
               ) : (
-                formatDate(date.from)
+                format(date.from, "dd/MM/yyyy")
               )
             ) : (
               <span>Escolha uma data</span>
@@ -91,11 +86,10 @@ export function DatePickerWithRange({
             initialFocus
             mode="range"
             selected={date}
-            onSelect={handleDateSelect} // Altera o estado ao selecionar as datas
+            onSelect={handleDateSelect}
             locale={ptBR}
             numberOfMonths={2}
-            defaultMonth={date?.from || undefined}
-           
+            defaultMonth={date?.from}
           />
         </PopoverContent>
       </Popover>

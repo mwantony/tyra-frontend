@@ -21,7 +21,6 @@ export function ChartAreaInteractive({ grafico }) {
     data: label,
     valor: grafico.values[index],
   }));
-  console.log(dadosConvertidos)
   const formatarReal = (valor) =>
     new Intl.NumberFormat("pt-BR", {
       style: "currency",

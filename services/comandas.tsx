@@ -4,7 +4,6 @@ import api from "./api";
 export async function getComandas() {
   try {
     const response = await api.get("/comandas");
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar comandas:", error);
@@ -14,7 +13,6 @@ export async function getComandas() {
 export async function getComanda(numeroComanda: any) {
   try {
     const response = await api.get(`/comandas/${numeroComanda}`);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Erro ao busca comanda:", error);
@@ -24,7 +22,6 @@ export async function getComanda(numeroComanda: any) {
 export async function postComanda() {
   try {
     const response = await api.post(`/comandas`);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Erro ao criar comanda:", error);
@@ -37,7 +34,6 @@ export async function comandaAdicionar(numeroComanda, produtos) {
       `/comandas/${numeroComanda}/adicionar`,
       produtos
     );
-    console.log("Produtos adicionados:", response.data);
     return response.data;
   } catch (error) {
     console.error("Erro ao adicionar produtos na comanda:", error);
@@ -74,7 +70,6 @@ export async function getComandaCodigo(numeroComanda: string) {
 
     return response.data; // isso é o Blob
   } catch (error) {
-    console.error("Erro ao baixar código:", error);
     throw error;
   }
 }
@@ -82,7 +77,6 @@ export async function getComandaCodigo(numeroComanda: string) {
 export async function deleteComanda(numeroComanda: any) {
   try {
     const response = await api.delete(`/comandas/${numeroComanda}`);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Erro ao deletar comanda:", error);

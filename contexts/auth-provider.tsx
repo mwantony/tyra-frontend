@@ -25,7 +25,6 @@ export const AuthProvider = ({ children }: any) => {
         password,
       });
       const token = response.data;
-      console.log(token);
       localStorage.setItem("restaurante", JSON.stringify(token));
 
       window.location.href = "/";
