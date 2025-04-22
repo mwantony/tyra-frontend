@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/table";
 import dayjs from "dayjs";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Tooltip,
   TooltipContent,
@@ -72,7 +71,11 @@ export const DataTableVendas: React.FC<DataTableProps> = ({ data }) => {
 
   const requestSort = (key: SortableField) => {
     let direction: "ascending" | "descending" = "ascending";
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === "ascending") {
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === "ascending"
+    ) {
       direction = "descending";
     }
     setSortConfig({ key, direction });
@@ -88,95 +91,94 @@ export const DataTableVendas: React.FC<DataTableProps> = ({ data }) => {
   };
 
   return (
-    <div className="rounded-lg border shadow-sm">
-      <ScrollArea className="h-[calc(80vh-220px)]">
-        <Table className="relative">
-          <TableHeader className="sticky top-0 bg-background z-10">
-            <TableRow>
-              <TableHead>
-                <button
-                  type="button"
-                  onClick={() => requestSort("id")}
-                  className="flex items-center hover:text-primary focus:outline-none"
+    <Table className="relative">
+      <TableHeader className="sticky top-0 bg-background z-10">
+        <TableRow>
+          <TableHead>
+            <button
+              type="button"
+              onClick={() => requestSort("id")}
+              className="flex items-center hover:text-primary focus:outline-none"
+            >
+              ID
+              {getSortIcon("id")}
+            </button>
+          </TableHead>
+          <TableHead>Comanda</TableHead>
+          <TableHead>
+            <button
+              type="button"
+              onClick={() => requestSort("total")}
+              className="flex items-center hover:text-primary focus:outline-none"
+            >
+              Total
+              {getSortIcon("total")}
+            </button>
+          </TableHead>
+          <TableHead>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => requestSort("data_venda")}
+                className="flex items-center hover:text-primary focus:outline-none"
+              >
+                Data da Venda
+                {getSortIcon("data_venda")}
+              </button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info className="h-4 w-4 text-muted-foreground" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Data e hora do fechamento da comanda</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {sortedData && sortedData.length > 0 ? (
+          sortedData.map((item) => (
+            <TableRow key={item.id} className="hover:bg-muted/50">
+              <TableCell className="font-medium">{item.id}</TableCell>
+              <TableCell>
+                <Badge
+                  variant="secondary"
+                  className="min-w-[80px] justify-center"
                 >
-                  ID
-                  {getSortIcon("id")}
-                </button>
-              </TableHead>
-              <TableHead>Comanda</TableHead>
-              <TableHead>
-                <button
-                  type="button"
-                  onClick={() => requestSort("total")}
-                  className="flex items-center hover:text-primary focus:outline-none"
-                >
-                  Total
-                  {getSortIcon("total")}
-                </button>
-              </TableHead>
-              <TableHead>
-                <div className="flex items-center gap-1">
-                  <button
-                    type="button"
-                    onClick={() => requestSort("data_venda")}
-                    className="flex items-center hover:text-primary focus:outline-none"
-                  >
-                    Data da Venda
-                    {getSortIcon("data_venda")}
-                  </button>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Info className="h-4 w-4 text-muted-foreground" />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Data e hora do fechamento da comanda</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  {item.numero_comanda}
+                </Badge>
+              </TableCell>
+              <TableCell className="font-semibold">
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(Number(item.total))}
+              </TableCell>
+              <TableCell>
+                <div className="flex flex-col">
+                  <span>{dayjs(item.data_venda).format("DD/MM/YYYY")}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {dayjs(item.data_venda).format("HH:mm")}
+                  </span>
                 </div>
-              </TableHead>
+              </TableCell>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {sortedData && sortedData.length > 0 ? (
-              sortedData.map((item) => (
-                <TableRow key={item.id} className="hover:bg-muted/50">
-                  <TableCell className="font-medium">{item.id}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary" className="min-w-[80px] justify-center">
-                      {item.numero_comanda}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="font-semibold">
-                    {new Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(Number(item.total))}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex flex-col">
-                      <span>{dayjs(item.data_venda).format("DD/MM/YYYY")}</span>
-                      <span className="text-xs text-muted-foreground">
-                        {dayjs(item.data_venda).format("HH:mm")}
-                      </span>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={4}
-                  className="text-center h-24 text-muted-foreground"
-                >
-                  Nenhuma venda encontrada.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </ScrollArea>
-    </div>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell
+              colSpan={4}
+              className="text-center h-24 text-muted-foreground"
+            >
+              Nenhuma venda encontrada.
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   );
 };

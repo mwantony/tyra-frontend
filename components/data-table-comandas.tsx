@@ -150,7 +150,7 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
   };
 
   return (
-    <div className="rounded-md border p-4">
+    <div>
       <Tabs value={currentTab} onValueChange={setCurrentTab}>
         <TabsList className="mb-4">
           <TabsTrigger value="todas">Todas</TabsTrigger>

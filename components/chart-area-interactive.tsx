@@ -16,7 +16,6 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import dayjs from "dayjs";
-
 export function ChartAreaInteractive({ grafico }) {
   const dadosConvertidos = grafico?.labels.map((label, index) => ({
     data: label,
@@ -37,15 +36,15 @@ export function ChartAreaInteractive({ grafico }) {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={250}>
-          <AreaChart data={dadosConvertidos}>
+          <AreaChart  data={dadosConvertidos}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
+            <XAxis 
               dataKey="data"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               tickFormatter={(valor) => {
-                return dayjs(valor).format("DD/MM");
+                return dayjs(valor).format("DD/YYYY");
                 
               }}
             />

@@ -82,7 +82,7 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
   };
 
   return (
-    <div className="rounded-md border">
+    <div >
       <div className="p-4">
         <Input
           type="text"
