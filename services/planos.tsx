@@ -19,3 +19,12 @@ export async function getPlano(id: any) {
     throw error;
   }
 }
+export async function associarPlano(id: any, plano) {
+  try {
+    const response = await api.put(`/restaurantes/${id}/associar-plano`, plano);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar comandas:", error);
+    throw error;
+  }
+}

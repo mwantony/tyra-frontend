@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
-import { getPlano, getPlanos } from "@/services/planos";
+import { associarPlano, getPlano, getPlanos } from "@/services/planos";
 import { useAuth } from "@/contexts/auth-provider";
 import dayjs from "dayjs";
 import {
@@ -35,7 +35,7 @@ export default function BillingPage() {
         try {
           const plano = await getPlano(restaurante.plano_id);
           setCurrentPlan(plano);
-          console.log(plano)
+          console.log(plano);
         } catch (error) {
           console.error("Erro ao carregar plano atual:", error);
         } finally {
@@ -81,7 +81,9 @@ export default function BillingPage() {
       console.log("Plano atualizado para:", selectedPlan);
 
       // Simulando uma requisição assíncrona
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await associarPlano(restaurante.id, {
+        plano_id: selectedPlan.id,
+      });
 
       // Atualiza o plano atual
       setCurrentPlan(selectedPlan);
@@ -157,91 +159,167 @@ export default function BillingPage() {
       <Separator />
 
       <div className="grid gap-6 md:grid-cols-2">
-      {isLoading ? (
-  <PlanCardSkeleton />
-) : currentPlan ? (
-  <Card>
-    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-lg font-medium">
-        {"Plano atual"}
-      </CardTitle>
-      <Badge variant="outline" className="text-sm">
-        {currentPlan?.status || "Ativo"}
-      </Badge>
-    </CardHeader>
-    <CardContent>
-      <div className="space-y-4">
-        {/* ... restante do card do plano atual ... */}
-      </div>
-    </CardContent>
-  </Card>
-) : (
-  <Card>
-    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-lg font-medium">
-        Plano Ativo
-      </CardTitle>
-      <Badge variant="destructive" className="text-sm">
-        Inativo
-      </Badge>
-    </CardHeader>
-    <CardContent>
-      <div className="space-y-4">
-        <div>
-          <h2 className="text-2xl font-bold">Nenhum plano ativo</h2>
-          <p className="text-muted-foreground">
-            Você não possui um plano ativo no momento
-          </p>
-        </div>
+        {isLoading ? (
+          <PlanCardSkeleton />
+        ) : currentPlan ? (
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-lg font-medium">
+                {"Plano atual"}
+              </CardTitle>
+              <Badge variant="outline" className="text-sm">
+                {currentPlan?.status || "Ativo"}
+              </Badge>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <h2 className="text-2xl font-bold">
+                    {currentPlan?.nome || "Plano"}
+                  </h2>
+                  <p className="text-muted-foreground">
+                    {currentPlan?.preco
+                      ? new Intl.NumberFormat("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                        }).format(currentPlan.preco)
+                      : "R$ 0,00"}{" "}
+                    / por mês
+                  </p>
+                </div>
 
-        <Separator />
+                <Separator />
 
-        <div>
-          <h3 className="font-medium mb-2">Status</h3>
-          <p className="text-destructive">Assinatura não ativa</p>
-        </div>
+                <div>
+                  <h3 className="font-medium mb-2">Próxima cobrança</h3>
+                  <p>
+                    {restaurante?.proxima_cobranca_em
+                      ? dayjs(restaurante.proxima_cobranca_em).format(
+                          "DD/MM/YYYY"
+                        )
+                      : "Não disponível"}
+                  </p>
+                </div>
 
-        <Separator />
+                <Separator />
 
-        <div>
-          <h3 className="font-medium mb-2">Recursos disponíveis</h3>
-          <ul className="space-y-2">
-            <li className="flex items-center space-x-2 text-muted-foreground">
-              <span className="text-red-500">✗</span>
-              <p>Comandas limitadas (apenas demonstração)</p>
-            </li>
-            <li className="flex items-center space-x-2 text-muted-foreground">
-              <span className="text-red-500">✗</span>
-              <p>Gerenciamento de pedidos desativado</p>
-            </li>
-            <li className="flex items-center space-x-2 text-muted-foreground">
-              <span className="text-red-500">✗</span>
-              <p>Relatórios de desempenho indisponíveis</p>
-            </li>
-          </ul>
-        </div>
+                <div>
+                  <h3 className="font-medium mb-2">Recursos incluídos</h3>
+                  <ul className="space-y-2">
+                    {currentPlan?.id === 1 && (
+                      <li className="flex items-center space-x-2">
+                        <span className="text-green-500">✓</span>
+                        <p>Até 20 comandas</p>
+                      </li>
+                    )}
+                    {currentPlan?.id === 2 && (
+                      <li className="flex items-center space-x-2">
+                        <span className="text-green-500">✓</span>
+                        <p>Até 50 comandas</p>
+                      </li>
+                    )}
+                    {currentPlan?.id === 3 && (
+                      <li className="flex items-center space-x-2">
+                        <span className="text-green-500">✓</span>
+                        <p>Comandas ilimitadas</p>
+                      </li>
+                    )}
 
-        <Separator />
+                    <li className="flex items-center space-x-2">
+                      <span className="text-green-500">✓</span>
+                      <p>Gerenciamento de pedidos</p>
+                    </li>
 
-        <div className="flex gap-2">
-          <Button
-            className="flex-1"
-            variant="outline"
-            disabled
-          >
-            Cancelar assinatura
-          </Button>
-          <Button
-            className="flex-1"
-            onClick={handleOpenPlansModal}
-          >
-            Assinar plano
-          </Button>
-        </div>
-      </div>
-    </CardContent>
-  </Card>
-)}
+                    <li className="flex items-center space-x-2">
+                      <span className="text-green-500">✓</span>
+                      <p>Relatórios de desempenho</p>
+                    </li>
+                    <li className="flex items-center space-x-2">
+                      <span className="text-green-500">✓</span>
+                      <p>Suporte 24/7</p>
+                    </li>
+                  </ul>
+                </div>
+
+                <Separator />
+
+                <div className="flex gap-2">
+                  <Button
+                    className="flex-1"
+                    variant="outline"
+                    disabled={isLoading}
+                  >
+                    Cancelar assinatura
+                  </Button>
+                  <Button
+                    className="flex-1"
+                    onClick={handleOpenPlansModal}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "Carregando..." : "Atualizar plano"}
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-lg font-medium">Plano Ativo</CardTitle>
+              <Badge variant="destructive" className="text-sm">
+                Inativo
+              </Badge>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <h2 className="text-2xl font-bold">Nenhum plano ativo</h2>
+                  <p className="text-muted-foreground">
+                    Você não possui um plano ativo no momento
+                  </p>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <h3 className="font-medium mb-2">Status</h3>
+                  <p className="text-destructive">Assinatura não ativa</p>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <h3 className="font-medium mb-2">Recursos disponíveis</h3>
+                  <ul className="space-y-2">
+                    <li className="flex items-center space-x-2 text-muted-foreground">
+                      <span className="text-red-500">✗</span>
+                      <p>Comandas limitadas (apenas demonstração)</p>
+                    </li>
+                    <li className="flex items-center space-x-2 text-muted-foreground">
+                      <span className="text-red-500">✗</span>
+                      <p>Gerenciamento de pedidos desativado</p>
+                    </li>
+                    <li className="flex items-center space-x-2 text-muted-foreground">
+                      <span className="text-red-500">✗</span>
+                      <p>Relatórios de desempenho indisponíveis</p>
+                    </li>
+                  </ul>
+                </div>
+
+                <Separator />
+
+                <div className="flex gap-2">
+                  <Button className="flex-1" variant="outline" disabled>
+                    Cancelar assinatura
+                  </Button>
+                  <Button className="flex-1" onClick={handleOpenPlansModal}>
+                    Assinar plano
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
         {/* Card de informações de pagamento (pode ser implementado depois) */}
       </div>
 
