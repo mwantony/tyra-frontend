@@ -61,9 +61,8 @@ export const AuthProvider = ({ children }: any) => {
   };
   const refreshRestaurante = async () => {
     await api
-      .get(`/restaurante/${restaurante?.id}`)
+      .get(`/restaurantes/${restaurante?.id}`)
       .then((res) => {
-        localStorage.setItem("restaurante", JSON.stringify(res.data));
 
         setRestaurante(res.data);
       })

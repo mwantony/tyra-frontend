@@ -71,7 +71,7 @@ export function SectionCards({
       };
     } else {
       return {
-        text: "estabilidade",
+        text: "Estabilidade",
         detail: type === "faturado" ? "Faturamento consistente" : 
                type === "vendas" ? "Vendas estáveis" : "Média diária mantida",
         icon: <TrendingUpDownIcon className="size-4" />,
