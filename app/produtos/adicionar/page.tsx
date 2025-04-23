@@ -20,8 +20,8 @@ import { Toaster } from "@/components/ui/sonner";
 import { useTranslate } from "@/hooks/use-translate";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { CustomSpinner } from "@/components/custom-spinner";
-
+import { Spinner } from "@/components/ui/spinner";
+import { MoonLoader } from "react-spinners";
 const fetchProdutoByEAN = async (ean: string) => {
   const response = await fetch(
     `https://world.openfoodfacts.org/api/v0/product/${ean}.json`
@@ -118,7 +118,7 @@ export default function Page() {
                       onChange={handleEANChange}
                       required
                     />
-                    {isLoading && <CustomSpinner></CustomSpinner>}
+                    {isLoading && <MoonLoader ></MoonLoader>}
                   </div>
                 </div>
 
@@ -184,7 +184,7 @@ export default function Page() {
                   Cancelar
                 </Button>
                 <Button type="submit" disabled={isLoading}>
-                  {isLoading && <CustomSpinner></CustomSpinner>}
+                  {isLoading && <MoonLoader ></MoonLoader>}
                   Salvar Produto
                 </Button>
               </div>
