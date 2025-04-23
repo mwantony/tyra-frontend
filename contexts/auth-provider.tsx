@@ -1,12 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { createContext, useContext, useState, useEffect } from "react";
 import api from "../services/api";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
+import { useRouter } from "next/navigation";
 
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }: any) => {
+  const router = useRouter();
   const [restaurante, setRestaurante] = useState<any>(null);
 
   useEffect(() => {
@@ -24,14 +29,19 @@ export const AuthProvider = ({ children }: any) => {
         email,
         password,
       });
-      const token = response.data;
-      localStorage.setItem("restaurante", JSON.stringify(token));
 
-      window.location.href = "/";
+      const restaurante = response.data.restaurante;
+      if (restaurante) {
+        localStorage.setItem("restaurante", JSON.stringify(response.data));
+        window.location.href = '/'
+      }
+
     } catch (error) {
-      return error
+      toast.error("Email ou senha inválidos!");
+      return;
     }
   };
+
   const signup = async (dados) => {
     try {
       await api.post("/signup", dados);
@@ -63,11 +73,9 @@ export const AuthProvider = ({ children }: any) => {
     await api
       .get(`/restaurantes/${restaurante?.id}`)
       .then((res) => {
-
         setRestaurante(res.data);
       })
       .catch((error) => {
-        localStorage.removeItem("restaurante");
         throw new Error(error.response.data.message);
       });
   };
@@ -83,6 +91,7 @@ export const AuthProvider = ({ children }: any) => {
         refreshRestaurante,
       }}
     >
+      <Toaster></Toaster>
       {children}
     </AuthContext.Provider>
   );

@@ -24,10 +24,7 @@ export function LoginForm({
     e.preventDefault();
     setLoading(true);
     try {
-      await login(email, password).catch((error) => {
-        console.error("Erro ao fazer login:", error);
-        alert("Erro ao fazer login. Verifique suas credenciais.");
-      });
+      await login(email, password)
     } catch (error) {
       console.error("Erro ao fazer login:", error);
     } finally {
@@ -91,12 +88,12 @@ export function LoginForm({
           </form>
 
           <div className="flex flex-col justify-center items-center bg-transparent">
-            <Image
+          {/*   <Image
               src={logo}
               alt="Imagem"
               className="max-w-[150px] h-auto mb-2"
             />
-            <h2 className="font-bold text-lg">Tyra</h2>
+            <h2 className="font-bold text-lg">Tyra</h2> */}
           </div>
         </CardContent>
       </Card>

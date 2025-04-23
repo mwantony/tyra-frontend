@@ -13,9 +13,10 @@ function ProtectedApp({ children }: { children: ReactNode }) {
   const [isAuthChecked, setIsAuthChecked] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-
+  const [count, setCount] = useState(0)
   useEffect(() => {
-    if (restaurante?.id) {
+    if (count === 0 && restaurante?.id) {
+      setCount(1)
       refreshRestaurante();
     }
     if (loading) return;
