@@ -17,6 +17,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function BillingPage() {
   const [currentPlan, setCurrentPlan] = useState<any>();
@@ -29,16 +30,20 @@ export default function BillingPage() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       if (restaurante?.plano_id) {
-        setIsLoading(true);
         try {
           const plano = await getPlano(restaurante.plano_id);
           setCurrentPlan(plano);
+          console.log(plano)
         } catch (error) {
           console.error("Erro ao carregar plano atual:", error);
         } finally {
           setIsLoading(false);
         }
+      } else if (restaurante?.plano_id === null) {
+        setCurrentPlan(null);
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -74,15 +79,15 @@ export default function BillingPage() {
       // Aqui você implementaria a chamada à API para atualizar o plano
       // Exemplo: await updatePlano(restaurante.id, selectedPlan.id);
       console.log("Plano atualizado para:", selectedPlan);
-      
+
       // Simulando uma requisição assíncrona
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Atualiza o plano atual
       setCurrentPlan(selectedPlan);
       setIsConfirmationModalOpen(false);
       setIsPlansModalOpen(false);
-      
+
       // Aqui você pode adicionar um toast de sucesso
       // toast.success("Plano atualizado com sucesso!");
     } catch (error) {
@@ -93,7 +98,50 @@ export default function BillingPage() {
       setIsLoading(false);
     }
   };
+  const PlanCardSkeleton = () => (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Skeleton className="h-6 w-32" />
+        <Skeleton className="h-6 w-16" />
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div>
+            <Skeleton className="h-8 w-3/4 mb-2" />
+            <Skeleton className="h-5 w-1/2" />
+          </div>
 
+          <Separator />
+
+          <div>
+            <Skeleton className="h-6 w-1/3 mb-2" />
+            <Skeleton className="h-5 w-2/3" />
+          </div>
+
+          <Separator />
+
+          <div>
+            <Skeleton className="h-6 w-1/3 mb-2" />
+            <ul className="space-y-2">
+              {[...Array(4)].map((_, i) => (
+                <li key={i} className="flex items-center space-x-2">
+                  <Skeleton className="h-4 w-4 rounded-full" />
+                  <Skeleton className="h-4 w-32" />
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <Separator />
+
+          <div className="flex gap-2">
+            <Skeleton className="h-10 flex-1" />
+            <Skeleton className="h-10 flex-1" />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
   return (
     <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">
@@ -109,104 +157,92 @@ export default function BillingPage() {
       <Separator />
 
       <div className="grid gap-6 md:grid-cols-2">
-        {/* Card do plano atual */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-lg font-medium">
-              {"Plano atual"}
-            </CardTitle>
-            <Badge variant="outline" className="text-sm">
-              {currentPlan?.status || "Ativo"}
-            </Badge>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <h2 className="text-2xl font-bold">{currentPlan?.nome || "Plano"}</h2>
-                <p className="text-muted-foreground">
-                  {currentPlan?.preco ? (
-                    new Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(currentPlan.preco)
-                  ) : (
-                    "R$ 0,00"
-                  )}{" "}
-                  / por mês
-                </p>
-              </div>
+      {isLoading ? (
+  <PlanCardSkeleton />
+) : currentPlan ? (
+  <Card>
+    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardTitle className="text-lg font-medium">
+        {"Plano atual"}
+      </CardTitle>
+      <Badge variant="outline" className="text-sm">
+        {currentPlan?.status || "Ativo"}
+      </Badge>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-4">
+        {/* ... restante do card do plano atual ... */}
+      </div>
+    </CardContent>
+  </Card>
+) : (
+  <Card>
+    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardTitle className="text-lg font-medium">
+        Plano Ativo
+      </CardTitle>
+      <Badge variant="destructive" className="text-sm">
+        Inativo
+      </Badge>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-4">
+        <div>
+          <h2 className="text-2xl font-bold">Nenhum plano ativo</h2>
+          <p className="text-muted-foreground">
+            Você não possui um plano ativo no momento
+          </p>
+        </div>
 
-              <Separator />
+        <Separator />
 
-              <div>
-                <h3 className="font-medium mb-2">Próxima cobrança</h3>
-                <p>
-                  {restaurante?.proxima_cobranca_em
-                    ? dayjs(restaurante.proxima_cobranca_em).format("DD/MM/YYYY")
-                    : "Não disponível"}
-                </p>
-              </div>
+        <div>
+          <h3 className="font-medium mb-2">Status</h3>
+          <p className="text-destructive">Assinatura não ativa</p>
+        </div>
 
-              <Separator />
+        <Separator />
 
-              <div>
-                <h3 className="font-medium mb-2">Recursos incluídos</h3>
-                <ul className="space-y-2">
-                  {currentPlan?.id === 1 && (
-                    <li className="flex items-center space-x-2">
-                      <span className="text-green-500">✓</span>
-                      <p>Até 20 comandas</p>
-                    </li>
-                  )}
-                  {currentPlan?.id === 2 && (
-                    <li className="flex items-center space-x-2">
-                      <span className="text-green-500">✓</span>
-                      <p>Até 50 comandas</p>
-                    </li>
-                  )}
-                  {currentPlan?.id === 3 && (
-                    <li className="flex items-center space-x-2">
-                      <span className="text-green-500">✓</span>
-                      <p>Comandas ilimitadas</p>
-                    </li>
-                  )}
+        <div>
+          <h3 className="font-medium mb-2">Recursos disponíveis</h3>
+          <ul className="space-y-2">
+            <li className="flex items-center space-x-2 text-muted-foreground">
+              <span className="text-red-500">✗</span>
+              <p>Comandas limitadas (apenas demonstração)</p>
+            </li>
+            <li className="flex items-center space-x-2 text-muted-foreground">
+              <span className="text-red-500">✗</span>
+              <p>Gerenciamento de pedidos desativado</p>
+            </li>
+            <li className="flex items-center space-x-2 text-muted-foreground">
+              <span className="text-red-500">✗</span>
+              <p>Relatórios de desempenho indisponíveis</p>
+            </li>
+          </ul>
+        </div>
 
-                  <li className="flex items-center space-x-2">
-                    <span className="text-green-500">✓</span>
-                    <p>Gerenciamento de pedidos</p>
-                  </li>
+        <Separator />
 
-                  <li className="flex items-center space-x-2">
-                    <span className="text-green-500">✓</span>
-                    <p>Relatórios de desempenho</p>
-                  </li>
-                  <li className="flex items-center space-x-2">
-                    <span className="text-green-500">✓</span>
-                    <p>Suporte 24/7</p>
-                  </li>
-                </ul>
-              </div>
-
-              <Separator />
-
-              <div className="flex gap-2">
-                <Button className="flex-1" variant="outline" disabled={isLoading}>
-                  Cancelar assinatura
-                </Button>
-                <Button 
-                  className="flex-1" 
-                  onClick={handleOpenPlansModal}
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Carregando..." : "Atualizar plano"}
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
+        <div className="flex gap-2">
+          <Button
+            className="flex-1"
+            variant="outline"
+            disabled
+          >
+            Cancelar assinatura
+          </Button>
+          <Button
+            className="flex-1"
+            onClick={handleOpenPlansModal}
+          >
+            Assinar plano
+          </Button>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+)}
         {/* Card de informações de pagamento (pode ser implementado depois) */}
-    
       </div>
 
       {/* Modal de seleção de planos */}
@@ -276,7 +312,11 @@ export default function BillingPage() {
                       </li>
                     </ul>
                     {currentPlan?.id === plan.id ? (
-                      <Button variant="outline" className="w-full mt-4" disabled>
+                      <Button
+                        variant="outline"
+                        className="w-full mt-4"
+                        disabled
+                      >
                         Plano Atual
                       </Button>
                     ) : (
@@ -291,15 +331,21 @@ export default function BillingPage() {
       </Dialog>
 
       {/* Modal de confirmação */}
-      <Dialog open={isConfirmationModalOpen} onOpenChange={setIsConfirmationModalOpen}>
+      <Dialog
+        open={isConfirmationModalOpen}
+        onOpenChange={setIsConfirmationModalOpen}
+      >
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-xl">Confirmar Mudança de Plano</DialogTitle>
+            <DialogTitle className="text-xl">
+              Confirmar Mudança de Plano
+            </DialogTitle>
             <DialogDescription>
-              Você está prestes a mudar do plano {currentPlan?.nome} para o plano {selectedPlan?.nome}.
+              Você está prestes a mudar do plano {currentPlan?.nome} para o
+              plano {selectedPlan?.nome}.
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-4 py-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -313,7 +359,7 @@ export default function BillingPage() {
                   <span className="text-sm font-normal">/mês</span>
                 </p>
               </div>
-              
+
               <div>
                 <h3 className="font-medium">Novo Plano</h3>
                 <p className="text-muted-foreground">{selectedPlan?.nome}</p>
@@ -326,35 +372,36 @@ export default function BillingPage() {
                 </p>
               </div>
             </div>
-            
+
             <Separator />
-            
+
             <div>
               <h3 className="font-medium">Alterações</h3>
               <ul className="space-y-2 mt-2">
                 {selectedPlan?.id > currentPlan?.id && (
-                  <li className="text-green-600">✔️ Upgrade - Você ganhará mais recursos</li>
+                  <li className="text-green-600">
+                    ✔️ Upgrade - Você ganhará mais recursos
+                  </li>
                 )}
                 {selectedPlan?.id < currentPlan?.id && (
-                  <li className="text-yellow-600">⚠️ Downgrade - Alguns recursos serão limitados</li>
+                  <li className="text-yellow-600">
+                    ⚠️ Downgrade - Alguns recursos serão limitados
+                  </li>
                 )}
                 <li>Mudança efetiva a partir da próxima cobrança</li>
               </ul>
             </div>
           </div>
-          
+
           <DialogFooter>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               onClick={() => setIsConfirmationModalOpen(false)}
               disabled={isLoading}
             >
               Cancelar
             </Button>
-            <Button 
-              onClick={handleConfirmPlanChange}
-              disabled={isLoading}
-            >
+            <Button onClick={handleConfirmPlanChange} disabled={isLoading}>
               {isLoading ? "Processando..." : "Confirmar Mudança"}
             </Button>
           </DialogFooter>

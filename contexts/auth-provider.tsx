@@ -33,9 +33,8 @@ export const AuthProvider = ({ children }: any) => {
       const restaurante = response.data.restaurante;
       if (restaurante) {
         localStorage.setItem("restaurante", JSON.stringify(response.data));
-        window.location.href = '/'
+        window.location.href = "/";
       }
-
     } catch (error) {
       toast.error("Email ou senha inválidos!");
       return;
@@ -76,6 +75,10 @@ export const AuthProvider = ({ children }: any) => {
         setRestaurante(res.data);
       })
       .catch((error) => {
+        toast.error(error.response.data.message);
+        if(error.response.data.message === 'Você precisa ter um plano ativo para usar o sistema.') {
+          router.push('/cobrancas')
+        }
         throw new Error(error.response.data.message);
       });
   };
