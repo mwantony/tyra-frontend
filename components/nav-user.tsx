@@ -103,14 +103,18 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <UserCircleIcon />
-                <Link href={"/conta"}>Conta</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCardIcon />
-                <Link href={"/cobrancas"}>Cobranças</Link>
-              </DropdownMenuItem>
+              <Link href={"/conta"}>
+                <DropdownMenuItem>
+                  <UserCircleIcon />
+                  Conta
+                </DropdownMenuItem>
+              </Link>
+              <Link href={"/cobrancas"}>
+                <DropdownMenuItem>
+                  <CreditCardIcon />
+                  Cobranças
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
