@@ -116,7 +116,6 @@ export default function Page() {
                       placeholder="Digite o código de barras"
                       value={form.ean}
                       onChange={handleEANChange}
-                      required
                     />
                     {isLoading && <MoonLoader ></MoonLoader>}
                   </div>
