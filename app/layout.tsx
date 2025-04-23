@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins, Manrope } from "next/font/google";
