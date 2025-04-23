@@ -110,27 +110,65 @@ export default function RestaurantAccountPage() {
                     </AvatarFallback>
                   </Avatar>
                 </div>
-
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Nome do Restaurante</Label>
+                  <div className="space-y-2 col-span-2">
+                    <Label htmlFor="cnpj">CNPJ</Label>
                     {isEditing ? (
                       <Input
-                        id="name"
-                        name="name"
-                        value={restaurantData.name}
+                        id="cnpj"
+                        name="cnpj"
+                        value={restaurante?.cnpj}
                         onChange={handleInputChange}
                         disabled={isLoading}
                       />
                     ) : (
                       <div className="py-2 px-3 border rounded-md text-sm">
-                        {restaurantData.name || (
+                        {restaurante?.cnpj || (
+                          <Skeleton className="h-4 w-[200px]" />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+             
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="nome_fantasia">Nome do Restaurante</Label>
+                    {isEditing ? (
+                      <Input
+                        id="nome_fantasia"
+                        name="nome_fantasia"
+                        value={restaurante.nome_fantasia}
+                        onChange={handleInputChange}
+                        disabled={isLoading}
+                      />
+                    ) : (
+                      <div className="py-2 px-3 border rounded-md text-sm">
+                        {restaurante?.nome_fantasia || (
                           <Skeleton className="h-4 w-[200px]" />
                         )}
                       </div>
                     )}
                   </div>
                   <div className="space-y-2">
+                    <Label htmlFor="razao_social">Razão Social</Label>
+                    {isEditing ? (
+                      <Input
+                        id="razao_social"
+                        name="razao_social"
+                        value={restaurante.razao_social}
+                        onChange={handleInputChange}
+                        disabled={isLoading}
+                      />
+                    ) : (
+                      <div className="py-2 px-3 border rounded-md text-sm">
+                        {restaurante?.razao_social || (
+                          <Skeleton className="h-4 w-[200px]" />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div className="space-y-2 col-span-2">
                     <Label htmlFor="email">E-mail</Label>
                     {isEditing ? (
                       <Input
@@ -144,27 +182,6 @@ export default function RestaurantAccountPage() {
                     ) : (
                       <div className="py-2 px-3 border rounded-md text-sm">
                         {restaurantData.email || (
-                          <Skeleton className="h-4 w-[200px]" />
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Telefone</Label>
-                    {isEditing ? (
-                      <Input
-                        id="phone"
-                        name="phone"
-                        value={restaurantData.phone}
-                        onChange={handleInputChange}
-                        disabled={isLoading}
-                      />
-                    ) : (
-                      <div className="py-2 px-3 border rounded-md text-sm">
-                        {restaurantData.phone || (
                           <Skeleton className="h-4 w-[200px]" />
                         )}
                       </div>
@@ -247,8 +264,6 @@ export default function RestaurantAccountPage() {
           </Card>
         </div>
       </div>
-
-      
     </div>
   );
 }

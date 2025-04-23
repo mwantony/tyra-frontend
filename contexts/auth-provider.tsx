@@ -7,7 +7,7 @@ import api from "../services/api";
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }: any) => {
-  const [restaurante, setRestaurante] = useState(null);
+  const [restaurante, setRestaurante] = useState<any>(null);
 
   useEffect(() => {
     const storedRestaurante = JSON.parse(
@@ -61,8 +61,10 @@ export const AuthProvider = ({ children }: any) => {
   };
   const refreshRestaurante = async () => {
     await api
-      .get("/restaurante")
+      .get(`/restaurante/${restaurante?.id}`)
       .then((res) => {
+        localStorage.setItem("restaurante", JSON.stringify(res.data));
+
         setRestaurante(res.data);
       })
       .catch((error) => {

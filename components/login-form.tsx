@@ -24,7 +24,10 @@ export function LoginForm({
     e.preventDefault();
     setLoading(true);
     try {
-      await login(email, password);
+      await login(email, password).catch((error) => {
+        console.error("Erro ao fazer login:", error);
+        alert("Erro ao fazer login. Verifique suas credenciais.");
+      });
     } catch (error) {
       console.error("Erro ao fazer login:", error);
     } finally {

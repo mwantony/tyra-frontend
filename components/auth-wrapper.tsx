@@ -9,22 +9,24 @@ import { Spinner } from "./ui/spinner";
 import { usePathname, useRouter } from "next/navigation";
 
 function ProtectedApp({ children }: { children: ReactNode }) {
-  const { restaurante, loading } = useAuth();
+  const { restaurante, loading, refreshRestaurante } = useAuth();
   const [isAuthChecked, setIsAuthChecked] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
+    if (restaurante?.id) {
+      refreshRestaurante();
+    }
     if (loading) return;
-  
+
     setIsAuthChecked(true);
     if (restaurante === null) return;
-  
-    if (!restaurante?.nome_fantasia && pathname !== "/signup" ) {
+
+    if (!restaurante?.nome_fantasia && pathname !== "/signup") {
       router.push("/login");
     }
-  }, [loading, restaurante, pathname, router]);
-  
+  }, [loading, restaurante, pathname, router, refreshRestaurante]);
 
   if (!isAuthChecked) {
     return <Spinner />;
