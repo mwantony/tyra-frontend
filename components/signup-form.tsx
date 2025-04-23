@@ -187,12 +187,12 @@ export function SignUpForm({
           </form>
 
           <div className="flex flex-col justify-center items-center bg-transparent">
-            <Image
+          {/*   <Image
               src={logo}
               alt="Imagem"
               className="max-w-[150px] h-auto mb-2"
             />
-            <h2 className="font-bold text-lg">Tyra</h2>
+            <h2 className="font-bold text-lg">Tyra</h2> */}
           </div>
         </CardContent>
       </Card>
