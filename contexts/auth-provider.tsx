@@ -74,7 +74,16 @@ export const AuthProvider = ({ children }: any) => {
       .get(`/restaurantes/${restaurante?.id}`)
       .then((res) => {
         setRestaurante(res.data);
+      
+
+        if (restaurante.proxima_cobranca_em <= dayjs().format("YYYY-MM-DD")) {
+          toast.error(
+            "Sua assinatura venceu, entre em contato com o suporte para mais informações."
+          );
+          router.push("/suporte");
+        }
       })
+      
       .catch((error) => {
         toast.error(error.response.data.message);
         if (
@@ -83,12 +92,7 @@ export const AuthProvider = ({ children }: any) => {
         ) {
           router.push("/cobrancas");
         }
-        if (restaurante.proxima_cobranca_em === dayjs().format("YYYY-MM-DD")) {
-          toast.error(
-            "Sua assinatura venceu, entre em contato com o suporte para mais informações."
-          );
-          router.push("/suporte");
-        }
+       
         throw new Error(error.response.data.message);
       });
   };

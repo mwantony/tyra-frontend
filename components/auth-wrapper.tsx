@@ -27,8 +27,10 @@ function ProtectedApp({ children }: { children: ReactNode }) {
     if (!restaurante?.nome_fantasia && pathname !== "/signup") {
       router.push("/login");
     }
+
   }, [loading, restaurante, pathname, router, refreshRestaurante]);
 
+  
   if (!isAuthChecked) {
     return <Spinner />;
   }

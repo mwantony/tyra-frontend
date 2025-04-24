@@ -222,7 +222,7 @@ export default function SupportPage() {
             <div className="border-b pb-4">
               <h3 className="font-medium mb-2">Quais são os horários de atendimento?</h3>
               <p className="text-sm text-muted-foreground">
-                Nosso atendimento funciona de segunda a sexta, das 9h às 18h, exceto feriados.
+                Nosso atendimento funciona 24/7, ou seja, todos os dias 24 horas.
               </p>
             </div>
             
