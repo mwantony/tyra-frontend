@@ -181,9 +181,11 @@ export default function SupportPage() {
               <p className="text-sm text-muted-foreground mb-3">
                 Envie um e-mail diretamente para nossa equipe de suporte
               </p>
-              <Button variant="outline" size="sm">
-                suporte@empresa.com
-              </Button>
+              <a href="mailto:againplayi7@gmail.com" target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="sm">
+                  againplayi7@gmail.com
+                </Button>
+              </a>
             </div>
             
             <div className="rounded-lg border p-4">
@@ -194,9 +196,11 @@ export default function SupportPage() {
               <p className="text-sm text-muted-foreground mb-3">
                 Fale diretamente com um de nossos atendentes
               </p>
-              <Button variant="outline" size="sm">
-                (11) 1234-5678
-              </Button>
+              <a href="https://wa.me/5549991042777" target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="sm">
+                  (49) 99104-2777
+                </Button>
+              </a>
             </div>
           </CardContent>
         </Card>

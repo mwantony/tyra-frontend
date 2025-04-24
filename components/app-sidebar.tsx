@@ -24,6 +24,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { Badge } from "./ui/badge";
 
 const data = {
   user: {
@@ -79,7 +80,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <Link href="/">
-                <span className="text-base font-semibold">Tyra</span>
+                <span className="text-base font-semibold">Tyra</span><Badge>Beta</Badge>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
