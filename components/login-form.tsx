@@ -91,7 +91,7 @@ export function LoginForm({
             <Image
               src={lofg}
               alt="Imagem"
-              className="max-w-[200px] h-auto mb-2"
+              className="max-w-[250px] h-auto mb-2"
             />
           </div>
         </CardContent>
