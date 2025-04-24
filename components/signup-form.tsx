@@ -36,13 +36,7 @@ export function SignUpForm({
         email,
         password,
       });
-      toast.error("Erro ao cadastrar", {
-        description: "Verifique os dados e tente novamente",
-      });
     } catch (error: any) {
-      toast.error("Erro ao cadastrar", {
-        description: "Verifique os dados e tente novamente",
-      });
       console.error("Erro ao cadastrar:", error);
     } finally {
       setLoading(false);
@@ -113,29 +107,6 @@ export function SignUpForm({
             </div>
           </div>
         );
-      case 3:
-        return (
-          <div className="flex flex-col gap-4 text-sm">
-            <h3 className="text-lg font-medium text-center">
-              Confirme seus dados
-            </h3>
-            <div className="space-y-2">
-              <p>
-                <span className="font-medium">CNPJ:</span> {cnpj}
-              </p>
-              <p>
-                <span className="font-medium">Nome Fantasia:</span>{" "}
-                {nomeFantasia}
-              </p>
-              <p>
-                <span className="font-medium">Razão Social:</span> {razaoSocial}
-              </p>
-              <p>
-                <span className="font-medium">Email:</span> {email}
-              </p>
-            </div>
-          </div>
-        );
     }
   };
 
@@ -151,7 +122,6 @@ export function SignUpForm({
                 <p className="text-balance text-muted-foreground">
                   {step === 1 && "Informações da empresa"}
                   {step === 2 && "Dados de acesso"}
-                  {step === 3 && "Confirmação de dados"}
                 </p>
               </div>
 
@@ -167,11 +137,11 @@ export function SignUpForm({
                     Voltar
                   </Button>
                 )}
-                {step < 3 ? (
+                {step === 1 ? (
                   <Button
                     type="button"
                     onClick={() => setStep((prev) => prev + 1)}
-                    className={step === 1 ? "ml-auto" : ""}
+                    className="ml-auto"
                   >
                     Próximo
                   </Button>
@@ -183,8 +153,6 @@ export function SignUpForm({
               </div>
             </div>
           </form>
-
-    
         </CardContent>
       </Card>
 

@@ -48,6 +48,9 @@ export const AuthProvider = ({ children }: any) => {
 
       window.location.href = "/login";
     } catch (error: any) {
+      toast.error("Erro ao cadastrar", {
+        description: "Verifique os dados e tente novamente",
+      });
       console.error(error);
       return error;
     }
