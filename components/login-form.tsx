@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { useAuth } from "@/contexts/auth-provider";
 import Link from "next/link";
-import logo from "@/assets/img/logo.png";
 import lofg from "@/assets/svg/undraw_projections_fhch.svg";
 export function LoginForm({
   className,

@@ -9,10 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/auth-provider";
 import Link from "next/link";
-import Image from "next/image";
 import { toast } from "sonner";
 import { Toaster } from "./ui/sonner";
-import logo from "@/assets/img/logo.png";
 
 export function SignUpForm({
   className,
@@ -186,14 +184,7 @@ export function SignUpForm({
             </div>
           </form>
 
-          <div className="flex flex-col justify-center items-center bg-transparent">
-          {/*   <Image
-              src={logo}
-              alt="Imagem"
-              className="max-w-[150px] h-auto mb-2"
-            />
-            <h2 className="font-bold text-lg">Tyra</h2> */}
-          </div>
+    
         </CardContent>
       </Card>
 

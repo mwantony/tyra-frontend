@@ -7,6 +7,7 @@ import api from "../services/api";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { useRouter } from "next/navigation";
+import dayjs from "dayjs";
 
 const AuthContext = createContext({});
 
@@ -76,8 +77,17 @@ export const AuthProvider = ({ children }: any) => {
       })
       .catch((error) => {
         toast.error(error.response.data.message);
-        if(error.response.data.message === 'Você precisa ter um plano ativo para usar o sistema.') {
-          router.push('/cobrancas')
+        if (
+          error.response.data.message ===
+          "Você precisa ter um plano ativo para usar o sistema."
+        ) {
+          router.push("/cobrancas");
+        }
+        if (restaurante.proxima_cobranca_em === dayjs().format("YYYY-MM-DD")) {
+          toast.error(
+            "Sua assinatura venceu, entre em contato com o suporte para mais informações."
+          );
+          router.push("/suporte");
         }
         throw new Error(error.response.data.message);
       });

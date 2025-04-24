@@ -8,6 +8,7 @@ import {
   Package,
   ScanBarcode,
   SettingsIcon,
+  HeadsetIcon
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -54,6 +55,11 @@ const data = {
   ],
 
   navSecondary: [
+    {
+      title: "Suporte",
+      url: "/suporte",
+      icon: HeadsetIcon,
+    },
     {
       title: "Configurações",
       url: "/configuracoes",
