@@ -18,7 +18,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-
+import Link from "next/link";
 export default function BillingPage() {
   const [currentPlan, setCurrentPlan] = useState<any>();
   const [allPlans, setAllPlans] = useState<any[]>([]);
@@ -153,7 +153,6 @@ export default function BillingPage() {
             Gerencie seu plano de assinatura e informações de pagamento
           </p>
         </div>
-        <Button variant="outline">Fazer pagamento</Button>
       </div>
 
       <Separator />
@@ -479,9 +478,19 @@ export default function BillingPage() {
             >
               Cancelar
             </Button>
-            <Button onClick={handleConfirmPlanChange} disabled={isLoading}>
-              {isLoading ? "Processando..." : "Confirmar Mudança"}
-            </Button>
+            <a
+              target="_blank"
+              href={
+                "https://wa.me/5549991042777?text=Olá, gostaria de mudar meu plano para o plano " +
+                selectedPlan?.nome
+              }
+            >
+              <Button
+                /* onClick={handleConfirmPlanChange} */ disabled={isLoading}
+              >
+                {isLoading ? "Processando..." : "Confirmar Mudança"}
+              </Button>
+            </a>
           </DialogFooter>
         </DialogContent>
       </Dialog>
