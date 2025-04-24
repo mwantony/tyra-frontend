@@ -112,7 +112,7 @@ export function NavUser({
               <Link href={"/planos"}>
                 <DropdownMenuItem>
                   <CreditCardIcon />
-                  Planos
+                  Planos e Cobranças
                 </DropdownMenuItem>
               </Link>
             </DropdownMenuGroup>
