@@ -17,7 +17,17 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/auth-provider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { putRestaurante } from "@/services/restaurantes"; // Importe o serviço
+import { putRestaurante } from "@/services/restaurantes";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function RestaurantAccountPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,8 +36,12 @@ export default function RestaurantAccountPage() {
     nome_fantasia: "",
     razao_social: "",
     email: "",
-
     notificationEnabled: true,
+  });
+  const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
+  const [passwordData, setPasswordData] = useState({
+    newPassword: "",
+    confirmPassword: "",
   });
   const { restaurante, refreshRestaurante } = useAuth();
 
@@ -41,7 +55,6 @@ export default function RestaurantAccountPage() {
             nome_fantasia: restaurante.nome_fantasia || "",
             razao_social: restaurante.razao_social || "",
             email: restaurante.email || "",
-
             notificationEnabled: true,
           });
         }
@@ -59,25 +72,53 @@ export default function RestaurantAccountPage() {
 
     setIsLoading(true);
     try {
-      // Prepara os dados no formato esperado pelo serviço
       const updatedData = {
         cnpj: restaurante.cnpj,
         nome_fantasia: restaurantData.nome_fantasia,
         razao_social: restaurantData.razao_social,
         email: restaurantData.email,
-
-        // password só seria incluído se houvesse um campo para alterar senha
       };
 
-      // Chama o serviço para atualizar o restaurante
       await putRestaurante(restaurante.id, updatedData);
       refreshRestaurante();
-      // Atualiza o contexto/auth com os novos dados
-
       setIsEditing(false);
     } catch (error) {
       console.error("Erro ao atualizar dados:", error);
-      // Aqui você pode adicionar um toast ou alerta para o usuário
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handlePasswordChange = async () => {
+    if (!restaurante) return;
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      alert("As senhas não coincidem!");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const updatedData = {
+        cnpj: restaurante.cnpj,
+        nome_fantasia: restaurante.nome_fantasia,
+        razao_social: restaurante.razao_social,
+        email: restaurante.email,
+        password: passwordData.newPassword,
+      };
+
+      await putRestaurante(restaurante.id, updatedData)
+        .then(() => {
+          toast.success("Dados atualizados com sucesso!");
+        })
+        .catch((error) => {
+          toast.error("Erro ao atualizar dados");
+          console.error("Erro ao atualizar dados:", error);
+        });
+      refreshRestaurante();
+      setIsPasswordDialogOpen(false);
+      setPasswordData({ newPassword: "", confirmPassword: "" });
+    } catch (error) {
+      console.error("Erro ao atualizar senha:", error);
     } finally {
       setIsLoading(false);
     }
@@ -91,8 +132,19 @@ export default function RestaurantAccountPage() {
     }));
   };
 
+  const handlePasswordInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, value } = e.target;
+    setPasswordData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   return (
     <div className="space-y-6 p-6">
+      <Toaster></Toaster>
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Minha Conta</h1>
@@ -245,7 +297,12 @@ export default function RestaurantAccountPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <Button variant="outline">Alterar Senha</Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsPasswordDialogOpen(true)}
+                >
+                  Alterar Senha
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -259,16 +316,75 @@ export default function RestaurantAccountPage() {
               <CardTitle>Suporte</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Button variant="outline" className="w-full">
-                Central de Ajuda
-              </Button>
-              <Button variant="outline" className="w-full">
-                Fale Conosco
-              </Button>
+              <a
+                href="mailto:againplayi7@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button className="w-full" variant="outline">againplayi7@gmail.com</Button>
+              </a>
+              <a
+                href="https://wa.me/5549991042777"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button className="w-full mt-4" variant="outline">(49) 99104-2777</Button>
+              </a>
             </CardContent>
           </Card>
         </div>
       </div>
+
+      {/* Modal de Alteração de Senha */}
+      <Dialog
+        open={isPasswordDialogOpen}
+        onOpenChange={setIsPasswordDialogOpen}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Alterar Senha</DialogTitle>
+            <DialogDescription>
+              Digite sua nova senha e confirme para atualizar.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="newPassword">Nova Senha</Label>
+              <Input
+                id="newPassword"
+                name="newPassword"
+                type="password"
+                value={passwordData.newPassword}
+                onChange={handlePasswordInputChange}
+                disabled={isLoading}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword">Confirmar Nova Senha</Label>
+              <Input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                value={passwordData.confirmPassword}
+                onChange={handlePasswordInputChange}
+                disabled={isLoading}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsPasswordDialogOpen(false)}
+              disabled={isLoading}
+            >
+              Cancelar
+            </Button>
+            <Button onClick={handlePasswordChange} disabled={isLoading}>
+              {isLoading ? "Salvando..." : "Salvar Senha"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
