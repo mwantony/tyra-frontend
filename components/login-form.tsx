@@ -59,8 +59,9 @@ export function LoginForm({
                 <div className="flex items-center">
                   <Label htmlFor="password">Senha</Label>
                   <a
-                    href="#"
+                    href="https://wa.me/5549991042777?text=Olá!%20Preciso%20de%20ajuda%20com%20a%20minha%20senha."
                     className="ml-auto text-sm underline-offset-2 hover:underline"
+                    target="_blank"
                   >
                     Esqueceu a senha?
                   </a>
