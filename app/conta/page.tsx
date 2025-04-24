@@ -17,33 +17,31 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/auth-provider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { putRestaurante } from "@/services/restaurantes"; // Importe o serviço
 
 export default function RestaurantAccountPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [restaurantData, setRestaurantData] = useState({
-    name: "",
+    nome_fantasia: "",
+    razao_social: "",
     email: "",
-    phone: "",
-    address: "",
+
     notificationEnabled: true,
   });
-  const { restaurante } = useAuth();
+  const { restaurante, refreshRestaurante } = useAuth();
 
   // Carrega os dados iniciais
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        // Carrega plano atual
-
-        // Preenche dados do restaurante
         if (restaurante) {
           setRestaurantData({
-            name: restaurante.nome_fantasia || "",
+            nome_fantasia: restaurante.nome_fantasia || "",
+            razao_social: restaurante.razao_social || "",
             email: restaurante.email || "",
-            phone: restaurante.telefone || "",
-            address: restaurante.endereco || "",
+
             notificationEnabled: true,
           });
         }
@@ -57,13 +55,29 @@ export default function RestaurantAccountPage() {
   }, [restaurante]);
 
   const handleSaveChanges = async () => {
+    if (!restaurante) return;
+
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Prepara os dados no formato esperado pelo serviço
+      const updatedData = {
+        cnpj: restaurante.cnpj,
+        nome_fantasia: restaurantData.nome_fantasia,
+        razao_social: restaurantData.razao_social,
+        email: restaurantData.email,
+
+        // password só seria incluído se houvesse um campo para alterar senha
+      };
+
+      // Chama o serviço para atualizar o restaurante
+      await putRestaurante(restaurante.id, updatedData);
+      refreshRestaurante();
+      // Atualiza o contexto/auth com os novos dados
 
       setIsEditing(false);
     } catch (error) {
       console.error("Erro ao atualizar dados:", error);
+      // Aqui você pode adicionar um toast ou alerta para o usuário
     } finally {
       setIsLoading(false);
     }
@@ -106,31 +120,21 @@ export default function RestaurantAccountPage() {
                   <Avatar className="h-16 w-16">
                     <AvatarImage src="/restaurant-placeholder.jpg" />
                     <AvatarFallback>
-                      {restaurantData.name.charAt(0)}
+                      {restaurantData.nome_fantasia.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2 col-span-2">
                     <Label htmlFor="cnpj">CNPJ</Label>
-                    {isEditing ? (
-                      <Input
-                        id="cnpj"
-                        name="cnpj"
-                        value={restaurante?.cnpj}
-                        onChange={handleInputChange}
-                        disabled={isLoading}
-                      />
-                    ) : (
-                      <div className="py-2 px-3 border rounded-md text-sm">
-                        {restaurante?.cnpj || (
-                          <Skeleton className="h-4 w-[200px]" />
-                        )}
-                      </div>
-                    )}
+                    <div className="py-2 px-3 border rounded-md text-sm">
+                      {restaurante?.cnpj || (
+                        <Skeleton className="h-4 w-[200px]" />
+                      )}
+                    </div>
                   </div>
                 </div>
-             
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="nome_fantasia">Nome do Restaurante</Label>
@@ -138,13 +142,13 @@ export default function RestaurantAccountPage() {
                       <Input
                         id="nome_fantasia"
                         name="nome_fantasia"
-                        value={restaurante.nome_fantasia}
+                        value={restaurantData.nome_fantasia}
                         onChange={handleInputChange}
                         disabled={isLoading}
                       />
                     ) : (
                       <div className="py-2 px-3 border rounded-md text-sm">
-                        {restaurante?.nome_fantasia || (
+                        {restaurantData.nome_fantasia || (
                           <Skeleton className="h-4 w-[200px]" />
                         )}
                       </div>
@@ -156,18 +160,19 @@ export default function RestaurantAccountPage() {
                       <Input
                         id="razao_social"
                         name="razao_social"
-                        value={restaurante.razao_social}
+                        value={restaurantData.razao_social}
                         onChange={handleInputChange}
                         disabled={isLoading}
                       />
                     ) : (
                       <div className="py-2 px-3 border rounded-md text-sm">
-                        {restaurante?.razao_social || (
+                        {restaurantData.razao_social || (
                           <Skeleton className="h-4 w-[200px]" />
                         )}
                       </div>
                     )}
                   </div>
+
                   <div className="space-y-2 col-span-2">
                     <Label htmlFor="email">E-mail</Label>
                     {isEditing ? (

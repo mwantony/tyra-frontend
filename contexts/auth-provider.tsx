@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }: any) => {
     const storedRestaurante = JSON.parse(
       localStorage.getItem("restaurante") || "{}"
     );
+    
     if (storedRestaurante) {
       setRestaurante(storedRestaurante.restaurante);
     }
@@ -87,7 +88,7 @@ export const AuthProvider = ({ children }: any) => {
           error.response.data.message ===
           "Você precisa ter um plano ativo para usar o sistema."
         ) {
-          router.push("/cobrancas");
+          router.push("/planos");
         }
         if (restaurante.proxima_cobranca_em < dayjs().format("YYYY-MM-DD")) {
           toast.error(

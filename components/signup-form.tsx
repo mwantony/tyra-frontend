@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/auth-provider";
 import Link from "next/link";
-import { toast } from "sonner";
 import { Toaster } from "./ui/sonner";
 
 export function SignUpForm({
