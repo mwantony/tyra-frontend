@@ -10,6 +10,7 @@ import Image from "next/image";
 import { useAuth } from "@/contexts/auth-provider";
 import Link from "next/link";
 import logo from "@/assets/img/logo.png";
+import lofg from "@/assets/svg/undraw_projections_fhch.svg";
 export function LoginForm({
   className,
   ...props
@@ -88,12 +89,11 @@ export function LoginForm({
           </form>
 
           <div className="flex flex-col justify-center items-center bg-transparent">
-          {/*   <Image
-              src={logo}
+            <Image
+              src={lofg}
               alt="Imagem"
-              className="max-w-[150px] h-auto mb-2"
+              className="max-w-[200px] h-auto mb-2"
             />
-            <h2 className="font-bold text-lg">Tyra</h2> */}
           </div>
         </CardContent>
       </Card>
