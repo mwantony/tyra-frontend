@@ -4,13 +4,12 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus, Search } from "lucide-react";
+import { Plus } from "lucide-react";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { getProdutos } from "@/services/produtos";
 import { DataTableProdutos } from "@/components/data-table-produtos";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -62,7 +61,7 @@ export default function ProdutosPage() {
         </div>
         
         <div className="flex flex-col gap-3 sm:flex-row">
-          <div className="relative">
+          {/* <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Buscar produtos..."
@@ -70,7 +69,7 @@ export default function ProdutosPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-          </div>
+          </div> */}
           
           <Link href="/produtos/adicionar">
             <Button className="w-full sm:w-fit">
