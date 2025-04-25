@@ -17,11 +17,22 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
-import CustomModal from "@/components/custom-modal"; // Assumindo que você tem um modal personalizado
-import { deleteProduto } from "@/services/produtos"; // Assumindo que você tem essa função
+import CustomModal from "@/components/custom-modal";
+import { deleteProduto } from "@/services/produtos";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { Input } from "./ui/input";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationPrevious,
+  PaginationLink,
+  PaginationNext,
+  PaginationEllipsis,
+} from "@/components/ui/pagination";
+
+
 
 type Produto = {
   id: number;
@@ -37,7 +48,7 @@ type Produto = {
 
 interface DataTableProps {
   data: Produto[];
-  fetchProdutos: () => Promise<void>; // Função para recarregar os produtos
+  fetchProdutos: () => Promise<void>;
 }
 
 export const DataTableProdutos: React.FC<DataTableProps> = ({
@@ -45,14 +56,17 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
   fetchProdutos,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false); // Para controlar a visibilidade do modal
-  const [produtoIdToDelete, setProdutoIdToDelete] = useState<number | null>(
-    null
-  ); // ID do produto a ser deletado
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [produtoIdToDelete, setProdutoIdToDelete] = useState<number | null>(null);
   const router = useRouter();
+  
+  // Estado para paginação
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // Número de itens por página
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+    setCurrentPage(1); // Resetar para a primeira página ao pesquisar
   };
 
   const filteredData = data.filter(
@@ -61,10 +75,18 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
       produto.ean.includes(searchTerm)
   );
 
+  // Cálculos para paginação
+  const totalItems = filteredData.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredData.slice(startIndex, endIndex);
+
   const handleDeleteClick = (id: number) => {
     setProdutoIdToDelete(id);
-    setIsModalOpen(true); // Abre o modal ao clicar em excluir
+    setIsModalOpen(true);
   };
+
   const handleEditClick = (id: number) => {
     router.push(`/produtos/editar/${id}`);
   };
@@ -73,16 +95,82 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
     if (produtoIdToDelete !== null) {
       try {
         await deleteProduto(produtoIdToDelete);
-        setIsModalOpen(false); // Fecha o modal
-        await fetchProdutos(); // Recarrega os produtos após a exclusão
+        setIsModalOpen(false);
+        await fetchProdutos();
       } catch (err) {
         console.error("Erro ao excluir produto:", err);
       }
     }
   };
 
+  // Função para renderizar os números das páginas
+  const renderPageNumbers = () => {
+    const pageNumbers: (number | 'ellipsis-left' | 'ellipsis-right')[] = [];
+    const maxVisiblePages = 5;
+
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      const leftOffset = Math.floor(maxVisiblePages / 2);
+      const rightOffset = Math.ceil(maxVisiblePages / 2) - 1;
+
+      let startPage = currentPage - leftOffset;
+      let endPage = currentPage + rightOffset;
+
+      if (startPage < 1) {
+        startPage = 1;
+        endPage = maxVisiblePages;
+      } else if (endPage > totalPages) {
+        endPage = totalPages;
+        startPage = totalPages - maxVisiblePages + 1;
+      }
+
+      if (startPage > 1) {
+        pageNumbers.push(1);
+        if (startPage > 2) {
+          pageNumbers.push('ellipsis-left');
+        }
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+
+      if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+          pageNumbers.push('ellipsis-right');
+        }
+        pageNumbers.push(totalPages);
+      }
+    }
+
+    return pageNumbers.map((pageNumber, index) => {
+      if (pageNumber === 'ellipsis-left' || pageNumber === 'ellipsis-right') {
+        return (
+          <PaginationItem key={index}>
+            <PaginationEllipsis />
+          </PaginationItem>
+        );
+      }
+
+      return (
+        <PaginationItem key={index}>
+          <PaginationLink
+            href="#"
+            isActive={pageNumber === currentPage}
+            onClick={() => setCurrentPage(Number(pageNumber))}
+          >
+            {pageNumber}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    });
+  };
+
   return (
-    <div >
+    <div>
       <div className="p-4">
         <Input
           type="text"
@@ -102,11 +190,12 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
             <TableHead>EAN</TableHead>
             <TableHead>Descrição</TableHead>
             <TableHead>Criado em</TableHead>
+            <TableHead>Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredData.length > 0 ? (
-            filteredData.map((produto) => (
+          {currentItems.length > 0 ? (
+            currentItems.map((produto) => (
               <TableRow key={produto.id}>
                 <TableCell>{produto.id}</TableCell>
                 <TableCell>{produto.nome}</TableCell>
@@ -117,8 +206,8 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
                   }).format(Number(produto.preco))}
                 </TableCell>
                 <TableCell>{produto.tipo}</TableCell>
-                <TableCell>{produto.ean}</TableCell>
-                <TableCell>{produto.descricao}</TableCell>
+                <TableCell>{produto.ean ? produto.ean : '- - -'}</TableCell>
+                <TableCell>{produto.descricao ? produto.descricao : '- - -'}</TableCell>
                 <TableCell>
                   {dayjs(produto.created_at).format("DD/MM/YYYY HH:mm")}
                 </TableCell>
@@ -136,9 +225,8 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
                         <Pencil className="w-4 h-4 mr-2" />
                         Editar
                       </DropdownMenuItem>
-
                       <DropdownMenuItem
-                        onClick={() => handleDeleteClick(produto.id)} // Abre o modal ao clicar em excluir
+                        onClick={() => handleDeleteClick(produto.id)}
                         className="text-destructive focus:text-destructive"
                       >
                         <Trash2 className="w-4 h-4 mr-2 text-destructive" />
@@ -161,6 +249,33 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
           )}
         </TableBody>
       </Table>
+
+      {/* Paginação */}
+      {totalItems > itemsPerPage && (
+        <div className="mt-4 flex justify-end">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  href="#"
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  isActive={currentPage > 1}
+                >Anterior</PaginationPrevious>
+              </PaginationItem>
+              
+              {renderPageNumbers()}
+              
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  isActive={currentPage < totalPages}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
 
       {/* Modal de confirmação de exclusão */}
       <CustomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
