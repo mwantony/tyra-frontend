@@ -98,7 +98,8 @@ export const AuthProvider = ({ children }: any) => {
         }
         if (
           restaurante.proxima_cobranca_em < dayjs().format("YYYY-MM-DD") ||
-          "Seu plano expirou. Renove para continuar usando o sistema."
+          error.response.data.message ===
+            "Seu plano expirou. Renove para continuar usando o sistema."
         ) {
           toast.error(
             "Sua assinatura venceu, entre em contato com o suporte para mais informações."
