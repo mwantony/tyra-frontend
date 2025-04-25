@@ -35,7 +35,6 @@ export default function BillingPage() {
         try {
           const plano = await getPlano(restaurante.plano_id);
           setCurrentPlan(plano);
-          console.log(plano);
         } catch (error) {
           console.error("Erro ao carregar plano atual:", error);
         } finally {
@@ -78,7 +77,6 @@ export default function BillingPage() {
     try {
       // Aqui você implementaria a chamada à API para atualizar o plano
       // Exemplo: await updatePlano(restaurante.id, selectedPlan.id);
-      console.log("Plano atualizado para:", selectedPlan);
 
       // Simulando uma requisição assíncrona
       await associarPlano(restaurante.id, {

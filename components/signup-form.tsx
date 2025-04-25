@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/auth-provider";
 import Link from "next/link";
 import { Toaster } from "./ui/sonner";
+import { toast } from "sonner";
 
 export function SignUpForm({
   className,
@@ -22,26 +23,83 @@ export function SignUpForm({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [fetchingCnpj, setFetchingCnpj] = useState(false);
   const { signup } = useAuth();
 
+  // Função para formatar o CNPJ
+  const formatCnpj = useCallback((value: string): string => {
+    // Remove todos os caracteres não numéricos
+    const cleaned = value.replace(/\D/g, '');
+    
+    // Aplica a formatação do CNPJ
+    if (cleaned.length <= 2) return cleaned;
+    if (cleaned.length <= 5) return `${cleaned.slice(0, 2)}.${cleaned.slice(2)}`;
+    if (cleaned.length <= 8) return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(5)}`;
+    if (cleaned.length <= 12) return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(5, 8)}/${cleaned.slice(8)}`;
+    return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(5, 8)}/${cleaned.slice(8, 12)}-${cleaned.slice(12, 14)}`;
+  }, []);
+
+  // Handler para mudanças no input de CNPJ
+  const handleCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatCnpj(e.target.value);
+    setCnpj(formatted);
+  };
+
+  // Busca dados do CNPJ quando ele é totalmente digitado (14 caracteres)
+  useEffect(() => {
+    const cleanedCnpj = cnpj.replace(/\D/g, '');
+    if (cleanedCnpj.length === 14) {
+      fetchCompanyData(cleanedCnpj);
+    }
+  }, [cnpj]);
+
+  // Função para buscar dados da empresa
+  const fetchCompanyData = async (cnpj: string) => {
+    setFetchingCnpj(true);
+    try {
+      const response = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+      
+      if (!response.ok) {
+        throw new Error("CNPJ não encontrado ou erro na API");
+      }
+      
+      const data = await response.json();
+      
+      // Preenche os campos com os dados da API
+      setNomeFantasia(data.fantasia || data.razao_social || "");
+      setRazaoSocial(data.razao_social || "");
+      setEmail(data.email || "");
+      
+      toast.success("Dados da empresa carregados automaticamente");
+    } catch (error: any) {
+      toast.error("Não foi possível buscar os dados do CNPJ. Preencha manualmente.");
+      console.error("Erro ao buscar CNPJ:", error);
+    } finally {
+      setFetchingCnpj(false);
+    }
+  };
+
+  // Handler para submit do formulário
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
       await signup({
-        cnpj,
+        cnpj: cnpj.replace(/\D/g, ''), // Envia apenas os dígitos
         nome_fantasia: nomeFantasia,
         razao_social: razaoSocial,
         email,
         password,
       });
     } catch (error: any) {
+      toast.error("Erro ao cadastrar. Por favor, tente novamente.");
       console.error("Erro ao cadastrar:", error);
     } finally {
       setLoading(false);
     }
   };
 
+  // Renderização condicional dos steps
   const renderStep = () => {
     switch (step) {
       case 1:
@@ -51,11 +109,16 @@ export function SignUpForm({
               <Label htmlFor="cnpj">CNPJ</Label>
               <Input
                 id="cnpj"
-                placeholder="Digite o CNPJ da empresa"
+                placeholder="00.000.000/0000-00"
                 required
                 value={cnpj}
-                onChange={(e) => setCnpj(e.target.value)}
+                onChange={handleCnpjChange}
+                disabled={fetchingCnpj}
+                maxLength={18} // 14 dígitos + 4 caracteres especiais
               />
+              {fetchingCnpj && (
+                <p className="text-sm text-muted-foreground">Buscando dados do CNPJ...</p>
+              )}
             </div>
             <div className="grid gap-1">
               <Label htmlFor="nomeFantasia">Nome Fantasia</Label>
@@ -97,21 +160,24 @@ export function SignUpForm({
               <Label htmlFor="password">Senha</Label>
               <Input
                 id="password"
-                placeholder="Digite sua senha"
+                placeholder="Digite sua senha (mínimo 6 caracteres)"
                 type="password"
                 required
+                minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>
         );
+      default:
+        return null;
     }
   };
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Toaster></Toaster>
+      <Toaster />
       <Card className="overflow-hidden">
         <CardContent className="grid p-0 md:grid-cols-1">
           <form onSubmit={handleSubmit} className="p-6 md:p-8">
@@ -141,6 +207,7 @@ export function SignUpForm({
                     type="button"
                     onClick={() => setStep((prev) => prev + 1)}
                     className="ml-auto"
+                    disabled={!cnpj || !nomeFantasia || !razaoSocial || fetchingCnpj}
                   >
                     Próximo
                   </Button>
