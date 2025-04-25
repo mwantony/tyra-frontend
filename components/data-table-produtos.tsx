@@ -71,8 +71,8 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
 
   const filteredData = data.filter(
     (produto) =>
-      produto.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      produto.ean.includes(searchTerm)
+      produto?.nome?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      produto?.ean?.includes(searchTerm)
   );
 
   // Cálculos para paginação
@@ -260,7 +260,7 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
                   href="#"
                   onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                   isActive={currentPage > 1}
-                />
+                >Anterior</PaginationPrevious>
               </PaginationItem>
               
               {renderPageNumbers()}

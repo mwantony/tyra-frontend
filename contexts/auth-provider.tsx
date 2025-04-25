@@ -78,12 +78,13 @@ export const AuthProvider = ({ children }: any) => {
       .get(`/restaurantes/${restaurante?.id}`)
       .then((res) => {
         setRestaurante(res.data);
-
+        console.log(res.data);
       
       })
 
       .catch((error) => {
         toast.error(error.response.data.message);
+        console.log(error)
         if (
           error.response.data.message ===
           "Você precisa ter um plano ativo para usar o sistema."
