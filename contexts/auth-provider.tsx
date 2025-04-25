@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }: any) => {
     const storedRestaurante = JSON.parse(
       localStorage.getItem("restaurante") || "{}"
     );
-    
+
     if (storedRestaurante) {
       setRestaurante(storedRestaurante.restaurante);
     }
@@ -79,31 +79,31 @@ export const AuthProvider = ({ children }: any) => {
       .then((res) => {
         setRestaurante(res.data);
         console.log(res.data);
-      
       })
 
       .catch((error) => {
-        toast.error(error.response.data.message);
-        console.log(error)
+        console.log(error);
         if (
           error.response.data.message ===
           "Você precisa ter um plano ativo para usar o sistema."
         ) {
+          toast.error(error.response.data.message);
+
           router.push("/planos");
         }
-        if (
-          error.response.data.message ===
-          "Unauthenticated."
-        ) {
+        if (error.response.data.message === "Unauthenticated.") {
           router.push("/login");
           localStorage.removeItem("restaurante");
           toast.error("Sua sessão expirou, faça login novamente.");
         }
-        if (restaurante.proxima_cobranca_em < dayjs().format("YYYY-MM-DD")) {
+        if (
+          restaurante.proxima_cobranca_em < dayjs().format("YYYY-MM-DD") ||
+          "Seu plano expirou. Renove para continuar usando o sistema."
+        ) {
           toast.error(
             "Sua assinatura venceu, entre em contato com o suporte para mais informações."
           );
-          router.push("/suporte");
+          router.push("/planos");
         }
         throw new Error(error.response.data.message);
       });
