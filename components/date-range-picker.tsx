@@ -29,7 +29,6 @@ export function DatePickerWithRange({
     to: new Date(),
   });
 
-  // Atualiza o estado se o valor externo mudar
   React.useEffect(() => {
     if (
       value &&

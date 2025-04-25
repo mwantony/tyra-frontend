@@ -65,7 +65,6 @@ export function SignUpForm({
       
       const data = await response.json();
       
-      // Preenche os campos com os dados da API
       setNomeFantasia(data.fantasia || data.razao_social || "");
       setRazaoSocial(data.razao_social || "");
       setEmail(data.email || "");
@@ -79,13 +78,12 @@ export function SignUpForm({
     }
   };
 
-  // Handler para submit do formulário
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
       await signup({
-        cnpj: cnpj.replace(/\D/g, ''), // Envia apenas os dígitos
+        cnpj: cnpj.replace(/\D/g, ''), 
         nome_fantasia: nomeFantasia,
         razao_social: razaoSocial,
         email,
@@ -99,7 +97,6 @@ export function SignUpForm({
     }
   };
 
-  // Renderização condicional dos steps
   const renderStep = () => {
     switch (step) {
       case 1:
@@ -114,7 +111,7 @@ export function SignUpForm({
                 value={cnpj}
                 onChange={handleCnpjChange}
                 disabled={fetchingCnpj}
-                maxLength={18} // 14 dígitos + 4 caracteres especiais
+                maxLength={18} 
               />
               {fetchingCnpj && (
                 <p className="text-sm text-muted-foreground">Buscando dados do CNPJ...</p>

@@ -60,13 +60,12 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
   const [produtoIdToDelete, setProdutoIdToDelete] = useState<number | null>(null);
   const router = useRouter();
   
-  // Estado para paginação
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Número de itens por página
+  const itemsPerPage = 10;
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    setCurrentPage(1); // Resetar para a primeira página ao pesquisar
+    setCurrentPage(1); 
   };
 
   const filteredData = data.filter(
@@ -75,7 +74,6 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
       produto?.ean?.includes(searchTerm)
   );
 
-  // Cálculos para paginação
   const totalItems = filteredData.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -103,7 +101,6 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
     }
   };
 
-  // Função para renderizar os números das páginas
   const renderPageNumbers = () => {
     const pageNumbers: (number | 'ellipsis-left' | 'ellipsis-right')[] = [];
     const maxVisiblePages = 5;

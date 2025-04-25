@@ -17,7 +17,6 @@ export function SectionCards({
   totalVendas: number;
   mediaVendasPorDia: number;
 }) {
-  // Função para determinar o texto de tendência com lógica aprimorada
   const renderTendencyText = (value: number, type: "faturado" | "vendas" | "media") => {
     const absoluteValue = Math.abs(value);
     let intensity = "";
@@ -80,7 +79,6 @@ export function SectionCards({
     }
   };
 
-  // Cards de cada item
   const faturadoTendency = renderTendencyText(totalFaturado, "faturado");
   const vendasTendency = renderTendencyText(totalVendas, "vendas");
   const mediaTendency = renderTendencyText(mediaVendasPorDia, "media");

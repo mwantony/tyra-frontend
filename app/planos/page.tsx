@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -75,25 +76,19 @@ export default function BillingPage() {
   const handleConfirmPlanChange = async () => {
     setIsLoading(true);
     try {
-      // Aqui você implementaria a chamada à API para atualizar o plano
-      // Exemplo: await updatePlano(restaurante.id, selectedPlan.id);
-
-      // Simulando uma requisição assíncrona
+    
       await associarPlano(restaurante.id, {
         plano_id: selectedPlan.id,
       });
 
-      // Atualiza o plano atual
       setCurrentPlan(selectedPlan);
       setIsConfirmationModalOpen(false);
       setIsPlansModalOpen(false);
 
-      // Aqui você pode adicionar um toast de sucesso
-      // toast.success("Plano atualizado com sucesso!");
+   
     } catch (error) {
       console.error("Erro ao atualizar plano:", error);
-      // Aqui você pode adicionar um toast de erro
-      // toast.error("Erro ao atualizar plano");
+   
     } finally {
       setIsLoading(false);
     }

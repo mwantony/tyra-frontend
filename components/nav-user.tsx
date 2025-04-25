@@ -26,7 +26,7 @@ import {
 import { useAuth } from "@/contexts/auth-provider";
 import { useState } from "react";
 import { Button } from "./ui/button";
-import CustomModal from "./custom-modal"; // Importando seu modal customizado
+import CustomModal from "./custom-modal"; 
 import Link from "next/link";
 
 export function NavUser({
