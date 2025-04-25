@@ -260,7 +260,7 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
                   href="#"
                   onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                   isActive={currentPage > 1}
-                >Anterior</PaginationPrevious>
+                />
               </PaginationItem>
               
               {renderPageNumbers()}
