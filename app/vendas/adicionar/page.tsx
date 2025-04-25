@@ -105,7 +105,7 @@ export default function NovaVendaPage() {
       await comandaAdicionar(comandaSelecionada, {
         produtos: itensSelecionados,
       });
-      toast.success("Venda registrada com sucesso!");
+      toast.success("Produtos adicionados com sucesso!");
       setComandaSelecionada("");
       setItensSelecionados([]);
       setEtapa(1);
