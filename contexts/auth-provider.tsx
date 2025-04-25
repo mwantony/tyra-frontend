@@ -91,6 +91,14 @@ export const AuthProvider = ({ children }: any) => {
         ) {
           router.push("/planos");
         }
+        if (
+          error.response.data.message ===
+          "Unauthenticated."
+        ) {
+          router.push("/login");
+          localStorage.removeItem("restaurante");
+          toast.error("Sua sessão expirou, faça login novamente.");
+        }
         if (restaurante.proxima_cobranca_em < dayjs().format("YYYY-MM-DD")) {
           toast.error(
             "Sua assinatura venceu, entre em contato com o suporte para mais informações."
