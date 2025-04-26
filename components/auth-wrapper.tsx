@@ -26,7 +26,7 @@ function ProtectedApp({ children }: { children: ReactNode }) {
       router.push("/login");
     }
 
-  }, [loading, restaurante, pathname, router, refreshRestaurante]);
+  }, [loading, restaurante, pathname, router]);
 
   
   if (!isAuthChecked) {
