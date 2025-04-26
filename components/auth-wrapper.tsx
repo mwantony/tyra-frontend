@@ -19,15 +19,21 @@ function ProtectedApp({ children }: { children: ReactNode }) {
       if (pathname !== "/signup") {
         router.push("/login");
       }
-    } else if (restaurante && !restaurante.nome_fantasia && pathname !== "/signup") {
+    } else if (
+      restaurante &&
+      !restaurante.nome_fantasia &&
+      pathname !== "/signup"
+    ) {
       router.push("/signup");
     }
-    
+
     setIsAuthChecked(true);
   }, [restaurante, pathname, router]);
 
   useEffect(() => {
-    refreshRestaurante();
+    if (pathname !== "/login" && pathname !== "/signup") {
+      refreshRestaurante();
+    }
   }, [pathname, refreshRestaurante]);
 
   if (!isAuthChecked) {
