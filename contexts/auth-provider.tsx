@@ -6,7 +6,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import api from "../services/api";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import dayjs from "dayjs";
 
 const AuthContext = createContext({});
@@ -14,7 +14,7 @@ const AuthContext = createContext({});
 export const AuthProvider = ({ children }: any) => {
   const router = useRouter();
   const [restaurante, setRestaurante] = useState<any>(null);
-
+  const pathname = usePathname();
   useEffect(() => {
     const storedRestaurante = JSON.parse(
       localStorage.getItem("restaurante") || "{}"
@@ -90,9 +90,11 @@ export const AuthProvider = ({ children }: any) => {
           router.push("/planos");
         }
         if (error.response.data.message === "Unauthenticated.") {
-          router.push("/login");
-          localStorage.removeItem("restaurante");
-          toast.error("Sua sessão expirou, faça login novamente.");
+          if (pathname !== "/signup") {
+            router.push("/login");
+            localStorage.removeItem("restaurante");
+            toast.error("Sua sessão expirou, faça login novamente.");
+          }
         }
         if (
           restaurante.proxima_cobranca_em < dayjs().format("YYYY-MM-DD") ||

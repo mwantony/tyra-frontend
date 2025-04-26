@@ -9,28 +9,27 @@ import { Spinner } from "./ui/spinner";
 import { usePathname, useRouter } from "next/navigation";
 
 function ProtectedApp({ children }: { children: ReactNode }) {
-  const { restaurante, loading, refreshRestaurante } = useAuth();
+  const { restaurante, refreshRestaurante } = useAuth();
   const [isAuthChecked, setIsAuthChecked] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  const [count, setCount] = useState(0)
+
   useEffect(() => {
-    if (count === 0 && restaurante?.id) {
-      setCount(1)
-      refreshRestaurante();
+    if (restaurante === null) {
+      if (pathname !== "/signup") {
+        router.push("/login");
+      }
+    } else if (restaurante && !restaurante.nome_fantasia && pathname !== "/signup") {
+      router.push("/signup");
     }
-    if (loading) return;
-
+    
     setIsAuthChecked(true);
-    if (restaurante === null) return;
+  }, [restaurante, pathname, router]);
 
-    if (!restaurante?.nome_fantasia && pathname !== "/signup") {
-      router.push("/login");
-    }
+  useEffect(() => {
+    refreshRestaurante();
+  }, [pathname, refreshRestaurante]);
 
-  }, [loading, restaurante, pathname, router, refreshRestaurante, count]);
-
-  
   if (!isAuthChecked) {
     return <Spinner />;
   }
@@ -44,8 +43,6 @@ function ProtectedApp({ children }: { children: ReactNode }) {
   } else {
     return <Spinner />;
   }
-
-  // Enquanto o redirecionamento acontece, pode exibir um Spinner
 }
 
 export default function AuthWrapper({ children }: { children: ReactNode }) {
