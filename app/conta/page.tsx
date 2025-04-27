@@ -142,9 +142,9 @@ export default function RestaurantAccountPage() {
   };
 
   return (
-    <div className="space-y-6 p-6">
+    <div >
       <Toaster></Toaster>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between space-y-6 p-6">
         <div>
           <h1 className="text-2xl font-bold">Minha Conta</h1>
           <p className="text-muted-foreground">
@@ -155,9 +155,9 @@ export default function RestaurantAccountPage() {
 
       <Separator />
 
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-3 space-y-6 p-6">
         {/* Coluna 1: Informações do Restaurante */}
-        <div className="space-y-6 md:col-span-2">
+        <div className=" md:col-span-2">
           <Card>
             <CardHeader>
               <CardTitle>Informações do Restaurante</CardTitle>
