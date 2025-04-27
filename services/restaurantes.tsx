@@ -10,6 +10,17 @@ export async function getRestaurante(id: any) {
     throw error;
   }
 }
+export async function getJsonRestaurante(id: string) {
+  const response = await api.get(`/restaurantes/${id}`);
+  const jsonString = JSON.stringify(response.data, null, 2);
+  const blob = new Blob([jsonString], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  
+  return {
+    url,
+    fileName: `restaurante_${id}_${new Date().toISOString().split('T')[0]}.json`
+  };
+}
 export async function putRestaurante(id: any, restaurante) {
   try {
     const response = await api.put(`/restaurantes/${id}`, restaurante);

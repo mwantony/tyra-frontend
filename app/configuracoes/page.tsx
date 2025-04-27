@@ -16,7 +16,6 @@ import { Separator } from "@/components/ui/separator";
 
 import { useState } from "react";
 
-import { AlertDialogContent } from "@radix-ui/react-alert-dialog";
 import {
   Dialog,
   DialogClose,
@@ -27,7 +26,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import { deleteRestaurante } from "@/services/restaurantes";
+import { deleteRestaurante, getJsonRestaurante } from "@/services/restaurantes";
 import { useAuth } from "@/contexts/auth-provider";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
@@ -41,9 +40,22 @@ export default function SettingsPage() {
   const handleExportData = async () => {
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const { url, fileName } = await getJsonRestaurante(restaurante.id);
+      
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      
+      setTimeout(() => {
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }, 100);
+  
     } catch (error) {
-      console.error("Erro ao exportar dados:", error);
+      toast.error("Erro ao exportar dados");
+      console.error("Erro na exportação:", error);
     } finally {
       setIsLoading(false);
     }
