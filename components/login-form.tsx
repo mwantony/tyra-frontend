@@ -24,7 +24,7 @@ export function LoginForm({
     e.preventDefault();
     setLoading(true);
     try {
-      await login(email, password)
+      await login(email, password);
     } catch (error) {
       console.error("Erro ao fazer login:", error);
     } finally {
@@ -92,7 +92,7 @@ export function LoginForm({
             <Image
               src={lofg}
               alt="Imagem"
-              className="max-w-[250px] h-auto mb-2"
+              className="hidden md:block max-w-[250px] h-auto mb-2"
             />
           </div>
         </CardContent>
@@ -103,7 +103,6 @@ export function LoginForm({
         <a href="#">Termos de Serviço</a> e{" "}
         <a href="#">Política de Privacidade</a>.
       </div>
-
     </div>
   );
 }
