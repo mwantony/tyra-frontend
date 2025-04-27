@@ -138,9 +138,9 @@ export default function BillingPage() {
     </Card>
   );
   return (
-    <div className="space-y-6 p-6">
+    <div className="flex flex-col h-full">
       <div className="flex items-center justify-between">
-        <div>
+        <div className="p-6">
           <h1 className="text-2xl font-bold">Planos e Cobranças</h1>
           <p className="text-muted-foreground">
             Gerencie seu plano de assinatura e informações de pagamento
@@ -150,7 +150,7 @@ export default function BillingPage() {
 
       <Separator />
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2 space-y-6 p-6">
         {isLoading ? (
           <PlanCardSkeleton />
         ) : currentPlan ? (

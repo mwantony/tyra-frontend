@@ -30,7 +30,7 @@ export default function Page() {
     });
   };
   const handleGerarPdf = async () => {
-    await gerarPdf(date.from, date.to).then(res => console.log(res))
+    await gerarPdf(date.from, date.to).then((res) => console.log(res));
   };
 
   useEffect(() => {
@@ -48,9 +48,14 @@ export default function Page() {
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-          <div className="flex justify-end items-center gap-x-4 px-4 lg:px-6">
+          <div className="flex flex-col items-stretch gap-y-4 px-4 lg:flex-row lg:justify-end lg:items-center lg:gap-x-4 lg:px-6">
             <DatePickerWithRange onChange={handleDateChange} />
-            <Button onClick={() => handleGerarPdf()}>Download</Button>
+            <Button
+              className="w-full lg:w-auto"
+              onClick={() => handleGerarPdf()}
+            >
+              Download
+            </Button>
           </div>
 
           {loading ? (

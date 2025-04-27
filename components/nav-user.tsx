@@ -26,7 +26,7 @@ import {
 import { useAuth } from "@/contexts/auth-provider";
 import { useState } from "react";
 import { Button } from "./ui/button";
-import CustomModal from "./custom-modal"; 
+import CustomModal from "./custom-modal";
 import Link from "next/link";
 
 export function NavUser({
@@ -38,13 +38,20 @@ export function NavUser({
     avatar: string;
   };
 }) {
-  const { isMobile } = useSidebar();
+  const { isMobile, setOpenMobile } = useSidebar(); // Adicione setOpenMobile
   const { restaurante, logout } = useAuth();
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleLogout = () => {
     logout();
     setOpenDialog(false);
+  };
+
+  // Função para fechar o sidebar no mobile
+  const handleItemClick = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
   };
 
   return (
@@ -62,7 +69,6 @@ export function NavUser({
                   alt={restaurante.nome_fantasia}
                 />
                 <AvatarFallback className="rounded-lg">
-                  {" "}
                   {restaurante.nome_fantasia?.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
@@ -103,26 +109,29 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <Link href={"/conta"}>
-                <DropdownMenuItem>
-                  <UserCircleIcon />
-                  Conta
+              <Link href="/conta" passHref>
+                <DropdownMenuItem onClick={handleItemClick}>
+                  <UserCircleIcon className="mr-2 h-4 w-4" />
+                  <span>Conta</span>
                 </DropdownMenuItem>
               </Link>
-              <Link href={"/planos"}>
-                <DropdownMenuItem>
-                  <CreditCardIcon />
-                  Planos e Cobranças
+              <Link href="/planos" passHref>
+                <DropdownMenuItem onClick={handleItemClick}>
+                  <CreditCardIcon className="mr-2 h-4 w-4" />
+                  <span>Planos e Cobranças</span>
                 </DropdownMenuItem>
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="text-destructive focus:text-destructive"
-              onClick={() => setOpenDialog(true)}
+              onClick={() => {
+                setOpenDialog(true);
+                handleItemClick(); // Fecha o sidebar ao clicar em Sair
+              }}
             >
-              <LogOutIcon className="text-destructive focus:text-destructive"></LogOutIcon>
-              Sair
+              <LogOutIcon className="mr-2 h-4 w-4 text-destructive" />
+              <span>Sair</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
