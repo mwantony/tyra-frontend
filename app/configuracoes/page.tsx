@@ -223,11 +223,11 @@ export default function SettingsPage() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant='outline' disabled={isLoading}>Cancelar</Button>
+            <Button variant='outline' onClick={() => setIsDeleteDialogOpen(false)} disabled={isLoading}>Cancelar</Button>
             <Button
               onClick={handleDeleteAccount}
               disabled={isLoading}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              variant={"destructive"}
             >
               {isLoading ? "Excluindo..." : "Excluir Conta"}
             </Button>
