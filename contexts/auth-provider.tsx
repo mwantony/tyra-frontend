@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }: any) => {
           }
         }
         if (error.response.data.message === "Unauthenticated.") {
-          if (pathname !== "/signup") {
+          if (pathname !== "/signup" && pathname !== "/login") {
             router.push("/login");
             localStorage.removeItem("restaurante");
             toast.error("Sua sessão expirou, faça login novamente.");
