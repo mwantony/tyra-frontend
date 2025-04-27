@@ -41,18 +41,17 @@ export default function SettingsPage() {
     setIsLoading(true);
     try {
       const { url, fileName } = await getJsonRestaurante(restaurante.id);
-      
-      const link = document.createElement('a');
+
+      const link = document.createElement("a");
       link.href = url;
       link.download = fileName;
       document.body.appendChild(link);
       link.click();
-      
+
       setTimeout(() => {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
       }, 100);
-  
     } catch (error) {
       toast.error("Erro ao exportar dados");
       console.error("Erro na exportação:", error);
@@ -86,7 +85,7 @@ export default function SettingsPage() {
       </div>
       <Separator />
       <div className="flex-1 p-4 lg:p-6 space-y-6 overflow-auto">
-      {/* Aparência */}
+        {/* Aparência */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -114,25 +113,32 @@ export default function SettingsPage() {
             </div>
 
             <div className="flex flex-col gap-4 items-start justify-between rounded-lg border p-4 lg:flex-row lg:items-center">
-  <div className="space-y-0.5">
-    <Label className="text-base">Densidade</Label>
-    <p className="text-sm text-muted-foreground">
-      Ajuste o espaçamento dos elementos
-    </p>
-  </div>
-  <div className="flex flex-wrap gap-2 w-full lg:w-auto">
-    <Button variant="outline" size="sm" className="flex-1 lg:flex-none">
-      Compacto
-    </Button>
-    <Button size="sm" className="flex-1 lg:flex-none">
-      Padrão
-    </Button>
-    <Button variant="outline" size="sm" className="flex-1 lg:flex-none">
-      Amplo
-    </Button>
-  </div>
-</div>
-
+              <div className="space-y-0.5">
+                <Label className="text-base">Densidade</Label>
+                <p className="text-sm text-muted-foreground">
+                  Ajuste o espaçamento dos elementos
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2 w-full lg:w-auto">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 lg:flex-none"
+                >
+                  Compacto
+                </Button>
+                <Button size="sm" className="flex-1 lg:flex-none">
+                  Padrão
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 lg:flex-none"
+                >
+                  Amplo
+                </Button>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
@@ -226,7 +232,13 @@ export default function SettingsPage() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant='outline' onClick={() => setIsDeleteDialogOpen(false)} disabled={isLoading}>Cancelar</Button>
+            <Button
+              variant="outline"
+              onClick={() => setIsDeleteDialogOpen(false)}
+              disabled={isLoading}
+            >
+              Cancelar
+            </Button>
             <Button
               onClick={handleDeleteAccount}
               disabled={isLoading}

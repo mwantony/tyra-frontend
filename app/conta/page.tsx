@@ -142,7 +142,7 @@ export default function RestaurantAccountPage() {
   };
 
   return (
-    <div >
+    <div>
       <Toaster></Toaster>
       <div className="flex items-center justify-between space-y-6 p-6">
         <div>
@@ -155,7 +155,7 @@ export default function RestaurantAccountPage() {
 
       <Separator />
 
-      <div className="grid gap-6 md:grid-cols-3 space-y-6 p-6">
+      <div className="grid gap-6 p-4 md:p-6 md:grid-cols-3 space-y-6">
         {/* Coluna 1: Informações do Restaurante */}
         <div className=" md:col-span-2">
           <Card>
@@ -245,7 +245,6 @@ export default function RestaurantAccountPage() {
                   </div>
                 </div>
 
-         
                 <div className="flex justify-end gap-2 pt-4">
                   {isEditing ? (
                     <>
@@ -302,14 +301,18 @@ export default function RestaurantAccountPage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button className="w-full" variant="outline">againplayi7@gmail.com</Button>
+                <Button className="w-full" variant="outline">
+                  againplayi7@gmail.com
+                </Button>
               </a>
               <a
                 href="https://wa.me/5549991042777"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button className="w-full mt-4" variant="outline">(49) 99104-2777</Button>
+                <Button className="w-full mt-4" variant="outline">
+                  (49) 99104-2777
+                </Button>
               </a>
             </CardContent>
           </Card>
