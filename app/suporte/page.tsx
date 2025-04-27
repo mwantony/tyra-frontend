@@ -3,30 +3,46 @@
 "use client";
 
 import { useTheme } from "@/contexts/theme-provider";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { Mail, Phone, MessageSquare, AlertCircle, CheckCircle2 } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MessageSquare,
+  AlertCircle,
+  CheckCircle2,
+} from "lucide-react";
 
 export default function SupportPage() {
   const { theme } = useTheme();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionStatus, setSubmissionStatus] = useState<"idle" | "success" | "error">("idle");
+  const [submissionStatus, setSubmissionStatus] = useState<
+    "idle" | "success" | "error"
+  >("idle");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     subject: "",
-    message: ""
+    message: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -37,13 +53,13 @@ export default function SupportPage() {
 
     try {
       // Simulação de envio do formulário
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise((resolve) => setTimeout(resolve, 1500));
       setSubmissionStatus("success");
       setFormData({
         name: "",
         email: "",
         subject: "",
-        message: ""
+        message: "",
       });
     } catch (error) {
       setSubmissionStatus("error");
@@ -81,7 +97,10 @@ export default function SupportPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-1">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium mb-1"
+                  >
                     Nome
                   </label>
                   <Input
@@ -94,7 +113,10 @@ export default function SupportPage() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-1">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium mb-1"
+                  >
                     E-mail
                   </label>
                   <Input
@@ -108,9 +130,12 @@ export default function SupportPage() {
                   />
                 </div>
               </div>
-              
+
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium mb-1">
+                <label
+                  htmlFor="subject"
+                  className="block text-sm font-medium mb-1"
+                >
                   Assunto
                 </label>
                 <Input
@@ -122,9 +147,12 @@ export default function SupportPage() {
                   required
                 />
               </div>
-              
+
               <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-1">
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium mb-1"
+                >
                   Mensagem
                 </label>
                 <Textarea
@@ -137,26 +165,12 @@ export default function SupportPage() {
                   required
                 />
               </div>
-              
+
               <div className="flex justify-end">
                 <Button type="submit" disabled={isSubmitting}>
                   {isSubmitting ? "Enviando..." : "Enviar Mensagem"}
                 </Button>
               </div>
-              
-              {submissionStatus === "success" && (
-                <div className="flex items-center gap-2 text-green-600">
-                  <CheckCircle2 className="h-4 w-4" />
-                  <span>Mensagem enviada com sucesso! Entraremos em contato em breve.</span>
-                </div>
-              )}
-              
-              {submissionStatus === "error" && (
-                <div className="flex items-center gap-2 text-red-600">
-                  <AlertCircle className="h-4 w-4" />
-                  <span>Ocorreu um erro ao enviar sua mensagem. Por favor, tente novamente.</span>
-                </div>
-              )}
             </form>
           </CardContent>
         </Card>
@@ -181,13 +195,17 @@ export default function SupportPage() {
               <p className="text-sm text-muted-foreground mb-3">
                 Envie um e-mail diretamente para nossa equipe de suporte
               </p>
-              <a href="mailto:againplayi7@gmail.com" target="_blank" rel="noopener noreferrer">
+              <a
+                href="mailto:againplayi7@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button variant="outline" size="sm">
                   againplayi7@gmail.com
                 </Button>
               </a>
             </div>
-            
+
             <div className="rounded-lg border p-4">
               <div className="flex items-center gap-3 mb-3">
                 <Phone className="h-5 w-5 text-primary" />
@@ -196,7 +214,11 @@ export default function SupportPage() {
               <p className="text-sm text-muted-foreground mb-3">
                 Fale diretamente com um de nossos atendentes
               </p>
-              <a href="https://wa.me/5549991042777" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://wa.me/5549991042777"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button variant="outline" size="sm">
                   (49) 99104-2777
                 </Button>
@@ -219,24 +241,32 @@ export default function SupportPage() {
             <div className="border-b pb-4">
               <h3 className="font-medium mb-2">Como redefinir minha senha?</h3>
               <p className="text-sm text-muted-foreground">
-                Vá para a página de login e clique em "Esqueci minha senha". Você receberá um e-mail com instruções para redefinir sua senha.
+                Vá para a página de login e clique em "Esqueci minha senha".
+                Você receberá um e-mail com instruções para redefinir sua senha.
               </p>
             </div>
-            
+
             <div className="border-b pb-4">
-              <h3 className="font-medium mb-2">Quais são os horários de atendimento?</h3>
+              <h3 className="font-medium mb-2">
+                Quais são os horários de atendimento?
+              </h3>
               <p className="text-sm text-muted-foreground">
-                Nosso atendimento funciona 24/7, ou seja, todos os dias 24 horas.
+                Nosso atendimento funciona 24/7, ou seja, todos os dias 24
+                horas.
               </p>
             </div>
-            
+
             <div className="border-b pb-4">
-              <h3 className="font-medium mb-2">Como cancelar minha assinatura?</h3>
+              <h3 className="font-medium mb-2">
+                Como cancelar minha assinatura?
+              </h3>
               <p className="text-sm text-muted-foreground">
-                Acesse as configurações da sua conta, vá para "Assinatura" e clique em "Cancelar assinatura". O cancelamento será efetivado no final do período atual.
+                Acesse as configurações da sua conta, vá para "Assinatura" e
+                clique em "Cancelar assinatura". O cancelamento será efetivado
+                no final do período atual.
               </p>
             </div>
-            
+
             <Button variant="link" className="pl-0">
               Ver todas as perguntas frequentes
             </Button>
