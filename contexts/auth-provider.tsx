@@ -85,9 +85,13 @@ export const AuthProvider = ({ children }: any) => {
           error.response.data.message ===
           "Você precisa ter um plano ativo para usar o sistema."
         ) {
-          toast.error(error.response.data.message);
+          if (pathname !== "/planos") {
+            toast.error(error.response.data.message);
+          }
 
-          router.push("/planos");
+          if (pathname !== "/suporte" && pathname !== "/conta") {
+            router.push("/planos");
+          }
         }
         if (error.response.data.message === "Unauthenticated.") {
           if (pathname !== "/signup") {
