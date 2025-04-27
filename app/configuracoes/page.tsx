@@ -85,8 +85,8 @@ export default function SettingsPage() {
         </div>
       </div>
       <Separator />
-      <div className="flex-1 p-6 space-y-6 overflow-auto">
-        {/* Aparência */}
+      <div className="flex-1 p-4 lg:p-6 space-y-6 overflow-auto">
+      {/* Aparência */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -113,23 +113,26 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <Label className="text-base">Densidade</Label>
-                <p className="text-sm text-muted-foreground">
-                  Ajuste o espaçamento dos elementos
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm">
-                  Compacto
-                </Button>
-                <Button size="sm">Padrão</Button>
-                <Button variant="outline" size="sm">
-                  Amplo
-                </Button>
-              </div>
-            </div>
+            <div className="flex flex-col gap-4 items-start justify-between rounded-lg border p-4 lg:flex-row lg:items-center">
+  <div className="space-y-0.5">
+    <Label className="text-base">Densidade</Label>
+    <p className="text-sm text-muted-foreground">
+      Ajuste o espaçamento dos elementos
+    </p>
+  </div>
+  <div className="flex flex-wrap gap-2 w-full lg:w-auto">
+    <Button variant="outline" size="sm" className="flex-1 lg:flex-none">
+      Compacto
+    </Button>
+    <Button size="sm" className="flex-1 lg:flex-none">
+      Padrão
+    </Button>
+    <Button variant="outline" size="sm" className="flex-1 lg:flex-none">
+      Amplo
+    </Button>
+  </div>
+</div>
+
           </CardContent>
         </Card>
 
