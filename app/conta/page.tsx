@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/auth-provider";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -246,25 +245,7 @@ export default function RestaurantAccountPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-4">
-                  <div className="space-y-1">
-                    <Label>Notificações por e-mail</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Receber alertas e atualizações
-                    </p>
-                  </div>
-                  <Switch
-                    checked={restaurantData.notificationEnabled}
-                    onCheckedChange={(checked) =>
-                      setRestaurantData({
-                        ...restaurantData,
-                        notificationEnabled: checked,
-                      })
-                    }
-                    disabled={!isEditing || isLoading}
-                  />
-                </div>
-
+         
                 <div className="flex justify-end gap-2 pt-4">
                   {isEditing ? (
                     <>

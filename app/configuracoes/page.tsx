@@ -3,32 +3,67 @@
 
 import { useTheme } from "@/contexts/theme-provider";
 import { Switch } from "@/components/ui/switch";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 import { useState } from "react";
 
+import { AlertDialogContent } from "@radix-ui/react-alert-dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+
+import { deleteRestaurante } from "@/services/restaurantes";
+import { useAuth } from "@/contexts/auth-provider";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
+
 export default function SettingsPage() {
   const { theme, toggleTheme } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const { restaurante } = useAuth();
 
   const handleExportData = async () => {
     setIsLoading(true);
     try {
-      // Simulação de exportação de dados
-      await new Promise(resolve => setTimeout(resolve, 1500));
-     
+      await new Promise((resolve) => setTimeout(resolve, 1500));
     } catch (error) {
-   
+      console.error("Erro ao exportar dados:", error);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleDeleteAccount = async () => {
+    setIsLoading(true);
+    try {
+      await deleteRestaurante(restaurante.id);
+      toast.success("Conta excluída com sucesso");
+    } catch (error) {
+      toast.error("Erro ao excluir conta");
+    } finally {
+      setIsLoading(false);
+      setIsDeleteDialogOpen(false);
+    }
+  };
   return (
     <div className="flex flex-col h-full">
+      <Toaster></Toaster>
       <div className="flex items-center justify-between p-6">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Configurações</h1>
@@ -37,9 +72,7 @@ export default function SettingsPage() {
           </p>
         </div>
       </div>
-
       <Separator />
-
       <div className="flex-1 p-6 space-y-6 overflow-auto">
         {/* Aparência */}
         <Card>
@@ -60,9 +93,9 @@ export default function SettingsPage() {
                 </p>
               </div>
               <div className="flex items-center gap-2">
-                <Switch 
-                  checked={theme === "dark"} 
-                  onCheckedChange={toggleTheme} 
+                <Switch
+                  checked={theme === "dark"}
+                  onCheckedChange={toggleTheme}
                   aria-label="Alternar tema"
                 />
               </div>
@@ -139,21 +172,13 @@ export default function SettingsPage() {
                   Baixe uma cópia dos seus dados em formato JSON
                 </p>
               </div>
-              <Button 
-                variant="outline" 
-                className="w-fit" 
+              <Button
+                variant="outline"
+                className="w-fit"
                 onClick={handleExportData}
                 disabled={isLoading}
               >
-                {isLoading ? (
-                  <>
-                    Exportando...
-                  </>
-                ) : (
-                  <>
-                    Exportar Dados
-                  </>
-                )}
+                {isLoading ? "Exportando..." : "Exportar Dados"}
               </Button>
             </div>
 
@@ -164,9 +189,10 @@ export default function SettingsPage() {
                   Esta ação não pode ser desfeita
                 </p>
               </div>
-              <Button 
-                variant="destructive" 
-                className="mt-4 w-fit" 
+              <Button
+                variant="destructive"
+                className="mt-4 w-fit"
+                onClick={() => setIsDeleteDialogOpen(true)}
                 disabled={isLoading}
               >
                 Excluir Conta
@@ -174,7 +200,28 @@ export default function SettingsPage() {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </div>{" "}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Tem certeza absoluta?</DialogTitle>
+            <DialogDescription>
+              Essa ação não pode ser desfeita. Isso excluirá permanentemente sua
+              conta e removerá todos os dados associados do nosso servidor.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant='outline' disabled={isLoading}>Cancelar</Button>
+            <Button
+              onClick={handleDeleteAccount}
+              disabled={isLoading}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {isLoading ? "Excluindo..." : "Excluir Conta"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

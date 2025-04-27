@@ -15,7 +15,16 @@ export async function putRestaurante(id: any, restaurante) {
     const response = await api.put(`/restaurantes/${id}`, restaurante);
     return response.data;
   } catch (error) {
-    console.error("Erro ao buscar restaurante:", error);
+    console.error("Erro ao atualizar restaurante:", error);
+    throw error;
+  }
+}
+export async function deleteRestaurante(id: any) {
+  try {
+    const response = await api.delete(`/restaurantes/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao deletar restaurante:", error);
     throw error;
   }
 }
