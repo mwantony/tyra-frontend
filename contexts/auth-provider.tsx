@@ -86,7 +86,7 @@ export const AuthProvider = ({ children }: any) => {
           error.response.data.message ===
           "Você precisa ter um plano ativo para usar o sistema."
         ) {
-          if (pathname !== "/planos" && pathname !== "/suporte") {
+          if (pathname !== "/planos" && pathname !== "/suporte" && pathname !== "/conta") {
             toast.error(error.response.data.message);
           }
 
