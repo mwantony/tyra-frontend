@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { usePathname, useRouter } from "next/navigation";
 import dayjs from "dayjs";
+import path from "node:path/posix";
 
 const AuthContext = createContext({});
 
@@ -85,7 +86,7 @@ export const AuthProvider = ({ children }: any) => {
           error.response.data.message ===
           "Você precisa ter um plano ativo para usar o sistema."
         ) {
-          if (pathname !== "/planos") {
+          if (pathname !== "/planos" && pathname !== "/suporte") {
             toast.error(error.response.data.message);
           }
 
