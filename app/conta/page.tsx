@@ -144,7 +144,7 @@ export default function RestaurantAccountPage() {
   return (
     <div>
       <Toaster></Toaster>
-      <div className="flex items-center justify-between space-y-6 p-6">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-4 md:p-6">
         <div>
           <h1 className="text-2xl font-bold">Minha Conta</h1>
           <p className="text-muted-foreground">
@@ -155,7 +155,7 @@ export default function RestaurantAccountPage() {
 
       <Separator />
 
-      <div className="grid gap-6 p-4 md:p-6 md:grid-cols-3 space-y-6">
+      <div className="grid gap-6 p-4 md:p-6 md:grid-cols-3">
         {/* Coluna 1: Informações do Restaurante */}
         <div className=" md:col-span-2">
           <Card>
@@ -186,7 +186,7 @@ export default function RestaurantAccountPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="nome_fantasia">Nome do Restaurante</Label>
                     {isEditing ? (
@@ -268,7 +268,7 @@ export default function RestaurantAccountPage() {
           </Card>
 
           {/* Card de Segurança */}
-          <Card>
+          <Card className="mt-6">
             <CardHeader>
               <CardTitle>Segurança</CardTitle>
               <CardDescription>
