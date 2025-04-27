@@ -81,8 +81,8 @@ export default function SupportPage() {
 
       <Separator />
 
-      <div className="flex-1 p-6 space-y-6 overflow-auto">
-        {/* Formulário de Contato */}
+      <div className="flex-1 p-4 lg:p-6 space-y-6 overflow-auto">
+      {/* Formulário de Contato */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">

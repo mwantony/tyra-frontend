@@ -70,7 +70,8 @@ export function DatePickerWithRange({
             {date?.from ? (
               date.to ? (
                 <>
-                  {format(date.from, "dd/MM/yyyy")} - {format(date.to, "dd/MM/yyyy")}
+                  {format(date.from, "dd/MM/yyyy")} -{" "}
+                  {format(date.to, "dd/MM/yyyy")}
                 </>
               ) : (
                 format(date.from, "dd/MM/yyyy")
@@ -80,8 +81,11 @@ export function DatePickerWithRange({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar  
+        <PopoverContent
+          className="w-auto p-0"
+          align="start"
+        >
+          <Calendar
             initialFocus
             mode="range"
             selected={date}
