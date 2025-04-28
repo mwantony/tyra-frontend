@@ -13,6 +13,7 @@ import { DatePickerWithRange } from "@/components/date-range-picker";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { filtrarVendas, gerarPdf } from "@/services/vendas";
+import { Card } from "@/components/ui/card";
 
 export default function Page() {
   const [date, setDate] = React.useState({
@@ -82,7 +83,9 @@ export default function Page() {
               </div>
 
               <div className="px-4 lg:px-6">
-                <DataTableVendas data={vendaFiltrada?.ultimas_vendas} />
+                <Card>
+                  <DataTableVendas data={vendaFiltrada?.ultimas_vendas} />
+                </Card>
               </div>
             </>
           )}

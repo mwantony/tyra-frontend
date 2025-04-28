@@ -30,7 +30,7 @@ import CustomModal from "./custom-modal";
 import Link from "next/link";
 
 export function NavUser() {
-  const { isMobile, setOpenMobile } = useSidebar(); // Adicione setOpenMobile
+  const { isMobile, setOpenMobile } = useSidebar(); 
   const { restaurante, logout } = useAuth();
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -39,7 +39,6 @@ export function NavUser() {
     setOpenDialog(false);
   };
 
-  // Função para fechar o sidebar no mobile
   const handleItemClick = () => {
     if (isMobile) {
       setOpenMobile(false);
