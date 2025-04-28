@@ -13,8 +13,10 @@ function ProtectedApp({ children }: { children: ReactNode }) {
   const [isAuthChecked, setIsAuthChecked] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const [count, setCount] = useState(0);
   useEffect(() => {
-    if (restaurante?.id) {
+    if (restaurante?.id && count === 0) {
+      setCount(1);
       refreshRestaurante();
     }
     if (loading) return;
@@ -25,7 +27,7 @@ function ProtectedApp({ children }: { children: ReactNode }) {
     if (!restaurante?.nome_fantasia && pathname !== "/signup") {
       router.push("/login");
     }
-  }, [loading, restaurante, pathname, router, refreshRestaurante]);
+  }, [loading, restaurante, pathname, router, refreshRestaurante, count]);
 
   if (!isAuthChecked) {
     return <Spinner />;
