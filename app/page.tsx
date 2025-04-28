@@ -51,7 +51,7 @@ export default function Page() {
           <div className="flex flex-col items-stretch gap-y-4 px-4 lg:flex-row lg:justify-end lg:items-center lg:gap-x-4 lg:px-6">
             <DatePickerWithRange onChange={handleDateChange} />
             <Button
-              className="w-full lg:w-auto"
+              className="w-full md:w-auto"
               onClick={() => handleGerarPdf()}
             >
               Download
