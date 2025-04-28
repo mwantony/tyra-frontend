@@ -82,7 +82,7 @@ export default function SupportPage() {
       <Separator />
 
       <div className="flex-1 p-4 lg:p-6 space-y-6 overflow-auto">
-      {/* Formulário de Contato */}
+        {/* Formulário de Contato */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -267,9 +267,15 @@ export default function SupportPage() {
               </p>
             </div>
 
-            <Button variant="link" className="pl-0">
-              Ver todas as perguntas frequentes
-            </Button>
+            <a
+              href="https://wa.me/5549991042777?text=Olá, gostaria de fazer uma pergunta sobre o sistema."
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="link" className="pl-0">
+                Fazer uma nova pergunta
+              </Button>
+            </a>
           </CardContent>
         </Card>
       </div>
