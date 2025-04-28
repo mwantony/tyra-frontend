@@ -39,12 +39,11 @@ const CustomModal: React.FC<CustomModalProps> = ({
             : "opacity-0 pointer-events-none"
         }`}
         style={{
-          backgroundColor: "rgba(0, 0, 0, 0.2)",
-          backdropFilter: "blur(5px)",
+          backgroundColor: "rgba(0, 0, 0, 0.4)",
         }}
       >
         <div
-          className={`bg-white dark:bg-black p-5 rounded-lg shadow-lg w-[600px] max-w-full relative transition-all duration-300 ease-in-out transform ${
+          className={`bg-white dark:bg-[#0a0a0a] border p-5 rounded-lg shadow-lg w-[600px] max-w-full relative transition-all duration-300 ease-in-out transform ${
             isOpen ? "scale-100" : "scale-95"
           }`}
         >
