@@ -130,7 +130,7 @@ export default function NovaVendaPage() {
 
   if (loading) {
     return (
-      <div className="p-8 w-full space-y-6">
+      <div className="p-4 md:p-8 w-full space-y-6">
         <Skeleton className="h-10 w-48 mx-auto" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-4">
