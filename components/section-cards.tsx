@@ -1,4 +1,8 @@
-import { TrendingDownIcon, TrendingUpIcon,  TrendingUpDownIcon } from "lucide-react";
+import {
+  TrendingDownIcon,
+  TrendingUpIcon,
+  TrendingUpDownIcon,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -7,6 +11,34 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useSpring, animated } from "@react-spring/web";
+
+const AnimatedNumber = ({
+  value,
+  isCurrency = false,
+}: {
+  value: number;
+  isCurrency?: boolean;
+}) => {
+  const { number } = useSpring({
+    from: { number: 0 },
+    to: { number: value },
+    config: { tension: 120, friction: 14 },
+  });
+
+  return (
+    <animated.div>
+      {number.to((n) =>
+        isCurrency
+          ? new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(n)
+          : Math.round(n)
+      )}
+    </animated.div>
+  );
+};
 
 export function SectionCards({
   totalFaturado,
@@ -17,10 +49,13 @@ export function SectionCards({
   totalVendas: number;
   mediaVendasPorDia: number;
 }) {
-  const renderTendencyText = (value: number, type: "faturado" | "vendas" | "media") => {
+  const renderTendencyText = (
+    value: number,
+    type: "faturado" | "vendas" | "media"
+  ) => {
     const absoluteValue = Math.abs(value);
     let intensity = "";
-    
+
     if (absoluteValue > 20) intensity = "Significativa ";
     else if (absoluteValue > 10) intensity = "";
     else if (absoluteValue > 5) intensity = "Ligeira ";
@@ -30,51 +65,82 @@ export function SectionCards({
       const variations = {
         faturado: {
           text: `${intensity}Alta no faturamento`,
-          detail: absoluteValue > 15 ? "Excelente desempenho financeiro" : "Bom desempenho financeiro"
+          detail:
+            absoluteValue > 15
+              ? "Excelente desempenho financeiro"
+              : "Bom desempenho financeiro",
         },
         vendas: {
           text: `${intensity}Aumento nas vendas`,
-          detail: absoluteValue > 15 ? "Demanda em crescimento" : "Vendas consistentes"
+          detail:
+            absoluteValue > 15
+              ? "Demanda em crescimento"
+              : "Vendas consistentes",
         },
         media: {
           text: `${intensity}Alta na média diária`,
-          detail: absoluteValue > 15 ? "Clientes mais ativos" : "Engajamento estável"
-        }
+          detail:
+            absoluteValue > 15 ? "Clientes mais ativos" : "Engajamento estável",
+        },
       };
-      
+
       return {
         ...variations[type],
         icon: <TrendingUpIcon className="size-4" />,
-        badge: <Badge variant="outline" className="flex gap-1 rounded-lg text-xs"><TrendingUpIcon className="size-3" />+{value}%</Badge>,
+        badge: (
+          <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
+            <TrendingUpIcon className="size-3" />+{value}%
+          </Badge>
+        ),
       };
     } else if (value < 0) {
       const variations = {
         faturado: {
           text: `${intensity}queda no faturamento`,
-          detail: absoluteValue > 15 ? "Revisar estratégias" : "Monitorar tendência"
+          detail:
+            absoluteValue > 15 ? "Revisar estratégias" : "Monitorar tendência",
         },
         vendas: {
           text: `${intensity}redução nas vendas`,
-          detail: absoluteValue > 15 ? "Necessidade de ações" : "Observar comportamento"
+          detail:
+            absoluteValue > 15
+              ? "Necessidade de ações"
+              : "Observar comportamento",
         },
         media: {
           text: `${intensity}baixa na média diária`,
-          detail: absoluteValue > 15 ? "Clientes menos ativos" : "Leve redução no engajamento"
-        }
+          detail:
+            absoluteValue > 15
+              ? "Clientes menos ativos"
+              : "Leve redução no engajamento",
+        },
       };
-      
+
       return {
         ...variations[type],
         icon: <TrendingDownIcon className="size-4" />,
-        badge: <Badge variant="outline" className="flex gap-1 rounded-lg text-xs"><TrendingDownIcon className="size-3" />-{absoluteValue}%</Badge>,
+        badge: (
+          <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
+            <TrendingDownIcon className="size-3" />-{absoluteValue}%
+          </Badge>
+        ),
       };
     } else {
       return {
         text: "Estabilidade",
-        detail: type === "faturado" ? "Faturamento consistente" : 
-               type === "vendas" ? "Vendas estáveis" : "Média diária mantida",
+        detail:
+          type === "faturado"
+            ? "Faturamento consistente"
+            : type === "vendas"
+            ? "Vendas estáveis"
+            : "Média diária mantida",
         icon: <TrendingUpDownIcon className="size-4" />,
-        badge: <Badge variant="outline" className="flex gap-1 rounded-lg text-xs"><TrendingUpDownIcon className="size-3" />0%</Badge>,
+        badge: (
+          <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
+            <TrendingUpDownIcon className="size-3" />
+            0%
+          </Badge>
+        ),
       };
     }
   };
@@ -90,14 +156,9 @@ export function SectionCards({
         <CardHeader className="relative">
           <CardDescription>Total Faturado</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-            {new Intl.NumberFormat("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            }).format(totalFaturado)}
+            <AnimatedNumber value={totalFaturado} isCurrency />
           </CardTitle>
-          <div className="absolute right-4 top-4">
-            {faturadoTendency.badge}
-          </div>
+          <div className="absolute right-4 top-4">{faturadoTendency.badge}</div>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
@@ -112,11 +173,9 @@ export function SectionCards({
         <CardHeader className="relative">
           <CardDescription>Vendas Totais</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-            {totalVendas}
+            <AnimatedNumber value={totalVendas} />
           </CardTitle>
-          <div className="absolute right-4 top-4">
-            {vendasTendency.badge}
-          </div>
+          <div className="absolute right-4 top-4">{vendasTendency.badge}</div>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
@@ -131,14 +190,9 @@ export function SectionCards({
         <CardHeader className="relative">
           <CardDescription>Faturamento Médio por Dia</CardDescription>
           <CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">
-            {new Intl.NumberFormat("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            }).format(mediaVendasPorDia)}
+            <AnimatedNumber value={mediaVendasPorDia} isCurrency />
           </CardTitle>
-          <div className="absolute right-4 top-4">
-            {mediaTendency.badge}
-          </div>
+          <div className="absolute right-4 top-4">{mediaTendency.badge}</div>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
