@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
   TrendingDownIcon,
   TrendingUpIcon,
@@ -25,8 +26,9 @@ const AnimatedNumber = ({
     to: { number: value },
     config: { tension: 120, friction: 14 },
   });
-
+  
   return (
+    /* @ts-expect-error */
     <animated.div>
       {number.to((n) =>
         isCurrency
