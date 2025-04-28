@@ -125,11 +125,16 @@ export default function DetalhesComandaPage() {
 
   const handleConfirmarFechamento = async () => {
     try {
-      await fechaComanda(comanda.numero_comanda);
-      toast.success("Comanda fechada com sucesso!", {
-        description: `Valor total: R$ ${calcularTotal().toFixed(2)}`,
-      });
-      await fetchComanda();
+      if (calcularTotal() !== 0) {
+        await fechaComanda(comanda.numero_comanda);
+        toast.success("Comanda fechada com sucesso!", {
+          description: `Valor total: R$ ${calcularTotal().toFixed(2)}`,
+        });
+        await fetchComanda();
+      } else {
+        toast.error('Não é possível fechar uma comanda sem produtos.');
+        setShowModalFechamento(false);
+      }
     } catch (err) {
       toast.error("Erro ao fechar comanda.");
     } finally {
@@ -191,9 +196,9 @@ export default function DetalhesComandaPage() {
       : "destructive";
 
   return (
-    <div className="p-6 space-y-6">
+    <div>
       <Toaster></Toaster>
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="flex p-4  md:p-6 flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
             Comanda #{comanda.numero_comanda}
@@ -221,7 +226,7 @@ export default function DetalhesComandaPage() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" >
+              <Button variant="outline">
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -247,7 +252,7 @@ export default function DetalhesComandaPage() {
 
       <Separator />
 
-      <div className="space-y-4">
+      <div className="p-4 space-y-4 md:p-6 md:space-y-6">
         <h2 className="text-lg font-semibold">Produtos</h2>
 
         {comanda.produtos.length === 0 ? (
