@@ -3,12 +3,11 @@
 import * as React from "react";
 import {
   AlignHorizontalDistributeCenter,
-
   LayoutDashboardIcon,
   Package,
   ScanBarcode,
   SettingsIcon,
-  HeadsetIcon
+  HeadsetIcon,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -27,11 +26,6 @@ import Link from "next/link";
 import { Badge } from "./ui/badge";
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Dashboard",
@@ -80,7 +74,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <Link href="/">
-                <span className="text-base font-semibold">Tyra</span><Badge>Beta</Badge>
+                <span className="text-base font-semibold">Tyra</span>
+                <Badge>Beta</Badge>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -91,7 +86,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );
