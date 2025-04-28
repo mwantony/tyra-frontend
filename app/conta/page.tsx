@@ -187,7 +187,7 @@ export default function RestaurantAccountPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                  <div className="space-y-2 col-span-2 md:col-span-1">
                     <Label htmlFor="nome_fantasia">Nome do Restaurante</Label>
                     {isEditing ? (
                       <Input
@@ -205,7 +205,7 @@ export default function RestaurantAccountPage() {
                       </div>
                     )}
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-2 col-span-2 md:col-span-1">
                     <Label htmlFor="razao_social">Razão Social</Label>
                     {isEditing ? (
                       <Input
