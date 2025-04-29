@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // store/slices/vendasSlice.ts
-import Venda from "@/interfaces/Vendas";
+import Venda from "@/interfaces/Venda";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface VendasState {

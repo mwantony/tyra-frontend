@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import {
@@ -31,20 +31,7 @@ import {
   PaginationNext,
   PaginationEllipsis,
 } from "@/components/ui/pagination";
-
-
-
-type Produto = {
-  id: number;
-  restaurante_id: number;
-  nome: string;
-  preco: string;
-  ean: string;
-  tipo: string;
-  descricao: string;
-  created_at: string;
-  updated_at: string;
-};
+import Produto from "@/interfaces/Produto";
 
 interface DataTableProps {
   data: Produto[];
@@ -57,15 +44,17 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [produtoIdToDelete, setProdutoIdToDelete] = useState<number | null>(null);
+  const [produtoIdToDelete, setProdutoIdToDelete] = useState<number | null>(
+    null
+  );
   const router = useRouter();
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
 
   const filteredData = data.filter(
@@ -102,7 +91,7 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
   };
 
   const renderPageNumbers = () => {
-    const pageNumbers: (number | 'ellipsis-left' | 'ellipsis-right')[] = [];
+    const pageNumbers: (number | "ellipsis-left" | "ellipsis-right")[] = [];
     const maxVisiblePages = 5;
 
     if (totalPages <= maxVisiblePages) {
@@ -127,7 +116,7 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
       if (startPage > 1) {
         pageNumbers.push(1);
         if (startPage > 2) {
-          pageNumbers.push('ellipsis-left');
+          pageNumbers.push("ellipsis-left");
         }
       }
 
@@ -137,14 +126,14 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
 
       if (endPage < totalPages) {
         if (endPage < totalPages - 1) {
-          pageNumbers.push('ellipsis-right');
+          pageNumbers.push("ellipsis-right");
         }
         pageNumbers.push(totalPages);
       }
     }
 
     return pageNumbers.map((pageNumber, index) => {
-      if (pageNumber === 'ellipsis-left' || pageNumber === 'ellipsis-right') {
+      if (pageNumber === "ellipsis-left" || pageNumber === "ellipsis-right") {
         return (
           <PaginationItem key={index}>
             <PaginationEllipsis />
@@ -203,8 +192,10 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
                   }).format(Number(produto.preco))}
                 </TableCell>
                 <TableCell>{produto.tipo}</TableCell>
-                <TableCell>{produto.ean ? produto.ean : '- - -'}</TableCell>
-                <TableCell>{produto.descricao ? produto.descricao : '- - -'}</TableCell>
+                <TableCell>{produto.ean ? produto.ean : "- - -"}</TableCell>
+                <TableCell>
+                  {produto.descricao ? produto.descricao : "- - -"}
+                </TableCell>
                 <TableCell>
                   {dayjs(produto.created_at).format("DD/MM/YYYY HH:mm")}
                 </TableCell>
@@ -255,17 +246,23 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
               <PaginationItem>
                 <PaginationPrevious
                   href="#"
-                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
                   isActive={currentPage > 1}
-                >Anterior</PaginationPrevious>
+                >
+                  Anterior
+                </PaginationPrevious>
               </PaginationItem>
-              
+
               {renderPageNumbers()}
-              
+
               <PaginationItem>
                 <PaginationNext
                   href="#"
-                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                  }
                   isActive={currentPage < totalPages}
                 />
               </PaginationItem>
