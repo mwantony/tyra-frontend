@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
@@ -16,10 +17,9 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
-// Variáveis de cache no nível do módulo
 let cachedVendas: any[] = [];
 let lastFetchTime = 0;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos de cache
+const CACHE_DURATION = 5 * 60 * 1000; 
 
 export default function VendasPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,13 +30,11 @@ export default function VendasPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      // Verifica se já tem dados no Redux ou se o cache está válido
       if ((vendas.length === 0 || !initialLoad) && loading) {
         setLoading(true);
         
         const now = Date.now();
         
-        // Verifica se o cache está válido
         if (cachedVendas.length > 0 && (now - lastFetchTime) < CACHE_DURATION) {
           dispatch(setVendas(cachedVendas));
           setLoading(false);
@@ -44,7 +42,6 @@ export default function VendasPage() {
           return;
         }
         
-        // Faz nova chamada à API
         const resposta = await getVendas();
         cachedVendas = resposta;
         lastFetchTime = now;

@@ -24,9 +24,14 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Toaster } from "@/components/ui/sonner";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
+import { setComandas } from "@/store/slices/comandasSlice";
 
 export default function ComandasPage() {
-  const [comandas, setComandas] = useState<any[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const comandas = useSelector((state: RootState) => state.comandas.comandas);
   const [loading, setLoading] = useState<boolean>(true);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [termoBusca, setTermoBusca] = useState<string>("");
@@ -35,7 +40,7 @@ export default function ComandasPage() {
     setLoading(true);
     try {
       const resposta = await getComandas();
-      setComandas(resposta);
+      dispatch(setComandas(resposta));
     } catch (error) {
       toast.error("Erro ao carregar comandas", {
         description: "Não foi possível obter a lista de comandas",
