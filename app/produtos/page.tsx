@@ -18,6 +18,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { setProdutos } from "@/store/slices/produtosSlice";
 
+// Variáveis de cache no nível do módulo
+let cacheProdutos: any[] = [];
+let lastFetchTime = 0;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos de cache
+
 export default function ProdutosPage() {
   const dispatch = useDispatch<AppDispatch>();
   const produtos = useSelector((state: RootState) => state.produtos.produtos);
@@ -25,22 +30,39 @@ export default function ProdutosPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [activeTab, setActiveTab] = useState<string>("all");
+  const [initialLoad, setInitialLoad] = useState<boolean>(false);
 
-  const fetchData = async () => {
+  const fetchData = async (forceRefresh = false) => {
     setLoading(true);
     try {
+      const now = Date.now();
+      
+      // Verifica se pode usar o cache
+      if (!forceRefresh && cacheProdutos.length > 0 && (now - lastFetchTime) < CACHE_DURATION) {
+        dispatch(setProdutos(cacheProdutos));
+        setLoading(false);
+        return;
+      }
+      
+      // Busca novos dados
       const resposta = await getProdutos();
+      cacheProdutos = resposta;
+      lastFetchTime = now;
       dispatch(setProdutos(resposta));
     } catch (error) {
       console.error("Erro ao buscar produtos:", error);
     } finally {
       setLoading(false);
+      setInitialLoad(true);
     }
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    // Só faz fetch se for o primeiro carregamento ou se não houver dados
+    if (!initialLoad || produtos.length === 0) {
+      fetchData();
+    }
+  }, [initialLoad, produtos.length]);
 
   // Filtra os produtos com base no termo de busca e na aba ativa
   const filteredProdutos = produtos.filter((produto) => {
@@ -51,11 +73,16 @@ export default function ProdutosPage() {
     );
 
     if (activeTab === "all") return matchesSearch;
-    if (activeTab === "active") return matchesSearch && !produto.ativo;
-    if (activeTab === "inactive") return matchesSearch && produto.ativo;
+    if (activeTab === "active") return matchesSearch && produto.ativo;
+    if (activeTab === "inactive") return matchesSearch && !produto.ativo;
 
     return matchesSearch;
   });
+
+  // Função para forçar atualização dos dados
+  const handleRefresh = () => {
+    fetchData(true);
+  };
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6 lg:p-6">
@@ -69,7 +96,13 @@ export default function ProdutosPage() {
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row">
- 
+          <Button 
+            variant="outline" 
+            onClick={handleRefresh}
+            disabled={loading}
+          >
+            {loading ? "Atualizando..." : "Atualizar Dados"}
+          </Button>
 
           <Link href="/produtos/adicionar">
             <Button className="w-full sm:w-fit">
@@ -89,13 +122,13 @@ export default function ProdutosPage() {
           <TabsTrigger value="active">
             Ativos{" "}
             <Badge className="ml-2">
-              {produtos.filter((p) => !p.ativo).length}
+              {produtos.filter((p) => p.ativo).length}
             </Badge>
           </TabsTrigger>
           <TabsTrigger value="inactive">
             Inativos{" "}
             <Badge className="ml-2">
-              {produtos.filter((p) => p.ativo).length}
+              {produtos.filter((p) => !p.ativo).length}
             </Badge>
           </TabsTrigger>
         </TabsList>
@@ -108,12 +141,17 @@ export default function ProdutosPage() {
             <span>Lista de Produtos</span>
             <span className="text-sm font-normal text-muted-foreground">
               {filteredProdutos.length} itens
+              {initialLoad && (Date.now() - lastFetchTime) < CACHE_DURATION && (
+                <span className="ml-2 text-xs text-green-500">
+                  (Dados em cache)
+                </span>
+              )}
             </span>
           </CardTitle>
         </CardHeader>
 
         <CardContent>
-          {loading ? (
+          {loading && !initialLoad ? (
             <div className="space-y-4">
               {[...Array(6)].map((_, i) => (
                 <Skeleton key={i} className="h-12 w-full rounded-lg" />
@@ -121,7 +159,7 @@ export default function ProdutosPage() {
             </div>
           ) : (
             <DataTableProdutos
-              fetchProdutos={fetchData}
+              fetchProdutos={() => fetchData(true)}
               data={filteredProdutos}
             />
           )}
