@@ -130,11 +130,7 @@ export default function ComandasPage() {
           <h1 className="text-2xl font-bold tracking-tight">Comandas</h1>
           <p className="text-sm text-muted-foreground">
             Gerencie todas as comandas do estabelecimento
-            {isCached && (
-              <span className="ml-2 text-xs text-green-500">
-                (Dados em cache)
-              </span>
-            )}
+           
           </p>
         </div>
 
@@ -149,14 +145,6 @@ export default function ComandasPage() {
             />
           </div>
           
-          <Button 
-            variant="outline" 
-            onClick={() => recarregarComandas(true)}
-            disabled={isRefreshing}
-          >
-            <RefreshCw className={`mr-2 h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-            {isRefreshing ? 'Atualizando...' : 'Atualizar'}
-          </Button>
           
           <Button onClick={handleNovaComanda}>
             <Plus className="mr-2 h-4 w-4" />
