@@ -1,18 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // store/slices/vendasSlice.ts
+import Venda from "@/interfaces/Vendas";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-export interface Venda {
-  id: number;
-  comanda_id: number;
-  numero_comanda: string;
-  restaurante_id: number;
-  total: string;
-  data_venda: string;
-  created_at: string;
-  status: string;
-  updated_at: string;
-}
 
 interface VendasState {
   vendas: Venda[];
