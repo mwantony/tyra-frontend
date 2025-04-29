@@ -16,18 +16,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Info, ArrowUp, ArrowDown } from "lucide-react";
+import Venda from "@/interfaces/Venda";
 
-type Venda = {
-  id: number;
-  comanda_id: number;
-  numero_comanda: string;
-  restaurante_id: number;
-  total: string;
-  data_venda: string;
-  created_at: string;
-  status: string;
-  updated_at: string;
-};
+
 
 type SortableField = "id" | "total" | "data_venda";
 

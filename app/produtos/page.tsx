@@ -18,11 +18,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { setProdutos } from "@/store/slices/produtosSlice";
 
-// Variáveis de cache no nível do módulo
 let cacheProdutos: any[] = [];
 let lastFetchTime = 0;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos de cache
-
+const CACHE_DURATION = 5 * 60 * 1000; 
 export default function ProdutosPage() {
   const dispatch = useDispatch<AppDispatch>();
   const produtos = useSelector((state: RootState) => state.produtos.produtos);
