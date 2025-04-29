@@ -22,6 +22,7 @@ import {
   AlertCircle,
   CheckCircle2,
 } from "lucide-react";
+import { toast, Toaster } from "sonner";
 
 export default function SupportPage() {
   const { theme } = useTheme();
@@ -54,6 +55,7 @@ export default function SupportPage() {
     try {
       // Simulação de envio do formulário
       await new Promise((resolve) => setTimeout(resolve, 1500));
+      toast.success("Mensagem enviada com sucesso!");
       setSubmissionStatus("success");
       setFormData({
         name: "",
@@ -62,6 +64,7 @@ export default function SupportPage() {
         message: "",
       });
     } catch (error) {
+      toast.error("Erro ao enviar mensagem. Tente novamente.");
       setSubmissionStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -69,7 +72,7 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full"><Toaster></Toaster>
       <div className="flex items-center justify-between p-6">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Suporte</h1>
