@@ -43,7 +43,7 @@ export function ChartAreaInteractive({ grafico }) {
               axisLine={false}
               tickMargin={8}
               tickFormatter={(valor) => {
-                return dayjs(valor).format("DD/YYYY");
+                return dayjs(valor).format("DD/MM");
               }}
             />
             <Tooltip
