@@ -7,7 +7,8 @@ import LoginPage from "@/app/login/page";
 import SignUpPage from "@/app/signup/page";
 import { Spinner } from "./ui/spinner";
 import { usePathname, useRouter } from "next/navigation";
-
+import { Provider } from "react-redux";
+import { store } from "@/store";
 function ProtectedApp({ children }: { children: ReactNode }) {
   const { restaurante, loading, refreshRestaurante } = useAuth();
   const [isAuthChecked, setIsAuthChecked] = useState(false);
@@ -49,7 +50,9 @@ function ProtectedApp({ children }: { children: ReactNode }) {
 export default function AuthWrapper({ children }: { children: ReactNode }) {
   return (
     <AuthProvider>
-      <ProtectedApp>{children}</ProtectedApp>
+      <Provider store={store}>
+        <ProtectedApp>{children}</ProtectedApp>
+      </Provider>
     </AuthProvider>
   );
 }

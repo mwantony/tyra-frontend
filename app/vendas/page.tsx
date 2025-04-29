@@ -1,9 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import * as React from "react";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "@/store";
+import { setVendas } from "@/store/slices/vendasSlice";
 
+import { getVendas } from "@/services/vendas";
 import { DataTableVendas } from "@/components/data-table-vendas";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -11,25 +13,24 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { getVendas } from "@/services/vendas";
 import Link from "next/link";
 
 export default function VendasPage() {
-  const [vendas, setVendas] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const dispatch = useDispatch<AppDispatch>();
+  const vendas = useSelector((state: RootState) => state.vendas.vendas);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       const resposta = await getVendas();
-      setVendas(resposta);
+      dispatch(setVendas(resposta));
       setLoading(false);
     };
 
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   const filteredVendas = vendas.filter((venda) =>
     Object.values(venda).some(
@@ -62,10 +63,16 @@ export default function VendasPage() {
             Todas <Badge className="ml-2">{vendas.length}</Badge>
           </TabsTrigger>
           <TabsTrigger value="pending">
-            Pendentes <Badge className="ml-2">0</Badge>
+            Pendentes{" "}
+            <Badge className="ml-2">
+              {vendas.filter((v) => v.status === "pending").length}
+            </Badge>
           </TabsTrigger>
           <TabsTrigger value="completed">
-            Concluídas <Badge className="ml-2">{vendas.length}</Badge>
+            Concluídas{" "}
+            <Badge className="ml-2">
+              {vendas.filter((v) => v.status === "completed").length}
+            </Badge>
           </TabsTrigger>
         </TabsList>
 
@@ -112,7 +119,7 @@ export default function VendasPage() {
         <TabsContent value="completed">
           <Card>
             <CardHeader>
-              <CardTitle>Relatório de Vendas</CardTitle>
+              <CardTitle>Vendas Concluídas</CardTitle>
             </CardHeader>
             <CardContent>
               {loading ? (
@@ -122,7 +129,9 @@ export default function VendasPage() {
                   ))}
                 </div>
               ) : (
-                <DataTableVendas data={filteredVendas} />
+                <DataTableVendas
+                  data={filteredVendas.filter((v) => v.status === "completed")}
+                />
               )}
             </CardContent>
           </Card>

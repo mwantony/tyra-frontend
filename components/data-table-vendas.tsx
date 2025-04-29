@@ -25,6 +25,7 @@ type Venda = {
   total: string;
   data_venda: string;
   created_at: string;
+  status: string;
   updated_at: string;
 };
 
