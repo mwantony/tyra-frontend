@@ -141,11 +141,7 @@ export default function ProdutosPage() {
             <span>Lista de Produtos</span>
             <span className="text-sm font-normal text-muted-foreground">
               {filteredProdutos.length} itens
-              {initialLoad && (Date.now() - lastFetchTime) < CACHE_DURATION && (
-                <span className="ml-2 text-xs text-green-500">
-                  (Dados em cache)
-                </span>
-              )}
+              
             </span>
           </CardTitle>
         </CardHeader>
