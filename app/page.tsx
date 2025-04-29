@@ -5,6 +5,7 @@ import * as React from "react";
 import { useEffect } from "react";
 import { subDays } from "date-fns";
 import dayjs from "dayjs";
+import { RefreshCw } from "lucide-react";
 
 import { ChartAreaInteractive } from "@/components/chart-area-interactive";
 import { DataTableVendas } from "@/components/data-table-vendas";
@@ -23,6 +24,7 @@ export default function Page() {
 
   const [vendaFiltrada, setVendaFiltrada] = React.useState<any>(null);
   const [loading, setLoading] = React.useState(false);
+  const [isRefreshing, setIsRefreshing] = React.useState(false);
 
   const handleDateChange = (newDateRange: any) => {
     setDate({
@@ -30,8 +32,16 @@ export default function Page() {
       to: dayjs(newDateRange.to).format("YYYY-MM-DD"),
     });
   };
+
   const handleGerarPdf = async () => {
     await gerarPdf(date.from, date.to).then((res) => console.log(res));
+  };
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    const resposta = await filtrarVendas(date.from, date.to);
+    setVendaFiltrada(resposta);
+    setIsRefreshing(false);
   };
 
   useEffect(() => {
@@ -49,11 +59,23 @@ export default function Page() {
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-          <div className="flex flex-col items-stretch gap-y-4 px-4 lg:flex-row lg:justify-end lg:items-center lg:gap-x-4 lg:px-6">
+          <div className="flex flex-col items-stretch gap-y-4 px-4 lg:flex-row lg:justify-end lg:items-center lg:gap-x-2 lg:px-6">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className="hidden lg:flex"
+            >
+              <RefreshCw
+                className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
+              />
+            </Button>
             <DatePickerWithRange onChange={handleDateChange} />
             <Button
               className="w-full md:w-auto"
-              onClick={() => handleGerarPdf()}
+              onClick={handleGerarPdf}
+              disabled={loading || isRefreshing}
             >
               Download
             </Button>
