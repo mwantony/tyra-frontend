@@ -69,15 +69,7 @@ export default function ProdutosPage() {
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row">
-          {/* <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Buscar produtos..."
-              className="w-full pl-9 sm:w-[300px]"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div> */}
+ 
 
           <Link href="/produtos/adicionar">
             <Button className="w-full sm:w-fit">

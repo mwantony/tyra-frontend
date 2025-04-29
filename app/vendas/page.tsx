@@ -16,22 +16,46 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
+// Variáveis de cache no nível do módulo
+let cachedVendas: any[] = [];
+let lastFetchTime = 0;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos de cache
+
 export default function VendasPage() {
   const dispatch = useDispatch<AppDispatch>();
   const vendas = useSelector((state: RootState) => state.vendas.vendas);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [initialLoad, setInitialLoad] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      const resposta = await getVendas();
-      dispatch(setVendas(resposta));
-      setLoading(false);
+      // Verifica se já tem dados no Redux ou se o cache está válido
+      if ((vendas.length === 0 || !initialLoad) && loading) {
+        setLoading(true);
+        
+        const now = Date.now();
+        
+        // Verifica se o cache está válido
+        if (cachedVendas.length > 0 && (now - lastFetchTime) < CACHE_DURATION) {
+          dispatch(setVendas(cachedVendas));
+          setLoading(false);
+          setInitialLoad(true);
+          return;
+        }
+        
+        // Faz nova chamada à API
+        const resposta = await getVendas();
+        cachedVendas = resposta;
+        lastFetchTime = now;
+        dispatch(setVendas(resposta));
+        setLoading(false);
+        setInitialLoad(true);
+      }
     };
 
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, vendas.length, loading, initialLoad]);
 
   const filteredVendas = vendas.filter((venda) =>
     Object.values(venda).some(
