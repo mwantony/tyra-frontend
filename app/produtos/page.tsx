@@ -37,14 +37,12 @@ export default function ProdutosPage() {
     try {
       const now = Date.now();
       
-      // Verifica se pode usar o cache
       if (!forceRefresh && cacheProdutos.length > 0 && (now - lastFetchTime) < CACHE_DURATION) {
         dispatch(setProdutos(cacheProdutos));
         setLoading(false);
         return;
       }
       
-      // Busca novos dados
       const resposta = await getProdutos();
       cacheProdutos = resposta;
       lastFetchTime = now;
@@ -58,13 +56,11 @@ export default function ProdutosPage() {
   };
 
   useEffect(() => {
-    // Só faz fetch se for o primeiro carregamento ou se não houver dados
     if (!initialLoad || produtos.length === 0) {
       fetchData();
     }
   }, [initialLoad, produtos.length]);
 
-  // Filtra os produtos com base no termo de busca e na aba ativa
   const filteredProdutos = produtos.filter((produto) => {
     const matchesSearch = Object.values(produto).some(
       (value) =>
@@ -79,7 +75,6 @@ export default function ProdutosPage() {
     return matchesSearch;
   });
 
-  // Função para forçar atualização dos dados
   const handleRefresh = () => {
     fetchData(true);
   };
