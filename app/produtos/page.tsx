@@ -96,13 +96,7 @@ export default function ProdutosPage() {
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row">
-          <Button 
-            variant="outline" 
-            onClick={handleRefresh}
-            disabled={loading}
-          >
-            {loading ? "Atualizando..." : "Atualizar Dados"}
-          </Button>
+
 
           <Link href="/produtos/adicionar">
             <Button className="w-full sm:w-fit">
