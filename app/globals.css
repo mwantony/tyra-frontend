@@ -1,10 +1,9 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
- */@import "tailwindcss";
+ */
+@import "tailwindcss";
 @import "tw-animate-css";
 
-
 /* Scrollbar base */
-
 
 * {
   scrollbar-width: thin;
@@ -29,7 +28,6 @@ html {
   font-family: var(--font-poppins) !important;
 }
 @custom-variant dark (&:is(.dark *));
-
 
 @theme inline {
   --color-background: var(--background);
@@ -80,7 +78,7 @@ html {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: #18181b;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -149,4 +147,3 @@ html {
     @apply bg-background text-foreground;
   }
 }
-
