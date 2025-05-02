@@ -335,20 +335,6 @@ export default function BillingPage() {
                 <div className="flex gap-2">
                   <Button
                     className="flex-1"
-                    variant="outline"
-                    disabled={dayjs().isBefore(
-                      dayjs(restaurante.proxima_cobranca_em, "YYYY-MM-DD")
-                    )}
-                    onClick={() => {
-                      setSelectedPlan(currentPlan);
-                      handleConfirmPlanChange();
-                    }}
-                  >
-                    Renovar plano
-                  </Button>
-
-                  <Button
-                    className="flex-1"
                     onClick={handleOpenPlansModal}
                     disabled={isLoading}
                   >
