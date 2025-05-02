@@ -221,7 +221,6 @@ export default function BillingPage() {
 
           <div className="flex gap-2">
             <Skeleton className="h-10 flex-1" />
-            <Skeleton className="h-10 flex-1" />
           </div>
         </div>
       </CardContent>
