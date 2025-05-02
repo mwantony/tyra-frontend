@@ -18,6 +18,7 @@ export async function filtrarVendas(inicio: string, fim: string) {
     });
     return response.data;
   } catch (error) {
+    
     console.error("Erro ao filtrar vendas:", error);
     throw error;
   }

@@ -78,6 +78,7 @@ export const AuthProvider = ({ children }: any) => {
     await api
       .get(`/restaurantes/${restaurante?.id}`)
       .then((res) => {
+        console.log(res)
         setRestaurante(res.data);
       })
 
