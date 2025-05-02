@@ -86,67 +86,83 @@ export default function BillingPage() {
 
   const handleConfirmPlanChange = async () => {
     setIsLoading(true);
-    let verificationInterval: NodeJS.Timeout;
-
+    let verificationInterval: NodeJS.Timeout | null = null;
+  
     try {
-      const paymentResponse = await criarPagamento(selectedPlan.id, {
-        email: restaurante.email,
-        payment_method_id: "pix",
-        first_name: restaurante.nome_fantasia.trim().split(" ")[0],
-        last_name: restaurante.nome_fantasia.trim().split(" ").slice(-1)[0],
-      });
-
-      const paymentId = paymentResponse.payment_id;
-      console.log("Pagamento criado:", paymentResponse);
-      setIsPaymentModalOpen(true);
-      setIsConfirmationModalOpen(false);
-      setIsPlansModalOpen(false);
-      setPaymentData(paymentResponse);
-      await new Promise<void>((resolve, reject) => {
-        verificationInterval = setInterval(async () => {
-          try {
-            const { payment } = await buscarPagamento(paymentId);
-            console.log("Status do pagamento:", payment.status);
-
-            if (payment.status === "approved") {
-              clearInterval(verificationInterval);
-              await associarPlano(restaurante.id, {
-                plano_id: selectedPlan.id,
-              });
-              setCurrentPlan(selectedPlan);
-              setIsConfirmationModalOpen(false);
-              setIsPlansModalOpen(false);
-              setIsPaymentModalOpen(false);
-              toast.success(
-                `Pagamento aprovado! Você agora está no plano ${selectedPlan.nome}.`
-              );
-              return resolve();
+      if (selectedPlan.id !== 1) {
+        const paymentResponse = await criarPagamento(selectedPlan.id, {
+          email: restaurante.email,
+          payment_method_id: "pix",
+          first_name: restaurante.nome_fantasia.trim().split(" ")[0],
+          last_name: restaurante.nome_fantasia.trim().split(" ").slice(-1)[0],
+        });
+  
+        const paymentId = paymentResponse.payment_id;
+        console.log("Pagamento criado:", paymentResponse);
+        
+        // Update UI state
+        setIsPaymentModalOpen(true);
+        setIsConfirmationModalOpen(false);
+        setIsPlansModalOpen(false);
+        setPaymentData(paymentResponse);
+  
+        await new Promise<void>((resolve, reject) => {
+          verificationInterval = setInterval(async () => {
+            try {
+              const { payment } = await buscarPagamento(paymentId);
+              console.log("Status do pagamento:", payment.status);
+  
+              if (payment.status === "approved") {
+                await finalizePlanChange();
+                resolve();
+                return;
+              }
+  
+              if (["rejected", "cancelled", "refunded", "charged_back"].includes(payment.status)) {
+                reject(new Error(`Pagamento ${payment.status}`));
+                return;
+              }
+            } catch (error) {
+              reject(error);
             }
-
-            if (
-              ["rejected", "cancelled", "refunded", "charged_back"].includes(
-                payment.status
-              )
-            ) {
-              clearInterval(verificationInterval);
-              return reject(new Error(`Pagamento ${payment.status}`));
-            }
-          } catch (error) {
-            clearInterval(verificationInterval);
-            return reject(error);
-          }
-        }, 3000);
-
-        setTimeout(() => {
-          clearInterval(verificationInterval);
-          reject(new Error("Tempo limite para pagamento excedido"));
-        }, 1800000);
-      });
+          }, 3000);
+  
+          setTimeout(() => {
+            reject(new Error("Tempo limite para pagamento excedido"));
+          }, 1800000);
+        });
+      } else {
+        await finalizePlanChange();
+      }
     } catch (error) {
       console.error("Erro no processo de pagamento:", error);
+      toast.error("Ocorreu um erro ao processar sua solicitação. Por favor, tente novamente.");
+      
+      if (verificationInterval) {
+        clearInterval(verificationInterval);
+      }
+      
+      setIsConfirmationModalOpen(false);
+      setIsPlansModalOpen(false);
+      setIsPaymentModalOpen(false);
     } finally {
       setIsLoading(false);
     }
+  };
+  
+  const finalizePlanChange = async () => {
+    await associarPlano(restaurante.id, {
+      plano_id: selectedPlan.id,
+    });
+    setCurrentPlan(selectedPlan);
+    
+    setIsConfirmationModalOpen(false);
+    setIsPlansModalOpen(false);
+    setIsPaymentModalOpen(false);
+    
+    toast.success(
+      `Plano assinado com sucesso! Você agora está no plano ${selectedPlan.nome}.`
+    );
   };
 
   const PlanCardSkeleton = () => (

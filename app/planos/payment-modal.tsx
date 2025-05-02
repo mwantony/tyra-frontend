@@ -135,18 +135,17 @@ export function PaymentModal({
 
             {/* Status e ID do Pagamento */}
             <div className="text-xs text-muted-foreground mt-4 space-y-1 text-center">
-  {paymentData?.status && (
-    <p className="flex items-center justify-center gap-2">
-      <span className="relative flex h-2 w-2">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-      </span>
-      Status: {formatPaymentStatus(paymentData.status)}
-    </p>
-  )}
-  {paymentData?.id && <p>ID do pagamento: {paymentData?.id}</p>}
-</div>
-
+              {paymentData?.status && (
+                <p className="flex items-center justify-center gap-2">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                  </span>
+                  Status: {formatPaymentStatus(paymentData.status)}
+                </p>
+              )}
+              {paymentData?.id && <p>ID do pagamento: {paymentData?.id}</p>}
+            </div>
           </div>
         )}
       </DialogContent>
