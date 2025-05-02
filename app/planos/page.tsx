@@ -39,7 +39,9 @@ export default function BillingPage() {
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { restaurante } = useAuth();
-
+  console.log( dayjs(restaurante.proxima_cobranca_em).format(
+    "YYYY-MM-DD"
+  ) >= dayjs().format("YYYY-MM-DD"));
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -87,7 +89,7 @@ export default function BillingPage() {
   const handleConfirmPlanChange = async () => {
     setIsLoading(true);
     let verificationInterval: NodeJS.Timeout | null = null;
-  
+
     try {
       if (selectedPlan.id !== 1) {
         const paymentResponse = await criarPagamento(selectedPlan.id, {
@@ -99,19 +101,19 @@ export default function BillingPage() {
 
         const paymentId = paymentResponse.payment_id;
         console.log("Pagamento criado:", paymentResponse);
-        
+
         // Update UI state
         setIsPaymentModalOpen(true);
         setIsConfirmationModalOpen(false);
         setIsPlansModalOpen(false);
         setPaymentData(paymentResponse);
-  
+
         await new Promise<void>((resolve, reject) => {
           verificationInterval = setInterval(async () => {
             try {
               const { payment } = await buscarPagamento(paymentId);
               console.log("Status do pagamento:", payment.status);
-  
+
               if (payment.status === "approved") {
                 if (verificationInterval) {
                   clearInterval(verificationInterval); // Limpa o intervalo aqui
@@ -120,8 +122,12 @@ export default function BillingPage() {
                 await finalizePlanChange();
                 return;
               }
-  
-              if (["rejected", "cancelled", "refunded", "charged_back"].includes(payment.status)) {
+
+              if (
+                ["rejected", "cancelled", "refunded", "charged_back"].includes(
+                  payment.status
+                )
+              ) {
                 if (verificationInterval) {
                   clearInterval(verificationInterval); // Limpa o intervalo aqui também
                 }
@@ -135,7 +141,7 @@ export default function BillingPage() {
               reject(error);
             }
           }, 3000);
-  
+
           setTimeout(() => {
             if (verificationInterval) {
               clearInterval(verificationInterval); // Limpa o intervalo no timeout
@@ -148,12 +154,14 @@ export default function BillingPage() {
       }
     } catch (error) {
       console.error("Erro no processo de pagamento:", error);
-      toast.error("Ocorreu um erro ao processar sua solicitação. Por favor, tente novamente.");
-      
+      toast.error(
+        "Ocorreu um erro ao processar sua solicitação. Por favor, tente novamente."
+      );
+
       if (verificationInterval) {
         clearInterval(verificationInterval);
       }
-      
+
       setIsConfirmationModalOpen(false);
       setIsPlansModalOpen(false);
       setIsPaymentModalOpen(false);
@@ -161,17 +169,17 @@ export default function BillingPage() {
       setIsLoading(false);
     }
   };
-  
+
   const finalizePlanChange = async () => {
     await associarPlano(restaurante.id, {
       plano_id: selectedPlan.id,
     });
     setCurrentPlan(selectedPlan);
-    
+
     setIsConfirmationModalOpen(false);
     setIsPlansModalOpen(false);
     setIsPaymentModalOpen(false);
-    
+
     toast.success(
       `Plano assinado com sucesso! Você agora está no plano ${selectedPlan.nome}.`
     );
@@ -324,9 +332,15 @@ export default function BillingPage() {
                   <Button
                     className="flex-1"
                     variant="outline"
-                    disabled={isLoading}
+                    disabled={
+                      dayjs(restaurante.proxima_cobranca_em).format("YYYY-MM-DD") < dayjs().format("YYYY-MM-DD")
+                    }
+                    onClick={() => {
+                      setSelectedPlan(currentPlan);
+                      handleConfirmPlanChange();
+                    }}
                   >
-                    Cancelar assinatura
+                    Renovar plano
                   </Button>
                   <Button
                     className="flex-1"
@@ -387,7 +401,7 @@ export default function BillingPage() {
 
                 <div className="flex gap-2">
                   <Button className="flex-1" variant="outline" disabled>
-                    Cancelar assinatura
+                    Renovar plano
                   </Button>
                   <Button className="flex-1" onClick={handleOpenPlansModal}>
                     Assinar plano
