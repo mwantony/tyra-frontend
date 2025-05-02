@@ -27,11 +27,13 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { PaymentModal } from "./payment-modal";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 export default function BillingPage() {
   const [currentPlan, setCurrentPlan] = useState<any>();
   const [allPlans, setAllPlans] = useState<any[]>([]);
   const [isPlansModalOpen, setIsPlansModalOpen] = useState(false);
-  const [paymentData, setPaymentData] = useState(null);
+  const [paymentData, setPaymentData] = useState<any>(null);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
@@ -96,13 +98,16 @@ export default function BillingPage() {
 
       const paymentId = paymentResponse.payment_id;
       console.log("Pagamento criado:", paymentResponse);
-
+      setIsPaymentModalOpen(true);
+      setIsConfirmationModalOpen(false);
+      setIsPlansModalOpen(false);
+      setPaymentData(paymentResponse);
       await new Promise<void>((resolve, reject) => {
         verificationInterval = setInterval(async () => {
           try {
             const { payment } = await buscarPagamento(paymentId);
             console.log("Status do pagamento:", payment.status);
-          
+
             if (payment.status === "approved") {
               clearInterval(verificationInterval);
               await associarPlano(restaurante.id, {
@@ -111,6 +116,10 @@ export default function BillingPage() {
               setCurrentPlan(selectedPlan);
               setIsConfirmationModalOpen(false);
               setIsPlansModalOpen(false);
+              setIsPaymentModalOpen(false);
+              toast.success(
+                `Pagamento aprovado! Você agora está no plano ${selectedPlan.nome}.`
+              );
               return resolve();
             }
 
@@ -136,7 +145,6 @@ export default function BillingPage() {
       });
     } catch (error) {
       console.error("Erro no processo de pagamento:", error);
-      // Aqui você pode exibir uma notificação amigável ao usuário
     } finally {
       setIsLoading(false);
     }
@@ -188,6 +196,7 @@ export default function BillingPage() {
   );
   return (
     <div className="flex flex-col h-full">
+      <Toaster></Toaster>
       <div className="flex items-center justify-between">
         <div className="p-6">
           <h1 className="text-2xl font-bold">Planos e Cobranças</h1>
@@ -531,7 +540,7 @@ export default function BillingPage() {
         selectedPlan={selectedPlan}
         isPaymentModalOpen={isPaymentModalOpen}
         setIsPaymentModalOpen={setIsPaymentModalOpen}
-        paymentData={paymentData}
+        paymentData={paymentData?.payment_details}
       />
     </div>
   );
