@@ -80,7 +80,7 @@ export default function Page() {
               onClick={handleGerarPdf}
               disabled={loading || isRefreshing || downloading}
             >
-              {downloading === false ? "Download" : "Baixando..."}
+              {downloading === false ? "Download" : "Downloading..."}
             </Button>
           </div>
 
