@@ -39,9 +39,7 @@ export default function BillingPage() {
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { restaurante } = useAuth();
-  console.log( dayjs(restaurante.proxima_cobranca_em).format(
-    "YYYY-MM-DD"
-  ) >= dayjs().format("YYYY-MM-DD"));
+  console.log(restaurante.proxima_cobranca_em);
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -253,7 +251,13 @@ export default function BillingPage() {
                 {"Plano atual"}
               </CardTitle>
               <Badge variant="outline" className="text-sm">
-                {currentPlan?.status || "Ativo"}
+                {dayjs().isAfter(
+                  dayjs(restaurante.proxima_cobranca_em, "YYYY-MM-DD")
+                )
+                  ? "Inativo"
+                  : currentPlan?.status === "ativo"
+                  ? "Ativo"
+                  : "Ativo"}
               </Badge>
             </CardHeader>
             <CardContent>
@@ -332,9 +336,9 @@ export default function BillingPage() {
                   <Button
                     className="flex-1"
                     variant="outline"
-                    disabled={
-                      dayjs(restaurante.proxima_cobranca_em).format("YYYY-MM-DD") < dayjs().format("YYYY-MM-DD")
-                    }
+                    disabled={dayjs().isBefore(
+                      dayjs(restaurante.proxima_cobranca_em, "YYYY-MM-DD")
+                    )}
                     onClick={() => {
                       setSelectedPlan(currentPlan);
                       handleConfirmPlanChange();
@@ -342,6 +346,7 @@ export default function BillingPage() {
                   >
                     Renovar plano
                   </Button>
+
                   <Button
                     className="flex-1"
                     onClick={handleOpenPlansModal}
@@ -401,7 +406,7 @@ export default function BillingPage() {
 
                 <div className="flex gap-2">
                   <Button className="flex-1" variant="outline" disabled>
-                    Renovar plano
+                    Renovar
                   </Button>
                   <Button className="flex-1" onClick={handleOpenPlansModal}>
                     Assinar plano
