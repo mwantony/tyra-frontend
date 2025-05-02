@@ -405,9 +405,6 @@ export default function BillingPage() {
                 <Separator />
 
                 <div className="flex gap-2">
-                  <Button className="flex-1" variant="outline" disabled>
-                    Renovar
-                  </Button>
                   <Button className="flex-1" onClick={handleOpenPlansModal}>
                     Assinar plano
                   </Button>
