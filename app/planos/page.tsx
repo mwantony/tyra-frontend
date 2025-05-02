@@ -135,9 +135,8 @@ export default function BillingPage() {
             clearInterval(verificationInterval);
             return reject(error);
           }
-        }, 5000);
+        }, 3000);
 
-        // Timeout após 30 minutos
         setTimeout(() => {
           clearInterval(verificationInterval);
           reject(new Error("Tempo limite para pagamento excedido"));

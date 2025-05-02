@@ -7,6 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Copy, Check, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { Input } from "@/components/ui/input";
 
 interface Plan {
   id: string;
@@ -73,11 +74,11 @@ export function PaymentModal({
           <div className="flex flex-col items-center space-y-6">
             {/* QR Code */}
             {qrCodeData?.qr_code_base64 ? (
-              <div className="p-4 bg-white rounded-lg border">
+              <div className="p-2 bg-white rounded-lg border">
                 <img
                   src={`data:image/jpeg;base64,${qrCodeData.qr_code_base64}`}
                   alt="QR Code PIX"
-                  className="w-64 h-64"
+                  className="w-50 h-50"
                   aria-label="QR Code para pagamento PIX"
                 />
               </div>
@@ -96,12 +97,12 @@ export function PaymentModal({
                   Ou copie o código PIX:
                 </p>
                 <div className="flex items-center gap-2">
-                  <div
+                  <Input
+                    disabled
+                    value={qrCodeData.qr_code}
                     className="flex-1 p-3 bg-muted rounded-md text-sm font-mono break-all"
                     aria-label="Código PIX para copiar"
-                  >
-                    {qrCodeData.qr_code}
-                  </div>
+                  ></Input>
                   <Button
                     size="icon"
                     variant="outline"
