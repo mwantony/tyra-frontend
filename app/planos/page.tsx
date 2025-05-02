@@ -96,7 +96,7 @@ export default function BillingPage() {
           first_name: restaurante.nome_fantasia.trim().split(" ")[0],
           last_name: restaurante.nome_fantasia.trim().split(" ").slice(-1)[0],
         });
-  
+
         const paymentId = paymentResponse.payment_id;
         console.log("Pagamento criado:", paymentResponse);
         
@@ -113,21 +113,33 @@ export default function BillingPage() {
               console.log("Status do pagamento:", payment.status);
   
               if (payment.status === "approved") {
-                await finalizePlanChange();
+                if (verificationInterval) {
+                  clearInterval(verificationInterval); // Limpa o intervalo aqui
+                }
                 resolve();
+                await finalizePlanChange();
                 return;
               }
   
               if (["rejected", "cancelled", "refunded", "charged_back"].includes(payment.status)) {
+                if (verificationInterval) {
+                  clearInterval(verificationInterval); // Limpa o intervalo aqui também
+                }
                 reject(new Error(`Pagamento ${payment.status}`));
                 return;
               }
             } catch (error) {
+              if (verificationInterval) {
+                clearInterval(verificationInterval); // E aqui também
+              }
               reject(error);
             }
           }, 3000);
   
           setTimeout(() => {
+            if (verificationInterval) {
+              clearInterval(verificationInterval); // Limpa o intervalo no timeout
+            }
             reject(new Error("Tempo limite para pagamento excedido"));
           }, 1800000);
         });
