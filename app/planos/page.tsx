@@ -7,7 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
-import { associarPlano, getPlano, getPlanos } from "@/services/planos";
+import {
+  associarPlano,
+  buscarPagamento,
+  criarPagamento,
+  getPlano,
+  getPlanos,
+} from "@/services/planos";
 import { useAuth } from "@/contexts/auth-provider";
 import dayjs from "dayjs";
 import {
@@ -20,10 +26,13 @@ import {
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
+import { PaymentModal } from "./payment-modal";
 export default function BillingPage() {
   const [currentPlan, setCurrentPlan] = useState<any>();
   const [allPlans, setAllPlans] = useState<any[]>([]);
   const [isPlansModalOpen, setIsPlansModalOpen] = useState(false);
+  const [paymentData, setPaymentData] = useState(null);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -75,24 +84,64 @@ export default function BillingPage() {
 
   const handleConfirmPlanChange = async () => {
     setIsLoading(true);
+    let verificationInterval: NodeJS.Timeout;
+
     try {
-    
-      await associarPlano(restaurante.id, {
-        plano_id: selectedPlan.id,
+      const paymentResponse = await criarPagamento(selectedPlan.id, {
+        email: restaurante.email,
+        payment_method_id: "pix",
+        first_name: restaurante.nome_fantasia.trim().split(" ")[0],
+        last_name: restaurante.nome_fantasia.trim().split(" ").slice(-1)[0],
       });
 
-      setCurrentPlan(selectedPlan);
-      setIsConfirmationModalOpen(false);
-      setIsPlansModalOpen(false);
+      const paymentId = paymentResponse.payment_id;
+      console.log("Pagamento criado:", paymentResponse);
 
-   
+      await new Promise<void>((resolve, reject) => {
+        verificationInterval = setInterval(async () => {
+          try {
+            const { payment } = await buscarPagamento(paymentId);
+            console.log("Status do pagamento:", payment.status);
+          
+            if (payment.status === "approved") {
+              clearInterval(verificationInterval);
+              await associarPlano(restaurante.id, {
+                plano_id: selectedPlan.id,
+              });
+              setCurrentPlan(selectedPlan);
+              setIsConfirmationModalOpen(false);
+              setIsPlansModalOpen(false);
+              return resolve();
+            }
+
+            if (
+              ["rejected", "cancelled", "refunded", "charged_back"].includes(
+                payment.status
+              )
+            ) {
+              clearInterval(verificationInterval);
+              return reject(new Error(`Pagamento ${payment.status}`));
+            }
+          } catch (error) {
+            clearInterval(verificationInterval);
+            return reject(error);
+          }
+        }, 5000);
+
+        // Timeout após 30 minutos
+        setTimeout(() => {
+          clearInterval(verificationInterval);
+          reject(new Error("Tempo limite para pagamento excedido"));
+        }, 1800000);
+      });
     } catch (error) {
-      console.error("Erro ao atualizar plano:", error);
-   
+      console.error("Erro no processo de pagamento:", error);
+      // Aqui você pode exibir uma notificação amigável ao usuário
     } finally {
       setIsLoading(false);
     }
   };
+
   const PlanCardSkeleton = () => (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -471,22 +520,19 @@ export default function BillingPage() {
             >
               Cancelar
             </Button>
-            <a
-              target="_blank"
-              href={
-                "https://wa.me/5549991042777?text=Olá, gostaria de mudar meu plano para o plano " +
-                selectedPlan?.nome
-              }
-            >
-              <Button
-                /* onClick={handleConfirmPlanChange} */ disabled={isLoading}
-              >
-                {isLoading ? "Processando..." : "Confirmar Mudança"}
-              </Button>
-            </a>
+
+            <Button onClick={handleConfirmPlanChange} disabled={isLoading}>
+              {isLoading ? "Processando..." : "Confirmar Mudança"}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <PaymentModal
+        selectedPlan={selectedPlan}
+        isPaymentModalOpen={isPaymentModalOpen}
+        setIsPaymentModalOpen={setIsPaymentModalOpen}
+        paymentData={paymentData}
+      />
     </div>
   );
 }

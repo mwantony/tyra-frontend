@@ -28,3 +28,27 @@ export async function associarPlano(id: any, plano) {
     throw error;
   }
 }
+export async function criarPagamento(planoId: number, dadosPagamento) {
+  try {
+    const response = await api.post(
+      `/planos/${planoId}/pagamento`,
+      dadosPagamento
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao criar pagamento:", error);
+    throw error;
+  }
+}
+
+export async function buscarPagamento(
+  paymentId: string
+): Promise<{ status: string; payment: any }> {
+  try {
+    const response = await api.get(`/pagamentos/${paymentId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar pagamento:", error);
+    throw error;
+  }
+}
