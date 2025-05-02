@@ -24,6 +24,7 @@ export default function Page() {
 
   const [vendaFiltrada, setVendaFiltrada] = React.useState<any>(null);
   const [loading, setLoading] = React.useState(false);
+  const [downloading, setDownloading] = React.useState(false);
   const [isRefreshing, setIsRefreshing] = React.useState(false);
 
   const handleDateChange = (newDateRange: any) => {
@@ -34,7 +35,9 @@ export default function Page() {
   };
 
   const handleGerarPdf = async () => {
+    setDownloading(true);
     await gerarPdf(date.from, date.to).then((res) => console.log(res));
+    setDownloading(false);
   };
 
   const handleRefresh = async () => {
@@ -75,9 +78,9 @@ export default function Page() {
             <Button
               className="w-full md:w-auto"
               onClick={handleGerarPdf}
-              disabled={loading || isRefreshing}
+              disabled={loading || isRefreshing || downloading}
             >
-              Download
+              {downloading === false ? "Download" : "Baixando..."}
             </Button>
           </div>
 
