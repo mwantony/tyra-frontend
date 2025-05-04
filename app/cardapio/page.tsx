@@ -106,6 +106,16 @@ export default function CardapioQRCodePage() {
                 />
               </div>
 
+              <a
+                className="w-full mb-2"
+                href={qrValue}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant={"outline"} className="w-full">
+                  {"Baixar PDF"}
+                </Button>
+              </a>
               <Button
                 onClick={handleDownloadQRCode}
                 className="w-full"
