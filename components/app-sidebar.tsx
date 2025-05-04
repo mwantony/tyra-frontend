@@ -8,6 +8,8 @@ import {
   ScanBarcode,
   SettingsIcon,
   HeadsetIcon,
+  Table,
+  Table2,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -46,6 +48,11 @@ const data = {
       title: "Comandas",
       url: "/comandas",
       icon: ScanBarcode,
+    },
+    {
+      title: "Mesas",
+      url: "/mesas",
+      icon: Table,
     },
   ],
 
