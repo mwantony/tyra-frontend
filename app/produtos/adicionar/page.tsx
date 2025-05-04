@@ -22,6 +22,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
 import { MoonLoader } from "react-spinners";
+import { Loader2 } from "lucide-react";
 const fetchProdutoByEAN = async (ean: string) => {
   const response = await fetch(
     `https://world.openfoodfacts.org/api/v0/product/${ean}.json`
@@ -117,7 +118,6 @@ export default function Page() {
                       value={form.ean}
                       onChange={handleEANChange}
                     />
-                    {isLoading && <MoonLoader ></MoonLoader>}
                   </div>
                 </div>
 
@@ -183,7 +183,7 @@ export default function Page() {
                   Cancelar
                 </Button>
                 <Button type="submit" disabled={isLoading}>
-                  {isLoading && <MoonLoader ></MoonLoader>}
+                  {isLoading && <Loader2 className="animate-spin"></Loader2>}
                   Salvar Produto
                 </Button>
               </div>
