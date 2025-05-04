@@ -266,7 +266,7 @@ export function SignUpForm({
         </CardContent>
       </Card>
 
-      <div className="text-balance text-center text-xs text-muted-foreground">
+      <div className="text-balance text-center text-sm">
         Já tem uma conta?{" "}
         <Link
           href="/login"
