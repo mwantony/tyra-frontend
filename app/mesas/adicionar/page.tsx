@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
 import { postMesa } from '@/services/mesas'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -118,11 +119,10 @@ export default function NovaMesaPage() {
             {/* Observações */}
             <div className="space-y-2">
               <Label htmlFor="observacoes">Observações</Label>
-              <textarea
+              <Textarea
                 id="observacoes"
                 name="observacoes"
                 rows={3}
-                className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 value={formData.observacoes}
                 onChange={handleChange}
                 maxLength={200}
