@@ -18,11 +18,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { setProdutos } from "@/store/slices/produtosSlice";
 
-// Variáveis de cache no nível do módulo
-let cacheProdutos: any[] = [];
-let lastFetchTime = 0;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos de cache
-
 export default function ProdutosPage() {
   const dispatch = useDispatch<AppDispatch>();
   const produtos = useSelector((state: RootState) => state.produtos.produtos);
@@ -30,37 +25,24 @@ export default function ProdutosPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [activeTab, setActiveTab] = useState<string>("all");
-  const [initialLoad, setInitialLoad] = useState<boolean>(false);
 
-  const fetchData = async (forceRefresh = false) => {
+  const fetchData = async () => {
     setLoading(true);
     try {
-      const now = Date.now();
-      
-      if (!forceRefresh && cacheProdutos.length > 0 && (now - lastFetchTime) < CACHE_DURATION) {
-        dispatch(setProdutos(cacheProdutos));
-        setLoading(false);
-        return;
-      }
-      
       const resposta = await getProdutos();
-      cacheProdutos = resposta;
-      lastFetchTime = now;
       dispatch(setProdutos(resposta));
     } catch (error) {
       console.error("Erro ao buscar produtos:", error);
     } finally {
       setLoading(false);
-      setInitialLoad(true);
     }
   };
 
   useEffect(() => {
-    if (!initialLoad || produtos.length === 0) {
-      fetchData();
-    }
-  }, [initialLoad, produtos.length]);
+    fetchData();
+  }, []);
 
+  // Filtra os produtos com base no termo de busca e na aba ativa
   const filteredProdutos = produtos.filter((produto) => {
     const matchesSearch = Object.values(produto).some(
       (value) =>
@@ -69,15 +51,11 @@ export default function ProdutosPage() {
     );
 
     if (activeTab === "all") return matchesSearch;
-    if (activeTab === "active") return matchesSearch && produto.ativo;
-    if (activeTab === "inactive") return matchesSearch && !produto.ativo;
+    if (activeTab === "active") return matchesSearch && !produto.ativo;
+    if (activeTab === "inactive") return matchesSearch && produto.ativo;
 
     return matchesSearch;
   });
-
-  const handleRefresh = () => {
-    fetchData(true);
-  };
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6 lg:p-6">
@@ -91,7 +69,15 @@ export default function ProdutosPage() {
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row">
-
+          {/* <div className="relative">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              placeholder="Buscar produtos..."
+              className="w-full pl-9 sm:w-[300px]"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div> */}
 
           <Link href="/produtos/adicionar">
             <Button className="w-full sm:w-fit">
@@ -111,13 +97,13 @@ export default function ProdutosPage() {
           <TabsTrigger value="active">
             Ativos{" "}
             <Badge className="ml-2">
-              {produtos.filter((p) => p.ativo).length}
+              {produtos.filter((p) => !p.ativo).length}
             </Badge>
           </TabsTrigger>
           <TabsTrigger value="inactive">
             Inativos{" "}
             <Badge className="ml-2">
-              {produtos.filter((p) => !p.ativo).length}
+              {produtos.filter((p) => p.ativo).length}
             </Badge>
           </TabsTrigger>
         </TabsList>
@@ -130,13 +116,12 @@ export default function ProdutosPage() {
             <span>Lista de Produtos</span>
             <span className="text-sm font-normal text-muted-foreground">
               {filteredProdutos.length} itens
-              
             </span>
           </CardTitle>
         </CardHeader>
 
         <CardContent>
-          {loading && !initialLoad ? (
+          {loading ? (
             <div className="space-y-4">
               {[...Array(6)].map((_, i) => (
                 <Skeleton key={i} className="h-12 w-full rounded-lg" />
@@ -144,7 +129,7 @@ export default function ProdutosPage() {
             </div>
           ) : (
             <DataTableProdutos
-              fetchProdutos={() => fetchData(true)}
+              fetchProdutos={fetchData}
               data={filteredProdutos}
             />
           )}

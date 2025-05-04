@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -17,42 +15,22 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
-let cachedVendas: any[] = [];
-let lastFetchTime = 0;
-const CACHE_DURATION = 5 * 60 * 1000; 
-
 export default function VendasPage() {
   const dispatch = useDispatch<AppDispatch>();
   const vendas = useSelector((state: RootState) => state.vendas.vendas);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [initialLoad, setInitialLoad] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      if ((vendas.length === 0 || !initialLoad) && loading) {
-        setLoading(true);
-        
-        const now = Date.now();
-        
-        if (cachedVendas.length > 0 && (now - lastFetchTime) < CACHE_DURATION) {
-          dispatch(setVendas(cachedVendas));
-          setLoading(false);
-          setInitialLoad(true);
-          return;
-        }
-        
-        const resposta = await getVendas();
-        cachedVendas = resposta;
-        lastFetchTime = now;
-        dispatch(setVendas(resposta));
-        setLoading(false);
-        setInitialLoad(true);
-      }
+      setLoading(true);
+      const resposta = await getVendas();
+      dispatch(setVendas(resposta));
+      setLoading(false);
     };
 
     fetchData();
-  }, [dispatch, vendas.length, loading, initialLoad]);
+  }, [dispatch]);
 
   const filteredVendas = vendas.filter((venda) =>
     Object.values(venda).some(
