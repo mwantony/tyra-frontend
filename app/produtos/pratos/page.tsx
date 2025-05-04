@@ -48,8 +48,8 @@ export default function PratosPage() {
     );
 
     if (activeTab === "all") return matchesSearch;
-    if (activeTab === "active") return matchesSearch && prato.ativo;
-    if (activeTab === "inactive") return matchesSearch && !prato.ativo;
+    if (activeTab === "active") return matchesSearch && !prato.ativo;
+    if (activeTab === "inactive") return matchesSearch && prato.ativo;
 
     return matchesSearch;
   });
@@ -84,13 +84,13 @@ export default function PratosPage() {
           <TabsTrigger value="active">
             Ativos{" "}
             <Badge className="ml-2">
-              {pratos.filter(p => p.ativo).length}
+              {pratos.filter(p => !p.ativo).length}
             </Badge>
           </TabsTrigger>
           <TabsTrigger value="inactive">
             Inativos{" "}
             <Badge className="ml-2">
-              {pratos.filter(p => !p.ativo).length}
+              {pratos.filter(p => p.ativo).length}
             </Badge>
           </TabsTrigger>
         </TabsList>

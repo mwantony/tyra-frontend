@@ -50,8 +50,8 @@ export default function BebidasPage() {
     );
 
     if (activeTab === "all") return matchesSearch;
-    if (activeTab === "active") return matchesSearch && bebida.ativo;
-    if (activeTab === "inactive") return matchesSearch && !bebida.ativo;
+    if (activeTab === "active") return matchesSearch && !bebida.ativo;
+    if (activeTab === "inactive") return matchesSearch && bebida.ativo;
 
     return matchesSearch;
   });
@@ -86,13 +86,13 @@ export default function BebidasPage() {
           <TabsTrigger value="active">
             Ativos{" "}
             <Badge className="ml-2">
-              {bebidas.filter((b) => b.ativo).length}
+              {bebidas.filter((b) => !b.ativo).length}
             </Badge>
           </TabsTrigger>
           <TabsTrigger value="inactive">
             Inativos{" "}
             <Badge className="ml-2">
-              {bebidas.filter((b) => !b.ativo).length}
+              {bebidas.filter((b) => b.ativo).length}
             </Badge>
           </TabsTrigger>
         </TabsList>

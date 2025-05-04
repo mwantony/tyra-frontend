@@ -80,6 +80,7 @@ export const AuthProvider = ({ children }: any) => {
       .then((res) => {
         console.log(res)
         setRestaurante(res.data);
+        
       })
 
       .catch((error) => {
