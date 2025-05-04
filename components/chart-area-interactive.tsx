@@ -48,14 +48,13 @@ export function ChartAreaInteractive({ grafico }) {
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: "var(--background)",
+                backgroundColor: "var(--accent)",
                 borderRadius: "8px",
                 border: "none",
                 padding: "8px",
                 color: "var(--primary)",
                 fontSize: "14px",
                 fontWeight: "500",
-                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
                 
               }}
               formatter={(valor) => formatarReal(valor)}
