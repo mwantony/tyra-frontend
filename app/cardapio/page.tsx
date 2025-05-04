@@ -8,7 +8,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
 import QRCode from "react-qr-code";
 import html2canvas from "html2canvas";
@@ -19,6 +19,10 @@ export default function CardapioQRCodePage() {
   const [qrValue, setQrValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { restaurante } = useAuth();
+
+  // Cria uma referência para o QR Code
+  const qrCodeRef = useRef(null);
+
   useEffect(() => {
     const loadCardapio = async () => {
       try {
@@ -37,20 +41,20 @@ export default function CardapioQRCodePage() {
   }, []);
 
   const handleDownloadQRCode = async () => {
-    const qrCodeElement = document.getElementById("qr-code");
-  
-    if (qrCodeElement) {
+    if (qrCodeRef.current) {
       try {
         toast.loading("Gerando imagem do QR Code...");
-        const canvas = await html2canvas(qrCodeElement);
-  
+        const canvas = await html2canvas(qrCodeRef.current);
+
         const link = document.createElement("a");
         link.download = "qr-code-cardapio.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
-  
+        toast.dismiss();
         toast.success("QR Code baixado com sucesso!");
       } catch (error) {
+        toast.dismiss();
+
         toast.error("Erro ao baixar QR Code");
         console.error("Erro ao baixar QR Code:", error);
       }
@@ -58,10 +62,9 @@ export default function CardapioQRCodePage() {
       toast.error("QR Code não encontrado.");
     }
   };
-  
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 ">
+    <div className="min-h-150 flex items-center justify-center px-4 ">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-center text-2xl">
@@ -82,7 +85,7 @@ export default function CardapioQRCodePage() {
             </div>
           ) : (
             <>
-              <div id="qr-code" className="p-4 bg-white border rounded-md">
+              <div ref={qrCodeRef} className="p-4 bg-white border rounded-md">
                 <QRCode
                   value={qrValue}
                   size={256}
