@@ -9,6 +9,7 @@ import {
   SettingsIcon,
   HeadsetIcon,
   BetweenHorizonalEnd,
+  UtensilsCrossed,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -62,6 +63,11 @@ const data = {
       title: "Mesas",
       url: "/mesas",
       icon: BetweenHorizonalEnd,
+    },
+    {
+      title: "Cardápio",
+      url: "/cardapio",
+      icon: UtensilsCrossed,
     },
   ],
 
