@@ -8,7 +8,7 @@ import {
   ScanBarcode,
   SettingsIcon,
   HeadsetIcon,
-  UtensilsCrossed,
+  BetweenHorizonalEnd,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -61,7 +61,7 @@ const data = {
     {
       title: "Mesas",
       url: "/mesas",
-      icon: UtensilsCrossed,
+      icon: BetweenHorizonalEnd,
     },
   ],
 
