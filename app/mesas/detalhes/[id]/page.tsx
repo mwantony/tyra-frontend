@@ -119,17 +119,16 @@ export default function MesaDetailsPage({
 
   if (!mesa) {
     return (
-      <div className="container mx-auto p-4 space-y-4">
+      <div className="container mx-auto p-6 md:p-6 md:space-y-6">
         <div className="flex justify-between items-center">
           <Skeleton className="h-8 w-40" />
           <Skeleton className="h-8 w-24" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-2 space-y-4">
-            <Skeleton className="h-6 w-1/3" />
-            <Skeleton className="h-24 w-full" />
+            <Skeleton className="h-25 w-full" />
             <Skeleton className="h-6 w-1/4" />
-            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-25 w-full" />
           </div>
           <div className="space-y-4">
             <Skeleton className="h-20 w-full" />
@@ -141,7 +140,7 @@ export default function MesaDetailsPage({
   }
 
   return (
-    <div className="container mx-auto p-4 space-y-6">
+    <div className="container mx-auto p-4 md:p-6 md:space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Detalhes da Mesa</h1>
         <Button variant="outline" onClick={() => router.push("/mesas")}>
@@ -368,32 +367,33 @@ export default function MesaDetailsPage({
             </Card>
           )}
 
-          {/* Ações rápidas */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Ações Rápidas</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {mesa.status === "livre" && (
-                <form onSubmit={handleOcuparSubmit} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="numero_comanda">Número da Comanda</Label>
-                    <Input
-                      id="numero_comanda"
-                      value={ocupacaoData.numero_comanda}
-                      onChange={(e) =>
-                        setOcupacaoData({ numero_comanda: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                  <Button type="submit" className="w-full">
-                    Ocupar Mesa
-                  </Button>
-                </form>
-              )}
-            </CardContent>
-          </Card>
+          {mesa.status !== "ocupada" && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Ações Rápidas</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {mesa.status === "livre" && (
+                  <form onSubmit={handleOcuparSubmit} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="numero_comanda">Número da Comanda</Label>
+                      <Input
+                        id="numero_comanda"
+                        value={ocupacaoData.numero_comanda}
+                        onChange={(e) =>
+                          setOcupacaoData({ numero_comanda: e.target.value })
+                        }
+                        required
+                      />
+                    </div>
+                    <Button type="submit" className="w-full">
+                      Ocupar Mesa
+                    </Button>
+                  </form>
+                )}
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </div>
