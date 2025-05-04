@@ -297,13 +297,13 @@ export default function BillingPage() {
                     {currentPlan?.id === 1 && (
                       <li className="flex items-center space-x-2">
                         <span className="text-green-500">✓</span>
-                        <p>Até 20 comandas</p>
+                        <p>Até 10 comandas</p>
                       </li>
                     )}
                     {currentPlan?.id === 2 && (
                       <li className="flex items-center space-x-2">
                         <span className="text-green-500">✓</span>
-                        <p>Até 50 comandas</p>
+                        <p>Até 20 comandas</p>
                       </li>
                     )}
                     {currentPlan?.id === 3 && (
@@ -439,13 +439,13 @@ export default function BillingPage() {
                       {plan.id === 1 && (
                         <li className="flex items-start">
                           <span className="text-green-500 mr-2">✓</span>
-                          <span>Até 20 comandas</span>
+                          <span>Até 10 comandas</span>
                         </li>
                       )}
                       {plan.id === 2 && (
                         <li className="flex items-start">
                           <span className="text-green-500 mr-2">✓</span>
-                          <span>Até 50 comandas</span>
+                          <span>Até 20 comandas</span>
                         </li>
                       )}
                       {plan.id === 3 && (

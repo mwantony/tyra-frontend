@@ -33,6 +33,7 @@ export default function ComandasPage() {
 
   const comandas = useSelector((state: RootState) => state.comandas.comandas);
   const [loading, setLoading] = useState<boolean>(true);
+  const [confirmComanda, setConfirmComanda] = useState<boolean>(false);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [termoBusca, setTermoBusca] = useState<string>("");
 
@@ -59,6 +60,7 @@ export default function ComandasPage() {
   };
 
   const handleConfirmacaoCriacao = async () => {
+    setConfirmComanda(true);
     try {
       await postComanda();
       toast.success("Comanda criada com sucesso!", {
@@ -68,13 +70,15 @@ export default function ComandasPage() {
           onClick: () => recarregarComandas(),
         },
       });
-      await recarregarComandas();
-    } catch (error) {
-      toast.error("Erro ao criar comanda", {
-        description: "Tente novamente mais tarde",
-      });
-    } finally {
+      setConfirmComanda(false);
+
       setModalOpen(false);
+    } catch (error: any) {
+      toast.error(error.response.data.error);
+      setConfirmComanda(false);
+      setModalOpen(false);
+    } finally {
+      await recarregarComandas();
     }
   };
 
@@ -173,7 +177,12 @@ export default function ComandasPage() {
             <Button variant="outline" onClick={() => setModalOpen(false)}>
               Cancelar
             </Button>
-            <Button onClick={handleConfirmacaoCriacao}>Confirmar</Button>
+            <Button
+              disabled={confirmComanda}
+              onClick={handleConfirmacaoCriacao}
+            >
+              {confirmComanda === true ? "Confirmando..." : "Confirmar"}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
