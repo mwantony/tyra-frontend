@@ -1,431 +1,366 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
+// app/mesas/[id]/page.tsx
+'use client'
 
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import {
-  fechaComanda,
-  getComanda,
-  comandaAdicionar,
-  cancelaComanda,
-} from "@/services/comandas";
-import { getProdutos } from "@/services/produtos";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import {
-  MoreHorizontal,
-  PlusCircle,
-  XCircle,
-  CheckCircle2,
-  Search,
-} from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Toaster } from "@/components/ui/sonner";
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { getMesa, liberarMesa, ocuparMesa,  updateMesa } from '@/services/mesas'
+import { Badge } from '@/components/ui/badge'
+import { Calendar, Clock, Users, Clipboard, Phone, User, Chair } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
+import dayjs from 'dayjs'
+import { Textarea } from '@/components/ui/textarea'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
-export default function DetalhesComandaPage() {
-  const { numeroComanda } = useParams();
-  const [comanda, setComanda] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [showModalFechamento, setShowModalFechamento] = useState(false);
-  const [modalProdutosOpen, setModalProdutosOpen] = useState(false);
-  const [produtosDisponiveis, setProdutosDisponiveis] = useState<any[]>([]);
-  const [quantidades, setQuantidades] = useState<any>({});
-  const [termoPesquisa, setTermoPesquisa] = useState("");
-
-  const fetchComanda = async () => {
-    try {
-      const resultado = await getComanda(numeroComanda);
-      setComanda(resultado);
-    } catch (err) {
-      console.error("Erro ao buscar comanda:", err);
-      toast.error("Erro ao carregar comanda");
-    } finally {
-      setLoading(false);
-    }
-  };
+export default function MesaDetailsPage({ params }: { params: { id: string } }) {
+  const router = useRouter()
+  const [mesa, setMesa] = useState<any>(null)
+  const [isEditing, setIsEditing] = useState(false)
+  const [formData, setFormData] = useState({
+    identificacao: '',
+    capacidade: 4,
+    status: 'livre',
+    observacoes: ''
+  })
+  const [ocupacaoData, setOcupacaoData] = useState({
+    numero_comanda: ''
+  })
 
   useEffect(() => {
-    if (numeroComanda) fetchComanda();
-  }, [numeroComanda]);
-
-  const calcularTotal = () => {
-    return comanda?.produtos?.reduce(
-      (acc: number, produto: any) =>
-        acc + Number(produto.preco) * produto.pivot.quantidade,
-      0
-    );
-  };
-
-  const abrirModalAdicionarProdutos = async () => {
-    try {
-      const produtos = await getProdutos();
-      setProdutosDisponiveis(produtos);
-      setModalProdutosOpen(true);
-      setTermoPesquisa("");
-    } catch (err) {
-      toast.error("Erro ao buscar produtos.");
-    }
-  };
-
-  const handleQuantidadeChange = (produtoId: number, quantidade: number) => {
-    setQuantidades((prev) => ({
-      ...prev,
-      [produtoId]: Math.max(1, quantidade),
-    }));
-  };
-
-  const handleAdicionarProduto = async (produtoId: number) => {
-    const quantidade = quantidades[produtoId] || 1;
-    try {
-      await comandaAdicionar(comanda.numero_comanda, {
-        produtos: [{ produto_id: produtoId, quantidade }],
-      });
-      toast.success("Produto adicionado com sucesso!");
-      setModalProdutosOpen(false);
-      await fetchComanda();
-    } catch (err) {
-      toast.error("Erro ao adicionar produto.");
-    }
-  };
-
-  const handleConfirmarFechamento = async () => {
-    try {
-      if (calcularTotal() !== 0) {
-        await fechaComanda(comanda.numero_comanda);
-        toast.success("Comanda fechada com sucesso!", {
-          description: `Valor total: R$ ${calcularTotal().toFixed(2)}`,
-        });
-        await fetchComanda();
-      } else {
-        toast.error('Não é possível fechar uma comanda sem produtos.');
-        setShowModalFechamento(false);
+    const loadMesa = async () => {
+      try {
+        const mesaData = await getMesa(Number(params.id))
+        setMesa(mesaData)
+        setFormData({
+          identificacao: mesaData.identificacao,
+          capacidade: mesaData.capacidade,
+          status: mesaData.status,
+          observacoes: mesaData.observacoes || ''
+        })
+      } catch (error) {
+        toast.error('Erro ao carregar dados da mesa')
+        router.push('/mesas')
       }
-    } catch (err) {
-      toast.error("Erro ao fechar comanda.");
-    } finally {
-      setShowModalFechamento(false);
     }
-  };
+    loadMesa()
+  }, [params.id, router])
 
-  const handleCancelarComanda = async () => {
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
     try {
-      await cancelaComanda(comanda.numero_comanda);
-      toast.success("Comanda cancelada com sucesso!");
-      await fetchComanda();
-    } catch (err) {
-      toast.error("Erro ao cancelar comanda.");
+      await updateMesa(Number(params.id), formData)
+      const updatedMesa = await getMesa(Number(params.id))
+      setMesa(updatedMesa)
+      setIsEditing(false)
+      toast.success('Mesa atualizada com sucesso!')
+    } catch (error) {
+      toast.error('Erro ao atualizar mesa')
     }
-  };
-
-  const produtosFiltrados = produtosDisponiveis.filter((produto) => {
-    const termo = termoPesquisa.toLowerCase();
-    return (
-      produto.nome.toLowerCase().includes(termo) ||
-      (produto.ean && produto.ean.toString().includes(termo))
-    );
-  });
-
-  if (loading) {
-    return (
-      <div className="p-4 md:p-6 space-y-4">
-        <Skeleton className="h-8 w-1/3" />
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-1/2" />
-          <Skeleton className="h-4 w-1/3" />
-        </div>
-        <Skeleton className="h-10 w-full" />
-        <div className="grid gap-4">
-          {[...Array(3)].map((_, i) => (
-            <Skeleton key={i} className="h-24 w-full" />
-          ))}
-        </div>
-      </div>
-    );
   }
 
-  if (!comanda) {
-    return (
-      <div className="p-6 text-center">
-        <p className="text-muted-foreground">
-          Nenhuma comanda encontrada com o número {numeroComanda}.
-        </p>
-      </div>
-    );
+  const handleOcuparSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      await ocuparMesa(Number(params.id), ocupacaoData.numero_comanda)
+      const updatedMesa = await getMesa(Number(params.id))
+      setMesa(updatedMesa)
+      setOcupacaoData({ numero_comanda: '' })
+      toast.success('Mesa ocupada com sucesso!')
+    } catch (error) {
+      toast.error('Erro ao ocupar mesa')
+    }
   }
 
-  const statusVariant =
-    comanda.status === "aberta"
-      ? "default"
-      : comanda.status === "fechada"
-      ? "secondary"
-      : "destructive";
+  const handleLiberarMesa = async () => {
+    try {
+      await liberarMesa(Number(params.id))
+      const updatedMesa = await getMesa(Number(params.id))
+      setMesa(updatedMesa)
+      toast.success('Mesa liberada com sucesso!')
+    } catch (error) {
+      toast.error('Erro ao liberar mesa')
+    }
+  }
+
+  const handleCancelarReserva = async () => {
+    try {
+      await liberarMesa(Number(params.id)) // Reutiliza a função de liberar para cancelar reserva
+      const updatedMesa = await getMesa(Number(params.id))
+      setMesa(updatedMesa)
+      toast.success('Reserva cancelada com sucesso!')
+    } catch (error) {
+      toast.error('Erro ao cancelar reserva')
+    }
+  }
+
+  if (!mesa) {
+    return <div className="container mx-auto p-4">Carregando...</div>
+  }
 
   return (
-    <div>
-      <Toaster></Toaster>
-      <div className="flex p-4  md:p-6 flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">
-            Comanda #{comanda.numero_comanda}
-          </h1>
-          <div className="flex items-center gap-2 mt-1">
-            <Badge variant={statusVariant} className="capitalize">
-              {comanda.status}
-            </Badge>
-            <span className="text-sm text-muted-foreground">
-              Criada em{" "}
-              {format(new Date(comanda.created_at), "PPPp", { locale: ptBR })}
-            </span>
-          </div>
-        </div>
-
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            onClick={abrirModalAdicionarProdutos}
-            className="gap-1"
-          >
-            <PlusCircle className="h-4 w-4" />
-            Adicionar Produtos
-          </Button>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onClick={() => setShowModalFechamento(true)}
-                className="gap-2"
-              >
-                <CheckCircle2 className="h-4 w-4" />
-                Fechar Comanda
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={handleCancelarComanda}
-                className="gap-2 text-destructive focus:text-destructive"
-              >
-                <XCircle className="h-4 w-4 text-destructive focus:text-destructive" />
-                Cancelar Comanda
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+    <div className="container mx-auto p-4 space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Detalhes da Mesa</h1>
+        <Button variant="outline" onClick={() => router.push('/mesas')}>
+          Voltar
+        </Button>
       </div>
 
-      <Separator />
-
-      <div className="p-4 space-y-4 md:p-6 md:space-y-6">
-        <h2 className="text-lg font-semibold">Produtos</h2>
-
-        {comanda.produtos.length === 0 ? (
-          <Card>
-            <CardContent className="py-8 text-center text-muted-foreground">
-              Nenhum produto nesta comanda.
-            </CardContent>
-          </Card>
-        ) : (
-          <Card>
-            <ScrollArea className="h-[calc(100vh-280px)]">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Produto</TableHead>
-                    <TableHead className="text-right">Quantidade</TableHead>
-                    <TableHead className="text-right">Preço Unitário</TableHead>
-                    <TableHead className="text-right">Subtotal</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {comanda.produtos.map((produto: any) => (
-                    <TableRow key={produto.id}>
-                      <TableCell>
-                        <div className="font-medium">{produto.nome}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {produto.descricao}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {produto.pivot.quantidade}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        R$ {Number(produto.preco).toFixed(2)}
-                      </TableCell>
-                      <TableCell className="text-right font-medium">
-                        R${" "}
-                        {(
-                          Number(produto.preco) * produto.pivot.quantidade
-                        ).toFixed(2)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </ScrollArea>
-
-            <CardFooter className="bg-muted/50 h-25">
-              <div className="flex items-center justify-between w-full">
-                <span className="text-sm text-muted-foreground">
-                  {comanda.produtos.length}{" "}
-                  {comanda.produtos.length === 1 ? "item" : "itens"}
-                </span>
-                <div className="space-y-1 text-right">
-                  <div className="text-lg font-semibold">
-                    Total: R$ {calcularTotal().toFixed(2)}
-                  </div>
-                  {comanda.status === "aberta" && (
-                    <Button
-                      size="sm"
-                      onClick={() => setShowModalFechamento(true)}
-                      className="gap-1"
-                    >
-                      <CheckCircle2 className="h-4 w-4" />
-                      Fechar Comanda
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </CardFooter>
-          </Card>
-        )}
-      </div>
-
-      {/* Modal de confirmação de fechamento */}
-      <Dialog open={showModalFechamento} onOpenChange={setShowModalFechamento}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Confirmar fechamento</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <p>Deseja realmente fechar esta comanda e registrar a venda?</p>
-            <div className="bg-muted/50 p-4 rounded-lg">
-              <div className="flex justify-between">
-                <span>Total:</span>
-                <span className="font-semibold">
-                  R$ {calcularTotal().toFixed(2)}
-                </span>
-              </div>
-            </div>
-          </div>
-          <DialogFooter>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Informações principais */}
+        <Card className="md:col-span-2">
+          <CardHeader className="flex flex-row justify-between items-center">
+            <CardTitle>Informações da Mesa</CardTitle>
             <Button
               variant="outline"
-              onClick={() => setShowModalFechamento(false)}
+              onClick={() => setIsEditing(!isEditing)}
             >
-              Cancelar
+              {isEditing ? 'Cancelar' : 'Editar'}
             </Button>
-            <Button onClick={handleConfirmarFechamento}>Confirmar</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          </CardHeader>
+          <CardContent>
+            {isEditing ? (
+              <form onSubmit={handleEditSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="identificacao">Identificação</Label>
+                  <Input
+                    id="identificacao"
+                    value={formData.identificacao}
+                    onChange={(e) =>
+                      setFormData({ ...formData, identificacao: e.target.value })
+                    }
+                    required
+                  />
+                </div>
 
-      {/* Modal de adicionar produtos */}
-      <Dialog open={modalProdutosOpen} onOpenChange={setModalProdutosOpen}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Adicionar Produtos</DialogTitle>
-          </DialogHeader>
+                <div className="space-y-2">
+                  <Label htmlFor="capacidade">Capacidade</Label>
+                  <Input
+                    id="capacidade"
+                    type="number"
+                    min="1"
+                    value={formData.capacidade}
+                    onChange={(e) =>
+                      setFormData({ ...formData, capacidade: Number(e.target.value) })
+                    }
+                    required
+                  />
+                </div>
 
-          <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Pesquisar por nome ou código EAN..."
-              value={termoPesquisa}
-              onChange={(e) => setTermoPesquisa(e.target.value)}
-              className="pl-9 mb-4"
-            />
-          </div>
+                <div className="space-y-2">
+                  <Label htmlFor="status">Status</Label>
+                  <Select
+                    value={formData.status}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, status: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="livre">Livre</SelectItem>
+                      <SelectItem value="reservada">Reservada</SelectItem>
+                      <SelectItem value="ocupada">Ocupada</SelectItem>
+                      <SelectItem value="em_limpeza">Em limpeza</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-          {produtosFiltrados.length === 0 ? (
-            <div className="py-8 text-center text-muted-foreground">
-              {termoPesquisa
-                ? "Nenhum produto encontrado com o termo pesquisado."
-                : "Nenhum produto disponível."}
-            </div>
-          ) : (
-            <ScrollArea className="h-[400px]">
-              <div className="grid grid-cols-1 md:grid-cols-1 gap-4 pr-2">
-                {produtosFiltrados.map((produto) => (
-                  <Card key={produto.id}>
-                    <CardContent className="p-4 space-y-3">
-                      <div>
-                        <h3 className="font-medium">{produto.nome}</h3>
-                        <p className="text-sm text-muted-foreground">
-                          {produto.descricao}
-                        </p>
-                      </div>
+                <div className="space-y-2">
+                  <Label htmlFor="observacoes">Observações</Label>
+                  <Textarea
+                    id="observacoes"
+                    value={formData.observacoes}
+                    onChange={(e) =>
+                      setFormData({ ...formData, observacoes: e.target.value })
+                    }
+                  />
+                </div>
 
-                      <div className="flex items-center justify-between">
-                        <span className="font-medium">
-                          R$ {Number(produto.preco).toFixed(2)}
-                        </span>
-                        {produto.codigo_ean && (
-                          <Badge variant="outline">{produto.codigo_ean}</Badge>
-                        )}
-                      </div>
+                <Button type="submit">Salvar Alterações</Button>
+              </form>
+            ) : (
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <Users className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">Identificação</p>
+                    <p className="font-medium">{mesa.identificacao}</p>
+                  </div>
+                </div>
 
-                      <div className="flex items-center gap-2">
-                        <Input
-                          type="number"
-                          min="1"
-                          value={quantidades[produto.id] || 1}
-                          onChange={(e) =>
-                            handleQuantidadeChange(produto.id, +e.target.value)
-                          }
-                          className="w-20"
-                        />
-                        <Button
-                          className="flex-1"
-                          onClick={() => handleAdicionarProduto(produto.id)}
-                        >
-                          Adicionar
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                <div className="flex items-center gap-4">
+                  <Users className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">Capacidade</p>
+                    <p className="font-medium">{mesa.capacidade} pessoas</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <Badge variant={mesa.status === 'ocupada' ? 'destructive' : 'outline'}>
+                    {mesa.status}
+                  </Badge>
+                </div>
+
+                {mesa.observacoes && (
+                  <div className="flex items-start gap-4">
+                    <Clipboard className="w-5 h-5 text-muted-foreground mt-1" />
+                    <div>
+                      <p className="text-sm text-muted-foreground">Observações</p>
+                      <p className="font-medium">{mesa.observacoes}</p>
+                    </div>
+                  </div>
+                )}
               </div>
-            </ScrollArea>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Ações e status */}
+        <div className="space-y-6">
+          {/* Status da mesa */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Chair className="w-5 h-5" />
+                Status da Mesa
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <Badge variant={
+                  mesa.status === 'ocupada' ? 'destructive' :
+                  mesa.status === 'reservada' ? 'warning' :
+                  mesa.status === 'em_limpeza' ? 'secondary' : 'outline'
+                }>
+                  {mesa.status}
+                </Badge>
+                <p className="text-sm text-muted-foreground">
+                  {dayjs(mesa.updated_at).format('DD/MM/YYYY HH:mm')}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Informações de reserva/ocupação */}
+          {mesa.status === 'reservada' && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Calendar className="w-5 h-5" />
+                  Reserva
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <User className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">Nome</p>
+                    <p className="font-medium">{mesa.nome_reserva}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <Phone className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">Telefone</p>
+                    <p className="font-medium">{mesa.telefone_reserva}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <Clock className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">Horário</p>
+                    <p className="font-medium">
+                      {dayjs(mesa.horario_reserva).format('DD/MM/YYYY HH:mm')}
+                    </p>
+                  </div>
+                </div>
+
+                <Button
+                  variant="destructive"
+                  onClick={handleCancelarReserva}
+                  className="w-full"
+                >
+                  Cancelar Reserva
+                </Button>
+              </CardContent>
+            </Card>
           )}
-        </DialogContent>
-      </Dialog>
+
+          {mesa.status === 'ocupada' && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Chair className="w-5 h-5" />
+                  Ocupação
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <Clipboard className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm text-muted-foreground">Comanda</p>
+                    <p className="font-medium">{mesa.numero_comanda}</p>
+                  </div>
+                </div>
+
+                <Button
+                  variant="outline"
+                  onClick={handleLiberarMesa}
+                  className="w-full"
+                >
+                  Liberar Mesa
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Ações rápidas */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Ações Rápidas</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {mesa.status === 'livre' && (
+                <form onSubmit={handleOcuparSubmit} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="numero_comanda">Número da Comanda</Label>
+                    <Input
+                      id="numero_comanda"
+                      value={ocupacaoData.numero_comanda}
+                      onChange={(e) =>
+                        setOcupacaoData({ numero_comanda: e.target.value })
+                      }
+                      required
+                    />
+                  </div>
+                  <Button type="submit" className="w-full">
+                    Ocupar Mesa
+                  </Button>
+                </form>
+              )}
+
+              {mesa.status !== 'ocupada' && mesa.status !== 'reservada' && (
+                <Button
+                  variant="outline"
+                  onClick={() => router.push(`/mesas/${mesa.id}/reservar`)}
+                  className="w-full"
+                >
+                  Reservar Mesa
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
