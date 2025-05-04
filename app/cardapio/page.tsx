@@ -62,7 +62,6 @@ export default function CardapioQRCodePage() {
       setConfirmDownload(false);
 
       toast.dismiss();
-      toast.success("QR Code baixado com sucesso!");
     } catch (error) {
       console.error("Erro ao baixar QR Code:", error);
       toast.dismiss();
@@ -94,7 +93,10 @@ export default function CardapioQRCodePage() {
             </div>
           ) : (
             <>
-              <div ref={qrCodeRef} className="p-4 bg-white border rounded-md">
+              <div
+                ref={qrCodeRef}
+                className="p-4 bg-white border rounded-md flex flex-col items-center"
+              >
                 <QRCode
                   value={qrValue}
                   size={256}
@@ -103,6 +105,7 @@ export default function CardapioQRCodePage() {
                   bgColor="#ffffff"
                 />
               </div>
+
               <Button
                 onClick={handleDownloadQRCode}
                 className="w-full"
