@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import {
@@ -35,6 +35,8 @@ import {
   PaginationNext,
   PaginationEllipsis,
 } from "@/components/ui/pagination";
+import { toast } from "sonner";
+import { Toaster } from "./ui/sonner";
 
 type Comanda = {
   id: number;
@@ -57,6 +59,7 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
   onDelete,
 }) => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [comandaToDelete, setComandaToDelete] = useState<string | null>(null);
   const [currentTab, setCurrentTab] = useState("todas");
   const [searchTerm, setSearchTerm] = useState("");
@@ -70,12 +73,12 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
 
   const getFilteredData = () => {
     let filtered = data;
-    
+
     // Filtro por aba
     if (currentTab !== "todas") {
       filtered = filtered.filter((c) => c.status === currentTab);
     }
-    
+
     // Filtro por busca
     if (searchTerm) {
       filtered = filtered.filter(
@@ -84,7 +87,7 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
           c.id.toString().includes(searchTerm)
       );
     }
-    
+
     return filtered;
   };
 
@@ -109,12 +112,16 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
   };
 
   const handleDelete = async (numeroComanda: string) => {
+    setConfirmDelete(true);
     try {
       await deleteComanda(numeroComanda);
       setModalOpen(false);
+      setConfirmDelete(false);
       if (onDelete) onDelete();
     } catch (error) {
-      alert("Erro ao excluir comanda.");
+      setConfirmDelete(false);
+
+      toast.error("Erro ao excluir comanda.");
     }
   };
 
@@ -140,7 +147,7 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
   };
 
   const renderPageNumbers = () => {
-    const pageNumbers: (number | 'ellipsis-left' | 'ellipsis-right')[] = [];
+    const pageNumbers: (number | "ellipsis-left" | "ellipsis-right")[] = [];
     const maxVisiblePages = 5;
 
     if (totalPages <= maxVisiblePages) {
@@ -165,7 +172,7 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
       if (startPage > 1) {
         pageNumbers.push(1);
         if (startPage > 2) {
-          pageNumbers.push('ellipsis-left');
+          pageNumbers.push("ellipsis-left");
         }
       }
 
@@ -175,14 +182,14 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
 
       if (endPage < totalPages) {
         if (endPage < totalPages - 1) {
-          pageNumbers.push('ellipsis-right');
+          pageNumbers.push("ellipsis-right");
         }
         pageNumbers.push(totalPages);
       }
     }
 
     return pageNumbers.map((pageNumber, index) => {
-      if (pageNumber === 'ellipsis-left' || pageNumber === 'ellipsis-right') {
+      if (pageNumber === "ellipsis-left" || pageNumber === "ellipsis-right") {
         return (
           <PaginationItem key={index}>
             <PaginationEllipsis />
@@ -211,6 +218,7 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
 
     return (
       <>
+        <Toaster></Toaster>
         <Table>
           <TableHeader>
             <TableRow>
@@ -228,7 +236,7 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
                 <TableCell>{getStatusBadge(comanda.status)}</TableCell>
                 <TableCell>
                   <Link href={`/comandas/detalhes/${comanda.numero_comanda}`}>
-                    <Button variant='outline'>Detalhes</Button>
+                    <Button variant="outline">Detalhes</Button>
                   </Link>
                 </TableCell>
                 <TableCell className="text-right">
@@ -240,7 +248,9 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-44">
                       <DropdownMenuItem
-                        onClick={() => handleBaixarCodigo(comanda.numero_comanda)}
+                        onClick={() =>
+                          handleBaixarCodigo(comanda.numero_comanda)
+                        }
                       >
                         <Barcode className="w-4 h-4 mr-2" />
                         Baixar Código
@@ -268,17 +278,21 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
                 <PaginationItem>
                   <PaginationPrevious
                     href="#"
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.max(prev - 1, 1))
+                    }
                     isActive={currentPage > 1}
                   />
                 </PaginationItem>
-                
+
                 {renderPageNumbers()}
-                
+
                 <PaginationItem>
                   <PaginationNext
                     href="#"
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    onClick={() =>
+                      setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                    }
                     isActive={currentPage < totalPages}
                   />
                 </PaginationItem>
@@ -309,11 +323,17 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
           <TabsTrigger value="fechada">Fechadas</TabsTrigger>
           <TabsTrigger value="cancelada">Canceladas</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="todas">{renderTable(currentItems)}</TabsContent>
-        <TabsContent value="aberta">{renderTable(currentItems.filter(c => c.status === "aberta"))}</TabsContent>
-        <TabsContent value="fechada">{renderTable(currentItems.filter(c => c.status === "fechada"))}</TabsContent>
-        <TabsContent value="cancelada">{renderTable(currentItems.filter(c => c.status === "cancelada"))}</TabsContent>
+        <TabsContent value="aberta">
+          {renderTable(currentItems.filter((c) => c.status === "aberta"))}
+        </TabsContent>
+        <TabsContent value="fechada">
+          {renderTable(currentItems.filter((c) => c.status === "fechada"))}
+        </TabsContent>
+        <TabsContent value="cancelada">
+          {renderTable(currentItems.filter((c) => c.status === "cancelada"))}
+        </TabsContent>
       </Tabs>
 
       <CustomModal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
@@ -327,11 +347,12 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
               Cancelar
             </Button>
             <Button
+              disabled={confirmDelete}
               onClick={() => {
                 if (comandaToDelete) handleDelete(comandaToDelete);
               }}
             >
-              Confirmar
+              {confirmDelete ? "Excluindo..." : "Confirmar"}
             </Button>
           </div>
         </div>
