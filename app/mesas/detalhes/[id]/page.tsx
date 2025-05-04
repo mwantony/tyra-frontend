@@ -35,7 +35,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function MesaDetailsPage({
   params,
 }: {
-  params: { id: string };
+  params: { id: any };
 }) {
   const router = useRouter();
   const [mesa, setMesa] = useState<any>(null);
