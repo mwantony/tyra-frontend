@@ -292,7 +292,7 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
 
   return (
     <div>
-      <div className="p-4">
+      <div className="pb-4">
         <Input
           type="text"
           placeholder="Pesquisar por número ou ID"
