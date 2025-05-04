@@ -26,9 +26,7 @@ export default function PratosPage() {
     try {
       const resposta = await getProdutos();
       // Filtra apenas os produtos do tipo "prato"
-      const pratosFiltrados = resposta.filter(
-        (produto) => produto.tipo === "prato"
-      );
+      const pratosFiltrados = resposta.filter(produto => produto.tipo === "prato");
       setPratos(pratosFiltrados);
     } catch (error) {
       console.error("Erro ao buscar pratos:", error);
@@ -66,6 +64,15 @@ export default function PratosPage() {
             Gerencie seu cardápio de pratos
           </p>
         </div>
+
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Link href="/produtos/adicionar">
+            <Button className="w-full sm:w-fit">
+              <Plus className="mr-2 h-4 w-4" />
+              Novo Prato
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Abas de filtro */}
@@ -77,13 +84,13 @@ export default function PratosPage() {
           <TabsTrigger value="active">
             Ativos{" "}
             <Badge className="ml-2">
-              {pratos.filter((p) => p.ativo).length}
+              {pratos.filter(p => p.ativo).length}
             </Badge>
           </TabsTrigger>
           <TabsTrigger value="inactive">
             Inativos{" "}
             <Badge className="ml-2">
-              {pratos.filter((p) => !p.ativo).length}
+              {pratos.filter(p => !p.ativo).length}
             </Badge>
           </TabsTrigger>
         </TabsList>
