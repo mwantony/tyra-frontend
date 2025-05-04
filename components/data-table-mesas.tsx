@@ -54,6 +54,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
+import { format, parseISO } from "date-fns";
 
 interface DataTableProps {
   data: Mesa[];
@@ -113,15 +114,6 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
 
     return filtered;
   };
-  function convertToSaoPauloTimezone(date: Date) {
-    // Ajusta para o fuso de São Paulo (UTC-3)
-    return new Date(date.getTime() - 180 * 60 * 1000); // 180 minutos = 3 horas
-  }
-
-  function convertFromSaoPauloTimezone(date: Date) {
-    // Ajusta do fuso de São Paulo (UTC-3) para UTC
-    return new Date(date.getTime());
-  }
 
   const filteredData = getFilteredData();
   const totalItems = filteredData.length;
@@ -552,23 +544,20 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
                   type="datetime-local"
                   value={
                     reservaData.horario_reserva
-                      ? convertToSaoPauloTimezone(
-                          new Date(reservaData.horario_reserva)
+                      ? format(
+                          parseISO(reservaData.horario_reserva),
+                          "yyyy-MM-dd'T'HH:mm"
                         )
-                          .toISOString()
-                          .slice(0, 16)
                       : ""
                   }
                   onChange={(e) => {
-                    // Converte o valor selecionado (que está no fuso local do navegador) para o fuso de São Paulo
-                    const saoPauloDate = convertFromSaoPauloTimezone(
-                      new Date(e.target.value)
-                    );
+                    const localDate = new Date(e.target.value);
                     setReservaData({
                       ...reservaData,
-                      horario_reserva: saoPauloDate.toISOString(),
+                      horario_reserva: localDate.toISOString(),
                     });
                   }}
+                  
                   required
                 />
               </div>
