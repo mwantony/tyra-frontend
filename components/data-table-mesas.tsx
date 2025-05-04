@@ -424,7 +424,6 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
           <TabsTrigger value="livre">Livres</TabsTrigger>
           <TabsTrigger value="reservada">Reservadas</TabsTrigger>
           <TabsTrigger value="ocupada">Ocupadas</TabsTrigger>
-          <TabsTrigger value="em_limpeza">Em limpeza</TabsTrigger>
         </TabsList>
 
         <TabsContent value="todas">{renderTable(currentItems)}</TabsContent>
