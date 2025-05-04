@@ -346,14 +346,15 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
                           Reservar
                         </DropdownMenuItem>
                       )}
-
-                      <DropdownMenuItem
-                        onClick={() => openLiberarModal(mesa.id)}
-                        className="focus:text-primary"
-                      >
-                        <Unlock className="w-4 h-4 mr-2" />
-                        Liberar
-                      </DropdownMenuItem>
+                      {mesa.status !== "livre" && (
+                        <DropdownMenuItem
+                          onClick={() => openLiberarModal(mesa.id)}
+                          className="focus:text-primary"
+                        >
+                          <Unlock className="w-4 h-4 mr-2" />
+                          Liberar
+                        </DropdownMenuItem>
+                      )}
 
                       <DropdownMenuItem
                         onClick={() => openDeleteModal(mesa.id)}
