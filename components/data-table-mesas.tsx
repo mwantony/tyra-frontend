@@ -547,15 +547,25 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
                 <Input
                   id="horario_reserva"
                   type="datetime-local"
-                  value={reservaData.horario_reserva}
-                  onChange={(e) =>
+                  value={
+                    reservaData.horario_reserva
+                      ? new Date(reservaData.horario_reserva)
+                          .toISOString()
+                          .slice(0, 16) // formato: 'YYYY-MM-DDTHH:MM'
+                      : ""
+                  }
+                  onChange={(e) => {
+                    const localDate = new Date(e.target.value);
+                    const utcDate = new Date(
+                      localDate.getTime() +
+                        localDate.getTimezoneOffset() * 60000
+                    );
                     setReservaData({
                       ...reservaData,
-                      horario_reserva: e.target.value,
-                    })
-                  }
+                      horario_reserva: utcDate.toISOString(), // armazenando em UTC
+                    });
+                  }}
                   required
-                  min={getLocalDateTimeNow()}
                 />
               </div>
 
