@@ -55,7 +55,6 @@ export default function NovaMesaPage() {
       router.push("/mesas");
     } catch (error: any) {
       toast.error(error.response.data.error);
-
       console.error("Erro ao criar mesa:", error);
     } finally {
       setIsSubmitting(false);
