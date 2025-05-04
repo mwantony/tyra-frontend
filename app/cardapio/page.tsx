@@ -8,23 +8,22 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { getCardapio } from "@/services/produtos";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import QRCode from "react-qr-code";
 import html2canvas from "html2canvas";
 import { Loader2 } from "lucide-react";
+import { useAuth } from "@/contexts/auth-provider";
 
 export default function CardapioQRCodePage() {
   const [qrValue, setQrValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const { restaurante } = useAuth();
   useEffect(() => {
     const loadCardapio = async () => {
       try {
         setIsLoading(true);
-        await getCardapio(); // Apenas para verificar disponibilidade
-        const qrUrl = `${window.location.origin}/api/cardapio/view`;
+        const qrUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/produtos/cardapio/${restaurante.id}`;
         setQrValue(qrUrl);
       } catch (error) {
         toast.error("Erro ao carregar o cardápio");

@@ -53,30 +53,4 @@ export async function deleteProduto(id: any) {
   }
 }
 
-export async function getCardapio() {
-  try {
-    const response = await api.get(`/produtos/cardapio`, {
-      responseType: "blob", // Isso é essencial para receber arquivos binários
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Erro ao buscar cardápio:", error);
-    throw error;
-  }
-}
-export async function visualizarCardapio() {
-  try {
-    const blob = await getCardapio();
-    const url = window.URL.createObjectURL(
-      new Blob([blob], { type: "application/pdf" })
-    );
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", "cardapio.pdf"); // ou apenas link.href = url para abrir em nova aba
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  } catch (err) {
-    console.error("Erro ao visualizar o cardápio:", err);
-  }
-}
+
