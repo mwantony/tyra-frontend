@@ -130,7 +130,7 @@ export default function MesaDetailsPage({
   if (!mesa) {
     return (
       <div className="container mx-auto p-6 md:p-6 md:space-y-6">
-        <div className="flex justify-between items-center">
+        <div className="flex pb-4 md:pb-0 justify-between items-center">
           <Skeleton className="h-8 w-40" />
           <Skeleton className="h-8 w-24" />
         </div>
@@ -151,14 +151,14 @@ export default function MesaDetailsPage({
 
   return (
     <div className="container mx-auto p-4 md:p-6 md:space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between pb-4 md:pb-0 items-center">
         <h1 className="text-2xl font-bold">Detalhes da Mesa</h1>
         <Button variant="outline" onClick={() => router.push("/mesas")}>
           Voltar
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {/* Informações principais */}
         <Card className="md:col-span-2">
           <CardHeader className="flex flex-row justify-between items-center">
@@ -271,7 +271,7 @@ export default function MesaDetailsPage({
         </Card>
 
         {/* Ações e status */}
-        <div className="space-y-6">
+        <div className="space-y-4 md:space-y-6">
           {/* Status da mesa */}
           <Card>
             <CardHeader>
