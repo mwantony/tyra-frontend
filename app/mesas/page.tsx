@@ -53,12 +53,12 @@ export default function MesasPage() {
   );
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:gap-6 md:p-6 lg:p-6">
+    <div className="flex flex-col gap-4 p-4 pt-2 md:pt-2 lg:pt-2 md:gap-6 md:p-6 lg:p-6">
       <Toaster />
 
       {/* Cabeçalho */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
+        <div className="flex flex-col gap-1">
           <h1 className="text-2xl font-bold tracking-tight">Mesas</h1>
           <p className="text-sm text-muted-foreground">
             Gerencie todas as mesas disponíveis no estabelecimento
@@ -98,7 +98,11 @@ export default function MesasPage() {
               ))}
             </div>
           ) : mesasFiltradas.length > 0 ? (
-            <DataTableMesas recarregarMesas={recarregarMesas} data={mesasFiltradas} onDelete={recarregarMesas} />
+            <DataTableMesas
+              recarregarMesas={recarregarMesas}
+              data={mesasFiltradas}
+              onDelete={recarregarMesas}
+            />
           ) : (
             <div className="flex flex-col items-center justify-center py-10 gap-2 text-center">
               <Search className="h-8 w-8 text-muted-foreground" />
