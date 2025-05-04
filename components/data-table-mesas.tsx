@@ -163,17 +163,13 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
       // Formatar data corretamente
       const reservaData = {
         ...data,
-        horario_reserva: subHours(
-          parseISO(data.horario_reserva),
-          3
-        ).toISOString(),
+        horario_reserva: subHours(parseISO(data.horario_reserva), 3).toISOString(),
       };
-      console.log(reservaData);
+      console.log(reservaData)
       await reservarMesa(id, reservaData);
       toast.success("Mesa reservada com sucesso!");
       setConfirmReserve(false);
       recarregarMesas();
-      window.location.reload();
       setReservarModalOpen(false);
       setReservaData({
         nome_reserva: "",
@@ -196,8 +192,6 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
       toast.success("Mesa liberada com sucesso!");
       setConfirmLiberacao(false);
       recarregarMesas();
-      window.location.reload();
-
       setLiberarModalOpen(false);
       // Atualize as mesas, se necessário
     } catch {
@@ -563,6 +557,7 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
                       horario_reserva: localDate.toISOString(),
                     });
                   }}
+                  
                   required
                 />
               </div>
