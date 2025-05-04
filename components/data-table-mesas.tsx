@@ -47,6 +47,13 @@ import { Textarea } from "./ui/textarea";
 import { toast } from "sonner";
 import { Toaster } from "./ui/sonner";
 import { Label } from "./ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
 
 interface DataTableProps {
   data: Mesa[];
@@ -450,10 +457,15 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
         </TabsContent>
       </Tabs>
 
-      <CustomModal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-        <div>
-          <h3 className="text-lg font-bold">Confirmar Exclusão</h3>
-          <p>Você tem certeza que deseja excluir esta mesa?</p>
+      <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirmar Exclusão</DialogTitle>
+            <DialogDescription>
+              Você tem certeza que deseja excluir esta mesa?
+            </DialogDescription>
+          </DialogHeader>
+
           <div className="flex justify-end space-x-4 mt-4">
             <Button variant="outline" onClick={() => setModalOpen(false)}>
               Cancelar
@@ -467,116 +479,125 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
               Confirmar Exclusão
             </Button>
           </div>
-        </div>
-      </CustomModal>
-      <CustomModal
-        isOpen={isReservarModalOpen}
-        onClose={() => {
-          setReservarModalOpen(false);
-          setReservaData({
-            nome_reserva: "",
-            telefone_reserva: "",
-            horario_reserva: "",
-            observacoes: "",
-          });
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={isReservarModalOpen}
+        onOpenChange={(open) => {
+          setReservarModalOpen(open);
+          if (!open) {
+            setReservaData({
+              nome_reserva: "",
+              telefone_reserva: "",
+              horario_reserva: "",
+              observacoes: "",
+            });
+          }
         }}
       >
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (mesaToReserve) handleReservarMesa(mesaToReserve, reservaData);
-          }}
-          className="space-y-4"
-        >
-          <h3 className="text-lg font-bold">Reservar Mesa</h3>
+        <DialogContent className="max-w-md">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (mesaToReserve) handleReservarMesa(mesaToReserve, reservaData);
+            }}
+            className="space-y-4"
+          >
+            <DialogHeader>
+              <DialogTitle>Reservar Mesa</DialogTitle>
+              <DialogDescription>
+                Preencha as informações para reservar a mesa selecionada.
+              </DialogDescription>
+            </DialogHeader>
 
-          <div className="grid gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="nome_reserva">Nome*</Label>
-              <Input
-                id="nome_reserva"
-                value={reservaData.nome_reserva}
-                onChange={(e) =>
-                  setReservaData({
-                    ...reservaData,
-                    nome_reserva: e.target.value,
-                  })
-                }
-                required
-              />
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="nome_reserva">Nome*</Label>
+                <Input
+                  id="nome_reserva"
+                  value={reservaData.nome_reserva}
+                  onChange={(e) =>
+                    setReservaData({
+                      ...reservaData,
+                      nome_reserva: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="telefone_reserva">Telefone*</Label>
+                <Input
+                  id="telefone_reserva"
+                  type="tel"
+                  value={reservaData.telefone_reserva}
+                  onChange={(e) =>
+                    setReservaData({
+                      ...reservaData,
+                      telefone_reserva: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="horario_reserva">Data e Horário*</Label>
+                <Input
+                  id="horario_reserva"
+                  type="datetime-local"
+                  value={reservaData.horario_reserva}
+                  onChange={(e) =>
+                    setReservaData({
+                      ...reservaData,
+                      horario_reserva: e.target.value,
+                    })
+                  }
+                  required
+                  min={getLocalDateTimeNow()}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="observacoes">Observações</Label>
+                <Textarea
+                  id="observacoes"
+                  value={reservaData.observacoes}
+                  onChange={(e) =>
+                    setReservaData({
+                      ...reservaData,
+                      observacoes: e.target.value,
+                    })
+                  }
+                />
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="telefone_reserva">Telefone*</Label>
-              <Input
-                id="telefone_reserva"
-                type="tel"
-                value={reservaData.telefone_reserva}
-                onChange={(e) =>
-                  setReservaData({
-                    ...reservaData,
-                    telefone_reserva: e.target.value,
-                  })
-                }
-                required
-              />
+            <div className="flex justify-end gap-4 pt-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setReservarModalOpen(false)}
+              >
+                Cancelar
+              </Button>
+              <Button disabled={confirmReserva} type="submit">
+                {confirmReserva ? "Confirmando..." : "Confirmar Reserva"}
+              </Button>
             </div>
+          </form>
+        </DialogContent>
+      </Dialog>
 
-            <div className="space-y-2">
-              <Label htmlFor="horario_reserva">Data e Horário*</Label>
-              <Input
-                id="horario_reserva"
-                type="datetime-local"
-                value={reservaData.horario_reserva}
-                onChange={(e) =>
-                  setReservaData({
-                    ...reservaData,
-                    horario_reserva: e.target.value,
-                  })
-                }
-                required
-                min={getLocalDateTimeNow()}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="observacoes">Observações</Label>
-              <Textarea
-                id="observacoes"
-                value={reservaData.observacoes}
-                onChange={(e) =>
-                  setReservaData({
-                    ...reservaData,
-                    observacoes: e.target.value,
-                  })
-                }
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-end gap-4 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setReservarModalOpen(false)}
-            >
-              Cancelar
-            </Button>
-            <Button disabled={confirmReserva} type="submit">
-              {confirmReserva === true ? "Confirmando..." : "Confirmar Reserva"}
-            </Button>
-          </div>
-        </form>
-      </CustomModal>
-      <CustomModal
-        isOpen={isLiberarModalOpen}
-        onClose={() => setLiberarModalOpen(false)}
-      >
-        <div>
-          <h3 className="text-lg font-bold">Liberar Mesa?</h3>
-          <p className="text-sm text-muted-foreground">
-            Tem certeza de que deseja liberar esta mesa?
-          </p>
+      <Dialog open={isLiberarModalOpen} onOpenChange={setLiberarModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Liberar Mesa?</DialogTitle>
+            <DialogDescription>
+              Tem certeza de que deseja liberar esta mesa?
+            </DialogDescription>
+          </DialogHeader>
 
           <div className="flex justify-end space-x-4 mt-6">
             <Button
@@ -585,20 +606,17 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
             >
               Cancelar
             </Button>
-
             <Button
               disabled={confirmLiberacao}
               onClick={() => {
                 if (mesaToFree) handleLiberarMesa(mesaToFree);
               }}
             >
-              {confirmLiberacao === true
-                ? "Confirmando..."
-                : "Confirmar Liberação"}
+              {confirmLiberacao ? "Confirmando..." : "Confirmar Liberação"}
             </Button>
           </div>
-        </div>
-      </CustomModal>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
