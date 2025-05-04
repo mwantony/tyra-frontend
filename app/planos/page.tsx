@@ -315,13 +315,26 @@ export default function BillingPage() {
 
                     <li className="flex items-center space-x-2">
                       <span className="text-green-500">✓</span>
-                      <p>Gerenciamento de pedidos</p>
-                    </li>
-
-                    <li className="flex items-center space-x-2">
-                      <span className="text-green-500">✓</span>
                       <p>Relatórios de desempenho</p>
                     </li>
+                    {currentPlan?.id === 1 && (
+                      <li className="flex items-center space-x-2">
+                        <span className="text-green-500">✓</span>
+                        <p>Até 10 mesas</p>
+                      </li>
+                    )}
+                    {currentPlan?.id === 2 && (
+                      <li className="flex items-center space-x-2">
+                        <span className="text-green-500">✓</span>
+                        <p>Até 20 mesas</p>
+                      </li>
+                    )}
+                    {currentPlan?.id === 3 && (
+                      <li className="flex items-center space-x-2">
+                        <span className="text-green-500">✓</span>
+                        <p>Mesas ilimitadas</p>
+                      </li>
+                    )}
                     <li className="flex items-center space-x-2">
                       <span className="text-green-500">✓</span>
                       <p>Suporte 24/7</p>
