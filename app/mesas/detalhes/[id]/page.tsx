@@ -40,6 +40,8 @@ export default function MesaDetailsPage({
   const router = useRouter();
   const [mesa, setMesa] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [confirmOcupacao, setConfirmOcupacao] = useState(false);
+  const [confirmLiberacao, setConfirmLiberacao] = useState(false);
   const [formData, setFormData] = useState({
     identificacao: "",
     capacidade: 4,
@@ -83,6 +85,7 @@ export default function MesaDetailsPage({
   };
 
   const handleOcuparSubmit = async (e: React.FormEvent) => {
+    setConfirmOcupacao(true);
     e.preventDefault();
     try {
       await ocuparMesa(Number(params.id), ocupacaoData.numero_comanda);
@@ -90,18 +93,25 @@ export default function MesaDetailsPage({
       setMesa(updatedMesa);
       setOcupacaoData({ numero_comanda: "" });
       toast.success("Mesa ocupada com sucesso!");
+      setConfirmOcupacao(false);
     } catch (error) {
+      setConfirmOcupacao(false);
+
       toast.error("Erro ao ocupar mesa");
     }
   };
 
   const handleLiberarMesa = async () => {
+    setConfirmLiberacao(true);
     try {
       await liberarMesa(Number(params.id));
       const updatedMesa = await getMesa(Number(params.id));
       setMesa(updatedMesa);
       toast.success("Mesa liberada com sucesso!");
+      setConfirmLiberacao(false);
     } catch (error) {
+      setConfirmLiberacao(false);
+
       toast.error("Erro ao liberar mesa");
     }
   };
@@ -358,10 +368,11 @@ export default function MesaDetailsPage({
 
                 <Button
                   variant="outline"
+                  disabled={confirmLiberacao}
                   onClick={handleLiberarMesa}
                   className="w-full"
                 >
-                  Liberar Mesa
+                  {confirmLiberacao ? "Liberando..." : "Liberar Mesa"}
                 </Button>
               </CardContent>
             </Card>
@@ -386,8 +397,12 @@ export default function MesaDetailsPage({
                         required
                       />
                     </div>
-                    <Button type="submit" className="w-full">
-                      Ocupar Mesa
+                    <Button
+                      disabled={confirmOcupacao}
+                      type="submit"
+                      className="w-full"
+                    >
+                      {confirmOcupacao ? "Ocupando..." : "Ocupar Mesa"}
                     </Button>
                   </form>
                 )}
