@@ -1,111 +1,150 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // app/mesas/[id]/page.tsx
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { getMesa, liberarMesa, ocuparMesa,  updateMesa } from '@/services/mesas'
-import { Badge } from '@/components/ui/badge'
-import { Calendar, Clock, Users, Clipboard, Phone, User, Chair } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
-import dayjs from 'dayjs'
-import { Textarea } from '@/components/ui/textarea'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { getMesa, liberarMesa, ocuparMesa, updateMesa } from "@/services/mesas";
+import { Badge } from "@/components/ui/badge";
+import {
+  Calendar,
+  Clock,
+  Users,
+  Clipboard,
+  Phone,
+  User,
+  RockingChair,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import dayjs from "dayjs";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default function MesaDetailsPage({ params }: { params: { id: string } }) {
-  const router = useRouter()
-  const [mesa, setMesa] = useState<any>(null)
-  const [isEditing, setIsEditing] = useState(false)
+export default function MesaDetailsPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const router = useRouter();
+  const [mesa, setMesa] = useState<any>(null);
+  const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    identificacao: '',
+    identificacao: "",
     capacidade: 4,
-    status: 'livre',
-    observacoes: ''
-  })
+    status: "livre",
+    observacoes: "",
+  });
   const [ocupacaoData, setOcupacaoData] = useState({
-    numero_comanda: ''
-  })
+    numero_comanda: "",
+  });
 
   useEffect(() => {
     const loadMesa = async () => {
       try {
-        const mesaData = await getMesa(Number(params.id))
-        setMesa(mesaData)
+        const mesaData = await getMesa(Number(params.id));
+        setMesa(mesaData);
         setFormData({
           identificacao: mesaData.identificacao,
           capacidade: mesaData.capacidade,
           status: mesaData.status,
-          observacoes: mesaData.observacoes || ''
-        })
+          observacoes: mesaData.observacoes || "",
+        });
       } catch (error) {
-        toast.error('Erro ao carregar dados da mesa')
-        router.push('/mesas')
+        toast.error("Erro ao carregar dados da mesa");
+        router.push("/mesas");
       }
-    }
-    loadMesa()
-  }, [params.id, router])
+    };
+    loadMesa();
+  }, [params.id, router]);
 
   const handleEditSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      await updateMesa(Number(params.id), formData)
-      const updatedMesa = await getMesa(Number(params.id))
-      setMesa(updatedMesa)
-      setIsEditing(false)
-      toast.success('Mesa atualizada com sucesso!')
+      await updateMesa(Number(params.id), formData);
+      const updatedMesa = await getMesa(Number(params.id));
+      setMesa(updatedMesa);
+      setIsEditing(false);
+      toast.success("Mesa atualizada com sucesso!");
     } catch (error) {
-      toast.error('Erro ao atualizar mesa')
+      toast.error("Erro ao atualizar mesa");
     }
-  }
+  };
 
   const handleOcuparSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      await ocuparMesa(Number(params.id), ocupacaoData.numero_comanda)
-      const updatedMesa = await getMesa(Number(params.id))
-      setMesa(updatedMesa)
-      setOcupacaoData({ numero_comanda: '' })
-      toast.success('Mesa ocupada com sucesso!')
+      await ocuparMesa(Number(params.id), ocupacaoData.numero_comanda);
+      const updatedMesa = await getMesa(Number(params.id));
+      setMesa(updatedMesa);
+      setOcupacaoData({ numero_comanda: "" });
+      toast.success("Mesa ocupada com sucesso!");
     } catch (error) {
-      toast.error('Erro ao ocupar mesa')
+      toast.error("Erro ao ocupar mesa");
     }
-  }
+  };
 
   const handleLiberarMesa = async () => {
     try {
-      await liberarMesa(Number(params.id))
-      const updatedMesa = await getMesa(Number(params.id))
-      setMesa(updatedMesa)
-      toast.success('Mesa liberada com sucesso!')
+      await liberarMesa(Number(params.id));
+      const updatedMesa = await getMesa(Number(params.id));
+      setMesa(updatedMesa);
+      toast.success("Mesa liberada com sucesso!");
     } catch (error) {
-      toast.error('Erro ao liberar mesa')
+      toast.error("Erro ao liberar mesa");
     }
-  }
+  };
 
   const handleCancelarReserva = async () => {
     try {
-      await liberarMesa(Number(params.id)) // Reutiliza a função de liberar para cancelar reserva
-      const updatedMesa = await getMesa(Number(params.id))
-      setMesa(updatedMesa)
-      toast.success('Reserva cancelada com sucesso!')
+      await liberarMesa(Number(params.id)); // Reutiliza a função de liberar para cancelar reserva
+      const updatedMesa = await getMesa(Number(params.id));
+      setMesa(updatedMesa);
+      toast.success("Reserva cancelada com sucesso!");
     } catch (error) {
-      toast.error('Erro ao cancelar reserva')
+      toast.error("Erro ao cancelar reserva");
     }
-  }
+  };
 
   if (!mesa) {
-    return <div className="container mx-auto p-4">Carregando...</div>
+    return (
+      <div className="container mx-auto p-4 space-y-4">
+        <div className="flex justify-between items-center">
+          <Skeleton className="h-8 w-40" />
+          <Skeleton className="h-8 w-24" />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-2 space-y-4">
+            <Skeleton className="h-6 w-1/3" />
+            <Skeleton className="h-24 w-full" />
+            <Skeleton className="h-6 w-1/4" />
+            <Skeleton className="h-20 w-full" />
+          </div>
+          <div className="space-y-4">
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-40 w-full" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="container mx-auto p-4 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Detalhes da Mesa</h1>
-        <Button variant="outline" onClick={() => router.push('/mesas')}>
+        <Button variant="outline" onClick={() => router.push("/mesas")}>
           Voltar
         </Button>
       </div>
@@ -115,11 +154,8 @@ export default function MesaDetailsPage({ params }: { params: { id: string } }) 
         <Card className="md:col-span-2">
           <CardHeader className="flex flex-row justify-between items-center">
             <CardTitle>Informações da Mesa</CardTitle>
-            <Button
-              variant="outline"
-              onClick={() => setIsEditing(!isEditing)}
-            >
-              {isEditing ? 'Cancelar' : 'Editar'}
+            <Button variant="outline" onClick={() => setIsEditing(!isEditing)}>
+              {isEditing ? "Cancelar" : "Editar"}
             </Button>
           </CardHeader>
           <CardContent>
@@ -131,7 +167,10 @@ export default function MesaDetailsPage({ params }: { params: { id: string } }) 
                     id="identificacao"
                     value={formData.identificacao}
                     onChange={(e) =>
-                      setFormData({ ...formData, identificacao: e.target.value })
+                      setFormData({
+                        ...formData,
+                        identificacao: e.target.value,
+                      })
                     }
                     required
                   />
@@ -145,7 +184,10 @@ export default function MesaDetailsPage({ params }: { params: { id: string } }) 
                     min="1"
                     value={formData.capacidade}
                     onChange={(e) =>
-                      setFormData({ ...formData, capacidade: Number(e.target.value) })
+                      setFormData({
+                        ...formData,
+                        capacidade: Number(e.target.value),
+                      })
                     }
                     required
                   />
@@ -189,7 +231,9 @@ export default function MesaDetailsPage({ params }: { params: { id: string } }) 
                 <div className="flex items-center gap-4">
                   <Users className="w-5 h-5 text-muted-foreground" />
                   <div>
-                    <p className="text-sm text-muted-foreground">Identificação</p>
+                    <p className="text-sm text-muted-foreground">
+                      Identificação
+                    </p>
                     <p className="font-medium">{mesa.identificacao}</p>
                   </div>
                 </div>
@@ -201,18 +245,13 @@ export default function MesaDetailsPage({ params }: { params: { id: string } }) 
                     <p className="font-medium">{mesa.capacidade} pessoas</p>
                   </div>
                 </div>
-
-                <div className="flex items-center gap-4">
-                  <Badge variant={mesa.status === 'ocupada' ? 'destructive' : 'outline'}>
-                    {mesa.status}
-                  </Badge>
-                </div>
-
                 {mesa.observacoes && (
                   <div className="flex items-start gap-4">
                     <Clipboard className="w-5 h-5 text-muted-foreground mt-1" />
                     <div>
-                      <p className="text-sm text-muted-foreground">Observações</p>
+                      <p className="text-sm text-muted-foreground">
+                        Observações
+                      </p>
                       <p className="font-medium">{mesa.observacoes}</p>
                     </div>
                   </div>
@@ -228,28 +267,34 @@ export default function MesaDetailsPage({ params }: { params: { id: string } }) 
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Chair className="w-5 h-5" />
+                <RockingChair className="w-5 h-5" />
                 Status da Mesa
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
-                <Badge variant={
-                  mesa.status === 'ocupada' ? 'destructive' :
-                  mesa.status === 'reservada' ? 'warning' :
-                  mesa.status === 'em_limpeza' ? 'secondary' : 'outline'
-                }>
-                  {mesa.status}
+                <Badge
+                  variant={
+                    mesa.status === "ocupada"
+                      ? "destructive"
+                      : mesa.status === "reservada"
+                      ? "default"
+                      : mesa.status === "em_limpeza"
+                      ? "secondary"
+                      : "outline"
+                  }
+                >
+                  {mesa.status.charAt(0).toUpperCase() + mesa.status.slice(1)}
                 </Badge>
                 <p className="text-sm text-muted-foreground">
-                  {dayjs(mesa.updated_at).format('DD/MM/YYYY HH:mm')}
+                  {dayjs(mesa.updated_at).format("DD/MM/YYYY HH:mm")}
                 </p>
               </div>
             </CardContent>
           </Card>
 
           {/* Informações de reserva/ocupação */}
-          {mesa.status === 'reservada' && (
+          {mesa.status === "reservada" && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -279,7 +324,7 @@ export default function MesaDetailsPage({ params }: { params: { id: string } }) 
                   <div>
                     <p className="text-sm text-muted-foreground">Horário</p>
                     <p className="font-medium">
-                      {dayjs(mesa.horario_reserva).format('DD/MM/YYYY HH:mm')}
+                      {dayjs(mesa.horario_reserva).format("DD/MM/YYYY HH:mm")}
                     </p>
                   </div>
                 </div>
@@ -295,11 +340,11 @@ export default function MesaDetailsPage({ params }: { params: { id: string } }) 
             </Card>
           )}
 
-          {mesa.status === 'ocupada' && (
+          {mesa.status === "ocupada" && (
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Chair className="w-5 h-5" />
+                  <RockingChair className="w-5 h-5" />
                   Ocupação
                 </CardTitle>
               </CardHeader>
@@ -329,7 +374,7 @@ export default function MesaDetailsPage({ params }: { params: { id: string } }) 
               <CardTitle>Ações Rápidas</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {mesa.status === 'livre' && (
+              {mesa.status === "livre" && (
                 <form onSubmit={handleOcuparSubmit} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="numero_comanda">Número da Comanda</Label>
@@ -347,20 +392,10 @@ export default function MesaDetailsPage({ params }: { params: { id: string } }) 
                   </Button>
                 </form>
               )}
-
-              {mesa.status !== 'ocupada' && mesa.status !== 'reservada' && (
-                <Button
-                  variant="outline"
-                  onClick={() => router.push(`/mesas/${mesa.id}/reservar`)}
-                  className="w-full"
-                >
-                  Reservar Mesa
-                </Button>
-              )}
             </CardContent>
           </Card>
         </div>
       </div>
     </div>
-  )
+  );
 }
