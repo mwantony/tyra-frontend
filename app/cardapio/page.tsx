@@ -11,7 +11,7 @@ import {
 import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
 import QRCode from "react-qr-code";
-import html2canvas from "html2canvas";
+import qrImage from "qr-image";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/contexts/auth-provider";
 
@@ -19,7 +19,7 @@ export default function CardapioQRCodePage() {
   const [qrValue, setQrValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { restaurante } = useAuth();
-
+  const [confirmDownload, setConfirmDownload] = useState(false);
   // Cria uma referência para o QR Code
   const qrCodeRef = useRef(null);
 
@@ -40,26 +40,35 @@ export default function CardapioQRCodePage() {
     loadCardapio();
   }, []);
 
-  const handleDownloadQRCode = async () => {
-    if (qrCodeRef.current) {
-      try {
-        toast.loading("Gerando imagem do QR Code...");
-        const canvas = await html2canvas(qrCodeRef.current);
+  const handleDownloadQRCode = () => {
+    setConfirmDownload(true);
+    try {
+      const pngBuffer = qrImage.imageSync(qrValue, {
+        type: "png",
+        size: 10,
+        margin: 2,
+      });
 
-        const link = document.createElement("a");
-        link.download = "qr-code-cardapio.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-        toast.dismiss();
-        toast.success("QR Code baixado com sucesso!");
-      } catch (error) {
-        toast.dismiss();
+      const blob = new Blob([pngBuffer], { type: "image/png" });
+      const url = URL.createObjectURL(blob);
 
-        toast.error("Erro ao baixar QR Code");
-        console.error("Erro ao baixar QR Code:", error);
-      }
-    } else {
-      toast.error("QR Code não encontrado.");
+      const link = document.createElement("a");
+      link.download = "qr-code-cardapio.png";
+      link.href = url;
+      link.click();
+
+      // Limpar URL criada
+      setTimeout(() => URL.revokeObjectURL(url), 100);
+      setConfirmDownload(false);
+
+      toast.dismiss();
+      toast.success("QR Code baixado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao baixar QR Code:", error);
+      toast.dismiss();
+      setConfirmDownload(false);
+
+      toast.error("Erro ao baixar QR Code");
     }
   };
 
@@ -94,8 +103,12 @@ export default function CardapioQRCodePage() {
                   bgColor="#ffffff"
                 />
               </div>
-              <Button onClick={handleDownloadQRCode} className="w-full">
-                Baixar QR Code
+              <Button
+                onClick={handleDownloadQRCode}
+                className="w-full"
+                disabled={confirmDownload}
+              >
+                {confirmDownload ? "Baixando..." : "Baixar QR Code"}
               </Button>
             </>
           )}
