@@ -472,19 +472,19 @@ export default function BillingPage() {
                         <span className="text-green-500 mr-2">✓</span>
                         <span>Relatórios de desempenho</span>
                       </li>
-                      {currentPlan?.id === 1 && (
+                      {plan?.id === 1 && (
                         <li className="flex items-center space-x-2">
                           <span className="text-green-500">✓</span>
                           <p>Até 5 mesas</p>
                         </li>
                       )}
-                      {currentPlan?.id === 2 && (
+                      {plan?.id === 2 && (
                         <li className="flex items-center space-x-2">
                           <span className="text-green-500">✓</span>
                           <p>Até 15 mesas</p>
                         </li>
                       )}
-                      {currentPlan?.id === 3 && (
+                      {plan?.id === 3 && (
                         <li className="flex items-center space-x-2">
                           <span className="text-green-500">✓</span>
                           <p>Mesas ilimitadas</p>
