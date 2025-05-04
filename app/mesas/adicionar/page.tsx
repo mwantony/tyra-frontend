@@ -1,63 +1,75 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // app/mesas/nova/page.tsx
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
-import { postMesa } from '@/services/mesas'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { toast } from 'sonner'
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { postMesa } from "@/services/mesas";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function NovaMesaPage() {
-  const router = useRouter()
+  const router = useRouter();
   const [formData, setFormData] = useState({
-    identificacao: '',
+    identificacao: "",
     capacidade: 4,
-    status: 'livre',
-    observacoes: ''
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
+    status: "livre",
+    observacoes: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
   const handleSelectChange = (name: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+    e.preventDefault();
+    setIsSubmitting(true);
 
     try {
-      await postMesa(formData)
-      toast.success('Mesa criada com sucesso!')
-      router.push('/mesas')
-    } catch (error) {
-      console.error('Erro ao criar mesa:', error)
-      toast.error('Erro ao criar mesa. Por favor, tente novamente.')
+      await postMesa(formData);
+      toast.success("Mesa criada com sucesso!");
+      router.push("/mesas");
+    } catch (error: any) {
+      toast.error(error.response.data.error);
+
+      console.error("Erro ao criar mesa:", error);
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <div className="container  p-6 py-8">
       <div className=" ">
         <div className="mb-6">
           <h1 className="text-2xl font-bold">Nova Mesa</h1>
-          <p className="text-muted-foreground">Preencha os dados da nova mesa</p>
+          <p className="text-muted-foreground">
+            Preencha os dados da nova mesa
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -102,7 +114,7 @@ export default function NovaMesaPage() {
               <Label htmlFor="status">Status*</Label>
               <Select
                 value={formData.status}
-                onValueChange={(value) => handleSelectChange('status', value)}
+                onValueChange={(value) => handleSelectChange("status", value)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione o status" />
@@ -137,17 +149,17 @@ export default function NovaMesaPage() {
             <Button
               type="button"
               variant="outline"
-              onClick={() => router.push('/mesas')}
+              onClick={() => router.push("/mesas")}
               disabled={isSubmitting}
             >
               Cancelar
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Salvando...' : 'Salvar Mesa'}
+              {isSubmitting ? "Salvando..." : "Salvar Mesa"}
             </Button>
           </div>
         </form>
       </div>
     </div>
-  )
+  );
 }
