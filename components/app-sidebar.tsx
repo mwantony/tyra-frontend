@@ -9,7 +9,6 @@ import {
   SettingsIcon,
   HeadsetIcon,
   Table,
-  Table2,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -41,8 +40,17 @@ const data = {
     },
     {
       title: "Produtos",
-      url: "/produtos",
       icon: Package,
+      items: [
+        {
+          title: "History",
+          url: "#",
+        },
+        {
+          title: "History",
+          url: "#",
+        },
+      ],
     },
     {
       title: "Comandas",
