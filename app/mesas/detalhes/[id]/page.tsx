@@ -18,7 +18,7 @@ import {
   User,
   RockingChair,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import dayjs from "dayjs";
@@ -32,11 +32,8 @@ import {
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function MesaDetailsPage({
-  params,
-}: {
-  params: { id: any };
-}) {
+export default function MesaDetailsPage() {
+  const { id } = useParams();
   const router = useRouter();
   const [mesa, setMesa] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -55,7 +52,7 @@ export default function MesaDetailsPage({
   useEffect(() => {
     const loadMesa = async () => {
       try {
-        const mesaData = await getMesa(Number(params.id));
+        const mesaData = await getMesa(Number(id));
         setMesa(mesaData);
         setFormData({
           identificacao: mesaData.identificacao,
@@ -69,13 +66,13 @@ export default function MesaDetailsPage({
       }
     };
     loadMesa();
-  }, [params.id, router]);
+  }, [id, router]);
 
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await updateMesa(Number(params.id), formData);
-      const updatedMesa = await getMesa(Number(params.id));
+      await updateMesa(Number(id), formData);
+      const updatedMesa = await getMesa(Number(id));
       setMesa(updatedMesa);
       setIsEditing(false);
       toast.success("Mesa atualizada com sucesso!");
@@ -88,8 +85,8 @@ export default function MesaDetailsPage({
     setConfirmOcupacao(true);
     e.preventDefault();
     try {
-      await ocuparMesa(Number(params.id), ocupacaoData.numero_comanda);
-      const updatedMesa = await getMesa(Number(params.id));
+      await ocuparMesa(Number(id), ocupacaoData.numero_comanda);
+      const updatedMesa = await getMesa(Number(id));
       setMesa(updatedMesa);
       setOcupacaoData({ numero_comanda: "" });
       toast.success("Mesa ocupada com sucesso!");
@@ -104,8 +101,8 @@ export default function MesaDetailsPage({
   const handleLiberarMesa = async () => {
     setConfirmLiberacao(true);
     try {
-      await liberarMesa(Number(params.id));
-      const updatedMesa = await getMesa(Number(params.id));
+      await liberarMesa(Number(id));
+      const updatedMesa = await getMesa(Number(id));
       setMesa(updatedMesa);
       toast.success("Mesa liberada com sucesso!");
       setConfirmLiberacao(false);
@@ -118,8 +115,8 @@ export default function MesaDetailsPage({
 
   const handleCancelarReserva = async () => {
     try {
-      await liberarMesa(Number(params.id)); // Reutiliza a função de liberar para cancelar reserva
-      const updatedMesa = await getMesa(Number(params.id));
+      await liberarMesa(Number(id)); // Reutiliza a função de liberar para cancelar reserva
+      const updatedMesa = await getMesa(Number(id));
       setMesa(updatedMesa);
       toast.success("Reserva cancelada com sucesso!");
     } catch (error) {
