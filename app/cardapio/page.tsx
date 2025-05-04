@@ -36,25 +36,29 @@ export default function CardapioQRCodePage() {
     loadCardapio();
   }, []);
 
-  const handleDownloadQRCode = () => {
+  const handleDownloadQRCode = async () => {
     const qrCodeElement = document.getElementById("qr-code");
-
+  
     if (qrCodeElement) {
-      toast.promise(
-        html2canvas(qrCodeElement).then((canvas) => {
-          const link = document.createElement("a");
-          link.download = "qr-code-cardapio.png";
-          link.href = canvas.toDataURL("image/png");
-          link.click();
-        }),
-        {
-          loading: "Gerando imagem do QR Code...",
-          success: "QR Code baixado com sucesso!",
-          error: "Erro ao baixar QR Code",
-        }
-      );
+      try {
+        toast.loading("Gerando imagem do QR Code...");
+        const canvas = await html2canvas(qrCodeElement);
+  
+        const link = document.createElement("a");
+        link.download = "qr-code-cardapio.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+  
+        toast.success("QR Code baixado com sucesso!");
+      } catch (error) {
+        toast.error("Erro ao baixar QR Code");
+        console.error("Erro ao baixar QR Code:", error);
+      }
+    } else {
+      toast.error("QR Code não encontrado.");
     }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 ">
