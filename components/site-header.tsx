@@ -3,7 +3,7 @@
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
-import { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,13 +16,10 @@ export function SiteHeader() {
   const pathname = usePathname();
 
   const breadcrumbItems = useMemo(() => {
-    const paths = pathname.split("/").filter(Boolean); // remove strings vazias
-    
-    // Se não houver paths, retorna apenas "Dashboard"
+    const paths = pathname.split("/").filter(Boolean); 
+
     if (paths.length === 0) {
-      return [
-        { href: "/", label: "Dashboard" }
-      ];
+      return [{ href: "/", label: "Dashboard" }];
     }
 
     return paths.map((path, index) => {
@@ -43,16 +40,12 @@ export function SiteHeader() {
         <Breadcrumb>
           <BreadcrumbList>
             {breadcrumbItems.map((item, index) => (
-              <>
-                <BreadcrumbItem key={index}>
-                  <BreadcrumbLink href={item.href}>
-                    {item.label}
-                  </BreadcrumbLink>
+              <Fragment key={index}>
+                <BreadcrumbItem>
+                  <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
                 </BreadcrumbItem>
-                {index < breadcrumbItems.length - 1 && (
-                  <BreadcrumbSeparator />
-                )}
-              </>
+                {index < breadcrumbItems.length - 1 && <BreadcrumbSeparator />}
+              </Fragment>
             ))}
           </BreadcrumbList>
         </Breadcrumb>
