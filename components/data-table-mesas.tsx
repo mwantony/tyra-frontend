@@ -73,6 +73,7 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
   const [isReservarModalOpen, setReservarModalOpen] = useState(false);
   const [confirmReserva, setConfirmReserve] = useState(false);
   const [confirmLiberacao, setConfirmLiberacao] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [mesaToDelete, setMesaToDelete] = useState<number | null>(null);
   const [mesaToReserve, setMesaToReserve] = useState<number | null>(null);
   const [currentTab, setCurrentTab] = useState("todas");
@@ -138,12 +139,15 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
   };
 
   const handleDelete = async (id: number) => {
+    setConfirmDelete(true);
     try {
       await deleteMesa(id);
       setModalOpen(false);
+      setConfirmDelete(false);
       if (onDelete) onDelete();
     } catch (error) {
-      alert("Erro ao excluir mesa.");
+      setConfirmDelete(false);
+      toast.error("Erro ao excluir mesa.");
     }
   };
 
@@ -163,9 +167,12 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
       // Formatar data corretamente
       const reservaData = {
         ...data,
-        horario_reserva: subHours(parseISO(data.horario_reserva), 3).toISOString(),
+        horario_reserva: subHours(
+          parseISO(data.horario_reserva),
+          3
+        ).toISOString(),
       };
-      console.log(reservaData)
+      console.log(reservaData);
       await reservarMesa(id, reservaData);
       toast.success("Mesa reservada com sucesso!");
       setConfirmReserve(false);
@@ -466,12 +473,13 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
               Cancelar
             </Button>
             <Button
+              disabled={confirmDelete}
               variant="destructive"
               onClick={() => {
                 if (mesaToDelete) handleDelete(mesaToDelete);
               }}
             >
-              Confirmar Exclusão
+              {confirmDelete ? "Excluindo..." : "Confirmar Exclusão"}
             </Button>
           </div>
         </DialogContent>
@@ -557,7 +565,6 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
                       horario_reserva: localDate.toISOString(),
                     });
                   }}
-                  
                   required
                 />
               </div>
