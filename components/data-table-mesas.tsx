@@ -63,6 +63,8 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
 }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isReservarModalOpen, setReservarModalOpen] = useState(false);
+  const [confirmReserva, setConfirmReserve] = useState(false);
+  const [confirmLiberacao, setConfirmLiberacao] = useState(false);
   const [mesaToDelete, setMesaToDelete] = useState<number | null>(null);
   const [mesaToReserve, setMesaToReserve] = useState<number | null>(null);
   const [currentTab, setCurrentTab] = useState("todas");
@@ -144,6 +146,7 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
   };
 
   const handleReservarMesa = async (id: number, data: any) => {
+    setConfirmReserve(true);
     try {
       // Validar dados antes de enviar
       if (
@@ -163,6 +166,7 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
 
       await reservarMesa(id, reservaData);
       toast.success("Mesa reservada com sucesso!");
+      setConfirmReserve(false);
       recarregarMesas();
       setReservarModalOpen(false);
       setReservaData({
@@ -174,18 +178,23 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
 
       if (onStatusChange) onStatusChange();
     } catch (error) {
+      setConfirmReserve(false);
       console.error("Erro ao reservar mesa:", error);
       toast.error("Erro ao reservar mesa. Por favor, tente novamente.");
     }
   };
   const handleLiberarMesa = async (id: string | number) => {
+    setConfirmLiberacao(true);
     try {
       await liberarMesa(id); // suponha que você já tenha essa função
       toast.success("Mesa liberada com sucesso!");
+      setConfirmLiberacao(false);
       recarregarMesas();
       setLiberarModalOpen(false);
       // Atualize as mesas, se necessário
     } catch {
+      setConfirmLiberacao(false);
+
       toast.error("Erro ao liberar a mesa.");
     }
   };
@@ -553,7 +562,9 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
             >
               Cancelar
             </Button>
-            <Button type="submit">Confirmar Reserva</Button>
+            <Button disabled={confirmReserva} type="submit">
+              {confirmReserva === true ? "Confirmando..." : "Confirmar Reserva"}
+            </Button>
           </div>
         </form>
       </CustomModal>
@@ -576,11 +587,14 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
             </Button>
 
             <Button
+              disabled={confirmLiberacao}
               onClick={() => {
                 if (mesaToFree) handleLiberarMesa(mesaToFree);
               }}
             >
-              Confirmar Liberação
+              {confirmLiberacao === true
+                ? "Confirmando..."
+                : "Confirmar Liberação"}
             </Button>
           </div>
         </div>
