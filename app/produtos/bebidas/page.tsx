@@ -67,14 +67,6 @@ export default function BebidasPage() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <Link href="/produtos/adicionar?tipo=bebida">
-            <Button className="w-full sm:w-fit">
-              <Plus className="mr-2 h-4 w-4" />
-              Nova Bebida
-            </Button>
-          </Link>
-        </div>
       </div>
 
       {/* Abas de filtro */}
