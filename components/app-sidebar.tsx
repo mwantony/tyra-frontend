@@ -41,14 +41,15 @@ const data = {
     {
       title: "Produtos",
       icon: Package,
+      url: "/produtos",
       items: [
         {
-          title: "History",
-          url: "#",
+          title: "Pratos",
+          url: "/produtos/pratos",
         },
         {
-          title: "History",
-          url: "#",
+          title: "Bebidas",
+          url: "/produtos/bebidas",
         },
       ],
     },
