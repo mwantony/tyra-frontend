@@ -85,7 +85,7 @@ export default function ComandasPage() {
   });
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:gap-6 md:p-6 lg:p-6">
+    <div className="flex flex-col gap-4 p-4 pt-2 md:pt-2 lg:pt-2 md:gap-6 md:p-6 lg:p-6">
       {" "}
       <Toaster />
       {/* Cabeçalho */}
