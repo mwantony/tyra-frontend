@@ -27,6 +27,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { setMesas } from "@/store/slices/mesasSlice";
+import Link from "next/link";
 
 export default function MesasPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -54,30 +55,6 @@ export default function MesasPage() {
     recarregarMesas();
   }, []);
 
-  const handleNovaMesa = () => {
-    setModalOpen(true);
-  };
-
-  const handleConfirmacaoCriacao = async () => {
-    try {
-      await postMesa();
-      toast.success("Mesa criada com sucesso!", {
-        description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
-        action: {
-          label: "Ver",
-          onClick: () => recarregarMesas(),
-        },
-      });
-      await recarregarMesas();
-    } catch (error) {
-      toast.error("Erro ao criar mesa", {
-        description: "Tente novamente mais tarde",
-      });
-    } finally {
-      setModalOpen(false);
-    }
-  };
-
   const mesasFiltradas = mesas.filter((mesa) =>
     JSON.stringify(mesa).toLowerCase().includes(termoBusca.toLowerCase())
   );
@@ -96,19 +73,12 @@ export default function MesasPage() {
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Buscar mesas..."
-              className="w-full pl-9"
-              value={termoBusca}
-              onChange={(e) => setTermoBusca(e.target.value)}
-            />
-          </div>
-          <Button onClick={handleNovaMesa}>
-            <Plus className="mr-2 h-4 w-4" />
-            Nova Mesa
-          </Button>
+          <Link href={"/mesas/adicionar"} passHref>
+            <Button className="w-full sm:w-auto">
+              <Plus className="mr-2 h-4 w-4" />
+              Nova Mesa
+            </Button>
+          </Link>
         </div>
       </div>
 
@@ -135,10 +105,7 @@ export default function MesasPage() {
               ))}
             </div>
           ) : mesasFiltradas.length > 0 ? (
-            <DataTableMesas
-              data={mesasFiltradas}
-              onDelete={recarregarMesas}
-            />
+            <DataTableMesas data={mesasFiltradas} onDelete={recarregarMesas} />
           ) : (
             <div className="flex flex-col items-center justify-center py-10 gap-2 text-center">
               <Search className="h-8 w-8 text-muted-foreground" />
@@ -158,24 +125,6 @@ export default function MesasPage() {
           )}
         </CardContent>
       </Card>
-
-      {/* Modal de Confirmação */}
-      <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Criar nova mesa</DialogTitle>
-            <DialogDescription>
-              Esta ação irá criar uma nova mesa. Você poderá associá-la a uma comanda depois.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setModalOpen(false)}>
-              Cancelar
-            </Button>
-            <Button onClick={handleConfirmacaoCriacao}>Confirmar</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
