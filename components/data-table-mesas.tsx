@@ -113,11 +113,14 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
 
     return filtered;
   };
-  function getLocalDateTimeNow() {
-    const now = new Date();
-    const offset = now.getTimezoneOffset(); // minutos
-    const localDate = new Date(now.getTime() - offset * 60000);
-    return localDate.toISOString().slice(0, 16);
+  function convertToSaoPauloTimezone(date: Date) {
+    // Ajusta para o fuso de São Paulo (UTC-3)
+    return new Date(date.getTime() - 180 * 60 * 1000); // 180 minutos = 3 horas
+  }
+
+  function convertFromSaoPauloTimezone(date: Date) {
+    // Ajusta do fuso de São Paulo (UTC-3) para UTC
+    return new Date(date.getTime());
   }
 
   const filteredData = getFilteredData();
@@ -549,20 +552,21 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
                   type="datetime-local"
                   value={
                     reservaData.horario_reserva
-                      ? new Date(reservaData.horario_reserva)
+                      ? convertToSaoPauloTimezone(
+                          new Date(reservaData.horario_reserva)
+                        )
                           .toISOString()
-                          .slice(0, 16) // formato: 'YYYY-MM-DDTHH:MM'
+                          .slice(0, 16)
                       : ""
                   }
                   onChange={(e) => {
-                    const localDate = new Date(e.target.value);
-                    const utcDate = new Date(
-                      localDate.getTime() +
-                        localDate.getTimezoneOffset() * 60000
+                    // Converte o valor selecionado (que está no fuso local do navegador) para o fuso de São Paulo
+                    const saoPauloDate = convertFromSaoPauloTimezone(
+                      new Date(e.target.value)
                     );
                     setReservaData({
                       ...reservaData,
-                      horario_reserva: utcDate.toISOString(), // armazenando em UTC
+                      horario_reserva: saoPauloDate.toISOString(),
                     });
                   }}
                   required
