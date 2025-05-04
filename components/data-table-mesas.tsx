@@ -18,9 +18,16 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { Calendar, MoreHorizontal, Trash2, Check } from "lucide-react";
+import {
+  Calendar,
+  MoreHorizontal,
+  Trash2,
+  Check,
+  CalendarCheck,
+  Unlock,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { deleteMesa, liberarMesa } from "@/services/mesas";
+import { deleteMesa, liberarMesa, reservarMesa } from "@/services/mesas";
 import CustomModal from "@/components/custom-modal";
 import { Button } from "./ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -36,24 +43,40 @@ import {
   PaginationEllipsis,
 } from "@/components/ui/pagination";
 import Mesa from "@/interfaces/Mesa";
+import { Textarea } from "./ui/textarea";
+import { toast } from "sonner";
+import { Toaster } from "./ui/sonner";
+import { Label } from "./ui/label";
 
 interface DataTableProps {
   data: Mesa[];
   onDelete?: () => void;
   onStatusChange?: () => void;
+  recarregarMesas: () => void;
 }
 
 export const DataTableMesas: React.FC<DataTableProps> = ({
   data,
   onDelete,
   onStatusChange,
+  recarregarMesas,
 }) => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isReservarModalOpen, setReservarModalOpen] = useState(false);
   const [mesaToDelete, setMesaToDelete] = useState<number | null>(null);
+  const [mesaToReserve, setMesaToReserve] = useState<number | null>(null);
   const [currentTab, setCurrentTab] = useState("todas");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const [reservaData, setReservaData] = useState({
+    nome_reserva: "",
+    telefone_reserva: "",
+    horario_reserva: "",
+    observacoes: "",
+  });
+  const [isLiberarModalOpen, setLiberarModalOpen] = useState(false);
+  const [mesaToFree, setMesaToFree] = useState<string | number | null>(null);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -81,6 +104,12 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
 
     return filtered;
   };
+  function getLocalDateTimeNow() {
+    const now = new Date();
+    const offset = now.getTimezoneOffset(); // minutos
+    const localDate = new Date(now.getTime() - offset * 60000);
+    return localDate.toISOString().slice(0, 16);
+  }
 
   const filteredData = getFilteredData();
   const totalItems = filteredData.length;
@@ -114,18 +143,65 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
     }
   };
 
-  const handleLiberarMesa = async (id: number) => {
+  const handleReservarMesa = async (id: number, data: any) => {
     try {
-      await liberarMesa(id);
+      // Validar dados antes de enviar
+      if (
+        !data.nome_reserva ||
+        !data.telefone_reserva ||
+        !data.horario_reserva
+      ) {
+        toast.error("Preencha todos os campos obrigatórios");
+        return;
+      }
+
+      // Formatar data corretamente
+      const reservaData = {
+        ...data,
+        horario_reserva: new Date(data.horario_reserva).toISOString(),
+      };
+
+      await reservarMesa(id, reservaData);
+      toast.success("Mesa reservada com sucesso!");
+      recarregarMesas();
+      setReservarModalOpen(false);
+      setReservaData({
+        nome_reserva: "",
+        telefone_reserva: "",
+        horario_reserva: "",
+        observacoes: "",
+      });
+
       if (onStatusChange) onStatusChange();
     } catch (error) {
-      console.error("Erro ao liberar mesa:", error);
+      console.error("Erro ao reservar mesa:", error);
+      toast.error("Erro ao reservar mesa. Por favor, tente novamente.");
+    }
+  };
+  const handleLiberarMesa = async (id: string | number) => {
+    try {
+      await liberarMesa(id); // suponha que você já tenha essa função
+      toast.success("Mesa liberada com sucesso!");
+      recarregarMesas();
+      setLiberarModalOpen(false);
+      // Atualize as mesas, se necessário
+    } catch {
+      toast.error("Erro ao liberar a mesa.");
     }
   };
 
   const openDeleteModal = (id: number) => {
     setMesaToDelete(id);
     setModalOpen(true);
+  };
+  const openReservarModal = (id: number) => {
+    setMesaToReserve(id);
+
+    setReservarModalOpen(true);
+  };
+  const openLiberarModal = (id: string | number) => {
+    setMesaToFree(id);
+    setLiberarModalOpen(true);
   };
 
   const renderPageNumbers = () => {
@@ -234,7 +310,7 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
                 <TableCell>{getStatusBadge(mesa.status)}</TableCell>
                 <TableCell>
                   {renderReservaInfo(mesa)}
-                  {mesa.nome_reserva && <div>{mesa.nome_reserva}</div>}
+                  {mesa.nome_reserva ? <div>{mesa.nome_reserva}</div> : "- - -"}
                 </TableCell>
                 <TableCell className="flex space-x-2">
                   <Link href={`/mesas/detalhes/${mesa.id}`}>
@@ -261,6 +337,24 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-44">
+                      {mesa.status !== "reservada" && (
+                        <DropdownMenuItem
+                          onClick={() => openReservarModal(mesa.id)}
+                          className="focus:text-primary"
+                        >
+                          <CalendarCheck className="w-4 h-4 mr-2" />
+                          Reservar
+                        </DropdownMenuItem>
+                      )}
+
+                      <DropdownMenuItem
+                        onClick={() => openLiberarModal(mesa.id)}
+                        className="focus:text-primary"
+                      >
+                        <Unlock className="w-4 h-4 mr-2" />
+                        Liberar
+                      </DropdownMenuItem>
+
                       <DropdownMenuItem
                         onClick={() => openDeleteModal(mesa.id)}
                         className="text-destructive focus:text-destructive"
@@ -312,6 +406,7 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
 
   return (
     <div>
+      <Toaster></Toaster>
       <div className="pb-4">
         <Input
           type="text"
@@ -361,6 +456,131 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
               }}
             >
               Confirmar Exclusão
+            </Button>
+          </div>
+        </div>
+      </CustomModal>
+      <CustomModal
+        isOpen={isReservarModalOpen}
+        onClose={() => {
+          setReservarModalOpen(false);
+          setReservaData({
+            nome_reserva: "",
+            telefone_reserva: "",
+            horario_reserva: "",
+            observacoes: "",
+          });
+        }}
+      >
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (mesaToReserve) handleReservarMesa(mesaToReserve, reservaData);
+          }}
+          className="space-y-4"
+        >
+          <h3 className="text-lg font-bold">Reservar Mesa</h3>
+
+          <div className="grid gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="nome_reserva">Nome*</Label>
+              <Input
+                id="nome_reserva"
+                value={reservaData.nome_reserva}
+                onChange={(e) =>
+                  setReservaData({
+                    ...reservaData,
+                    nome_reserva: e.target.value,
+                  })
+                }
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="telefone_reserva">Telefone*</Label>
+              <Input
+                id="telefone_reserva"
+                type="tel"
+                value={reservaData.telefone_reserva}
+                onChange={(e) =>
+                  setReservaData({
+                    ...reservaData,
+                    telefone_reserva: e.target.value,
+                  })
+                }
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="horario_reserva">Data e Horário*</Label>
+              <Input
+                id="horario_reserva"
+                type="datetime-local"
+                value={reservaData.horario_reserva}
+                onChange={(e) =>
+                  setReservaData({
+                    ...reservaData,
+                    horario_reserva: e.target.value,
+                  })
+                }
+                required
+                min={getLocalDateTimeNow()}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="observacoes">Observações</Label>
+              <Textarea
+                id="observacoes"
+                value={reservaData.observacoes}
+                onChange={(e) =>
+                  setReservaData({
+                    ...reservaData,
+                    observacoes: e.target.value,
+                  })
+                }
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-4 pt-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setReservarModalOpen(false)}
+            >
+              Cancelar
+            </Button>
+            <Button type="submit">Confirmar Reserva</Button>
+          </div>
+        </form>
+      </CustomModal>
+      <CustomModal
+        isOpen={isLiberarModalOpen}
+        onClose={() => setLiberarModalOpen(false)}
+      >
+        <div>
+          <h3 className="text-lg font-bold">Liberar Mesa?</h3>
+          <p className="text-sm text-muted-foreground">
+            Tem certeza de que deseja liberar esta mesa?
+          </p>
+
+          <div className="flex justify-end space-x-4 mt-6">
+            <Button
+              variant="outline"
+              onClick={() => setLiberarModalOpen(false)}
+            >
+              Cancelar
+            </Button>
+
+            <Button
+              onClick={() => {
+                if (mesaToFree) handleLiberarMesa(mesaToFree);
+              }}
+            >
+              Confirmar Liberação
             </Button>
           </div>
         </div>

@@ -98,7 +98,7 @@ export default function MesasPage() {
               ))}
             </div>
           ) : mesasFiltradas.length > 0 ? (
-            <DataTableMesas data={mesasFiltradas} onDelete={recarregarMesas} />
+            <DataTableMesas recarregarMesas={recarregarMesas} data={mesasFiltradas} onDelete={recarregarMesas} />
           ) : (
             <div className="flex flex-col items-center justify-center py-10 gap-2 text-center">
               <Search className="h-8 w-8 text-muted-foreground" />
