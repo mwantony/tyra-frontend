@@ -54,7 +54,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
-import { format, parseISO } from "date-fns";
+import { format, parseISO, subHours } from "date-fns";
 
 interface DataTableProps {
   data: Mesa[];
@@ -163,9 +163,9 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
       // Formatar data corretamente
       const reservaData = {
         ...data,
-        horario_reserva: new Date(data.horario_reserva).toISOString(),
+        horario_reserva: subHours(parseISO(data.horario_reserva), 3).toISOString(),
       };
-
+      console.log(reservaData)
       await reservarMesa(id, reservaData);
       toast.success("Mesa reservada com sucesso!");
       setConfirmReserve(false);
