@@ -5,9 +5,23 @@
 
 /* Scrollbar base */
 
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--sidebar-accent) transparent;
+
+
+body::-webkit-scrollbar {
+  width: 12px;               /* width of the entire scrollbar */
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--background);        /* color of the tracking area */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--sidebar-accent);    
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: 3px solid var(--background);  /* creates padding around scroll thumb */
+  &:hover {
+      background-color: var(--sidebar-ring);
+  }
 }
 @layer base {
   button,
