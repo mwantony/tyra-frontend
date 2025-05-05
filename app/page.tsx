@@ -28,7 +28,7 @@ export default function Page() {
   const [loading, setLoading] = React.useState(false);
   const [downloading, setDownloading] = React.useState(false);
   const [isRefreshing, setIsRefreshing] = React.useState(false);
-
+  const refreshRef = React.useRef<any>(null);
   const handleDateChange = (newDateRange: any) => {
     setDate({
       from: dayjs(newDateRange.from).format("YYYY-MM-DD"),
@@ -55,6 +55,7 @@ export default function Page() {
     const resposta = await filtrarVendas(date.from, date.to);
     setVendaFiltrada(resposta);
     setIsRefreshing(false);
+    
   };
 
   useEffect(() => {
@@ -63,6 +64,9 @@ export default function Page() {
       const resposta = await filtrarVendas(date.from, date.to);
       setVendaFiltrada(resposta);
       setLoading(false);
+      if (refreshRef.current) {
+        refreshRef.current.click();
+      }
     };
 
     fetchData();
@@ -76,6 +80,7 @@ export default function Page() {
           <div className="flex flex-col items-stretch gap-y-4 px-4 lg:flex-row lg:justify-end lg:items-center lg:gap-x-2 lg:px-6">
             <Button
               variant="outline"
+              ref={refreshRef}
               size="icon"
               onClick={handleRefresh}
               disabled={isRefreshing}
