@@ -50,39 +50,11 @@ export function NavMain({ items }: { items: NavItem[] }) {
     return subItems?.some((item) => pathname === item.url) ?? false;
   };
 
-  const renderLinkOrButton = (item: NavItem) => {
-    if (item.url) {
-      return (
-        <Link
-          href={item.url}
-          className={`flex-1 flex items-center gap-2 ${
-            isActive(item.url, item.items) ? "text-primary" : ""
-          }`}
-          onClick={handleItemClick}
-        >
-          {item.icon && <item.icon className="h-4 w-4" />}
-          <span>{item.title}</span>
-        </Link>
-      );
-    }
-    return (
-      <button
-        className={`flex-1 flex items-center gap-2 text-left ${
-          isActive(null, item.items) ? "text-primary" : ""
-        }`}
-        onClick={() => toggleExpand(item.title)}
-      >
-        {item.icon && <item.icon className="h-4 w-4" />}
-        <span>{item.title}</span>
-      </button>
-    );
-  };
-
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-1">
         <SidebarMenu className="mb-2">
-          <Link href={"/vendas/adicionar"} >
+          <Link href={"/vendas/adicionar"}>
             <SidebarMenuItem className="flex items-center gap-2">
               <SidebarMenuButton
                 variant="outline"
@@ -95,41 +67,54 @@ export function NavMain({ items }: { items: NavItem[] }) {
             </SidebarMenuItem>
           </Link>
         </SidebarMenu>
+
         <SidebarMenu>
           {items.map((item) => {
             const hasItems = item.items && item.items.length > 0;
             const isItemActive = isActive(item.url, item.items);
             const isExpanded = expandedItems[item.title] ?? false;
 
+            const content = (
+              <SidebarMenuItem className="flex items-center gap-2 w-full">
+                <SidebarMenuButton
+                  tooltip={item.title}
+                  className={`w-full justify-start ${
+                    isItemActive
+                      ? "bg-muted text-primary"
+                      : "hover:bg-muted cursor-pointer"
+                  }`}
+                >
+                  {item.icon && <item.icon className="h-4 w-4" />}
+                  <span>{item.title}</span>
+                </SidebarMenuButton>
+
+                {hasItems && (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleExpand(item.title);
+                    }}
+                    className="p-1 rounded hover:bg-muted"
+                  >
+                    {isExpanded ? (
+                      <ChevronDown className="h-4 w-4" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4" />
+                    )}
+                  </button>
+                )}
+              </SidebarMenuItem>
+            );
+
             return (
               <div key={item.title} className="space-y-1">
-                <SidebarMenuItem>
-                  <div className="flex items-center gap-2 w-full">
-                    <SidebarMenuButton
-                      tooltip={item.title}
-                      className={`w-full ${
-                        isItemActive
-                          ? "bg-muted text-primary"
-                          : "hover:bg-muted cursor-pointer"
-                      }`}
-                    >
-                      {renderLinkOrButton(item)}
-                    </SidebarMenuButton>
-
-                    {hasItems && (
-                      <button
-                        onClick={() => toggleExpand(item.title)}
-                        className="p-1 rounded hover:bg-muted"
-                      >
-                        {isExpanded ? (
-                          <ChevronDown className="h-4 w-4" />
-                        ) : (
-                          <ChevronRight className="h-4 w-4" />
-                        )}
-                      </button>
-                    )}
-                  </div>
-                </SidebarMenuItem>
+                {item.url ? (
+                  <Link href={item.url} onClick={handleItemClick}>
+                    {content}
+                  </Link>
+                ) : (
+                  content
+                )}
 
                 {hasItems && isExpanded && (
                   <div className="ml-4 pl-2 border-l">
