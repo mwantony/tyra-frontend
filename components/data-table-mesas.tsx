@@ -332,7 +332,7 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
                 </TableCell>
                 <TableCell className="flex space-x-2">
                   <Link href={`/mesas/detalhes/${mesa.id}`}>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline">
                       Detalhes
                     </Button>
                   </Link>
