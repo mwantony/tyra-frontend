@@ -15,6 +15,8 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { filtrarVendas, gerarPdf } from "@/services/vendas";
 import { Card } from "@/components/ui/card";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function Page() {
   const [date, setDate] = React.useState({
@@ -36,7 +38,15 @@ export default function Page() {
 
   const handleGerarPdf = async () => {
     setDownloading(true);
-    await gerarPdf(date.from, date.to).then((res) => console.log(res));
+    await gerarPdf(date.from, date.to)
+      .then((res) => {
+        if (res.status === 403) {
+          toast.error("Recurso não disponível no Plano Básico");
+        }
+      })
+      .catch((error) => {
+        console.log(error.status);
+      });
     setDownloading(false);
   };
 
@@ -60,6 +70,7 @@ export default function Page() {
 
   return (
     <div className="flex flex-1 flex-col">
+      <Toaster></Toaster>
       <div className="@container/main flex flex-1 flex-col gap-2">
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
           <div className="flex flex-col items-stretch gap-y-4 px-4 lg:flex-row lg:justify-end lg:items-center lg:gap-x-2 lg:px-6">

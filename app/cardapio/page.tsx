@@ -121,58 +121,68 @@ export default function CardapioQRCodePage() {
   return (
     <div className="min-h-150 flex items-center justify-center px-4 ">
       <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-center text-2xl">
-            Cardápio Digital
-          </CardTitle>
-          <CardDescription className="text-center">
-            Escaneie ou baixe o QR Code abaixo
-          </CardDescription>
-        </CardHeader>
+        {restaurante.plano_id !== 1 ? (
+          <>
+            <CardHeader>
+              <CardTitle className="text-center text-2xl">
+                Cardápio Digital
+              </CardTitle>
+              <CardDescription className="text-center">
+                Escaneie ou baixe o QR Code abaixo
+              </CardDescription>
+            </CardHeader>
 
-        <CardContent className="flex flex-col items-center space-y-6">
-          {isLoading ? (
-            <div className="flex flex-col items-center justify-center h-64">
-              <Loader2 className="animate-spin w-8 h-8 text-muted-foreground" />
-              <p className="mt-4 text-sm text-muted-foreground">
-                Carregando QR Code...
-              </p>
-            </div>
-          ) : (
-            <>
-              <div
-                ref={qrCodeRef}
-                className="p-4 bg-white border rounded-md flex flex-col items-center"
-              >
-                <QRCode
-                  value={qrValue}
-                  size={256}
-                  level="H"
-                  fgColor="#000000"
-                  bgColor="#ffffff"
-                />
-              </div>
+            <CardContent className="flex flex-col items-center space-y-6">
+              {isLoading ? (
+                <div className="flex flex-col items-center justify-center h-64">
+                  <Loader2 className="animate-spin w-8 h-8 text-muted-foreground" />
+                  <p className="mt-4 text-sm text-muted-foreground">
+                    Carregando QR Code...
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div
+                    ref={qrCodeRef}
+                    className="p-4 bg-white border rounded-md flex flex-col items-center"
+                  >
+                    <QRCode
+                      value={qrValue}
+                      size={256}
+                      level="H"
+                      fgColor="#000000"
+                      bgColor="#ffffff"
+                    />
+                  </div>
 
-              <a
-                className="w-full mb-2"
-                href={qrValue}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button variant={"outline"} className="w-full">
-                  {"Baixar PDF"}
-                </Button>
-              </a>
-              <Button
-                onClick={handleDownloadQRCode}
-                className="w-full"
-                disabled={confirmDownload}
-              >
-                {confirmDownload ? "Baixando..." : "Baixar QR Code"}
-              </Button>
-            </>
-          )}
-        </CardContent>
+                  <a
+                    className="w-full mb-2"
+                    href={qrValue}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button variant={"outline"} className="w-full">
+                      {"Baixar PDF"}
+                    </Button>
+                  </a>
+                  <Button
+                    onClick={handleDownloadQRCode}
+                    className="w-full"
+                    disabled={confirmDownload}
+                  >
+                    {confirmDownload ? "Baixando..." : "Baixar QR Code"}
+                  </Button>
+                </>
+              )}
+            </CardContent>
+          </>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-64">
+            <p className="mt-4 text-sm text-muted-foreground">
+              Recurso não disponível no Plano Básico{" "}
+            </p>
+          </div>
+        )}
       </Card>
     </div>
   );
