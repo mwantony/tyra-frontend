@@ -470,7 +470,7 @@ export default function BillingPage() {
 
                       <li className="flex items-start">
                         <span className="text-green-500 mr-2">✓</span>
-                        <span>Relatórios de desempenho</span>
+                        <span>Suporte 24/7</span>
                       </li>
                       {plan?.id === 1 && (
                         <li className="flex items-center space-x-2">
@@ -490,9 +490,40 @@ export default function BillingPage() {
                           <p>Mesas ilimitadas</p>
                         </li>
                       )}
-                      <li className="flex items-start">
-                        <span className="text-green-500 mr-2">✓</span>
-                        <span>Suporte 24/7</span>
+                      {plan?.id === 3 && (
+                        <li className="flex items-center space-x-2">
+                          <span className="text-green-500">✓</span>
+                          <p>Cardápio Digital</p>
+                        </li>
+                      )}
+
+                      <li className="flex items-start space-x-2">
+                        {plan?.id === 3 ? (
+                          <span className="text-green-500">✓</span>
+                        ) : plan.id === 2 ? (
+                          <span className="text-green-500">✓</span>
+                        ) : (
+                          <span className="text-500">✗</span>
+                        )}
+                        <span>Relatórios de desempenho</span>
+                      </li>
+                      <li className="flex items-start space-x-2">
+                        {plan?.id === 3 ? (
+                          <span className="text-green-500">✓</span>
+                        ) : plan.id === 2 ? (
+                          <span className="text-green-500">✓</span>
+                        ) : (
+                          <span className="text-500">✗</span>
+                        )}
+                        <span>Cardápio Digital</span>
+                      </li>
+                      <li className="flex items-center space-x-2">
+                        {plan?.id === 3 ? (
+                          <span className="text-green-500">✓</span>
+                        ) : (
+                          <span>✗</span>
+                        )}
+                        <p>Recebimento de pagamentos</p>
                       </li>
                     </ul>
                     {currentPlan?.id === plan.id ? (
