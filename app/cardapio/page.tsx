@@ -42,31 +42,78 @@ export default function CardapioQRCodePage() {
 
   const handleDownloadQRCode = () => {
     setConfirmDownload(true);
+
     try {
-      const pngBuffer = qrImage.imageSync(qrValue, {
+      const qrBuffer = qrImage.imageSync(qrValue, {
         type: "png",
         size: 10,
         margin: 2,
       });
 
-      const blob = new Blob([pngBuffer], { type: "image/png" });
+      const blob = new Blob([qrBuffer], { type: "image/png" });
       const url = URL.createObjectURL(blob);
 
-      const link = document.createElement("a");
-      link.download = "qr-code-cardapio.png";
-      link.href = url;
-      link.click();
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const padding = 20;
+        const textHeight = 30;
+        canvas.width = img.width;
+        canvas.height = img.height + textHeight + padding;
 
-      // Limpar URL criada
-      setTimeout(() => URL.revokeObjectURL(url), 100);
-      setConfirmDownload(false);
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          console.error("Erro ao obter o contexto do canvas");
+          toast.error("Erro ao gerar imagem");
+          setConfirmDownload(false);
+          return;
+        }
 
-      toast.dismiss();
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.drawImage(img, 0, 0);
+
+        ctx.fillStyle = "#000000";
+        ctx.font = "20px Poppins";
+        ctx.textAlign = "center";
+        ctx.fillText(
+          "Cardápio Digital",
+          canvas.width / 2,
+          img.height + padding
+        );
+
+        canvas.toBlob((finalBlob) => {
+          if (!finalBlob) {
+            console.error("Erro ao gerar o blob do canvas");
+            toast.error("Erro ao gerar imagem");
+            setConfirmDownload(false);
+            return;
+          }
+
+          const downloadUrl = URL.createObjectURL(finalBlob);
+          const link = document.createElement("a");
+          link.href = downloadUrl;
+          link.download = "qr-code-cardapio.png";
+          link.click();
+
+          setTimeout(() => URL.revokeObjectURL(downloadUrl), 100);
+          setConfirmDownload(false);
+          toast.dismiss();
+        }, "image/png");
+      };
+
+      img.onerror = (e) => {
+        console.error("Erro ao carregar imagem do QR:", e);
+        toast.error("Erro ao gerar imagem");
+        setConfirmDownload(false);
+      };
+
+      img.src = url;
     } catch (error) {
       console.error("Erro ao baixar QR Code:", error);
       toast.dismiss();
       setConfirmDownload(false);
-
       toast.error("Erro ao baixar QR Code");
     }
   };
