@@ -381,7 +381,7 @@ export default function MesaDetailsPage() {
                 <CardTitle>Ações Rápidas</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {mesa.status === "livre" && (
+                {mesa.status !== "ocupada" && (
                   <form onSubmit={handleOcuparSubmit} className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="numero_comanda">Número da Comanda</Label>

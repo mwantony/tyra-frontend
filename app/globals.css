@@ -6,7 +6,10 @@
 /* Scrollbar base */
 
 
-
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--sidebar-accent) transparent;
+}
 body::-webkit-scrollbar {
   width: 12px;               /* width of the entire scrollbar */
 }
