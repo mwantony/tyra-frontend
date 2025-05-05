@@ -61,6 +61,7 @@ export default function DetalhesComandaPage() {
   const { numeroComanda } = useParams();
   const [comanda, setComanda] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [confirmFechamento, setConfirmFechamento] = useState(false);
   const [showModalFechamento, setShowModalFechamento] = useState(false);
   const [modalProdutosOpen, setModalProdutosOpen] = useState(false);
   const [produtosDisponiveis, setProdutosDisponiveis] = useState<any[]>([]);
@@ -124,15 +125,20 @@ export default function DetalhesComandaPage() {
   };
 
   const handleConfirmarFechamento = async () => {
+    setConfirmFechamento(true);
     try {
       if (calcularTotal() !== 0) {
         await fechaComanda(comanda.numero_comanda);
         toast.success("Comanda fechada com sucesso!", {
           description: `Valor total: R$ ${calcularTotal().toFixed(2)}`,
         });
+        setConfirmFechamento(false);
+
         await fetchComanda();
       } else {
-        toast.error('Não é possível fechar uma comanda sem produtos.');
+        setConfirmFechamento(false);
+
+        toast.error("Não é possível fechar uma comanda sem produtos.");
         setShowModalFechamento(false);
       }
     } catch (err) {
@@ -351,7 +357,12 @@ export default function DetalhesComandaPage() {
             >
               Cancelar
             </Button>
-            <Button onClick={handleConfirmarFechamento}>Confirmar</Button>
+            <Button
+              onClick={handleConfirmarFechamento}
+              disabled={confirmFechamento}
+            >
+              {confirmFechamento ? "Confirmando..." : "Confirmar"}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

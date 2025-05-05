@@ -34,6 +34,7 @@ export default function NovaVendaPage() {
     { produto_id: string; quantidade: number }[]
   >([]);
   const [loading, setLoading] = useState(true);
+  const [confirmAdd, setConfirmAdd] = useState(false);
   const [buscaComanda, setBuscaComanda] = useState("");
   const [buscaProduto, setBuscaProduto] = useState("");
   const [etapa, setEtapa] = useState<1 | 2>(1);
@@ -91,6 +92,7 @@ export default function NovaVendaPage() {
   };
 
   const handleSalvarVenda = async () => {
+    setConfirmAdd(true);
     if (!comandaSelecionada) {
       toast.error("Selecione uma comanda");
       return;
@@ -101,7 +103,6 @@ export default function NovaVendaPage() {
       return;
     }
 
-    
     try {
       await comandaAdicionar(comandaSelecionada, {
         produtos: itensSelecionados,
@@ -109,8 +110,10 @@ export default function NovaVendaPage() {
       toast.success("Produtos adicionados com sucesso!");
       setComandaSelecionada("");
       setItensSelecionados([]);
+      setConfirmAdd(false);
       setEtapa(1);
     } catch (err) {
+      setConfirmAdd(false);
       console.error(err);
       toast.error("Erro ao registrar venda");
     }
@@ -376,8 +379,11 @@ export default function NovaVendaPage() {
                             onClick={handleSalvarVenda}
                             className="w-full md:w-auto"
                             size="lg"
+                            disabled={confirmAdd}
                           >
-                            Adicionar à Comanda
+                            {confirmAdd
+                              ? "Adicionando..."
+                              : "Adicionar à Comanda"}
                           </Button>
                         </div>
                       </>

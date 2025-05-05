@@ -148,7 +148,7 @@ export default function CardapioQRCodePage() {
                   >
                     <QRCode
                       value={qrValue}
-                      size={256}
+                      size={200}
                       level="H"
                       fgColor="#000000"
                       bgColor="#ffffff"

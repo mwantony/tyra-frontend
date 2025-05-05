@@ -63,13 +63,7 @@ export default function ComandasPage() {
     setConfirmComanda(true);
     try {
       await postComanda();
-      toast.success("Comanda criada com sucesso!", {
-        description: dayjs().format("DD/MM/YYYY HH:mm:ss"),
-        action: {
-          label: "Ver",
-          onClick: () => recarregarComandas(),
-        },
-      });
+      toast.success("Comanda criada com sucesso!");
       setConfirmComanda(false);
 
       setModalOpen(false);
