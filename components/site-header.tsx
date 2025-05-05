@@ -3,7 +3,7 @@
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
-import { Fragment, useMemo } from "react";
+import { Fragment, useMemo, useEffect } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,7 +16,7 @@ export function SiteHeader() {
   const pathname = usePathname();
 
   const breadcrumbItems = useMemo(() => {
-    const paths = pathname.split("/").filter(Boolean); 
+    const paths = pathname.split("/").filter(Boolean);
 
     if (paths.length === 0) {
       return [{ href: "/", label: "Dashboard" }];
@@ -28,6 +28,11 @@ export function SiteHeader() {
       return { href, label };
     });
   }, [pathname]);
+
+  useEffect(() => {
+    const current = breadcrumbItems[breadcrumbItems.length - 1];
+    document.title = `Tyra | ${current.label}`;
+  }, [breadcrumbItems]);
 
   return (
     <header className="group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 flex h-12 shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear">

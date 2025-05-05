@@ -29,11 +29,11 @@ const manrope = Manrope({
   display: "swap",
 });
 // Exportação de metadata deve estar em um Server Component
-export const metadata: Metadata = {
+/* export const metadata: Metadata = {
   title: "Tyra",
   description: "Soluções para Restaurantes",
 };
-
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
