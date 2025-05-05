@@ -2,7 +2,12 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { ChevronDown, ChevronRight, type LucideIcon } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronRight,
+  PlusCircleIcon,
+  type LucideIcon,
+} from "lucide-react";
 import { useSidebar } from "@/components/ui/sidebar";
 import {
   SidebarGroup,
@@ -23,7 +28,9 @@ interface NavItem {
 export function NavMain({ items }: { items: NavItem[] }) {
   const pathname = usePathname();
   const { setOpenMobile, isMobile } = useSidebar();
-  const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
+  const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>(
+    {}
+  );
 
   const handleItemClick = () => {
     if (isMobile) {
@@ -32,15 +39,15 @@ export function NavMain({ items }: { items: NavItem[] }) {
   };
 
   const toggleExpand = (title: string) => {
-    setExpandedItems(prev => ({
+    setExpandedItems((prev) => ({
       ...prev,
-      [title]: !prev[title]
+      [title]: !prev[title],
     }));
   };
 
   const isActive = (url: string | null, subItems?: NavItem[]) => {
     if (url && pathname === url) return true;
-    return subItems?.some(item => pathname === item.url) ?? false;
+    return subItems?.some((item) => pathname === item.url) ?? false;
   };
 
   const renderLinkOrButton = (item: NavItem) => {
@@ -74,6 +81,20 @@ export function NavMain({ items }: { items: NavItem[] }) {
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-1">
+        <SidebarMenu className="mb-2">
+          <Link href={"/vendas/adicionar"} >
+            <SidebarMenuItem className="flex items-center gap-2">
+              <SidebarMenuButton
+                variant="outline"
+                tooltip="Quick Create"
+                className="min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground"
+              >
+                <PlusCircleIcon />
+                <span>Nova Venda</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </Link>
+        </SidebarMenu>
         <SidebarMenu>
           {items.map((item) => {
             const hasItems = item.items && item.items.length > 0;
@@ -94,9 +115,9 @@ export function NavMain({ items }: { items: NavItem[] }) {
                     >
                       {renderLinkOrButton(item)}
                     </SidebarMenuButton>
-                    
+
                     {hasItems && (
-                      <button 
+                      <button
                         onClick={() => toggleExpand(item.title)}
                         className="p-1 rounded hover:bg-muted"
                       >
