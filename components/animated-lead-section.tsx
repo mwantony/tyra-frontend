@@ -55,7 +55,7 @@ export const AnimatedLeadSection = () => {
       </motion.p>
 
       <motion.div
-        className="mt-10 flex flex-col sm:flex-row justify-center gap-4"
+        className="mt-10 min-w-full md:min-w-auto flex flex-col sm:flex-row justify-center gap-4"
         variants={itemVariants}
       >
         <Link href={"/signup"}>
@@ -63,7 +63,7 @@ export const AnimatedLeadSection = () => {
             Começar agora <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </Link>
-        <Button size={"lg"} variant="outline">
+        <Button size={"lg"}  variant="outline">
           Ver demonstração
         </Button>
       </motion.div>
