@@ -56,7 +56,7 @@ export const AnimatedLeadSection = () => {
       </motion.h1>
 
       <motion.p
-        className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mt-6"
+        className="text-md md:text-md text-muted-foreground max-w-2xl mx-auto mt-6"
         variants={itemVariants}
       >
         Tyra oferece todas as ferramentas que você precisa para gerenciar seu

@@ -102,7 +102,7 @@ export default function CareersPage() {
             </motion.h1>
 
             <motion.p
-              className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
+              className="text-md md:text-md text-muted-foreground max-w-2xl mx-auto mb-10"
               variants={item}
             >
               Junte-se ao time que está revolucionando a gestão de restaurantes
