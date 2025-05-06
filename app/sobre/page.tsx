@@ -81,7 +81,7 @@ export default function AboutPage() {
           variants={container}
         >
           {/* Background com imagem semi-opaca */}
-       
+
           {/* Conteúdo centralizado */}
           <div className="container relative z-10 px-4 text-center">
             <motion.div className="inline-block mb-8" variants={item}>
@@ -178,7 +178,7 @@ export default function AboutPage() {
         </motion.section>
 
         {/* Linha do Tempo */}
-        <section className="bg-secondary py-20">
+        <section className="py-20 bg-gradient-to-b from-background to-secondary">
           <div className="container mx-auto px-4">
             <motion.h2
               className="text-3xl md:text-4xl font-bold mb-16 text-center"
@@ -187,42 +187,55 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              Nossa Jornada
+              Nossa Trajetória
             </motion.h2>
 
-            <div className="relative max-w-3xl mx-auto">
-              <div className="absolute left-1/2 w-1 h-full bg-primary/20 -translate-x-1/2" />
-
-              <div className="space-y-12">
+            <div className="relative">
+              {/* Linha do tempo horizontal */}
+              <div className="hidden md:flex justify-between items-center mb-12">
                 {milestones.map((milestone, index) => (
                   <motion.div
                     key={index}
-                    className={`relative flex ${
-                      index % 2 === 0 ? "justify-start" : "justify-end"
-                    }`}
-                    initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                    className="flex flex-col items-center relative z-10"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <div className="w-16 h-16 rounded-full  flex items-center justify-center mb-4  font-bold text-lg">
+                      {milestone.year}
+                    </div>
+                    <div className="bg-background p-6 rounded-xl shadow-lg border border-border max-w-xs text-center">
+                      <p className="font-medium">{milestone.event}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Linha do tempo vertical (mobile) */}
+              <div className="md:hidden space-y-8 pl-8 border-l-2 border-primary/20">
+                {milestones.map((milestone, index) => (
+                  <motion.div
+                    key={index}
+                    className="relative"
+                    initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
-                    <div
-                      className={`w-5/12 p-6 rounded-lg ${
-                        index % 2 === 0
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-background border border-border"
-                      }`}
-                    >
-                      <h3 className="font-bold text-lg">{milestone.year}</h3>
+                    <div className="absolute -left-8 top-0 w-6 h-6 rounded-full bg-primary border-4 border-background" />
+                    <div className="bg-background p-6 rounded-xl shadow-lg border border-border ml-4">
+                      <div className="font-bold text-primary mb-2">
+                        {milestone.year}
+                      </div>
                       <p>{milestone.event}</p>
                     </div>
-                    <div
-                      className={`absolute top-1/2 w-4 h-4 rounded-full ${
-                        index % 2 === 0 ? "right-[41.6667%]" : "left-[41.6667%]"
-                      } bg-primary -translate-y-1/2`}
-                    />
                   </motion.div>
                 ))}
               </div>
+
+              {/* Linha decorativa */}
+              <div className="hidden md:block absolute top-24 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent z-0" />
             </div>
           </div>
         </section>
