@@ -41,9 +41,9 @@ export default function AboutPage() {
 
   const teamMembers = [
     {
-      name: "Rafael Costa",
+      name: "Antony Maziero Warken",
       role: "CEO & Fundador",
-      bio: "Especialista em tecnologia para food service com 10+ anos de experiência.",
+      bio: "Especialista em tecnologia para food service com 5+ anos de experiência.",
       img: "https://github.com/mwantony.png",
     },
     {
@@ -108,18 +108,18 @@ export default function AboutPage() {
             </motion.p>
 
             <motion.div variants={item}>
-              <Link href="#nossa-historia">
+              <a href="#nossa-historia">
                 <Button>
                   Conheça nossa jornada
                   <ArrowDown className="ml-2 h-5 w-5" />
                 </Button>
-              </Link>
+              </a>
             </motion.div>
           </div>
 
           {/* Elemento decorativo */}
           <motion.div
-            className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+            className="absolute bottom-10 md:bottom-5 left-1/2 transform -translate-x-1/2"
             animate={{
               y: [0, 10, 0],
             }}
