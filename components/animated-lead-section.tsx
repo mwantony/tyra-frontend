@@ -32,7 +32,7 @@ export const AnimatedLeadSection = () => {
 
   return (
     <motion.section
-      className="container min-h-screen mx-auto px-4 py-40 md:py-46 text-center"
+      className="relative mb-10 min-h-[100vh] flex flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-primary/10 to-background text-center"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
