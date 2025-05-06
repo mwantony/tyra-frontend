@@ -11,19 +11,23 @@ export const Header = () => {
     <header className="container mx-auto py-6 px-4 flex justify-between items-center">
       <div className="flex items-center space-x-2">
         {theme === "light" ? (
-          <Image
-            alt="Logo Dark"
-            src={logoDark}
-            height={100}
-            width={100}
-          ></Image>
+          <a href={"/"}>
+            <Image
+              alt="Logo Dark"
+              src={logoDark}
+              height={100}
+              width={100}
+            ></Image>
+          </a>
         ) : (
-          <Image
-            alt="Logo White"
-            src={logoWhite}
-            height={100}
-            width={100}
-          ></Image>
+          <a href={"/"}>
+            <Image
+              alt="Logo White"
+              src={logoWhite}
+              height={100}
+              width={100}
+            ></Image>
+          </a>
         )}
       </div>
 

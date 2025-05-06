@@ -10,6 +10,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Provider } from "react-redux";
 import { store } from "@/store";
 import LandingPage from "@/app/page";
+import PrivacyPolicy from "@/app/privacidade/page";
 function ProtectedApp({ children }: { children: ReactNode }) {
   const { restaurante, loading, refreshRestaurante } = useAuth();
   const [isAuthChecked, setIsAuthChecked] = useState(false);
@@ -26,7 +27,12 @@ function ProtectedApp({ children }: { children: ReactNode }) {
     setIsAuthChecked(true);
     if (restaurante === null) return;
 
-    if (!restaurante?.nome_fantasia && pathname !== "/signup" && pathname !== "/") {
+    if (
+      !restaurante?.nome_fantasia &&
+      pathname !== "/signup" &&
+      pathname !== "/" &&
+      pathname !== "/privacidade"
+    ) {
       router.push("/login");
     }
   }, [loading, restaurante, pathname, router, refreshRestaurante, count]);
@@ -39,8 +45,10 @@ function ProtectedApp({ children }: { children: ReactNode }) {
     return <SignUpPage />;
   } else if (pathname === "/login") {
     return <LoginPage />;
-  } else if (pathname === '/') {
+  } else if (pathname === "/") {
     return <LandingPage />;
+  } else if (pathname === "/privacidade") {
+    return <PrivacyPolicy />;
   } else if (restaurante?.nome_fantasia) {
     return <CustomLayout>{children}</CustomLayout>;
   } else {

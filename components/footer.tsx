@@ -2,6 +2,7 @@ import Image from "next/image";
 import logoDark from "@/assets/img/logo-dark.png";
 import logoWhite from "@/assets/img/logo-white.png";
 import { useTheme } from "@/contexts/theme-provider";
+import Link from "next/link";
 
 export const Footer = () => {
   const { theme } = useTheme();
@@ -11,19 +12,23 @@ export const Footer = () => {
         <div>
           <div className="flex items-center space-x-2 mb-4">
             {theme === "light" ? (
-              <Image
-                alt="Logo Dark"
-                src={logoDark}
-                height={100}
-                width={100}
-              ></Image>
+              <a href={"/"}>
+                <Image
+                  alt="Logo Dark"
+                  src={logoDark}
+                  height={100}
+                  width={100}
+                ></Image>
+              </a>
             ) : (
-              <Image
-                alt="Logo White"
-                src={logoWhite}
-                height={100}
-                width={100}
-              ></Image>
+              <a href={"/"}>
+                <Image
+                  alt="Logo White"
+                  src={logoWhite}
+                  height={100}
+                  width={100}
+                ></Image>
+              </a>
             )}
           </div>
           <p className="text-muted-foreground">Soluções para Restaurantes </p>
@@ -82,7 +87,10 @@ export const Footer = () => {
           <h3 className="font-semibold mb-4">Legal</h3>
           <ul className="space-y-2 text-muted-foreground">
             <li>
-              <a href="#" className="hover:text-foreground transition">
+              <a
+                href="/privacidade"
+                className="hover:text-foreground transition"
+              >
                 Privacidade
               </a>
             </li>

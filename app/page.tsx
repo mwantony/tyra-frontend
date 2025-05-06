@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { Button } from "@/components/ui/button";
 
 import { useAuth } from "@/contexts/auth-provider";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
+
 import { useEffect } from "react";
 
 import { TrustedBySection } from "@/components/trusted-by-section";
