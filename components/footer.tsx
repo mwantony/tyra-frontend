@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import Image from "next/image";
 import logoDark from "@/assets/img/logo-dark.png";
 import logoWhite from "@/assets/img/logo-white.png";
@@ -36,12 +37,12 @@ export const Footer = () => {
           <h3 className="font-semibold mb-4">Produto</h3>
           <ul className="space-y-2 text-muted-foreground">
             <li>
-              <a href="#features" className="hover:text-foreground transition">
+              <a href="/#features" className="hover:text-foreground transition">
                 Recursos
               </a>
             </li>
             <li>
-              <a href="#pricing" className="hover:text-foreground transition">
+              <a href="/#pricing" className="hover:text-foreground transition">
                 Planos
               </a>
             </li>

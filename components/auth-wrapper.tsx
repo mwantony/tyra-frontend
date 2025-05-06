@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import { store } from "@/store";
 import LandingPage from "@/app/page";
 import PrivacyPolicy from "@/app/privacidade/page";
+import Termos from "@/app/termos/page";
 function ProtectedApp({ children }: { children: ReactNode }) {
   const { restaurante, loading, refreshRestaurante } = useAuth();
   const [isAuthChecked, setIsAuthChecked] = useState(false);
@@ -50,6 +51,8 @@ function ProtectedApp({ children }: { children: ReactNode }) {
     return <LandingPage />;
   } else if (pathname === "/privacidade") {
     return <PrivacyPolicy />;
+  } else if (pathname === "/termos") {
+    return <Termos />;
   } else if (restaurante?.nome_fantasia) {
     return <CustomLayout>{children}</CustomLayout>;
   } else {
