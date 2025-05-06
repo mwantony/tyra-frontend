@@ -15,6 +15,7 @@ import { AnimatedTestimonialsSection } from "@/components/animated-testimonials.
 import { Header } from "@/components/header";
 import { Faq } from "@/components/faq";
 import { Footer } from "@/components/footer";
+import { StartSection } from "@/components/start-section";
 
 // Configurações de animação
 
@@ -50,22 +51,7 @@ export default function LandingPage() {
         <Faq></Faq>
 
         {/* CTA Section */}
-        <section className="bg-secondary py-20">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Pronto para transformar seu restaurante?
-            </h2>
-            <p className="text-xl max-w-2xl mx-auto mb-8">
-              Experimente gratuitamente por 30 dias. Sem necessidade de cartão
-              de crédito.
-            </p>
-            <Link href={"/signup"}>
-              <Button size="lg">
-                Começar agora <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
-        </section>
+        <StartSection></StartSection>
 
         {/* Footer */}
         <Footer></Footer>
