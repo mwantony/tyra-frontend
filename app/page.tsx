@@ -125,9 +125,9 @@ export default function LandingPage() {
                   "Sim, você pode mudar de plano a qualquer momento sem custos adicionais.",
               },
               {
-                question: "Há limite de usuários?",
+                question: "Há limite de comandas?",
                 answer:
-                  "Nosso plano Básico permite até 3 usuários, o Profissional até 10 e o Premium é ilimitado.",
+                  "Nosso plano Básico permite até 5 comandas, o Intermediário até 15 e o Premium é ilimitado.",
               },
               {
                 question: "Quanto tempo leva para implementar?",
