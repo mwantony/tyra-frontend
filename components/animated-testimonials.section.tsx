@@ -1,5 +1,12 @@
+/* eslint-disable @next/next/no-img-element */
 import { motion } from "framer-motion";
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
 import { Star } from "lucide-react";
 
 const testimonials = [
@@ -7,19 +14,22 @@ const testimonials = [
     name: "João Silva",
     company: "Restaurante da Praça",
     message:
-      'A Tyra nos ajudou a reduzir custos em 30% e aumentar nossa eficiência operacional significativamente.',
+      "A Tyra nos ajudou a reduzir custos em 30% e aumentar nossa eficiência operacional significativamente.",
+    img_url: "https://github.com/mwantony.png",
   },
   {
     name: "Maria Oliveira",
     company: "Cantina da Maria",
     message:
       "Com a Tyra, digitalizamos todo o atendimento e o feedback dos clientes melhorou muito!",
+    img_url: "https://github.com/mwantony.png",
   },
   {
     name: "Carlos Souza",
     company: "Bistrô do Centro",
     message:
       "Muito mais controle e organização. Estamos economizando tempo todos os dias.",
+    img_url: "https://github.com/mwantony.png",
   },
 ];
 
@@ -38,7 +48,10 @@ const cardVariants = {
 
 export function AnimatedTestimonialsSection() {
   return (
-    <section id="testimonials" className="container mx-auto px-4 py-20 md:py-32">
+    <section
+      id="testimonials"
+      className="container mx-auto px-4 py-20 md:py-32"
+    >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -46,7 +59,9 @@ export function AnimatedTestimonialsSection() {
         transition={{ duration: 0.6 }}
         className="text-center mb-16"
       >
-        <h2 className="text-3xl md:text-4xl font-bold">O que nossos clientes dizem</h2>
+        <h2 className="text-3xl md:text-4xl font-bold">
+          O que nossos clientes dizem
+        </h2>
         <p className="text-muted-foreground max-w-2xl mx-auto mt-4">
           Restaurantes que transformaram seus negócios com a Tyra
         </p>
@@ -66,7 +81,10 @@ export function AnimatedTestimonialsSection() {
               <CardHeader>
                 <div className="flex items-center space-x-1 mb-2">
                   {[1, 2, 3, 4, 5].map((star) => (
-                    <Star key={star} className="w-4 h-4 fill-primary text-primary" />
+                    <Star
+                      key={star}
+                      className="w-4 h-4 fill-primary text-primary"
+                    />
                   ))}
                 </div>
                 <CardTitle>Transformou nosso negócio</CardTitle>
@@ -75,10 +93,16 @@ export function AnimatedTestimonialsSection() {
                 </CardDescription>
               </CardHeader>
               <CardFooter className="flex items-center">
-                <div className="w-10 h-10 rounded-full bg-muted mr-3" />
+                <img
+                  src={item.img_url}
+                  alt="Foto de Perfil"
+                  className="w-10 h-10 rounded-full bg-muted mr-3"
+                />
                 <div>
                   <p className="font-medium">{item.name}</p>
-                  <p className="text-sm text-muted-foreground">{item.company}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {item.company}
+                  </p>
                 </div>
               </CardFooter>
             </Card>
