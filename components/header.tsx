@@ -1,12 +1,12 @@
-import { useAuth } from "@/contexts/auth-provider";
 import Image from "next/image";
 import logoDark from "@/assets/img/logo-dark.png";
 import logoWhite from "@/assets/img/logo-white.png";
 import Link from "next/link";
 import { ThemeToggle } from "./toggle-theme";
 import { Button } from "./ui/button";
+import { useTheme } from "@/contexts/theme-provider";
 export const Header = () => {
-  const { theme } = useAuth();
+  const { theme } = useTheme();
   return (
     <header className="container mx-auto py-6 px-4 flex justify-between items-center">
       <div className="flex items-center space-x-2">
