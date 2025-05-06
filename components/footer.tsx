@@ -94,7 +94,7 @@ export const Footer = () => {
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-foreground transition">
+              <a href="/termos" className="hover:text-foreground transition">
                 Termos
               </a>
             </li>
