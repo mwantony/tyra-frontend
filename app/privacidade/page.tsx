@@ -12,7 +12,7 @@ export default function PrivacyPolicy() {
           <h1 className="text-2xl md:text-2xl font-bold mb-4">
             Política de Privacidade
           </h1>
-          <p className="text-md text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             Última atualização: {new Date().toLocaleDateString("pt-BR")}
           </p>
         </header>
@@ -158,7 +158,7 @@ export default function PrivacyPolicy() {
               Dúvidas sobre esta política podem ser direcionadas a:
             </p>
             <p>
-              <strong>Tyra Tecnologia para Restaurantes LTDA</strong>
+              <strong>Tyra Soluções para Restaurantes LTDA</strong>
               <br />
               CNPJ: XX.XXX.XXX/0001-XX
               <br />

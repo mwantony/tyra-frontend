@@ -2,7 +2,6 @@ import Image from "next/image";
 import logoDark from "@/assets/img/logo-dark.png";
 import logoWhite from "@/assets/img/logo-white.png";
 import { useTheme } from "@/contexts/theme-provider";
-import Link from "next/link";
 
 export const Footer = () => {
   const { theme } = useTheme();
