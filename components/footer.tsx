@@ -7,7 +7,7 @@ import { useTheme } from "@/contexts/theme-provider";
 export const Footer = () => {
   const { theme } = useTheme();
   return (
-    <footer className="container mx-auto px-4 py-16 border-t border-border">
+    <footer className="container mx-auto px-4 py-16 border-t border-border text-sm">
       <div className="grid md:grid-cols-4 gap-8">
         <div>
           <div className="flex items-center space-x-2 mb-4">
@@ -77,8 +77,12 @@ export const Footer = () => {
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-foreground transition">
-                Contato
+              <a
+                href="https://wa.me/5549991042777"
+                target="_blank"
+                className="hover:text-foreground transition"
+              >
+                WhatsApp
               </a>
             </li>
           </ul>
@@ -103,9 +107,9 @@ export const Footer = () => {
         </div>
       </div>
       <div className="border-t border-border mt-12 pt-8 text-center text-muted-foreground text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-      © {new Date().getFullYear()} Tyra - Soluções para Restaurantes<br></br>
-      CNPJ: 00.000.000/0000-00 | Todos os direitos reservados      </div>
-
+        © {new Date().getFullYear()} Tyra - Soluções para Restaurantes<br></br>
+        CNPJ: 00.000.000/0000-00 | Todos os direitos reservados{" "}
+      </div>
     </footer>
   );
 };

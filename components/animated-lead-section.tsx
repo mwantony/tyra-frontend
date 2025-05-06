@@ -16,7 +16,6 @@ export const AnimatedLeadSection = () => {
       },
     },
   };
-  
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -43,7 +42,17 @@ export const AnimatedLeadSection = () => {
         variants={itemVariants}
       >
         Revolucione a gestão do seu{" "}
-        <span className="text-primary">restaurante</span>
+        <span className="relative inline-block text-white z-10">
+          <span
+            className="absolute inset-0 -z-10 bg-red-500 mt-1 opacity-70 rounded-sm"
+            style={{
+              animation: "drawBackground 1s ease-out forwards",
+              animationDelay: "0.3s",
+              transformOrigin: "left center",
+            }}
+          ></span>
+          restaurante
+        </span>
       </motion.h1>
 
       <motion.p
@@ -63,7 +72,7 @@ export const AnimatedLeadSection = () => {
             Começar agora <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </Link>
-        <Button size={"lg"}  variant="outline">
+        <Button size={"lg"} variant="outline">
           Ver demonstração
         </Button>
       </motion.div>

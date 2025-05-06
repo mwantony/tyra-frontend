@@ -5,7 +5,14 @@
 
 /* Scrollbar base */
 
-
+@keyframes drawBackground {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
 * {
   scroll-behavior: smooth !important;
   scrollbar-width: thin;
