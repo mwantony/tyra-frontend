@@ -61,11 +61,11 @@ export default function AboutPage() {
   ];
 
   const milestones = [
-    { year: "2019", event: "Fundação da Tyra" },
-    { year: "2020", event: "Primeiro cliente" },
-    { year: "2021", event: "Lançamento da plataforma completa" },
-    { year: "2022", event: "Expansão para 5 estados" },
-    { year: "2023", event: "+100 restaurantes atendidos" },
+    { year: "2025", event: "Fundação da Tyra" },
+    { year: "2025", event: "Primeiro cliente" },
+    { year: "2025", event: "Lançamento da plataforma completa" },
+    { year: "2025", event: "Expansão para 5 estados" },
+    { year: "2026", event: "+100 restaurantes atendidos" },
   ];
 
   return (
@@ -92,7 +92,7 @@ export default function AboutPage() {
             </motion.div>
 
             <motion.h1
-              className="text-4xl md:text-6xl lg:text-7xl font-bold max-w-4xl mx-auto leading-tight mb-6 text-white"
+              className="text-4xl md:text-6xl lg:text-7xl font-bold max-w-4xl mx-auto leading-tight mb-6"
               variants={item}
             >
               Revolucionando a <span className="text-primary">gestão</span>{" "}
@@ -100,7 +100,7 @@ export default function AboutPage() {
             </motion.h1>
 
             <motion.p
-              className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10"
+              className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
               variants={item}
             >
               Combinamos tecnologia de ponta com experiência real em
@@ -109,7 +109,7 @@ export default function AboutPage() {
 
             <motion.div variants={item}>
               <a href="#nossa-historia">
-                <Button>
+                <Button size={"lg"}>
                   Conheça nossa jornada
                   <ArrowDown className="ml-2 h-5 w-5" />
                 </Button>
@@ -196,13 +196,13 @@ export default function AboutPage() {
                 {milestones.map((milestone, index) => (
                   <motion.div
                     key={index}
-                    className="flex flex-col items-center relative z-10"
+                    className="flex flex-col items-center justify-content-center align-content-center relative z-10"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
-                    <div className="w-16 h-16 rounded-full  flex items-center justify-center mb-4  font-bold text-lg">
+                    <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4  font-bold text-lg">
                       {milestone.year}
                     </div>
                     <div className="bg-background p-6 rounded-xl shadow-lg border border-border max-w-xs text-center">
