@@ -12,6 +12,7 @@ import { store } from "@/store";
 import LandingPage from "@/app/page";
 import PrivacyPolicy from "@/app/privacidade/page";
 import Termos from "@/app/termos/page";
+import AboutPage from "@/app/sobre/page";
 function ProtectedApp({ children }: { children: ReactNode }) {
   const { restaurante, loading, refreshRestaurante } = useAuth();
   const [isAuthChecked, setIsAuthChecked] = useState(false);
@@ -33,7 +34,8 @@ function ProtectedApp({ children }: { children: ReactNode }) {
       pathname !== "/signup" &&
       pathname !== "/" &&
       pathname !== "/privacidade" &&
-      pathname !== "/termos"
+      pathname !== "/termos" &&
+      pathname !== "/sobre"
     ) {
       router.push("/login");
     }
@@ -53,6 +55,8 @@ function ProtectedApp({ children }: { children: ReactNode }) {
     return <PrivacyPolicy />;
   } else if (pathname === "/termos") {
     return <Termos />;
+  } else if (pathname === "/sobre") {
+    return <AboutPage />;
   } else if (restaurante?.nome_fantasia) {
     return <CustomLayout>{children}</CustomLayout>;
   } else {
