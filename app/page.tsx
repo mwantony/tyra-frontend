@@ -96,9 +96,11 @@ export default function LandingPage() {
             seu restaurante de forma eficiente e aumentar seus lucros.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-            <Button size={"lg"}>
-              Começar agora <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            <Link  href={'/login'}>
+              <Button className="w-full" size={"lg"}>
+                Começar agora <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
             <Button size={"lg"} variant="outline">
               Ver demonstração
             </Button>
@@ -399,8 +401,8 @@ export default function LandingPage() {
                   </div>
                   <CardTitle>Transformou nosso negócio</CardTitle>
                   <CardDescription className="text-muted-foreground">
-                    "A Tyra nos ajudou a reduzir custos em 30% e aumentar nossa
-                    eficiência operacional significativamente."
+                    &quot;A Tyra nos ajudou a reduzir custos em 30% e aumentar
+                    nossa eficiência operacional significativamente.&quot;
                   </CardDescription>
                 </CardHeader>
                 <CardFooter className="flex items-center">
