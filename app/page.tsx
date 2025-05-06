@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { ThemeToggle } from "@/components/toggle-theme";
 import { Button } from "@/components/ui/button";
@@ -10,49 +11,42 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { useAuth } from "@/contexts/auth-provider";
+import { useTheme } from "@/contexts/theme-provider";
 import { ArrowRight, Check, Star } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
-
+import logoDark from "@/assets/img/logo-dark.png";
+import logoWhite from "@/assets/img/logo-white.png";
 export default function LandingPage() {
   const { restaurante } = useAuth();
+  const { theme }: any = useTheme();
   useEffect(() => {
     if (restaurante?.id) {
       window.location.href = "/dashboard";
     }
   }, [restaurante]);
-
   if (!restaurante?.id)
     return (
       <div className="min-h-screen bg-background text-foreground">
         {/* Header */}
         <header className="container mx-auto py-6 px-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z"
-                fill="#FF5A5F"
-              />
-              <path
-                d="M12 22L20 10"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-              <path
-                d="M16 18L20 22"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-            <span className="text-xl font-bold">Tyra</span>
+            {theme === "light" ? (
+              <Image
+                alt="Logo Dark"
+                src={logoDark}
+                height={100}
+                width={100}
+              ></Image>
+            ) : (
+              <Image
+                alt="Logo White"
+                src={logoWhite}
+                height={100}
+                width={100}
+              ></Image>
+            )}
           </div>
 
           <div className="flex items-center gap-4">
@@ -497,31 +491,21 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 32 32"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z"
-                    fill="#FF5A5F"
-                  />
-                  <path
-                    d="M12 22L20 10"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M16 18L20 22"
-                    stroke="white"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <span className="text-lg font-bold">Tyra</span>
+                {theme === "light" ? (
+                  <Image
+                    alt="Logo Dark"
+                    src={logoDark}
+                    height={100}
+                    width={100}
+                  ></Image>
+                ) : (
+                  <Image
+                    alt="Logo White"
+                    src={logoWhite}
+                    height={100}
+                    width={100}
+                  ></Image>
+                )}
               </div>
               <p className="text-muted-foreground">
                 Soluções para Restaurantes{" "}
