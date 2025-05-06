@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 export const StartSection = () => {
   return (
-    <section className="bg-secondary py-20">
+    <section className=" py-20 bg-gradient-to-b from-primary/10 to-background">
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-6">
           Pronto para transformar seu restaurante?
