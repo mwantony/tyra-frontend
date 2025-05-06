@@ -20,6 +20,8 @@ import { StartSection } from "@/components/start-section";
 export default function LandingPage() {
   const { restaurante } = useAuth();
   useEffect(() => {
+    window.document.title = "Tyra - Soluções para Restaurantes";
+
     if (restaurante?.id) {
       window.location.href = "/dashboard";
     }

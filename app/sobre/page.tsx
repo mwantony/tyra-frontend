@@ -178,7 +178,7 @@ export default function AboutPage() {
         </motion.section>
 
         {/* Linha do Tempo */}
-        <section className="py-20 bg-gradient-to-b from-background to-secondary">
+        <section className="py-20 ">
           <div className="container mx-auto px-4">
             <motion.h2
               className="text-3xl md:text-4xl font-bold mb-16 text-center"
@@ -241,7 +241,7 @@ export default function AboutPage() {
         </section>
 
         {/* Nossa Equipe */}
-        <section className="container mx-auto px-4 py-20">
+        <section className="container min-w-full px-4 py-20 ">
           <motion.h2
             className="text-3xl md:text-4xl font-bold mb-16 text-center"
             initial={{ opacity: 0, y: 20 }}
@@ -285,7 +285,7 @@ export default function AboutPage() {
         </section>
 
         {/* Valores */}
-        <section className="bg-secondary py-20">
+        <section className=" py-20">
           <div className="container mx-auto px-4">
             <motion.h2
               className="text-3xl md:text-4xl font-bold mb-16 text-center"
