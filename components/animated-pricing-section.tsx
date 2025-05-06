@@ -40,7 +40,7 @@ export default function AnimatedPricingSection() {
               "Até 5 mesas",
               "Suporte por e-mail"
             ],
-            href: "/login"
+            href: "/signup"
           },
           {
             title: "Intermediário",
@@ -54,7 +54,7 @@ export default function AnimatedPricingSection() {
               "Relatório de Desempenho",
               "Cardápio Digital"
             ],
-            href: "/login"
+            href: "/signup"
           },
           {
             title: "Premium",
@@ -68,7 +68,7 @@ export default function AnimatedPricingSection() {
               "Suporte 24/7",
               "Cardápio Digital"
             ],
-            href: "/login"
+            href: "/signup"
           }
         ].map((plan, i) => (
           <motion.div
