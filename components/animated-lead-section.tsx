@@ -24,7 +24,7 @@ export const AnimatedLeadSection = () => {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6,
+        duration: 1,
         ease: "easeOut",
       },
     },
@@ -58,7 +58,7 @@ export const AnimatedLeadSection = () => {
         className="mt-10 flex flex-col sm:flex-row justify-center gap-4"
         variants={itemVariants}
       >
-        <Link href={"/login"}>
+        <Link href={"/signup"}>
           <Button className="w-full" size={"lg"}>
             Começar agora <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
