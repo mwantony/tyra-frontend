@@ -44,19 +44,19 @@ export default function AboutPage() {
       name: "Rafael Costa",
       role: "CEO & Fundador",
       bio: "Especialista em tecnologia para food service com 10+ anos de experiência.",
-      img: "/team/rafael.jpg",
+      img: "https://github.com/mwantony.png",
     },
     {
       name: "Juliana Santos",
       role: "CTO",
       bio: "Engenheira de software com expertise em sistemas de gestão empresarial.",
-      img: "/team/juliana.jpg",
+      img: "https://github.com/mwantony.png",
     },
     {
       name: "Carlos Mendes",
       role: "Head de Produto",
       bio: "Ex-gestor de restaurantes, traz a visão do usuário para nosso produto.",
-      img: "/team/carlos.jpg",
+      img: "https://github.com/mwantony.png",
     },
   ];
 
@@ -74,7 +74,7 @@ export default function AboutPage() {
       <div className="bg-background text-foreground">
         {/* Hero Section */}
         <motion.section
-          className="relative min-h-screen flex items-center justify-center overflow-hidden"
+          className="relative h-140 flex items-center justify-center overflow-hidden"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -223,7 +223,7 @@ export default function AboutPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
-                    <div className="absolute -left-8 top-0 w-6 h-6 rounded-full bg-primary border-4 border-background" />
+                    <div className="absolute -left-8 top-0 w-4 h-4 rounded-full bg-primary border-4 border-background" />
                     <div className="bg-background p-6 rounded-xl shadow-lg border border-border ml-4">
                       <div className="font-bold text-primary mb-2">
                         {milestone.year}
