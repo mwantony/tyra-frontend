@@ -72,7 +72,7 @@ export const Header = () => {
         <Link href={"/login"}>
           <Button
             variant="outline"
-            className="bg-transparent"
+            className="bg-transparent border-gray-300"
           >
             Entrar
           </Button>

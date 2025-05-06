@@ -111,7 +111,7 @@ export default function CareersPage() {
 
             <motion.div variants={item}>
               <a href="#vagas">
-                <Button size={"lg"}>
+                <Button size={"lg"} className="w-full">
                   Ver oportunidades <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </a>
