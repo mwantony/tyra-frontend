@@ -80,7 +80,7 @@ export default function CareersPage() {
       <div className="bg-background text-foreground">
         {/* Hero Section */}
         <motion.section
-          className="relative mb-10 min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-primary/10 to-background"
+          className="relative mb-10 min-h-[100vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-primary/10 to-background"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -242,10 +242,11 @@ export default function CareersPage() {
                   </CardContent>
                   <CardFooter>
                     <Link
-                      href={`/carreiras/${position.title
+                      href={`https://wa.me/5549991042777/?text=Olá, gostaria de mais informações sobre a vaga ${position.title
                         .toLowerCase()
                         .replace(/\s+/g, "-")}`}
                       className="w-full"
+                      target="_blank"
                     >
                       <Button variant="outline" className="w-full">
                         Detalhes da vaga
@@ -267,8 +268,11 @@ export default function CareersPage() {
             <p className="text-lg text-muted-foreground mb-6">
               Não encontrou a vaga ideal? Envie seu currículo mesmo assim!
             </p>
-            <Link href="/carreiras/talent-pool">
-              <Button variant="outline">Cadastrar no banco de talentos</Button>
+            <Link
+              href="https://wa.me/5549991042777/?text=Oi%2C%20gostaria%20de%20enviar%20meu%20curriculo!"
+              target="_blank"
+            >
+              <Button variant="outline">Enviar currículo</Button>
             </Link>
           </motion.div>
         </section>

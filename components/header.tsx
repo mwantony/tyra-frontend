@@ -10,7 +10,7 @@ export const Header = () => {
   const { theme } = useTheme();
   return (
     <header
-      style={{ backgroundColor: "red !important", position: "absolute" }}
+      style={{ backgroundColor: "red !important", position: "absolute", zIndex: 10 }}
       className="container position-absolute bg-danger mx-auto py-6 px-4 flex justify-between items-center"
     >
       <div className="flex items-center space-x-2">
@@ -66,7 +66,7 @@ export const Header = () => {
         <ThemeToggle />
 
         <Link href={"/login"}>
-          <Button variant="outline">Entrar</Button>
+          <Button variant="outline" className="">Entrar</Button>
         </Link>
       </div>
     </header>
