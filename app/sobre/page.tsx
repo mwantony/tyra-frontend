@@ -81,15 +81,7 @@ export default function AboutPage() {
           variants={container}
         >
           {/* Background com imagem semi-opaca */}
-          <div className="absolute inset-0 z-0">
-            <img
-              src="/about/hero-background.jpg"
-              alt="Restaurante moderno"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/50" />
-          </div>
-
+       
           {/* Conteúdo centralizado */}
           <div className="container relative z-10 px-4 text-center">
             <motion.div className="inline-block mb-8" variants={item}>
