@@ -32,7 +32,7 @@ export const AnimatedLeadSection = () => {
 
   return (
     <motion.section
-      className="relative mb-10 min-h-[100vh] flex flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-primary/10 to-background text-center"
+      className="relative mb-10 mx-4 min-h-[100vh] flex flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-primary/10 to-background text-center"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}

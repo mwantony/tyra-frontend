@@ -2,7 +2,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
 
 export const Faq = () => {
   return (
-    <section id="faq" className="container min-w-full py-20 md:py-32 bg-gradient-to-t from-primary/10 to-background">
+    <section id="faq" className="container min-w-full mx-4 py-20 md:py-32 bg-gradient-to-t from-primary/10 to-background">
       <div className="text-center mb-16">
         <h2 className="text-3xl md:text-4xl font-bold">Perguntas frequentes</h2>
         <p className="text-muted-foreground max-w-2xl mx-auto mt-4">
