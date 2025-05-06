@@ -13,6 +13,7 @@ import LandingPage from "@/app/page";
 import PrivacyPolicy from "@/app/privacidade/page";
 import Termos from "@/app/termos/page";
 import AboutPage from "@/app/sobre/page";
+import CareersPage from "@/app/carreiras/page";
 function ProtectedApp({ children }: { children: ReactNode }) {
   const { restaurante, loading, refreshRestaurante } = useAuth();
   const [isAuthChecked, setIsAuthChecked] = useState(false);
@@ -35,7 +36,8 @@ function ProtectedApp({ children }: { children: ReactNode }) {
       pathname !== "/" &&
       pathname !== "/privacidade" &&
       pathname !== "/termos" &&
-      pathname !== "/sobre"
+      pathname !== "/sobre" &&
+      pathname !== "/carreiras"
     ) {
       router.push("/login");
     }
@@ -57,6 +59,8 @@ function ProtectedApp({ children }: { children: ReactNode }) {
     return <Termos />;
   } else if (pathname === "/sobre") {
     return <AboutPage />;
+  } else if (pathname === "/carreiras") {
+    return <CareersPage />;
   } else if (restaurante?.nome_fantasia) {
     return <CustomLayout>{children}</CustomLayout>;
   } else {

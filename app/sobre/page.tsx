@@ -74,7 +74,7 @@ export default function AboutPage() {
       <div className="bg-background text-foreground">
         {/* Hero Section */}
         <motion.section
-          className="relative h-140 flex items-center justify-center overflow-hidden"
+          className="relative mb-10 min-h-[100vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-primary/10 to-background"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}

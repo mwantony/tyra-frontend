@@ -9,7 +9,10 @@ import { useTheme } from "@/contexts/theme-provider";
 export const Header = () => {
   const { theme } = useTheme();
   return (
-    <header className="container mx-auto py-6 px-4 flex justify-between items-center">
+    <header
+      style={{ backgroundColor: "red !important", position: "absolute" }}
+      className="container position-absolute bg-danger mx-auto py-6 px-4 flex justify-between items-center"
+    >
       <div className="flex items-center space-x-2">
         {theme === "light" ? (
           <a href={"/"}>
