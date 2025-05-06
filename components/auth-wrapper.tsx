@@ -31,7 +31,8 @@ function ProtectedApp({ children }: { children: ReactNode }) {
       !restaurante?.nome_fantasia &&
       pathname !== "/signup" &&
       pathname !== "/" &&
-      pathname !== "/privacidade"
+      pathname !== "/privacidade" &&
+      pathname !== "/termos"
     ) {
       router.push("/login");
     }
