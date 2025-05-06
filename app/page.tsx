@@ -7,17 +7,24 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-  CardContent,
   CardFooter,
 } from "@/components/ui/card";
 import { useAuth } from "@/contexts/auth-provider";
 import { useTheme } from "@/contexts/theme-provider";
-import { ArrowRight, Check, Star } from "lucide-react";
+import { ArrowRight, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import logoDark from "@/assets/img/logo-dark.png";
 import logoWhite from "@/assets/img/logo-white.png";
+import { TrustedBySection } from "@/components/trusted-by-section";
+import { AnimatedFeaturesSection } from "@/components/animated-feature-section";
+import { AnimatedLeadSection } from "@/components/animated-lead-section";
+import AnimatedPricingSection from "@/components/animated-pricing-section";
+import { AnimatedTestimonialsSection } from "@/components/animated-testimonials.section";
+
+// Configurações de animação
+
 export default function LandingPage() {
   const { restaurante } = useAuth();
   const { theme }: any = useTheme();
@@ -26,6 +33,7 @@ export default function LandingPage() {
       window.location.href = "/dashboard";
     }
   }, [restaurante]);
+
   if (!restaurante?.id)
     return (
       <div className="min-h-screen bg-background text-foreground">
@@ -86,338 +94,18 @@ export default function LandingPage() {
         </header>
 
         {/* Hero Section */}
-        <section className="container mx-auto px-4 py-20 md:py-32 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold max-w-3xl mx-auto leading-tight">
-            Revolucione a gestão do seu{" "}
-            <span className="text-primary">restaurante</span>
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mt-6">
-            Tyra oferece todas as ferramentas que você precisa para gerenciar
-            seu restaurante de forma eficiente e aumentar seus lucros.
-          </p>
-          <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-            <Link  href={'/login'}>
-              <Button className="w-full" size={"lg"}>
-                Começar agora <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </Link>
-            <Button size={"lg"} variant="outline">
-              Ver demonstração
-            </Button>
-          </div>
-        </section>
-
+        <AnimatedLeadSection></AnimatedLeadSection>
         {/* Logo Cloud */}
-        <div className="container mx-auto px-4 py-12 border-y border-border">
-          <p className="text-center text-muted-foreground mb-8">
-            Confiado pelos melhores restaurantes
-          </p>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-80">
-            <span className="text-xl font-bold">Restaurante A</span>
-            <span className="text-xl font-bold">Restaurante B</span>
-            <span className="text-xl font-bold">Restaurante C</span>
-            <span className="text-xl font-bold">Restaurante D</span>
-            <span className="text-xl font-bold">Restaurante E</span>
-          </div>
-        </div>
+        <TrustedBySection></TrustedBySection>
 
         {/* Features Section */}
-        <section
-          id="features"
-          className="container mx-auto px-4 py-20 md:py-32"
-        >
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold">
-              Tudo o que seu restaurante precisa
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto mt-4">
-              Uma plataforma completa com módulos integrados para cada aspecto
-              do seu negócio.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="hover:border-primary transition">
-              <CardHeader>
-                <div className="w-12 h-12 bg-background rounded-lg flex items-center justify-center mb-4">
-                  <svg
-                    className="w-6 h-6 "
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                    />
-                  </svg>
-                </div>
-                <CardTitle>Recebimento de Pagamentos</CardTitle>
-                <CardDescription className="text-muted-foreground">
-                  Tenha controle total do fluxo de caixa, custos e lucratividade
-                  em tempo real — com o dinheiro caindo direto na sua conta.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="hover:border-primary transition">
-              <CardHeader>
-                <div className="w-12 h-12 bg-background rounded-lg flex items-center justify-center mb-4">
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                    />
-                  </svg>
-                </div>
-                <CardTitle>Cardápio Digital</CardTitle>
-                <CardDescription className="text-muted-foreground">
-                  Cardápio digital inteligente, gerado automaticamente a partir
-                  dos pratos cadastrados.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="hover:border-primary transition">
-              <CardHeader>
-                <div className="w-12 h-12 bg-background rounded-lg flex items-center justify-center mb-4">
-                  <svg
-                    className="w-6 h-6 "
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-                <CardTitle>Relatório de Vendas</CardTitle>
-                <CardDescription className="text-muted-foreground">
-                  Receba relatórios automáticos das vendas realizadas com
-                  geração em PDF, prontos para análise e gestão eficiente.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </div>
-        </section>
+        <AnimatedFeaturesSection></AnimatedFeaturesSection>
 
         {/* Pricing Section */}
-        <section id="pricing" className="container mx-auto px-4 py-20 md:py-32">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold">
-              Planos que se adaptam ao seu negócio
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto mt-4">
-              Escolha o plano ideal para o tamanho do seu restaurante. Sem
-              surpresas.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Plano Básico */}
-            <Card className="hover:border-primary transition">
-              <CardHeader>
-                <CardTitle>Básico</CardTitle>
-                <div className="flex items-end mt-2">
-                  <span className="text-4xl font-bold">GRÁTIS</span>
-                </div>
-                <CardDescription className="mt-4">
-                  Ideal para pequenos estabelecimentos
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-primary mr-2" />
-                    <span>Até 5 comandas</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-primary mr-2" />
-                    <span>Suporte 24/7</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-primary mr-2" />
-                    <span>Até 5 mesas</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-primary mr-2" />
-                    <span>Suporte por e-mail</span>
-                  </li>
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <Link className="w-full" href={"/login"}>
-                  <Button className="w-full">Assinar agora</Button>
-                </Link>
-              </CardFooter>
-            </Card>
-
-            {/* Plano Profissional (Destaque) */}
-            <Card className="border-2 border-primary relative">
-              <div className="absolute top-0 right-0 px-3 py-1 text-xs font-bold rounded-bl-lg">
-                MAIS POPULAR
-              </div>
-              <CardHeader>
-                <CardTitle>Intermediário</CardTitle>
-                <div className="flex items-end mt-2">
-                  <span className="text-4xl font-bold">R$49,90</span>
-                  <span className="text-muted-foreground">/mês</span>
-                </div>
-                <CardDescription className="mt-4">
-                  Perfeito para restaurantes médios
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-primary mr-2" />
-                    <span>Até 15 comandas</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-primary mr-2" />
-                    <span>Suporte 24/7</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-primary mr-2" />
-                    <span>Até 15 mesas</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-primary mr-2" />
-                    <span>Relatório de Desempenho</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-primary mr-2" />
-                    <span>Cardápio Digital</span>
-                  </li>
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <Link className="w-full" href={"/login"}>
-                  <Button className="w-full">Assinar agora</Button>
-                </Link>
-              </CardFooter>
-            </Card>
-
-            {/* Plano Premium */}
-            <Card className="hover:border-primary transition">
-              <CardHeader>
-                <CardTitle>Premium</CardTitle>
-                <div className="flex items-end mt-2">
-                  <span className="text-4xl font-bold">R$120,90</span>
-                  <span className="text-muted-foreground">/mês</span>
-                </div>
-                <CardDescription className="mt-4">
-                  Solução completa para grandes restaurantes
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-primary mr-2" />
-                    <span>Comandas ilimitadas</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-primary mr-2" />
-                    <span>Todos os recursos avançados</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-primary mr-2" />
-                    <span>Relatórios personalizados</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-primary mr-2" />
-                    <span>Recebimento de pagamentos</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-primary mr-2" />
-                    <span>Suporte 24/7</span>
-                  </li>
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-primary mr-2" />
-                    <span>Cardápio Digital</span>
-                  </li>
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <Link className="w-full" href={"/login"}>
-                  <Button className="w-full">Assinar agora</Button>
-                </Link>{" "}
-              </CardFooter>
-            </Card>
-          </div>
-
-          <div className="text-center mt-12 text-muted-foreground">
-            <p>
-              Precisa de um plano personalizado?{" "}
-              <a
-                href="https://wa.me/5549991042777"
-                target="_blank"
-                className="text-primary hover:underline"
-              >
-                Fale com nosso time
-              </a>
-            </p>
-          </div>
-        </section>
+        <AnimatedPricingSection></AnimatedPricingSection>
 
         {/* Testimonials Section */}
-        <section
-          id="testimonials"
-          className="container mx-auto px-4 py-20 md:py-32"
-        >
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold">
-              O que nossos clientes dizem
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto mt-4">
-              Restaurantes que transformaram seus negócios com a Tyra
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((item) => (
-              <Card key={item} className="hover:border-primary transition">
-                <CardHeader>
-                  <div className="flex items-center space-x-1 mb-2">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star
-                        key={star}
-                        className="w-4 h-4 fill-primary text-primary"
-                      />
-                    ))}
-                  </div>
-                  <CardTitle>Transformou nosso negócio</CardTitle>
-                  <CardDescription className="text-muted-foreground">
-                    &quot;A Tyra nos ajudou a reduzir custos em 30% e aumentar
-                    nossa eficiência operacional significativamente.&quot;
-                  </CardDescription>
-                </CardHeader>
-                <CardFooter className="flex items-center">
-                  <div className="w-10 h-10 rounded-full bg-muted mr-3"></div>
-                  <div>
-                    <p className="font-medium">João Silva</p>
-                    <p className="text-sm text-muted-foreground">
-                      Restaurante da Praça
-                    </p>
-                  </div>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-        </section>
+        <AnimatedTestimonialsSection></AnimatedTestimonialsSection>
 
         {/* FAQ Section */}
         <section id="faq" className="container mx-auto px-4 py-20 md:py-32">

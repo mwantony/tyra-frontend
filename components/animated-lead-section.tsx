@@ -1,0 +1,72 @@
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { Button } from "./ui/button";
+import { ArrowRight } from "lucide-react";
+
+export const AnimatedLeadSection = () => {
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3,
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  return (
+    <motion.section
+      className="container mx-auto px-4 py-20 md:py-32 text-center"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
+      variants={containerVariants}
+    >
+      <motion.h1
+        className="text-4xl md:text-6xl font-bold max-w-3xl mx-auto leading-tight"
+        variants={itemVariants}
+      >
+        Revolucione a gestão do seu{" "}
+        <span className="text-primary">restaurante</span>
+      </motion.h1>
+
+      <motion.p
+        className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mt-6"
+        variants={itemVariants}
+      >
+        Tyra oferece todas as ferramentas que você precisa para gerenciar seu
+        restaurante de forma eficiente e aumentar seus lucros.
+      </motion.p>
+
+      <motion.div
+        className="mt-10 flex flex-col sm:flex-row justify-center gap-4"
+        variants={itemVariants}
+      >
+        <Link href={"/login"}>
+          <Button className="w-full" size={"lg"}>
+            Começar agora <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </Link>
+        <Button size={"lg"} variant="outline">
+          Ver demonstração
+        </Button>
+      </motion.div>
+    </motion.section>
+  );
+};
