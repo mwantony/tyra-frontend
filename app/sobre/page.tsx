@@ -15,7 +15,7 @@ import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 
 export default function AboutPage() {
-  // Variantes de animação
+  window.document.title = "Tyra - Soluções para Restaurantes";
   const container = {
     hidden: { opacity: 0 },
     visible: {

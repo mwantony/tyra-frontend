@@ -15,7 +15,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 
 export default function CareersPage() {
-  // Variantes de animação
+  window.document.title = "Tyra - Soluções para Restaurantes";
   const container = {
     hidden: { opacity: 0 },
     visible: {
