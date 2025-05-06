@@ -5,10 +5,9 @@ import { ArrowRight } from "lucide-react";
 
 export const AnimatedLeadSection = () => {
   const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
       transition: {
         staggerChildren: 0.1,
         delayChildren: 0.3,
@@ -17,6 +16,7 @@ export const AnimatedLeadSection = () => {
       },
     },
   };
+  
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
