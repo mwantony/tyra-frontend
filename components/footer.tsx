@@ -102,9 +102,10 @@ export const Footer = () => {
           </ul>
         </div>
       </div>
-      <div className="border-t border-border mt-12 pt-8 text-center text-muted-foreground">
-        <p>© {new Date().getFullYear()} Tyra. Todos os direitos reservados.</p>
-      </div>
+      <div className="border-t border-border mt-12 pt-8 text-center text-muted-foreground text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
+      © {new Date().getFullYear()} Tyra - Soluções para Restaurantes<br></br>
+      CNPJ: 00.000.000/0000-00 | Todos os direitos reservados      </div>
+
     </footer>
   );
 };
