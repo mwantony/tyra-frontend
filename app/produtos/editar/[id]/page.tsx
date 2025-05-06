@@ -18,7 +18,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { CustomSpinner } from "@/components/custom-spinner";
-
+import { Loader2 } from "lucide-react";
 const fetchProdutoByEAN = async (ean: string) => {
   const response = await fetch(
     `https://world.openfoodfacts.org/api/v0/product/${ean}.json`
@@ -221,7 +221,7 @@ export default function Page() {
                 Cancelar
               </Button>
               <Button type="submit" disabled={isLoading}>
-                {isLoading && <CustomSpinner></CustomSpinner>}
+                {isLoading && <Loader2 className="animate-spin"></Loader2>}
                 Atualizar Produto
               </Button>
             </div>
