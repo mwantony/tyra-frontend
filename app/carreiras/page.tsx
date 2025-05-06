@@ -54,21 +54,21 @@ export default function CareersPage() {
     {
       title: "Desenvolvedor Full-stack",
       type: "Tempo integral",
-      location: "Remoto",
+      location: "Presencial (SC)",
       description:
         "Desenvolva as próximas funcionalidades da nossa plataforma usando React, Node.js e tecnologias modernas.",
     },
     {
       title: "Designer de Produto",
       type: "Tempo integral",
-      location: "Híbrido (SP)",
+      location: "Presencial (SC)",
       description:
         "Crie experiências incríveis para nossos usuários com foco em usabilidade e design thinking.",
     },
     {
-      title: "Especialista em CS",
+      title: "Especialista em Vendas",
       type: "Tempo integral",
-      location: "Remoto",
+      location: "Presencial (SC)",
       description:
         "Ajude nossos clientes a extrair o máximo da plataforma e transforme feedback em melhorias.",
     },
@@ -169,7 +169,7 @@ export default function CareersPage() {
         </section>
 
         {/* Benefícios */}
-        <section className="bg-secondary py-20">
+        <section className="bg-gradient-to-b from-background to-primary/10 py-20">
           <div className="container mx-auto px-4">
             <motion.h2
               className="text-3xl md:text-4xl font-bold mb-16 text-center"
@@ -205,7 +205,7 @@ export default function CareersPage() {
         </section>
 
         {/* Vagas */}
-        <section id="vagas" className="container mx-auto px-4 py-20">
+        <section id="vagas" className="container min-w-full py-20 bg-gradient-to-t from-background to-primary/10">
           <motion.h2
             className="text-3xl md:text-4xl font-bold mb-16 text-center"
             initial={{ opacity: 0, y: 20 }}
