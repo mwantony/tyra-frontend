@@ -7,19 +7,19 @@ export default function Termos() {
   return (
     <>
       <Header></Header>
-      <div className="container mx-auto px-4 py-16 max-w-5xl">
-        <header className="mb-12 text-center">
-          <h1 className="text-2xl md:text-2xl font-bold mb-4">
+      <div className="container mx-auto px-4 py-16 text-sm max-w-5xl">
+        <header className="mb-12 text-center mt-10">
+          <h1 className="text-lg font-bold mb-4">
             Termos de Serviço
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className=" text-muted-foreground">
             Última atualização: {new Date().toLocaleDateString("pt-BR")}
           </p>
         </header>
 
         <div className="prose prose-sm sm:prose lg:prose-lg xl:prose-xl dark:prose-invert mx-auto">
           <section className="mb-12">
-            <h2 className="text-2md font-bold mb-4">1. Introdução</h2>
+            <h2 className="font-bold mb-4">1. Introdução</h2>
             <p>
               A Tyra (&quot;nós&quot;, &quot;nosso&quot; ou &quot;a
               empresa&quot;) valoriza sua privacidade. Esta Política de
@@ -30,10 +30,10 @@ export default function Termos() {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2md font-bold mb-4">
+            <h2 className="font-bold mb-4">
               2. Informações que Coletamos
             </h2>
-            <h3 className="text-md font-semibold mb-2">
+            <h3 className="font-semibold mb-2">
               2.1 Dados fornecidos por você
             </h3>
             <ul className="list-disc pl-6 space-y-2 mb-4">
@@ -47,7 +47,7 @@ export default function Termos() {
               </li>
             </ul>
 
-            <h3 className="text-md font-semibold mb-2">
+            <h3 className="font-semibold mb-2">
               2.2 Dados coletados automaticamente
             </h3>
             <ul className="list-disc pl-6 space-y-2">
@@ -63,7 +63,7 @@ export default function Termos() {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2md font-bold mb-4">
+            <h2 className="font-bold mb-4">
               3. Como Usamos Suas Informações
             </h2>
             <p className="mb-4">Utilizamos seus dados para:</p>
@@ -78,7 +78,7 @@ export default function Termos() {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2md font-bold mb-4">
+            <h2 className="font-bold mb-4">
               4. Compartilhamento de Dados
             </h2>
             <p className="mb-4">Podemos compartilhar informações com:</p>
@@ -97,7 +97,7 @@ export default function Termos() {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2md font-bold mb-4">5. Segurança dos Dados</h2>
+            <h2 className="font-bold mb-4">5. Segurança dos Dados</h2>
             <p>
               Implementamos medidas técnicas e organizacionais robustas,
               incluindo:
@@ -111,7 +111,7 @@ export default function Termos() {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2md font-bold mb-4">6. Seus Direitos</h2>
+            <h2 className="font-bold mb-4">6. Seus Direitos</h2>
             <p className="mb-4">Conforme a LGPD, você tem direito a:</p>
             <ul className="list-disc pl-6 space-y-2 mb-4">
               <li>Acessar seus dados pessoais</li>
@@ -132,7 +132,7 @@ export default function Termos() {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2md font-bold mb-4">7. Retenção de Dados</h2>
+            <h2 className="font-bold mb-4">7. Retenção de Dados</h2>
             <p>
               Mantemos seus dados apenas enquanto necessário para os fins
               descritos ou conforme exigido por leis aplicáveis. Dados
@@ -141,7 +141,7 @@ export default function Termos() {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2md font-bold mb-4">
+            <h2 className="font-bold mb-4">
               8. Alterações nesta Política
             </h2>
             <p>
@@ -153,7 +153,7 @@ export default function Termos() {
           </section>
 
           <section className="mb-12">
-            <h2 className="text-2md font-bold mb-4">9. Contato</h2>
+            <h2 className="font-bold mb-4">9. Contato</h2>
             <p className="mb-2">
               Dúvidas sobre esta política podem ser direcionadas a:
             </p>
