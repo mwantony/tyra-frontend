@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import Image from "next/image";
 import logoDark from "@/assets/img/logo-dark.png";
 import logoWhite from "@/assets/img/logo-white.png";
@@ -34,25 +35,25 @@ export const Header = () => {
       <div className="flex items-center gap-4">
         <nav className="hidden md:flex space-x-8">
           <a
-            href="#features"
+            href="/#features"
             className="text-sm font-medium hover:text-primary transition"
           >
             Recursos
           </a>
           <a
-            href="#pricing"
+            href="/#pricing"
             className="text-sm font-medium hover:text-primary transition"
           >
             Planos
           </a>
           <a
-            href="#testimonials"
+            href="/#testimonials"
             className="text-sm font-medium hover:text-primary transition"
           >
             Depoimentos
           </a>
           <a
-            href="#faq"
+            href="/#faq"
             className="text-sm font-medium hover:text-primary transition"
           >
             FAQ
