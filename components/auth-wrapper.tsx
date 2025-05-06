@@ -39,7 +39,7 @@ function ProtectedApp({ children }: { children: ReactNode }) {
     return <SignUpPage />;
   } else if (pathname === "/login") {
     return <LoginPage />;
-  } else if (!restaurante?.nome_fantasia) {
+  } else if (pathname === '/') {
     return <LandingPage />;
   } else if (restaurante?.nome_fantasia) {
     return <CustomLayout>{children}</CustomLayout>;

@@ -1,4 +1,5 @@
 "use client";
+import { ThemeToggle } from "@/components/toggle-theme";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,7 +21,7 @@ export default function LandingPage() {
   });
   if (!restaurante?.id)
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#000000] to-[#111111] text-white">
+      <div className="min-h-screen ">
         {/* Header */}
         <header className="container mx-auto py-6 px-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
@@ -50,42 +51,47 @@ export default function LandingPage() {
             </svg>
             <span className="text-xl font-bold">Tyra</span>
           </div>
-          <nav className="hidden md:flex space-x-8">
-            <a
-              href="#features"
-              className="text-sm font-medium hover:text-gray-300 transition"
-            >
-              Recursos
-            </a>
-            <a
-              href="#pricing"
-              className="text-sm font-medium hover:text-gray-300 transition"
-            >
-              Preços
-            </a>
-            <a
-              href="#testimonials"
-              className="text-sm font-medium hover:text-gray-300 transition"
-            >
-              Depoimentos
-            </a>
-            <a
-              href="#faq"
-              className="text-sm font-medium hover:text-gray-300 transition"
-            >
-              FAQ
-            </a>
-          </nav>
-          <Link href={"/login"}>
-            <Button
-              variant="outline"
-              className="bg-transparent border-white text-white hover:bg-white hover:text-black"
-            >
-              Entrar
-            </Button>
-          </Link>
-        </header>
 
+          <div className="flex items-center gap-4">
+            <nav className="hidden md:flex space-x-8">
+              <a
+                href="#features"
+                className="text-sm font-medium hover:text-gray-300 transition"
+              >
+                Recursos
+              </a>
+              <a
+                href="#pricing"
+                className="text-sm font-medium hover:text-gray-300 transition"
+              >
+                Preços
+              </a>
+              <a
+                href="#testimonials"
+                className="text-sm font-medium hover:text-gray-300 transition"
+              >
+                Depoimentos
+              </a>
+              <a
+                href="#faq"
+                className="text-sm font-medium hover:text-gray-300 transition"
+              >
+                FAQ
+              </a>
+            </nav>
+
+            <ThemeToggle />
+
+            <Link href={"/login"}>
+              <Button
+                variant="outline"
+                className="bg-transparent border-white text-white hover:bg-white hover:text-black"
+              >
+                Entrar
+              </Button>
+            </Link>
+          </div>
+        </header>
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-20 md:py-32 text-center">
           <h1 className="text-4xl md:text-6xl font-bold max-w-3xl mx-auto leading-tight">
@@ -108,7 +114,6 @@ export default function LandingPage() {
             </Button>
           </div>
         </section>
-
         {/* Logo Cloud */}
         <div className="container mx-auto px-4 py-12 border-y border-gray-800">
           <p className="text-center text-gray-400 mb-8">
@@ -123,7 +128,6 @@ export default function LandingPage() {
             <span className="text-xl font-bold">Restaurante E</span>
           </div>
         </div>
-
         {/* Features Section */}
         <section
           id="features"
@@ -216,7 +220,6 @@ export default function LandingPage() {
             </Card>
           </div>
         </section>
-
         {/* CTA Section */}
         <section className="bg-[#FF5A5F] py-20">
           <div className="container mx-auto px-4 text-center">
@@ -232,7 +235,6 @@ export default function LandingPage() {
             </Button>
           </div>
         </section>
-
         {/* Footer */}
         <footer className="container mx-auto px-4 py-16 border-t border-gray-800">
           <div className="grid md:grid-cols-4 gap-8">

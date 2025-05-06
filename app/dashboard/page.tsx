@@ -134,5 +134,5 @@ export default function Page() {
         </div>
       </div>
     );
-  if (!restaurante?.id) return (window.location.href = "/");
+  if (!restaurante?.id) return (window.location.href = "/login");
 }
