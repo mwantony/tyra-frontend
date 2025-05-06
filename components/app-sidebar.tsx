@@ -31,7 +31,7 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "/",
+      url: "/dashboard",
       icon: LayoutDashboardIcon,
     },
     {
@@ -95,7 +95,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <Link href="/">
+              <Link href="/dashboard">
                 <span className="text-base font-semibold">Tyra</span>
                 <Badge>Beta</Badge>
               </Link>

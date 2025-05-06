@@ -9,6 +9,7 @@ import { Spinner } from "./ui/spinner";
 import { usePathname, useRouter } from "next/navigation";
 import { Provider } from "react-redux";
 import { store } from "@/store";
+import LandingPage from "@/app/page";
 function ProtectedApp({ children }: { children: ReactNode }) {
   const { restaurante, loading, refreshRestaurante } = useAuth();
   const [isAuthChecked, setIsAuthChecked] = useState(false);
@@ -25,7 +26,7 @@ function ProtectedApp({ children }: { children: ReactNode }) {
     setIsAuthChecked(true);
     if (restaurante === null) return;
 
-    if (!restaurante?.nome_fantasia && pathname !== "/signup") {
+    if (!restaurante?.nome_fantasia && pathname !== "/signup" && pathname !== "/") {
       router.push("/login");
     }
   }, [loading, restaurante, pathname, router, refreshRestaurante, count]);
@@ -38,6 +39,8 @@ function ProtectedApp({ children }: { children: ReactNode }) {
     return <SignUpPage />;
   } else if (pathname === "/login") {
     return <LoginPage />;
+  } else if (!restaurante?.nome_fantasia) {
+    return <LandingPage />;
   } else if (restaurante?.nome_fantasia) {
     return <CustomLayout>{children}</CustomLayout>;
   } else {

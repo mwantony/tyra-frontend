@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }: any) => {
       const restaurante = response.data.restaurante;
       if (restaurante) {
         localStorage.setItem("restaurante", JSON.stringify(response.data));
-        window.location.href = "/";
+        window.location.href = "/dashboard";
       }
     } catch (error) {
       toast.error("Email ou senha inválidos!");
