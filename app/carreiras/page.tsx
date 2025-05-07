@@ -205,7 +205,7 @@ export default function CareersPage() {
         </section>
 
         {/* Vagas */}
-        <section id="vagas" className="container min-w-full py-20 bg-gradient-to-t from-background to-primary/10">
+        <section id="vagas" className="container px-4 min-w-full py-20 bg-gradient-to-t from-background to-primary/10">
           <motion.h2
             className="text-3xl md:text-4xl font-bold mb-16 text-center"
             initial={{ opacity: 0, y: 20 }}
