@@ -16,18 +16,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Info, ArrowUp, ArrowDown } from "lucide-react";
-
-type Venda = {
-  id: number;
-  comanda_id: number;
-  numero_comanda: string;
-  restaurante_id: number;
-  total: string;
-  data_venda: string;
-  created_at: string;
-  status: string;
-  updated_at: string;
-};
+import Venda from "@/interfaces/Venda";
 
 type SortableField = "id" | "total" | "data_venda";
 
@@ -116,6 +105,7 @@ export const DataTableVendas: React.FC<DataTableProps> = ({ data }) => {
               {getSortIcon("total")}
             </button>
           </TableHead>
+          <TableHead>Método de Pagamento</TableHead>
           <TableHead>
             <div className="flex items-center gap-1">
               <button
@@ -158,6 +148,12 @@ export const DataTableVendas: React.FC<DataTableProps> = ({ data }) => {
                   style: "currency",
                   currency: "BRL",
                 }).format(Number(item.total))}
+              </TableCell>
+              <TableCell>
+                <Badge variant="outline">
+                  {item?.metodo_pagamento?.charAt(0).toUpperCase() +
+                    item?.metodo_pagamento?.slice(1)}
+                </Badge>
               </TableCell>
               <TableCell>
                 <div className="flex flex-col">

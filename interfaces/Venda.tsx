@@ -5,6 +5,7 @@ export default interface Venda {
     restaurante_id: number;
     status: string;
     total: string;
+    metodo_pagamento: string;
     data_venda: string;
     created_at: string;
     updated_at: string;
