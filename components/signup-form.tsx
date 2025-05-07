@@ -12,6 +12,7 @@ import Link from "next/link";
 import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
 import { unformatCNPJ } from "@/utils/cnpjUtils";
+import { formatPhoneNumber } from "@/utils/phoneUtils";
 
 export function SignUpForm({
   className,
@@ -169,8 +170,9 @@ export function SignUpForm({
                 type="text"
                 placeholder="Digite seu WhatsApp"
                 required
+                maxLength={15}
                 value={whatsapp}
-                onChange={(e) => setWhatsApp(e.target.value)}
+                onChange={(e) => setWhatsApp(formatPhoneNumber(e.target.value))}
               />
             </div>
           </div>
@@ -248,7 +250,8 @@ export function SignUpForm({
                           !nomeFantasia ||
                           !razaoSocial ||
                           fetchingCnpj)) ||
-                      (step === 2 && !whatsapp) || unformatCNPJ(cnpj).length < 14
+                      (step === 2 && !whatsapp) ||
+                      unformatCNPJ(cnpj).length < 14
                     }
                   >
                     Próximo
