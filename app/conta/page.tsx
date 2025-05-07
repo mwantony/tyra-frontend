@@ -263,7 +263,7 @@ export default function RestaurantAccountPage() {
                       </Button>
                     </>
                   ) : (
-                    <Button onClick={() => setIsEditing(true)}>Editar</Button>
+                    <Button className="w-full md:w-auto" onClick={() => setIsEditing(true)}>Editar</Button>
                   )}
                 </div>
               </div>
@@ -280,7 +280,7 @@ export default function RestaurantAccountPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <Button
+                <Button className="w-full md:w-auto"
                   variant="outline"
                   onClick={() => setIsPasswordDialogOpen(true)}
                 >
