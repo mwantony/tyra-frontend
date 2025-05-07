@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { formatCNPJ } from "@/utils/formatCnpj";
+import { formatCNPJ } from "@/utils/cnpjUtils";
 
 export default function RestaurantAccountPage() {
   const [isLoading, setIsLoading] = useState(false);

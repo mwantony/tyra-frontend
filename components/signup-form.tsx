@@ -11,6 +11,7 @@ import { useAuth } from "@/contexts/auth-provider";
 import Link from "next/link";
 import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
+import { unformatCNPJ } from "@/utils/cnpjUtils";
 
 export function SignUpForm({
   className,
@@ -247,7 +248,7 @@ export function SignUpForm({
                           !nomeFantasia ||
                           !razaoSocial ||
                           fetchingCnpj)) ||
-                      (step === 2 && !whatsapp)
+                      (step === 2 && !whatsapp) || unformatCNPJ(cnpj).length < 14
                     }
                   >
                     Próximo
