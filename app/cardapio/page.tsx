@@ -14,13 +14,13 @@ import QRCode from "react-qr-code";
 import qrImage from "qr-image";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/contexts/auth-provider";
+import logoDark from '@/assets/img/logo-dark.png';
 
 export default function CardapioQRCodePage() {
   const [qrValue, setQrValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { restaurante } = useAuth();
   const [confirmDownload, setConfirmDownload] = useState(false);
-  // Cria uma referência para o QR Code
   const qrCodeRef = useRef(null);
 
   useEffect(() => {
@@ -42,25 +42,37 @@ export default function CardapioQRCodePage() {
 
   const handleDownloadQRCode = () => {
     setConfirmDownload(true);
-
+  
     try {
       const qrBuffer = qrImage.imageSync(qrValue, {
         type: "png",
         size: 10,
         margin: 2,
       });
-
+  
       const blob = new Blob([qrBuffer], { type: "image/png" });
       const url = URL.createObjectURL(blob);
-
+  
       const img = new Image();
-      img.onload = () => {
+      const logo = new Image();
+  
+      img.crossOrigin = "anonymous";
+      logo.crossOrigin = "anonymous";
+  
+      img.src = url;
+      logo.src = logoDark.src;
+  
+      const onAssetsLoaded = () => {
         const canvas = document.createElement("canvas");
-        const padding = 20;
+  
+        const padding = 30;
         const textHeight = 30;
-        canvas.width = img.width;
-        canvas.height = img.height + textHeight + padding;
-
+        const logoHeight = 60;
+        const totalExtraSpace = padding * 2 + textHeight + logoHeight;
+  
+        canvas.width = Math.max(img.width, 400);
+        canvas.height = img.height + totalExtraSpace;
+  
         const ctx = canvas.getContext("2d");
         if (!ctx) {
           console.error("Erro ao obter o contexto do canvas");
@@ -68,21 +80,47 @@ export default function CardapioQRCodePage() {
           setConfirmDownload(false);
           return;
         }
-
+  
+        // Fundo branco
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.drawImage(img, 0, 0);
-
+        
+        // Logo
+        const logoWidth = logoHeight * (logo.width / logo.height);
+        ctx.drawImage(
+          logo,
+          canvas.width / 2 - logoWidth / 2,
+          padding,
+          logoWidth,
+          logoHeight
+        );
+  
+        // Nome do restaurante
         ctx.fillStyle = "#000000";
-        ctx.font = "20px Poppins";
+        ctx.font = "bold 24px Poppins"; // Substituir Poppins por Arial para compatibilidade
         ctx.textAlign = "center";
         ctx.fillText(
-          "Cardápio Digital",
+          restaurante.nome || "Cardápio Digital",
           canvas.width / 2,
-          img.height + padding
+          padding + logoHeight + 30
         );
-
+  
+        // QR Code
+        const qrOffsetY = padding + logoHeight + textHeight + 20;
+        ctx.drawImage(
+          img,
+          canvas.width / 2 - img.width / 2,
+          qrOffsetY
+        );
+  
+        // Instrução abaixo do QR
+        ctx.font = "16px Arial";
+        ctx.fillText(
+          "Escaneie para acessar o cardápio digital",
+          canvas.width / 2,
+          qrOffsetY + img.height + 30
+        );
+  
         canvas.toBlob((finalBlob) => {
           if (!finalBlob) {
             console.error("Erro ao gerar o blob do canvas");
@@ -90,26 +128,37 @@ export default function CardapioQRCodePage() {
             setConfirmDownload(false);
             return;
           }
-
+  
           const downloadUrl = URL.createObjectURL(finalBlob);
           const link = document.createElement("a");
           link.href = downloadUrl;
-          link.download = "qr-code-cardapio.png";
+          link.download = `qr-code-cardapio-${(restaurante.nome || '')}`.replace(/\s+/g, '-').toLowerCase() + `.png`;
           link.click();
-
+  
           setTimeout(() => URL.revokeObjectURL(downloadUrl), 100);
           setConfirmDownload(false);
           toast.dismiss();
         }, "image/png");
       };
-
+  
+      // Aguarda carregamento dos dois
+      img.onload = () => {
+        if (logo.complete) onAssetsLoaded();
+        else logo.onload = onAssetsLoaded;
+      };
+  
       img.onerror = (e) => {
         console.error("Erro ao carregar imagem do QR:", e);
         toast.error("Erro ao gerar imagem");
         setConfirmDownload(false);
       };
-
-      img.src = url;
+  
+      logo.onerror = (e) => {
+        console.error("Erro ao carregar o logo:", e);
+        toast.error("Erro ao gerar logo");
+        setConfirmDownload(false);
+      };
+  
     } catch (error) {
       console.error("Erro ao baixar QR Code:", error);
       toast.dismiss();
@@ -117,7 +166,7 @@ export default function CardapioQRCodePage() {
       toast.error("Erro ao baixar QR Code");
     }
   };
-
+  
   return (
     <div className="min-h-150 flex items-center justify-center px-4 ">
       <Card className="w-full max-w-md">
