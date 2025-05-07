@@ -29,6 +29,7 @@ import Link from "next/link";
 import { PaymentModal } from "./payment-modal";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { Check, X } from "lucide-react";
 export default function BillingPage() {
   const [currentPlan, setCurrentPlan] = useState<any>();
   const [allPlans, setAllPlans] = useState<any[]>([]);
@@ -296,47 +297,47 @@ export default function BillingPage() {
                   <ul className="space-y-2">
                     {currentPlan?.id === 1 && (
                       <li className="flex items-center space-x-2">
-                        <span className="text-green-500">✓</span>
+                        <span className="text-green-500"><Check size={16}></Check></span>
                         <p>Até 5 comandas</p>
                       </li>
                     )}
                     {currentPlan?.id === 2 && (
                       <li className="flex items-center space-x-2">
-                        <span className="text-green-500">✓</span>
+                        <span className="text-green-500"><Check size={16}></Check></span>
                         <p>Até 30 comandas</p>
                       </li>
                     )}
                     {currentPlan?.id === 3 && (
                       <li className="flex items-center space-x-2">
-                        <span className="text-green-500">✓</span>
+                        <span className="text-green-500"><Check size={16}></Check></span>
                         <p>Comandas ilimitadas</p>
                       </li>
                     )}
 
                     <li className="flex items-center space-x-2">
-                      <span className="text-green-500">✓</span>
+                      <span className="text-green-500"><Check size={16}></Check></span>
                       <p>Relatórios de desempenho</p>
                     </li>
                     {currentPlan?.id === 1 && (
                       <li className="flex items-center space-x-2">
-                        <span className="text-green-500">✓</span>
+                        <span className="text-green-500"><Check size={16}></Check></span>
                         <p>Até 5 mesas</p>
                       </li>
                     )}
                     {currentPlan?.id === 2 && (
                       <li className="flex items-center space-x-2">
-                        <span className="text-green-500">✓</span>
+                        <span className="text-green-500"><Check size={16}></Check></span>
                         <p>Até 30 mesas</p>
                       </li>
                     )}
                     {currentPlan?.id === 3 && (
                       <li className="flex items-center space-x-2">
-                        <span className="text-green-500">✓</span>
+                        <span className="text-green-500"><Check size={16}></Check></span>
                         <p>Mesas ilimitadas</p>
                       </li>
                     )}
                     <li className="flex items-center space-x-2">
-                      <span className="text-green-500">✓</span>
+                      <span className="text-green-500"><Check size={16}></Check></span>
                       <p>Suporte 24/7</p>
                     </li>
                   </ul>
@@ -386,15 +387,15 @@ export default function BillingPage() {
                   <h3 className="font-medium mb-2">Recursos disponíveis</h3>
                   <ul className="space-y-2">
                     <li className="flex items-center space-x-2 text-muted-foreground">
-                      <span className="text-red-500">✗</span>
+                      <span className="text-red-500"><X size={16}></X></span>
                       <p>Comandas limitadas (apenas demonstração)</p>
                     </li>
                     <li className="flex items-center space-x-2 text-muted-foreground">
-                      <span className="text-red-500">✗</span>
+                      <span className="text-red-500"><X size={16}></X></span>
                       <p>Gerenciamento de pedidos desativado</p>
                     </li>
                     <li className="flex items-center space-x-2 text-muted-foreground">
-                      <span className="text-red-500">✗</span>
+                      <span className="text-red-500"><X size={16}></X></span>
                       <p>Relatórios de desempenho indisponíveis</p>
                     </li>
                   </ul>
@@ -451,77 +452,77 @@ export default function BillingPage() {
                     <ul className="space-y-2 text-sm">
                       {plan.id === 1 && (
                         <li className="flex items-start">
-                          <span className="text-green-500 mr-2">✓</span>
+                          <span className="text-green-500 mr-2"><Check size={16}></Check></span>
                           <span>Até 5 comandas</span>
                         </li>
                       )}
                       {plan.id === 2 && (
                         <li className="flex items-start">
-                          <span className="text-green-500 mr-2">✓</span>
+                          <span className="text-green-500 mr-2"><Check size={16}></Check></span>
                           <span>Até 30 comandas</span>
                         </li>
                       )}
                       {plan.id === 3 && (
                         <li className="flex items-start">
-                          <span className="text-green-500 mr-2">✓</span>
+                          <span className="text-green-500 mr-2"><Check size={16}></Check></span>
                           <span>Comandas ilimitadas</span>
                         </li>
                       )}
 
                       <li className="flex items-start">
-                        <span className="text-green-500 mr-2">✓</span>
+                        <span className="text-green-500 mr-2"><Check size={16}></Check></span>
                         <span>Suporte 24/7</span>
                       </li>
                       {plan?.id === 1 && (
                         <li className="flex items-center space-x-2">
-                          <span className="text-green-500">✓</span>
+                          <span className="text-green-500"><Check size={16}></Check></span>
                           <p>Até 5 mesas</p>
                         </li>
                       )}
                       {plan?.id === 2 && (
                         <li className="flex items-center space-x-2">
-                          <span className="text-green-500">✓</span>
+                          <span className="text-green-500"><Check size={16}></Check></span>
                           <p>Até 30 mesas</p>
                         </li>
                       )}
                       {plan?.id === 3 && (
                         <li className="flex items-center space-x-2">
-                          <span className="text-green-500">✓</span>
+                          <span className="text-green-500"><Check size={16}></Check></span>
                           <p>Mesas ilimitadas</p>
                         </li>
                       )}
                       {plan?.id === 3 && (
                         <li className="flex items-center space-x-2">
-                          <span className="text-green-500">✓</span>
+                          <span className="text-green-500"><Check size={16}></Check></span>
                           <p>Cardápio Digital</p>
                         </li>
                       )}
 
                       <li className="flex items-start space-x-2">
                         {plan?.id === 3 ? (
-                          <span className="text-green-500">✓</span>
+                          <span className="text-green-500"><Check size={16}></Check></span>
                         ) : plan.id === 2 ? (
-                          <span className="text-green-500">✓</span>
+                          <span className="text-green-500"><Check size={16}></Check></span>
                         ) : (
-                          <span className="text-500">✗</span>
+                          <span className="text-500"><X size={16}></X></span>
                         )}
                         <span>Relatórios de desempenho</span>
                       </li>
                       <li className="flex items-start space-x-2">
                         {plan?.id === 3 ? (
-                          <span className="text-green-500">✓</span>
+                          <span className="text-green-500"><Check size={16}></Check></span>
                         ) : plan.id === 2 ? (
-                          <span className="text-green-500">✓</span>
+                          <span className="text-green-500"><Check size={16}></Check></span>
                         ) : (
-                          <span className="text-500">✗</span>
+                          <span className="text-500"><X size={16}></X></span>
                         )}
                         <span>Cardápio Digital</span>
                       </li>
                       <li className="flex items-center space-x-2">
                         {plan?.id === 3 ? (
-                          <span className="text-green-500">✓</span>
+                          <span className="text-green-500"><Check size={16}></Check></span>
                         ) : (
-                          <span>✗</span>
+                          <span><X size={16}></X></span>
                         )}
                         <p>Recebimento de pagamentos</p>
                       </li>
