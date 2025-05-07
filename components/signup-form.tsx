@@ -38,10 +38,21 @@ export function SignUpForm({
   const formatCnpj = useCallback((value: string): string => {
     const cleaned = value.replace(/\D/g, "");
     if (cleaned.length <= 2) return cleaned;
-    if (cleaned.length <= 5) return `${cleaned.slice(0, 2)}.${cleaned.slice(2)}`;
-    if (cleaned.length <= 8) return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(5)}`;
-    if (cleaned.length <= 12) return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(5, 8)}/${cleaned.slice(8)}`;
-    return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(5, 8)}/${cleaned.slice(8, 12)}-${cleaned.slice(12, 14)}`;
+    if (cleaned.length <= 5)
+      return `${cleaned.slice(0, 2)}.${cleaned.slice(2)}`;
+    if (cleaned.length <= 8)
+      return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(
+        5
+      )}`;
+    if (cleaned.length <= 12)
+      return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(
+        5,
+        8
+      )}/${cleaned.slice(8)}`;
+    return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(
+      5,
+      8
+    )}/${cleaned.slice(8, 12)}-${cleaned.slice(12, 14)}`;
   }, []);
 
   // Handler para mudanças no input de CNPJ
@@ -70,7 +81,9 @@ export function SignUpForm({
   const fetchCompanyData = async (cnpj: string) => {
     setFetchingCnpj(true);
     try {
-      const response = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
+      const response = await fetch(
+        `https://brasilapi.com.br/api/cnpj/v1/${cnpj}`
+      );
 
       if (!response.ok) {
         throw new Error("CNPJ não encontrado ou erro na API");
@@ -82,7 +95,9 @@ export function SignUpForm({
       setEmail(data.email || "");
       toast.success("Dados da empresa carregados automaticamente");
     } catch (error: any) {
-      toast.error("Não foi possível buscar os dados do CNPJ. Preencha manualmente.");
+      toast.error(
+        "Não foi possível buscar os dados do CNPJ. Preencha manualmente."
+      );
       console.error("Erro ao buscar CNPJ:", error);
     } finally {
       setFetchingCnpj(false);
@@ -91,13 +106,13 @@ export function SignUpForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Final validation before submit
     if (password !== passwordConfirmation) {
       toast.error("As senhas não coincidem");
       return;
     }
-    
+
     if (password.length < 6) {
       toast.error("A senha deve ter pelo menos 6 caracteres");
       return;
