@@ -90,7 +90,7 @@ export default function SupportPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <MessageSquare className="h-5 w-5" />
-              <span>Formulário de Contato</span>
+              <span>Formulário de Feedback</span>
             </CardTitle>
             <CardDescription>
               Preencha o formulário abaixo e nossa equipe entrará em contato
@@ -163,7 +163,7 @@ export default function SupportPage() {
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  placeholder="Descreva seu problema ou dúvida..."
+                  placeholder="Descreva o que podemos melhorar..."
                   rows={5}
                   required
                 />
@@ -171,7 +171,7 @@ export default function SupportPage() {
 
               <div className="flex justify-end">
                 <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Enviando..." : "Enviar Mensagem"}
+                  {isSubmitting ? "Enviando..." : "Enviar Feedback"}
                 </Button>
               </div>
             </form>
