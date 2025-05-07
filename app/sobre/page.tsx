@@ -161,7 +161,7 @@ export default function AboutPage() {
                 experiência gastronômica.
               </p>
               <a href="https://wa.me/5549991042777" target="_blank">
-                <Button>
+                <Button className={'w-full md:w-auto'} size={"lg"}>
                   Fale conosco <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </a>
@@ -410,7 +410,7 @@ export default function AboutPage() {
               negócio.
             </p>
             <Link href="/contato">
-              <Button>
+              <Button className="w-full md:w-auto" size={"lg"}>
                 Agendar demonstração <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>

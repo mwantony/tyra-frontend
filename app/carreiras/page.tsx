@@ -129,14 +129,14 @@ export default function CareersPage() {
             variants={container}
           >
             <motion.div variants={item}>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold mb-6">
                 Nossa Cultura
               </h2>
-              <p className="text-lg text-muted-foreground mb-6">
+              <p className="text-muted-foreground mb-6">
                 Na Tyra, acreditamos que pessoas felizes criam produtos
                 incríveis. Cultivamos um ambiente onde:
               </p>
-              <ul className="space-y-4">
+              <ul className="space-y-4 text-sm">
                 <li className="flex items-start">
                   <Check className="w-5 h-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
                   <span>A autonomia e a responsabilidade andam juntas</span>
@@ -155,8 +155,6 @@ export default function CareersPage() {
             <motion.div
               className="relative h-80 rounded-xl overflow-hidden shadow-lg"
               variants={item}
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: "spring", stiffness: 300 }}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-background" />
               <img
@@ -172,7 +170,7 @@ export default function CareersPage() {
         <section className="bg-gradient-to-b from-background to-primary/10 py-20">
           <div className="container mx-auto px-4">
             <motion.h2
-              className="text-3xl md:text-4xl font-bold mb-16 text-center"
+              className="text-2xl md:text-4xl font-bold mb-16 text-center"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -195,7 +193,7 @@ export default function CareersPage() {
                       <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
                         <Heart className="w-5 h-5 text-primary" />
                       </div>
-                      <CardTitle className="text-lg">{benefit}</CardTitle>
+                      <CardTitle className="text-md">{benefit}</CardTitle>
                     </CardHeader>
                   </Card>
                 </motion.div>
@@ -275,7 +273,7 @@ export default function CareersPage() {
               href="https://wa.me/5549991042777/?text=Oi%2C%20gostaria%20de%20enviar%20meu%20curriculo!"
               target="_blank"
             >
-              <Button variant="outline">Enviar currículo</Button>
+              <Button variant="outline" className={'w-full md:w-auto'}>Enviar currículo</Button>
             </Link>
           </motion.div>
         </section>
