@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
@@ -26,12 +27,18 @@ import {
 import { useState } from "react";
 import Link from "next/link";
 import { DatePickerWithRange } from "@/components/date-range-picker";
+import dayjs from "dayjs";
+import React from "react";
+import { subDays } from "date-fns";
 
 export default function FinancePage() {
   const { theme } = useTheme();
   const [timeRange, setTimeRange] = useState<string>("week");
   const [isLoading, setIsLoading] = useState(false);
-
+  const [date, setDate] = React.useState({
+    from: dayjs(subDays(new Date(), 7)).format("YYYY-MM-DD"),
+    to: dayjs().format("YYYY-MM-DD"),
+  });
   // Dados simulados para demonstração
   const financialData = {
     revenue: 12500.75,
@@ -92,9 +99,11 @@ export default function FinancePage() {
     }, 1000);
   };
 
-  const handleTimeRangeChange = (range: string) => {
-    setTimeRange(range);
-    handleRefresh();
+  const handleDateChange = (newDateRange: any) => {
+    setDate({
+      from: dayjs(newDateRange.from).format("YYYY-MM-DD"),
+      to: dayjs(newDateRange.to).format("YYYY-MM-DD"),
+    });
   };
 
   return (
@@ -145,9 +154,11 @@ export default function FinancePage() {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="flex items-center gap-2">
                 <Calendar className="h-5 w-5 text-muted-foreground" />
-                <span className="text-sm">Período:</span>
+                <span className="text-sm font-medium">Período:</span>
               </div>
-              <DatePickerWithRange />
+              <div className="w-full md:w-auto">
+                <DatePickerWithRange onChange={handleDateChange} />
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -180,7 +191,7 @@ export default function FinancePage() {
               <CreditCard className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-500">
+              <div className="text-2xl font-bold ">
                 {financialData.expenses.toLocaleString("pt-BR", {
                   style: "currency",
                   currency: "BRL",
@@ -200,7 +211,7 @@ export default function FinancePage() {
               <PieChart className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-500">
+              <div className="text-2xl font-bold ">
                 {financialData.profit.toLocaleString("pt-BR", {
                   style: "currency",
                   currency: "BRL",
@@ -230,7 +241,7 @@ export default function FinancePage() {
               <div className="space-y-4">
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm">Cartão de Crédito</span>
+                    <span className="text-sm">Cartão de Crédito/Débito</span>
                     <span className="text-sm font-medium">
                       {financialData.paymentMethods.credit}%
                     </span>
@@ -247,7 +258,7 @@ export default function FinancePage() {
 
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm">Cartão de Débito</span>
+                    <span className="text-sm">PIX</span>
                     <span className="text-sm font-medium">
                       {financialData.paymentMethods.debit}%
                     </span>
@@ -319,13 +330,7 @@ export default function FinancePage() {
                         {new Date(transaction.date).toLocaleDateString("pt-BR")}
                       </p>
                     </div>
-                    <div
-                      className={`font-bold text-sm ${
-                        transaction.type === "income"
-                          ? "text-green-500"
-                          : "text-red-500"
-                      }`}
-                    >
+                    <div className={`font-bold text-sm `}>
                       {transaction.type === "income" ? "+" : "-"}
                       {transaction.amount.toLocaleString("pt-BR", {
                         style: "currency",
@@ -381,7 +386,7 @@ export default function FinancePage() {
 
               <div className="border rounded-lg p-4">
                 <h3 className="font-medium mb-2">Margem de Lucro</h3>
-                <p className="text-2xl font-bold text-green-500">
+                <p className="text-2xl font-bold ">
                   {(
                     (financialData.profit / financialData.revenue) *
                     100
