@@ -318,7 +318,6 @@ export default function DetalhesComandaPage() {
                   </div>
                   {comanda.status === "aberta" && (
                     <Button
-                      size="sm"
                       onClick={() => setShowModalFechamento(true)}
                       className="gap-1"
                     >
