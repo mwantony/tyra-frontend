@@ -25,32 +25,23 @@ export function SignUpForm({
   const [whatsapp, setWhatsApp] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [loading, setLoading] = useState(false);
   const [fetchingCnpj, setFetchingCnpj] = useState(false);
   const { signup } = useAuth();
 
+  // Password validation states
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [passwordValid, setPasswordValid] = useState(true);
+
   // Função para formatar o CNPJ
   const formatCnpj = useCallback((value: string): string => {
-    // Remove todos os caracteres não numéricos
     const cleaned = value.replace(/\D/g, "");
-
-    // Aplica a formatação do CNPJ
     if (cleaned.length <= 2) return cleaned;
-    if (cleaned.length <= 5)
-      return `${cleaned.slice(0, 2)}.${cleaned.slice(2)}`;
-    if (cleaned.length <= 8)
-      return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(
-        5
-      )}`;
-    if (cleaned.length <= 12)
-      return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(
-        5,
-        8
-      )}/${cleaned.slice(8)}`;
-    return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(
-      5,
-      8
-    )}/${cleaned.slice(8, 12)}-${cleaned.slice(12, 14)}`;
+    if (cleaned.length <= 5) return `${cleaned.slice(0, 2)}.${cleaned.slice(2)}`;
+    if (cleaned.length <= 8) return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(5)}`;
+    if (cleaned.length <= 12) return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(5, 8)}/${cleaned.slice(8)}`;
+    return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(5, 8)}/${cleaned.slice(8, 12)}-${cleaned.slice(12, 14)}`;
   }, []);
 
   // Handler para mudanças no input de CNPJ
@@ -58,6 +49,14 @@ export function SignUpForm({
     const formatted = formatCnpj(e.target.value);
     setCnpj(formatted);
   };
+
+  // Validate password and confirmation
+  useEffect(() => {
+    if (password && passwordConfirmation) {
+      setPasswordsMatch(password === passwordConfirmation);
+    }
+    setPasswordValid(password.length >= 6 || password.length === 0);
+  }, [password, passwordConfirmation]);
 
   // Busca dados do CNPJ quando ele é totalmente digitado (14 caracteres)
   useEffect(() => {
@@ -71,25 +70,19 @@ export function SignUpForm({
   const fetchCompanyData = async (cnpj: string) => {
     setFetchingCnpj(true);
     try {
-      const response = await fetch(
-        `https://brasilapi.com.br/api/cnpj/v1/${cnpj}`
-      );
+      const response = await fetch(`https://brasilapi.com.br/api/cnpj/v1/${cnpj}`);
 
       if (!response.ok) {
         throw new Error("CNPJ não encontrado ou erro na API");
       }
 
       const data = await response.json();
-
       setNomeFantasia(data.fantasia || data.razao_social || "");
       setRazaoSocial(data.razao_social || "");
       setEmail(data.email || "");
-
       toast.success("Dados da empresa carregados automaticamente");
     } catch (error: any) {
-      toast.error(
-        "Não foi possível buscar os dados do CNPJ. Preencha manualmente."
-      );
+      toast.error("Não foi possível buscar os dados do CNPJ. Preencha manualmente.");
       console.error("Erro ao buscar CNPJ:", error);
     } finally {
       setFetchingCnpj(false);
@@ -98,6 +91,18 @@ export function SignUpForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Final validation before submit
+    if (password !== passwordConfirmation) {
+      toast.error("As senhas não coincidem");
+      return;
+    }
+    
+    if (password.length < 6) {
+      toast.error("A senha deve ter pelo menos 6 caracteres");
+      return;
+    }
+
     setLoading(true);
     try {
       await signup({
@@ -109,8 +114,7 @@ export function SignUpForm({
         password,
       });
     } catch (error: any) {
-      toast.error("Erro ao cadastrar. Por favor, tente novamente.");
-      console.error("Erro ao cadastrar:", error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -168,18 +172,13 @@ export function SignUpForm({
               <Input
                 id="whatsapp"
                 type="text"
-                placeholder="Digite seu WhatsApp"
+                placeholder="(00) 00000-0000"
                 required
                 maxLength={15}
                 value={whatsapp}
                 onChange={(e) => setWhatsApp(formatPhoneNumber(e.target.value))}
               />
             </div>
-          </div>
-        );
-      case 3:
-        return (
-          <div className="flex flex-col gap-6">
             <div className="grid gap-1">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -191,6 +190,11 @@ export function SignUpForm({
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
+          </div>
+        );
+      case 3:
+        return (
+          <div className="flex flex-col gap-6">
             <div className="grid gap-1">
               <Label htmlFor="password">Senha</Label>
               <Input
@@ -201,7 +205,31 @@ export function SignUpForm({
                 minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className={!passwordValid ? "border-destructive" : ""}
               />
+              {!passwordValid && (
+                <p className="text-sm text-destructive">
+                  A senha deve ter pelo menos 6 caracteres
+                </p>
+              )}
+            </div>
+            <div className="grid gap-1">
+              <Label htmlFor="passwordConfirmation">Confirme a Senha</Label>
+              <Input
+                id="passwordConfirmation"
+                placeholder="Confirme sua senha"
+                type="password"
+                required
+                minLength={6}
+                value={passwordConfirmation}
+                onChange={(e) => setPasswordConfirmation(e.target.value)}
+                className={!passwordsMatch ? "border-destructive" : ""}
+              />
+              {!passwordsMatch && (
+                <p className="text-sm text-destructive">
+                  As senhas não coincidem
+                </p>
+              )}
             </div>
           </div>
         );
@@ -211,7 +239,7 @@ export function SignUpForm({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6 ", className)} {...props}>
       <Toaster />
       <Card className="overflow-hidden">
         <CardContent className="grid p-0 md:grid-cols-1">
@@ -222,7 +250,7 @@ export function SignUpForm({
                 <p className="text-balance text-muted-foreground">
                   {step === 1 && "Informações da empresa"}
                   {step === 2 && "Dados de contato"}
-                  {step === 3 && "Dados de acesso"} {/* Adicione esta linha */}
+                  {step === 3 && "Dados de acesso"}
                 </p>
               </div>
 
@@ -249,9 +277,9 @@ export function SignUpForm({
                         (!cnpj ||
                           !nomeFantasia ||
                           !razaoSocial ||
-                          fetchingCnpj)) ||
-                      (step === 2 && !whatsapp) ||
-                      unformatCNPJ(cnpj).length < 14
+                          fetchingCnpj ||
+                          unformatCNPJ(cnpj).length < 14)) ||
+                      (step === 2 && (!whatsapp || !email))
                     }
                   >
                     Próximo
@@ -259,7 +287,14 @@ export function SignUpForm({
                 ) : (
                   <Button
                     type="submit"
-                    disabled={loading || !email || !password}
+                    disabled={
+                      loading ||
+                      !email ||
+                      !password ||
+                      !passwordConfirmation ||
+                      !passwordsMatch ||
+                      !passwordValid
+                    }
                   >
                     {loading ? "Cadastrando..." : "Finalizar Cadastro"}
                   </Button>

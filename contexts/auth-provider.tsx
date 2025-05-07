@@ -50,6 +50,18 @@ export const AuthProvider = ({ children }: any) => {
 
       window.location.href = "/login";
     } catch (error: any) {
+      if (error.response.data.cnpj) {
+        toast.error("O CNPJ já está em uso.", {
+          description: "Verifique os dados e tente novamente",
+        });
+        return
+      }
+      if (error.response.data.email) {
+        toast.error("O email já está em uso.", {
+          description: "Verifique os dados e tente novamente",
+        });
+        return
+      }
       toast.error("Erro ao cadastrar", {
         description: "Verifique os dados e tente novamente",
       });
@@ -78,9 +90,8 @@ export const AuthProvider = ({ children }: any) => {
     await api
       .get(`/restaurantes/${restaurante?.id}`)
       .then((res) => {
-        console.log(res)
+        console.log(res);
         setRestaurante(res.data);
-        
       })
 
       .catch((error) => {
@@ -88,7 +99,11 @@ export const AuthProvider = ({ children }: any) => {
           error.response.data.message ===
           "Você precisa ter um plano ativo para usar o sistema."
         ) {
-          if (pathname !== "/planos" && pathname !== "/suporte" && pathname !== "/conta") {
+          if (
+            pathname !== "/planos" &&
+            pathname !== "/suporte" &&
+            pathname !== "/conta"
+          ) {
             toast.error(error.response.data.message);
           }
 
