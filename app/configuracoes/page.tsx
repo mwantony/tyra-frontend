@@ -74,9 +74,10 @@ export default function SettingsPage() {
     } finally {
       setIsLoading(false);
       setIsConfirmDeleteDialogOpen(false);
+      localStorage.removeItem("restaurante");
       setTimeout(() => {
         window.location.href = "/login";
-      }, 2000); // Redireciona após 2 segundos
+      }, 1000); // Redireciona após 2 segundos
     }
   };
   return (
