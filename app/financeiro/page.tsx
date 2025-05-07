@@ -1,0 +1,425 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+"use client";
+
+import { useTheme } from "@/contexts/theme-provider";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import {
+  DollarSign,
+  CreditCard,
+  PieChart,
+  BarChart,
+  Calendar,
+  Download,
+  RefreshCw,
+  Filter,
+} from "lucide-react";
+import { useState } from "react";
+
+export default function FinancePage() {
+  const { theme } = useTheme();
+  const [timeRange, setTimeRange] = useState<string>("week");
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Dados simulados para demonstração
+  const financialData = {
+    revenue: 12500.75,
+    expenses: 8450.3,
+    profit: 4050.45,
+    transactions: 342,
+    averageTicket: 36.55,
+    paymentMethods: {
+      credit: 45,
+      debit: 30,
+      cash: 20,
+      others: 5,
+    },
+    recentTransactions: [
+      {
+        id: 1,
+        date: "2023-05-15",
+        description: "Venda #1234",
+        amount: 128.5,
+        type: "income",
+      },
+      {
+        id: 2,
+        date: "2023-05-15",
+        description: "Fornecedor - Carnes",
+        amount: 850.0,
+        type: "expense",
+      },
+      {
+        id: 3,
+        date: "2023-05-14",
+        description: "Venda #1233",
+        amount: 95.2,
+        type: "income",
+      },
+      {
+        id: 4,
+        date: "2023-05-14",
+        description: "Salários",
+        amount: 3200.0,
+        type: "expense",
+      },
+      {
+        id: 5,
+        date: "2023-05-13",
+        description: "Venda #1232",
+        amount: 210.0,
+        type: "income",
+      },
+    ],
+  };
+
+  const handleRefresh = () => {
+    setIsLoading(true);
+    // Simulação de carregamento de dados
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  };
+
+  const handleTimeRangeChange = (range: string) => {
+    setTimeRange(range);
+    handleRefresh();
+  };
+
+  return (
+    <div className="flex flex-col h-full">
+      <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 p-6">
+  <div className="flex flex-col gap-1">
+    <h1 className="text-2xl font-bold tracking-tight">Financeiro</h1>
+    <p className="text-muted-foreground">
+      Visão geral das finanças do restaurante
+    </p>
+  </div>
+  <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={handleRefresh}
+      disabled={isLoading}
+      className="w-full md:w-auto" // Ocupa toda largura no mobile, largura automática no desktop
+    >
+      <RefreshCw
+        className={`h-4 w-4 mr-2 ${isLoading ? "animate-spin" : ""}`}
+      />
+      Atualizar
+    </Button>
+    <Button
+      variant="outline"
+      size="sm"
+      className="w-full md:w-auto" // Ocupa toda largura no mobile, largura automática no desktop
+    >
+      <Download className="h-4 w-4 mr-2" />
+      Exportar
+    </Button>
+  </div>
+</div>
+
+
+      <Separator />
+
+      <div className="flex-1 p-4 lg:p-6 space-y-6 overflow-auto">
+        {/* Filtros e Período */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Filter className="h-5 w-5" />
+              <span>Filtros</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <Calendar className="h-5 w-5 text-muted-foreground" />
+                <span className="text-sm">Período:</span>
+                <Button
+                  variant={timeRange === "day" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => handleTimeRangeChange("day")}
+                >
+                  Hoje
+                </Button>
+                <Button
+                  variant={timeRange === "week" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => handleTimeRangeChange("week")}
+                >
+                  Semana
+                </Button>
+                <Button
+                  variant={timeRange === "month" ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => handleTimeRangeChange("month")}
+                >
+                  Mês
+                </Button>
+              </div>
+              <div className="flex items-center gap-2">
+                <Input type="date" className="max-w-[180px]" />
+                <span>até</span>
+                <Input type="date" className="max-w-[180px]" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Resumo Financeiro */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Receita Total
+              </CardTitle>
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {financialData.revenue.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                +12% em relação à semana passada
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Despesas</CardTitle>
+              <CreditCard className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-red-500">
+                {financialData.expenses.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                +8% em relação à semana passada
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Lucro Líquido
+              </CardTitle>
+              <PieChart className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-500">
+                {financialData.profit.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                +18% em relação à semana passada
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Métodos de Pagamento e Transações Recentes */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Métodos de Pagamento */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CreditCard className="h-5 w-5" />
+                <span>Métodos de Pagamento</span>
+              </CardTitle>
+              <CardDescription>
+                Distribuição das formas de pagamento utilizadas
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm">Cartão de Crédito</span>
+                    <span className="text-sm font-medium">
+                      {financialData.paymentMethods.credit}%
+                    </span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full">
+                    <div
+                      className="h-2 bg-blue-500 rounded-full"
+                      style={{
+                        width: `${financialData.paymentMethods.credit}%`,
+                      }}
+                    ></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm">Cartão de Débito</span>
+                    <span className="text-sm font-medium">
+                      {financialData.paymentMethods.debit}%
+                    </span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full">
+                    <div
+                      className="h-2 bg-green-500 rounded-full"
+                      style={{
+                        width: `${financialData.paymentMethods.debit}%`,
+                      }}
+                    ></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm">Dinheiro</span>
+                    <span className="text-sm font-medium">
+                      {financialData.paymentMethods.cash}%
+                    </span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full">
+                    <div
+                      className="h-2 bg-yellow-500 rounded-full"
+                      style={{ width: `${financialData.paymentMethods.cash}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm">Outros</span>
+                    <span className="text-sm font-medium">
+                      {financialData.paymentMethods.others}%
+                    </span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full">
+                    <div
+                      className="h-2 bg-gray-500 rounded-full"
+                      style={{
+                        width: `${financialData.paymentMethods.others}%`,
+                      }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Transações Recentes */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BarChart className="h-5 w-5" />
+                <span>Transações Recentes</span>
+              </CardTitle>
+              <CardDescription>
+                Últimas 5 transações registradas
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {financialData.recentTransactions.map((transaction) => (
+                  <div
+                    key={transaction.id}
+                    className="flex items-center justify-between p-3 border rounded-lg"
+                  >
+                    <div>
+                      <p className="font-medium">{transaction.description}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {new Date(transaction.date).toLocaleDateString("pt-BR")}
+                      </p>
+                    </div>
+                    <div
+                      className={`font-bold ${
+                        transaction.type === "income"
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {transaction.type === "income" ? "+" : "-"}
+                      {transaction.amount.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <Button variant="link" className="w-full mt-4">
+                Ver todas as transações
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Estatísticas Adicionais */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <PieChart className="h-5 w-5" />
+              <span>Estatísticas</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="border rounded-lg p-4">
+                <h3 className="font-medium mb-2">Total de Transações</h3>
+                <p className="text-2xl font-bold">
+                  {financialData.transactions}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {timeRange === "day"
+                    ? "hoje"
+                    : timeRange === "week"
+                    ? "esta semana"
+                    : "este mês"}
+                </p>
+              </div>
+
+              <div className="border rounded-lg p-4">
+                <h3 className="font-medium mb-2">Ticket Médio</h3>
+                <p className="text-2xl font-bold">
+                  {financialData.averageTicket.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </p>
+                <p className="text-sm text-muted-foreground">por transação</p>
+              </div>
+
+              <div className="border rounded-lg p-4">
+                <h3 className="font-medium mb-2">Margem de Lucro</h3>
+                <p className="text-2xl font-bold text-green-500">
+                  {(
+                    (financialData.profit / financialData.revenue) *
+                    100
+                  ).toFixed(2)}
+                  %
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  em relação à receita
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}

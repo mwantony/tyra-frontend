@@ -10,6 +10,7 @@ import {
   HeadsetIcon,
   BetweenHorizonalEnd,
   UtensilsCrossed,
+  WalletIcon,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -68,6 +69,11 @@ const data = {
       title: "Cardápio",
       url: "/cardapio",
       icon: UtensilsCrossed,
+    },
+    {
+      title: "Financeiro",
+      url: "/financeiro",
+      icon: WalletIcon,
     },
   ],
 
