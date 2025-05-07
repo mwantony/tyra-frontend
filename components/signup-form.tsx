@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,7 +11,7 @@ import { useAuth } from "@/contexts/auth-provider";
 import Link from "next/link";
 import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
-import { unformatCNPJ } from "@/utils/cnpjUtils";
+import { formatCNPJ, unformatCNPJ } from "@/utils/cnpjUtils";
 import { formatPhoneNumber } from "@/utils/phoneUtils";
 
 export function SignUpForm({
@@ -35,29 +35,10 @@ export function SignUpForm({
   const [passwordValid, setPasswordValid] = useState(true);
 
   // Função para formatar o CNPJ
-  const formatCnpj = useCallback((value: string): string => {
-    const cleaned = value.replace(/\D/g, "");
-    if (cleaned.length <= 2) return cleaned;
-    if (cleaned.length <= 5)
-      return `${cleaned.slice(0, 2)}.${cleaned.slice(2)}`;
-    if (cleaned.length <= 8)
-      return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(
-        5
-      )}`;
-    if (cleaned.length <= 12)
-      return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(
-        5,
-        8
-      )}/${cleaned.slice(8)}`;
-    return `${cleaned.slice(0, 2)}.${cleaned.slice(2, 5)}.${cleaned.slice(
-      5,
-      8
-    )}/${cleaned.slice(8, 12)}-${cleaned.slice(12, 14)}`;
-  }, []);
-
+  
   // Handler para mudanças no input de CNPJ
   const handleCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatCnpj(e.target.value);
+    const formatted = formatCNPJ(e.target.value);
     setCnpj(formatted);
   };
 
