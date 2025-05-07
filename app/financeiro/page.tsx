@@ -24,6 +24,8 @@ import {
   Filter,
 } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
+import { DatePickerWithRange } from "@/components/date-range-picker";
 
 export default function FinancePage() {
   const { theme } = useTheme();
@@ -98,36 +100,35 @@ export default function FinancePage() {
   return (
     <div className="flex flex-col h-full">
       <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 p-6">
-  <div className="flex flex-col gap-1">
-    <h1 className="text-2xl font-bold tracking-tight">Financeiro</h1>
-    <p className="text-muted-foreground">
-      Visão geral das finanças do restaurante
-    </p>
-  </div>
-  <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={handleRefresh}
-      disabled={isLoading}
-      className="w-full md:w-auto" // Ocupa toda largura no mobile, largura automática no desktop
-    >
-      <RefreshCw
-        className={`h-4 w-4 mr-2 ${isLoading ? "animate-spin" : ""}`}
-      />
-      Atualizar
-    </Button>
-    <Button
-      variant="outline"
-      size="sm"
-      className="w-full md:w-auto" // Ocupa toda largura no mobile, largura automática no desktop
-    >
-      <Download className="h-4 w-4 mr-2" />
-      Exportar
-    </Button>
-  </div>
-</div>
-
+        <div className="flex flex-col gap-1">
+          <h1 className="text-2xl font-bold tracking-tight">Financeiro</h1>
+          <p className="text-muted-foreground">
+            Visão geral das finanças do restaurante
+          </p>
+        </div>
+        <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
+            disabled={isLoading}
+            className="w-full md:w-auto" // Ocupa toda largura no mobile, largura automática no desktop
+          >
+            <RefreshCw
+              className={`h-4 w-4 mr-2 ${isLoading ? "animate-spin" : ""}`}
+            />
+            Atualizar
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full md:w-auto" // Ocupa toda largura no mobile, largura automática no desktop
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Exportar
+          </Button>
+        </div>
+      </div>
 
       <Separator />
 
@@ -145,33 +146,8 @@ export default function FinancePage() {
               <div className="flex items-center gap-2">
                 <Calendar className="h-5 w-5 text-muted-foreground" />
                 <span className="text-sm">Período:</span>
-                <Button
-                  variant={timeRange === "day" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => handleTimeRangeChange("day")}
-                >
-                  Hoje
-                </Button>
-                <Button
-                  variant={timeRange === "week" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => handleTimeRangeChange("week")}
-                >
-                  Semana
-                </Button>
-                <Button
-                  variant={timeRange === "month" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => handleTimeRangeChange("month")}
-                >
-                  Mês
-                </Button>
               </div>
-              <div className="flex items-center gap-2">
-                <Input type="date" className="max-w-[180px]" />
-                <span>até</span>
-                <Input type="date" className="max-w-[180px]" />
-              </div>
+              <DatePickerWithRange />
             </div>
           </CardContent>
         </Card>
@@ -278,7 +254,7 @@ export default function FinancePage() {
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full">
                     <div
-                      className="h-2 bg-green-500 rounded-full"
+                      className="h-2 bg-blue-500 rounded-full"
                       style={{
                         width: `${financialData.paymentMethods.debit}%`,
                       }}
@@ -295,7 +271,7 @@ export default function FinancePage() {
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full">
                     <div
-                      className="h-2 bg-yellow-500 rounded-full"
+                      className="h-2 bg-blue-500 rounded-full"
                       style={{ width: `${financialData.paymentMethods.cash}%` }}
                     ></div>
                   </div>
@@ -326,11 +302,9 @@ export default function FinancePage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BarChart className="h-5 w-5" />
-                <span>Transações Recentes</span>
+                <span>Vendas Recentes</span>
               </CardTitle>
-              <CardDescription>
-                Últimas 5 transações registradas
-              </CardDescription>
+              <CardDescription>Últimas 5 vendas registradas</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -340,13 +314,13 @@ export default function FinancePage() {
                     className="flex items-center justify-between p-3 border rounded-lg"
                   >
                     <div>
-                      <p className="font-medium">{transaction.description}</p>
+                      <p className="text-sm">{transaction.description}</p>
                       <p className="text-sm text-muted-foreground">
                         {new Date(transaction.date).toLocaleDateString("pt-BR")}
                       </p>
                     </div>
                     <div
-                      className={`font-bold ${
+                      className={`font-bold text-sm ${
                         transaction.type === "income"
                           ? "text-green-500"
                           : "text-red-500"
@@ -361,9 +335,11 @@ export default function FinancePage() {
                   </div>
                 ))}
               </div>
-              <Button variant="link" className="w-full mt-4">
-                Ver todas as transações
-              </Button>
+              <Link href="/vendas" passHref>
+                <Button variant="outline" className="w-full mt-4">
+                  Ver todas as vendas
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>
@@ -379,7 +355,7 @@ export default function FinancePage() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="border rounded-lg p-4">
-                <h3 className="font-medium mb-2">Total de Transações</h3>
+                <h3 className="font-medium mb-2">Total de Vendas</h3>
                 <p className="text-2xl font-bold">
                   {financialData.transactions}
                 </p>
