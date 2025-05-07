@@ -78,7 +78,7 @@ export const AnimatedLeadSection = () => {
           rel="noopener noreferrer"
         >
           <Button size="lg" variant="outline" className="w-full">
-            Falar com a gente
+            Fale com a gente
           </Button>
         </Link>
       </motion.div>
