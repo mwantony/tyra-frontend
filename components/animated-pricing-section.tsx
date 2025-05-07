@@ -44,13 +44,13 @@ export default function AnimatedPricingSection() {
           },
           {
             title: "Intermediário",
-            price: "R$49,90",
+            price: "R$89,90",
             popular: true,
             description: "Perfeito para restaurantes médios",
             features: [
-              "Até 15 comandas",
+              "Até 30 comandas",
               "Suporte 24/7",
-              "Até 15 mesas",
+              "Até 30 mesas",
               "Relatório de Desempenho",
               "Cardápio Digital"
             ],
@@ -58,7 +58,7 @@ export default function AnimatedPricingSection() {
           },
           {
             title: "Premium",
-            price: "R$120,90",
+            price: "R$169,90",
             description: "Solução completa para grandes restaurantes",
             features: [
               "Comandas ilimitadas",

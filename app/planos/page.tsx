@@ -303,7 +303,7 @@ export default function BillingPage() {
                     {currentPlan?.id === 2 && (
                       <li className="flex items-center space-x-2">
                         <span className="text-green-500">✓</span>
-                        <p>Até 15 comandas</p>
+                        <p>Até 30 comandas</p>
                       </li>
                     )}
                     {currentPlan?.id === 3 && (
@@ -326,7 +326,7 @@ export default function BillingPage() {
                     {currentPlan?.id === 2 && (
                       <li className="flex items-center space-x-2">
                         <span className="text-green-500">✓</span>
-                        <p>Até 15 mesas</p>
+                        <p>Até 30 mesas</p>
                       </li>
                     )}
                     {currentPlan?.id === 3 && (
@@ -458,7 +458,7 @@ export default function BillingPage() {
                       {plan.id === 2 && (
                         <li className="flex items-start">
                           <span className="text-green-500 mr-2">✓</span>
-                          <span>Até 15 comandas</span>
+                          <span>Até 30 comandas</span>
                         </li>
                       )}
                       {plan.id === 3 && (
@@ -481,7 +481,7 @@ export default function BillingPage() {
                       {plan?.id === 2 && (
                         <li className="flex items-center space-x-2">
                           <span className="text-green-500">✓</span>
-                          <p>Até 15 mesas</p>
+                          <p>Até 30 mesas</p>
                         </li>
                       )}
                       {plan?.id === 3 && (
