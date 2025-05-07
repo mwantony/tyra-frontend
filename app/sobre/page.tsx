@@ -61,15 +61,15 @@ export default function AboutPage() {
   ];
 
   const milestones = [
-    { month: "Junho", year: "2025", event: "Fundação da Tyra" },
+    { month: "Abril", year: "2025", event: "Fundação da Tyra" },
     { month: "Junho", year: "2025", event: "Primeiro cliente" },
     {
-      month: "Junho",
+      month: "Julho",
       year: "2025",
       event: "Lançamento da plataforma completa",
     },
-    { month: "Junho", year: "2025", event: "Expansão para 5 estados" },
-    { month: "Junho", year: "2026", event: "+100 restaurantes atendidos" },
+    { month: "Janeiro", year: "2026", event: "Expansão para 5 estados" },
+    { month: "Março", year: "2027", event: "+100 restaurantes atendidos" },
   ];
 
   return (
