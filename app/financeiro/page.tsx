@@ -23,16 +23,18 @@ import {
   RefreshCw,
   Filter,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { DatePickerWithRange } from "@/components/date-range-picker";
 import dayjs from "dayjs";
 import React from "react";
 import { subDays } from "date-fns";
+import { getDadosFinanceiros } from "@/services/financeiro";
 
 export default function FinancePage() {
   const { theme } = useTheme();
   const [timeRange, setTimeRange] = useState<string>("week");
+  const [dadosFinanceiro, setDadosFinanceiro] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [date, setDate] = React.useState({
     from: dayjs(subDays(new Date(), 7)).format("YYYY-MM-DD"),
@@ -40,18 +42,18 @@ export default function FinancePage() {
   });
   // Dados simulados para demonstração
   const financialData = {
-    revenue: 12500.75,
+    receita: 12500.75,
     expenses: 8450.3,
     profit: 4050.45,
-    sales: 342,
-    averageTicket: 36.55,
-    paymentMethods: {
-      card: 45,
+    vendas: 342,
+    ticket_medio: 36.55,
+    metodos_pagamento: {
+      cartao: 45,
       pix: 30,
-      cash: 20,
-      others: 5,
+      dinheiro: 20,
+      outros: 5,
     },
-    recentTransactions: [
+    vendasRecentes: [
       {
         id: 1,
         date: "2023-05-15",
@@ -104,7 +106,14 @@ export default function FinancePage() {
       to: dayjs(newDateRange.to).format("YYYY-MM-DD"),
     });
   };
-
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getDadosFinanceiros(date.from, date.to);
+      console.log(response)
+      setDadosFinanceiro(response.data);
+    };
+    fetchData();
+  });
   return (
     <div className="flex flex-col h-full">
       <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 p-6">
@@ -173,7 +182,7 @@ export default function FinancePage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {financialData.revenue.toLocaleString("pt-BR", {
+                {financialData.receita.toLocaleString("pt-BR", {
                   style: "currency",
                   currency: "BRL",
                 })}
@@ -242,14 +251,14 @@ export default function FinancePage() {
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm">Cartão de Crédito/Débito</span>
                     <span className="text-sm font-medium">
-                      {financialData.paymentMethods.card}%
+                      {financialData.metodos_pagamento.cartao}%
                     </span>
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full">
                     <div
                       className="h-2 bg-blue-500 rounded-full"
                       style={{
-                        width: `${financialData.paymentMethods.card}%`,
+                        width: `${financialData.metodos_pagamento.cartao}%`,
                       }}
                     ></div>
                   </div>
@@ -259,14 +268,14 @@ export default function FinancePage() {
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm">PIX</span>
                     <span className="text-sm font-medium">
-                      {financialData.paymentMethods.pix}%
+                      {financialData.metodos_pagamento.pix}%
                     </span>
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full">
                     <div
                       className="h-2 bg-blue-500 rounded-full"
                       style={{
-                        width: `${financialData.paymentMethods.pix}%`,
+                        width: `${financialData.metodos_pagamento.pix}%`,
                       }}
                     ></div>
                   </div>
@@ -276,13 +285,15 @@ export default function FinancePage() {
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm">Dinheiro</span>
                     <span className="text-sm font-medium">
-                      {financialData.paymentMethods.cash}%
+                      {financialData.metodos_pagamento.dinheiro}%
                     </span>
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full">
                     <div
                       className="h-2 bg-blue-500 rounded-full"
-                      style={{ width: `${financialData.paymentMethods.cash}%` }}
+                      style={{
+                        width: `${financialData.metodos_pagamento.dinheiro}%`,
+                      }}
                     ></div>
                   </div>
                 </div>
@@ -291,14 +302,14 @@ export default function FinancePage() {
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm">Outros</span>
                     <span className="text-sm font-medium">
-                      {financialData.paymentMethods.others}%
+                      {financialData.metodos_pagamento.outros}%
                     </span>
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full">
                     <div
                       className="h-2 bg-gray-500 rounded-full"
                       style={{
-                        width: `${financialData.paymentMethods.others}%`,
+                        width: `${financialData.metodos_pagamento.outros}%`,
                       }}
                     ></div>
                   </div>
@@ -318,7 +329,7 @@ export default function FinancePage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {financialData.recentTransactions.map((transaction) => (
+                {financialData.vendasRecentes.map((transaction) => (
                   <div
                     key={transaction.id}
                     className="flex items-center justify-between p-3 border rounded-lg"
@@ -360,9 +371,7 @@ export default function FinancePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="border rounded-lg p-4">
                 <h3 className="font-medium mb-2">Total de Vendas</h3>
-                <p className="text-2xl font-bold">
-                  {financialData.sales}
-                </p>
+                <p className="text-2xl font-bold">{financialData.vendas}</p>
                 <p className="text-sm text-muted-foreground">
                   no período selecionado
                 </p>
@@ -371,7 +380,7 @@ export default function FinancePage() {
               <div className="border rounded-lg p-4">
                 <h3 className="font-medium mb-2">Ticket Médio</h3>
                 <p className="text-2xl font-bold">
-                  {financialData.averageTicket.toLocaleString("pt-BR", {
+                  {financialData.ticket_medio.toLocaleString("pt-BR", {
                     style: "currency",
                     currency: "BRL",
                   })}
@@ -383,7 +392,7 @@ export default function FinancePage() {
                 <h3 className="font-medium mb-2">Margem de Lucro</h3>
                 <p className="text-2xl font-bold ">
                   {(
-                    (financialData.profit / financialData.revenue) *
+                    (financialData.profit / financialData.receita) *
                     100
                   ).toFixed(2)}
                   %
