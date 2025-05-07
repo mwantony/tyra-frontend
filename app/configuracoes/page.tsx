@@ -30,11 +30,15 @@ import { deleteRestaurante, getJsonRestaurante } from "@/services/restaurantes";
 import { useAuth } from "@/contexts/auth-provider";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { set } from "date-fns";
+import { DeleteAccountDialog } from "./delete-account-dialog";
 
 export default function SettingsPage() {
   const { theme, toggleTheme } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isConfirmDeleteDialogOpen, setIsConfirmDeleteDialogOpen] =
+    useState(false);
   const { restaurante } = useAuth();
 
   const handleExportData = async () => {
@@ -69,7 +73,10 @@ export default function SettingsPage() {
       toast.error("Erro ao excluir conta");
     } finally {
       setIsLoading(false);
-      setIsDeleteDialogOpen(false);
+      setIsConfirmDeleteDialogOpen(false);
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000); // Redireciona após 2 segundos
     }
   };
   return (
@@ -240,15 +247,24 @@ export default function SettingsPage() {
               Cancelar
             </Button>
             <Button
-              onClick={handleDeleteAccount}
+              onClick={() => {
+                setIsDeleteDialogOpen(false);
+                setIsConfirmDeleteDialogOpen(true);
+              }}
               disabled={isLoading}
               variant={"destructive"}
             >
-              {isLoading ? "Excluindo..." : "Excluir Conta"}
+              {isLoading ? "Prosseguindo..." : "Prosseguir"}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <DeleteAccountDialog
+        isOpen={isConfirmDeleteDialogOpen}
+        onClose={setIsConfirmDeleteDialogOpen}
+        handleDeleteAccount={handleDeleteAccount}
+        isLoading={isLoading}
+      ></DeleteAccountDialog>
     </div>
   );
 }
