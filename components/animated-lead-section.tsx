@@ -72,9 +72,15 @@ export const AnimatedLeadSection = () => {
             Começar agora <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </Link>
-        <Button size={"lg"} variant="outline">
-          Ver demonstração
-        </Button>
+        <Link
+          href="https://wa.me/5549991042777?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20o%20Tyra."
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Button size="lg" variant="outline" className="w-full">
+            Falar com a gente
+          </Button>
+        </Link>
       </motion.div>
     </motion.section>
   );
