@@ -26,11 +26,17 @@ import {
 import { useAuth } from "@/contexts/auth-provider";
 import { useState } from "react";
 import { Button } from "./ui/button";
-import CustomModal from "./custom-modal";
 import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
 
 export function NavUser() {
-  const { isMobile, setOpenMobile } = useSidebar(); 
+  const { isMobile, setOpenMobile } = useSidebar();
   const { restaurante, logout } = useAuth();
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -123,17 +129,21 @@ export function NavUser() {
         </DropdownMenu>
       </SidebarMenuItem>
 
-      <CustomModal isOpen={openDialog} onClose={() => setOpenDialog(false)}>
-        <h4 className="text-lg font-semibold mb-4">
-          Tem certeza de que deseja sair?
-        </h4>
-        <div className="flex justify-end gap-4">
-          <Button variant="outline" onClick={() => setOpenDialog(false)}>
-            Cancelar
-          </Button>
-          <Button onClick={handleLogout}>Confirmar</Button>
-        </div>
-      </CustomModal>
+      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold">
+              Tem certeza de que deseja sair?
+            </DialogTitle>
+          </DialogHeader>
+          <DialogFooter className="flex justify-end gap-4">
+            <Button variant="outline" onClick={() => setOpenDialog(false)}>
+              Cancelar
+            </Button>
+            <Button onClick={handleLogout}>Confirmar</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </SidebarMenu>
   );
 }

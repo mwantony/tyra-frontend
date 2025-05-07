@@ -28,7 +28,6 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { deleteMesa, liberarMesa, reservarMesa } from "@/services/mesas";
-import CustomModal from "@/components/custom-modal";
 import { Button } from "./ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import Link from "next/link";

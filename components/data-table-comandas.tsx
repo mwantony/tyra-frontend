@@ -21,7 +21,6 @@ import {
 import { Barcode, MoreHorizontal, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { deleteComanda, getComandaCodigo } from "@/services/comandas";
-import CustomModal from "@/components/custom-modal";
 import { Button } from "./ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import Link from "next/link";
@@ -37,6 +36,13 @@ import {
 } from "@/components/ui/pagination";
 import { toast } from "sonner";
 import { Toaster } from "./ui/sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
 
 type Comanda = {
   id: number;
@@ -336,27 +342,33 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
         </TabsContent>
       </Tabs>
 
-      <CustomModal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-        <div>
-          <h3 className="text-lg font-bold">Confirmar Exclusão</h3>
-          <p>
-            Você tem certeza que deseja excluir a comanda {comandaToDelete}?
-          </p>
-          <div className="flex justify-end space-x-4 mt-4">
-            <Button variant="outline" onClick={() => setModalOpen(false)}>
-              Cancelar
-            </Button>
-            <Button
-              disabled={confirmDelete}
-              onClick={() => {
-                if (comandaToDelete) handleDelete(comandaToDelete);
-              }}
-            >
-              {confirmDelete ? "Excluindo..." : "Confirmar"}
-            </Button>
+      <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="text-lg font-bold">
+              Confirmar Exclusão
+            </DialogTitle>
+          </DialogHeader>
+          <div>
+            <p>
+              Você tem certeza que deseja excluir a comanda {comandaToDelete}?
+            </p>
+            <DialogFooter className="flex justify-end space-x-4 mt-4">
+              <Button variant="outline" onClick={() => setModalOpen(false)}>
+                Cancelar
+              </Button>
+              <Button
+                disabled={confirmDelete}
+                onClick={() => {
+                  if (comandaToDelete) handleDelete(comandaToDelete);
+                }}
+              >
+                {confirmDelete ? "Excluindo..." : "Confirmar"}
+              </Button>
+            </DialogFooter>
           </div>
-        </div>
-      </CustomModal>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

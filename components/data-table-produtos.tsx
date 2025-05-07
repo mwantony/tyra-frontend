@@ -17,7 +17,6 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
-import CustomModal from "@/components/custom-modal";
 import { deleteProduto } from "@/services/produtos";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
@@ -32,6 +31,13 @@ import {
   PaginationEllipsis,
 } from "@/components/ui/pagination";
 import Produto from "@/interfaces/Produto";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
 
 interface DataTableProps {
   data: Produto[];
@@ -272,17 +278,21 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
       )}
 
       {/* Modal de confirmação de exclusão */}
-      <CustomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <h4 className="text-lg font-semibold mb-4">
-          Deseja deletar o produto?
-        </h4>
-        <div className="flex justify-end gap-4">
-          <Button variant="outline" onClick={() => setIsModalOpen(false)}>
-            Cancelar
-          </Button>
-          <Button onClick={handleDeleteProduto}>Confirmar</Button>
-        </div>
-      </CustomModal>
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold">
+              Deseja deletar o produto?
+            </DialogTitle>
+          </DialogHeader>
+          <DialogFooter className="flex justify-end gap-4">
+            <Button variant="outline" onClick={() => setIsModalOpen(false)}>
+              Cancelar
+            </Button>
+            <Button onClick={handleDeleteProduto}>Confirmar</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
