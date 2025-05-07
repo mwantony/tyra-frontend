@@ -150,21 +150,21 @@ export default function AboutPage() {
               <h2 className="text-xl md:text-4xl font-bold mb-6">
                 Nossa História
               </h2>
-              <p className=" text-muted-foreground mb-6">
+              <p className="text-muted-foreground mb-6">
                 Fundada em 2019 por um ex-gestor de restaurantes frustrado com
                 as soluções disponíveis no mercado, a Tyra nasceu da necessidade
                 de unir simplicidade e poder em uma única plataforma.
               </p>
-              <p className=" text-muted-foreground mb-8">
+              <p className="text-muted-foreground mb-8">
                 Hoje, atendemos mais de 100 estabelecimentos em todo o Brasil,
                 ajudando empresários a focarem no que realmente importa: a
                 experiência gastronômica.
               </p>
-              <Link href="/contato">
+              <a href="https://wa.me/5549991042777" target="_blank">
                 <Button>
                   Fale conosco <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-              </Link>
+              </a>
             </div>
             <div className="relative h-80 rounded-xl overflow-hidden shadow-lg">
               <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-background" />
@@ -206,7 +206,7 @@ export default function AboutPage() {
                       {milestone.year}
                     </div>
                     <div className="bg-background p-6 rounded-xl shadow-lg border border-border max-w-xs text-center">
-                      <p className="font-medium">{milestone.event}</p>
+                      <p className="text-sm">{milestone.event}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -228,7 +228,7 @@ export default function AboutPage() {
                       <div className="font-bold text-primary mb-2">
                         {milestone.year}
                       </div>
-                      <p>{milestone.event}</p>
+                      <p className="text-sm">{milestone.event}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -405,7 +405,7 @@ export default function AboutPage() {
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Pronto para transformar seu restaurante?
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+            <p className="text-md text-muted-foreground max-w-2xl mx-auto mb-8">
               Converse com nosso time e descubra como a Tyra pode ajudar seu
               negócio.
             </p>
