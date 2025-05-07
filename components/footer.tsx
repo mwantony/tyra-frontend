@@ -46,16 +46,6 @@ export const Footer = () => {
                 Planos
               </a>
             </li>
-            <li>
-              <a href="#" className="hover:text-foreground transition">
-                Integrações
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:text-foreground transition">
-                Atualizações
-              </a>
-            </li>
           </ul>
         </div>
         <div>
