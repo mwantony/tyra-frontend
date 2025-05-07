@@ -84,43 +84,59 @@ export default function CardapioQRCodePage() {
         // Fundo branco
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        // Logo
-        const logoWidth = logoHeight * (logo.width / logo.height);
+  
+        // Logo com alta qualidade
+        const logoRatio = logo.width / logo.height;
+        const logoDrawHeight = logoHeight;
+        const logoDrawWidth = logoHeight * logoRatio;
+  
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+  
         ctx.drawImage(
           logo,
-          canvas.width / 2 - logoWidth / 2,
+          canvas.width / 2 - logoDrawWidth / 2,
           padding,
-          logoWidth,
-          logoHeight
+          logoDrawWidth,
+          logoDrawHeight
         );
   
         // Nome do restaurante
         ctx.fillStyle = "#000000";
-        ctx.font = "bold 24px Poppins"; // Substituir Poppins por Arial para compatibilidade
+        ctx.font = "bold 24px Poppins";
         ctx.textAlign = "center";
         ctx.fillText(
           restaurante.nome || "Cardápio Digital",
           canvas.width / 2,
-          padding + logoHeight + 30
+          padding + logoDrawHeight + 30
         );
   
-        // QR Code
-        const qrOffsetY = padding + logoHeight + textHeight + 20;
-        ctx.drawImage(
-          img,
-          canvas.width / 2 - img.width / 2,
-          qrOffsetY
-        );
+        // QR Code com bordas arredondadas
+        const qrOffsetY = padding + logoDrawHeight + textHeight + 20;
+        const qrX = canvas.width / 2 - img.width / 2;
+        const qrY = qrOffsetY;
+        const qrWidth = img.width;
+        const qrHeight = img.height;
+        const radius = 20;
   
-        // Instrução abaixo do QR
-        ctx.font = "16px Arial";
-        ctx.fillText(
-          "Escaneie para acessar o cardápio digital",
-          canvas.width / 2,
-          qrOffsetY + img.height + 30
-        );
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(qrX + radius, qrY);
+        ctx.lineTo(qrX + qrWidth - radius, qrY);
+        ctx.quadraticCurveTo(qrX + qrWidth, qrY, qrX + qrWidth, qrY + radius);
+        ctx.lineTo(qrX + qrWidth, qrY + qrHeight - radius);
+        ctx.quadraticCurveTo(qrX + qrWidth, qrY + qrHeight, qrX + qrWidth - radius, qrY + qrHeight);
+        ctx.lineTo(qrX + radius, qrY + qrHeight);
+        ctx.quadraticCurveTo(qrX, qrY + qrHeight, qrX, qrY + qrHeight - radius);
+        ctx.lineTo(qrX, qrY + radius);
+        ctx.quadraticCurveTo(qrX, qrY, qrX + radius, qrY);
+        ctx.closePath();
+        ctx.clip();
   
+        ctx.drawImage(img, qrX, qrY);
+        ctx.restore();
+  
+        // Exporta imagem final
         canvas.toBlob((finalBlob) => {
           if (!finalBlob) {
             console.error("Erro ao gerar o blob do canvas");
@@ -132,7 +148,9 @@ export default function CardapioQRCodePage() {
           const downloadUrl = URL.createObjectURL(finalBlob);
           const link = document.createElement("a");
           link.href = downloadUrl;
-          link.download = `qr-code-cardapio-${(restaurante.nome || '')}`.replace(/\s+/g, '-').toLowerCase() + `.png`;
+          link.download = `qr-code-cardapio-${(restaurante.nome || '')}`
+            .replace(/\s+/g, '-')
+            .toLowerCase() + `.png`;
           link.click();
   
           setTimeout(() => URL.revokeObjectURL(downloadUrl), 100);
@@ -141,7 +159,6 @@ export default function CardapioQRCodePage() {
         }, "image/png");
       };
   
-      // Aguarda carregamento dos dois
       img.onload = () => {
         if (logo.complete) onAssetsLoaded();
         else logo.onload = onAssetsLoaded;
@@ -166,6 +183,8 @@ export default function CardapioQRCodePage() {
       toast.error("Erro ao baixar QR Code");
     }
   };
+  
+  
   
   return (
     <div className="min-h-150 flex items-center justify-center px-4 ">
