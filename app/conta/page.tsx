@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { formatCNPJ } from "@/utils/formatCnpj";
 
 export default function RestaurantAccountPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -179,7 +180,9 @@ export default function RestaurantAccountPage() {
                   <div className="space-y-2 col-span-2">
                     <Label htmlFor="cnpj">CNPJ</Label>
                     <div className="py-2 px-3 border rounded-md text-sm">
-                      {restaurante?.cnpj || (
+                      {restaurante?.cnpj ? (
+                        formatCNPJ(restaurante.cnpj)
+                      ) : (
                         <Skeleton className="h-4 w-[200px]" />
                       )}
                     </div>
