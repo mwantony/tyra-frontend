@@ -110,7 +110,7 @@ export default function FinancePage() {
     const fetchData = async () => {
       const response = await getDadosFinanceiros(date.from, date.to);
       console.log(response)
-      setDadosFinanceiro(response.data);
+      setDadosFinanceiro(response);
     };
     fetchData();
   });
