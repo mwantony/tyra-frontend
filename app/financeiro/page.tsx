@@ -365,11 +365,7 @@ export default function FinancePage() {
                   {financialData.transactions}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {timeRange === "day"
-                    ? "hoje"
-                    : timeRange === "week"
-                    ? "esta semana"
-                    : "este mês"}
+                  no período selecionado
                 </p>
               </div>
 
