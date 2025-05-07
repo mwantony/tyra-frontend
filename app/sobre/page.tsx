@@ -61,11 +61,15 @@ export default function AboutPage() {
   ];
 
   const milestones = [
-    { year: "2025", event: "Fundação da Tyra" },
-    { year: "2025", event: "Primeiro cliente" },
-    { year: "2025", event: "Lançamento da plataforma completa" },
-    { year: "2025", event: "Expansão para 5 estados" },
-    { year: "2026", event: "+100 restaurantes atendidos" },
+    { month: "Junho", year: "2025", event: "Fundação da Tyra" },
+    { month: "Junho", year: "2025", event: "Primeiro cliente" },
+    {
+      month: "Junho",
+      year: "2025",
+      event: "Lançamento da plataforma completa",
+    },
+    { month: "Junho", year: "2025", event: "Expansão para 5 estados" },
+    { month: "Junho", year: "2026", event: "+100 restaurantes atendidos" },
   ];
 
   return (
@@ -161,7 +165,7 @@ export default function AboutPage() {
                 experiência gastronômica.
               </p>
               <a href="https://wa.me/5549991042777" target="_blank">
-                <Button className={'w-full md:w-auto'} size={"lg"}>
+                <Button className={"w-full md:w-auto"} size={"lg"}>
                   Fale conosco <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </a>
@@ -202,9 +206,11 @@ export default function AboutPage() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
-                    <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4  font-bold text-lg">
-                      {milestone.year}
+                    <div className="w-16 h-16 rounded-full flex flex-col items-center justify-center mb-4 font-bold">
+                      <span>{milestone.month}</span>
+                      <span>{milestone.year}</span>
                     </div>
+
                     <div className="bg-background p-6 rounded-xl shadow-lg border border-border max-w-xs text-center">
                       <p className="text-sm">{milestone.event}</p>
                     </div>
@@ -226,7 +232,8 @@ export default function AboutPage() {
                     <div className="absolute -left-8 top-0 w-4 h-4 rounded-full bg-primary border-4 border-background" />
                     <div className="bg-background p-6 rounded-xl shadow-lg border border-border ml-4">
                       <div className="font-bold text-primary mb-2">
-                        {milestone.year}
+                        <span>{milestone.month}</span>&nbsp;
+                        <span>{milestone.year}</span>
                       </div>
                       <p className="text-sm">{milestone.event}</p>
                     </div>
