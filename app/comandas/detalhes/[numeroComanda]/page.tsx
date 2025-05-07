@@ -128,7 +128,9 @@ export default function DetalhesComandaPage() {
     setConfirmFechamento(true);
     try {
       if (calcularTotal() !== 0) {
-        await fechaComanda(comanda.numero_comanda);
+        await fechaComanda(comanda.numero_comanda, {
+          metodo_pagamento: "dinheiro",
+        });
         toast.success("Comanda fechada com sucesso!", {
           description: `Valor total: R$ ${calcularTotal().toFixed(2)}`,
         });
