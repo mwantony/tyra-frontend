@@ -13,8 +13,8 @@ export const StartSection = () => {
           Experimente gratuitamente por 30 dias. Sem necessidade de cartão de
           crédito.
         </p>
-        <Link href={"/signup"}>
-          <Button size="lg">
+        <Link href={"/signup"} >
+          <Button size="lg" className="w-full md:w-auto">
             Começar agora <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </Link>
