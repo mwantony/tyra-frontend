@@ -43,11 +43,11 @@ export default function FinancePage() {
     revenue: 12500.75,
     expenses: 8450.3,
     profit: 4050.45,
-    transactions: 342,
+    sales: 342,
     averageTicket: 36.55,
     paymentMethods: {
-      credit: 45,
-      debit: 30,
+      card: 45,
+      pix: 30,
       cash: 20,
       others: 5,
     },
@@ -242,14 +242,14 @@ export default function FinancePage() {
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm">Cartão de Crédito/Débito</span>
                     <span className="text-sm font-medium">
-                      {financialData.paymentMethods.credit}%
+                      {financialData.paymentMethods.card}%
                     </span>
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full">
                     <div
                       className="h-2 bg-blue-500 rounded-full"
                       style={{
-                        width: `${financialData.paymentMethods.credit}%`,
+                        width: `${financialData.paymentMethods.card}%`,
                       }}
                     ></div>
                   </div>
@@ -259,14 +259,14 @@ export default function FinancePage() {
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm">PIX</span>
                     <span className="text-sm font-medium">
-                      {financialData.paymentMethods.debit}%
+                      {financialData.paymentMethods.pix}%
                     </span>
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full">
                     <div
                       className="h-2 bg-blue-500 rounded-full"
                       style={{
-                        width: `${financialData.paymentMethods.debit}%`,
+                        width: `${financialData.paymentMethods.pix}%`,
                       }}
                     ></div>
                   </div>
@@ -361,7 +361,7 @@ export default function FinancePage() {
               <div className="border rounded-lg p-4">
                 <h3 className="font-medium mb-2">Total de Vendas</h3>
                 <p className="text-2xl font-bold">
-                  {financialData.transactions}
+                  {financialData.sales}
                 </p>
                 <p className="text-sm text-muted-foreground">
                   no período selecionado
