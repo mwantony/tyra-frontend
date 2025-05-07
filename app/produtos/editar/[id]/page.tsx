@@ -19,6 +19,7 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { CustomSpinner } from "@/components/custom-spinner";
 import { Loader2 } from "lucide-react";
+import { formatCurrency, unformatCurrency } from "@/utils/currencyUtils";
 const fetchProdutoByEAN = async (ean: string) => {
   const response = await fetch(
     `https://world.openfoodfacts.org/api/v0/product/${ean}.json`
@@ -50,7 +51,7 @@ export default function Page() {
           if (produto) {
             setForm({
               nome: produto.nome || "",
-              preco: produto.preco?.toString() || "",
+              preco: formatCurrency(produto.preco?.toString()) || "",
               tipo: produto.tipo || "prato",
               ean: produto.ean || "",
               descricao: produto.descricao || "",
@@ -107,7 +108,7 @@ export default function Page() {
       if (id) {
         await putProduto(id, {
           ...form,
-          preco: parseFloat(form.preco),
+          preco: unformatCurrency(form.preco),
         });
         toast.success("Produto atualizado com sucesso!");
         setTimeout(() => router.push("/produtos"), 1000);
@@ -167,12 +168,13 @@ export default function Page() {
                   name="preco"
                   placeholder="0,00"
                   value={form.preco}
-                  onChange={handleChange}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      preco: formatCurrency(e.target.value),
+                    })
+                  }
                   required
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  disabled={isLoading}
                 />
               </div>
 
