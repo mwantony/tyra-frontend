@@ -271,12 +271,13 @@ export function SignUpForm({
 
               {renderStep()}
 
-              <div className="flex justify-between">
+              <div className="flex flex-col md:flex-row gap-4 justify-between">
                 {step > 1 && (
                   <Button
                     variant="outline"
                     type="button"
                     onClick={() => setStep((prev) => prev - 1)}
+                    className="w-full md:w-auto"
                   >
                     Voltar
                   </Button>
@@ -286,7 +287,9 @@ export function SignUpForm({
                   <Button
                     type="button"
                     onClick={() => setStep((prev) => prev + 1)}
-                    className={step === 1 ? "ml-auto" : ""}
+                    className={`w-full md:w-auto ${
+                      step === 1 ? "md:ml-auto" : ""
+                    }`}
                     disabled={
                       (step === 1 &&
                         (!cnpj ||
@@ -302,6 +305,7 @@ export function SignUpForm({
                 ) : (
                   <Button
                     type="submit"
+                    className="w-full md:w-auto"
                     disabled={
                       loading ||
                       !email ||
