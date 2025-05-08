@@ -49,57 +49,6 @@ export default function FinancePage() {
     from: dayjs(subDays(new Date(), 7)).format("YYYY-MM-DD"),
     to: dayjs().format("YYYY-MM-DD"),
   });
-  // Dados simulados para demonstração
-  const financialData = {
-    receita: 12500.75,
-    expenses: 8450.3,
-    profit: 4050.45,
-    vendas: 342,
-    ticket_medio: 36.55,
-    metodos_pagamento: {
-      cartao: 45,
-      pix: 30,
-      dinheiro: 20,
-      outros: 5,
-    },
-    vendasRecentes: [
-      {
-        id: 1,
-        date: "2023-05-15",
-        description: "Venda #1234",
-        amount: 128.5,
-        type: "income",
-      },
-      {
-        id: 2,
-        date: "2023-05-15",
-        description: "Fornecedor - Carnes",
-        amount: 850.0,
-        type: "expense",
-      },
-      {
-        id: 3,
-        date: "2023-05-14",
-        description: "Venda #1233",
-        amount: 95.2,
-        type: "income",
-      },
-      {
-        id: 4,
-        date: "2023-05-14",
-        description: "Salários",
-        amount: 3200.0,
-        type: "expense",
-      },
-      {
-        id: 5,
-        date: "2023-05-13",
-        description: "Venda #1232",
-        amount: 210.0,
-        type: "income",
-      },
-    ],
-  };
 
   const handleRefresh = async () => {
     setIsLoading(true);
@@ -117,13 +66,15 @@ export default function FinancePage() {
     handleRefresh();
   };
   useEffect(() => {
+    setIsLoading(true)
     const fetchData = async () => {
       const response = await getDadosFinanceiros(date.from, date.to);
       console.log(response);
       setDadosFinanceiro(response);
+      setIsLoading(false)
     };
     fetchData();
-  });
+  }, [date.from, date.to]);
   if (dadosFinanceiro === null) {
     return <FinanceSkeleton></FinanceSkeleton>;
   } else {
@@ -374,11 +325,8 @@ export default function FinancePage() {
                   <p className="text-2xl flex font-bold ">
                     <AnimatedNumber
                       value={Number(
-                        (
-                          (dadosFinanceiro?.despesas /
-                            dadosFinanceiro?.receita) *
+                        (dadosFinanceiro?.despesas / dadosFinanceiro?.receita) *
                           100
-                        )
                       )}
                     ></AnimatedNumber>
                     %
