@@ -59,7 +59,7 @@ export function FinanceNotAvailable() {
                 </li>
                 <li className="flex items-start gap-2">
                   <CreditCardIcon className="h-4 w-4 mt-1 flex-shrink-0" />
-                  <span className="text-sm">Controle de fluxo de caixa</span>
+                  <span className="text-sm">Métodos de Pagamentos</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <svg
