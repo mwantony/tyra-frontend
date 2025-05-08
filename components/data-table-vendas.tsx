@@ -168,7 +168,7 @@ export const DataTableVendas: React.FC<DataTableProps> = ({ data }) => {
         ) : (
           <TableRow>
             <TableCell
-              colSpan={4}
+              colSpan={5}
               className="text-center h-24 text-muted-foreground"
             >
               Nenhuma venda encontrada.
