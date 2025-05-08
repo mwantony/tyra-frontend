@@ -108,7 +108,7 @@ export default function FinancePage() {
         setDadosFinanceiro(response);
       } catch (error: any) {
         setDadosFinanceiro([]);
-        if (error.response.data.message) {
+        if (error?.response?.data?.message) {
           setBlocked(true);
         }
         console.error("Erro ao carregar dados financeiros:", error);
@@ -288,19 +288,19 @@ export default function FinancePage() {
                   {[
                     {
                       nome: "Cartão de Crédito/Débito",
-                      valor: dadosFinanceiro?.metodos_pagamento.cartao,
+                      valor: dadosFinanceiro?.metodos_pagamento?.cartao,
                     },
                     {
                       nome: "PIX",
-                      valor: dadosFinanceiro?.metodos_pagamento.pix,
+                      valor: dadosFinanceiro?.metodos_pagamento?.pix,
                     },
                     {
                       nome: "Dinheiro",
-                      valor: dadosFinanceiro?.metodos_pagamento.dinheiro,
+                      valor: dadosFinanceiro?.metodos_pagamento?.dinheiro,
                     },
                     {
                       nome: "Outros",
-                      valor: dadosFinanceiro?.metodos_pagamento.outros,
+                      valor: dadosFinanceiro?.metodos_pagamento?.outros,
                       cor: "bg-gray-500",
                     },
                   ].map((item, index) => (
