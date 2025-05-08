@@ -56,6 +56,7 @@ export default function FinancePage() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [blocked, setBlocked] = useState(false);
+  const [count, setCount] = useState(0);
   const [date, setDate] = React.useState({
     from: dayjs(subDays(new Date(), 7)).format("YYYY-MM-DD"),
     to: dayjs().format("YYYY-MM-DD"),
@@ -64,7 +65,6 @@ export default function FinancePage() {
   const handleRefresh = async () => {
     setIsRefreshing(true);
     const response = await getDadosFinanceiros(date.from, date.to);
-    console.log(response);
     setDadosFinanceiro(response);
     setIsRefreshing(false);
   };
@@ -100,8 +100,10 @@ export default function FinancePage() {
     handleRefresh();
   };
   useEffect(() => {
-    setIsLoading(true); // Inicia o carregamento
-
+    if(count === 0) {
+      setIsLoading(true); 
+      setCount(1);
+    }
     const fetchData = async () => {
       try {
         const response = await getDadosFinanceiros(date.from, date.to);
