@@ -119,7 +119,6 @@ export function NavUser() {
               className="text-destructive focus:text-destructive"
               onClick={() => {
                 setOpenDialog(true);
-                handleItemClick(); // Fecha o sidebar ao clicar em Sair
               }}
             >
               <LogOutIcon className="mr-2 h-4 w-4 text-destructive" />

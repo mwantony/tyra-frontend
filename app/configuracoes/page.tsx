@@ -203,7 +203,7 @@ export default function SettingsPage() {
               </div>
               <Button
                 variant="outline"
-                className="w-fit"
+                className="w-fit w-full md:w-40"
                 onClick={handleExportData}
                 disabled={isLoading}
               >
@@ -220,7 +220,7 @@ export default function SettingsPage() {
               </div>
               <Button
                 variant="destructive"
-                className="mt-4 w-fit"
+                className="mt-4 w-fit w-full md:w-auto"
                 onClick={() => setIsDeleteDialogOpen(true)}
                 disabled={isLoading}
               >

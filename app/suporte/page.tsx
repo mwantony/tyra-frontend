@@ -171,7 +171,11 @@ export default function SupportPage() {
               </div>
 
               <div className="flex justify-end">
-                <Button type="submit" disabled={isSubmitting}>
+                <Button
+                  className="w-full md:w-auto"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
                   {isSubmitting ? "Enviando..." : "Enviar Feedback"}
                 </Button>
               </div>
@@ -204,7 +208,11 @@ export default function SupportPage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button variant="outline" size="sm">
+                <Button
+                  className="w-full md:w-auto"
+                  variant="outline"
+                  size="sm"
+                >
                   againplayi7@gmail.com
                 </Button>
               </a>
@@ -223,7 +231,11 @@ export default function SupportPage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button variant="outline" size="sm">
+                <Button
+                  className="w-full md:w-auto"
+                  variant="outline"
+                  size="sm"
+                >
                   (49) 99104-2777
                 </Button>
               </a>
@@ -276,7 +288,7 @@ export default function SupportPage() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button variant="link" className="pl-0">
+              <Button variant="link" className="pl-0 w-full md:w-auto">
                 Fazer uma nova pergunta
               </Button>
             </a>
