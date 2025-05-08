@@ -11,10 +11,10 @@ import Link from "next/link";
 
 export const CardapioNotAvailable = () => {
   return (
-    <div className="min-h-150 flex items-center justify-center px-4">
-      <Card className="w-full max-w-2xl">
+    <div className="min-h-150 w-full md:max-w-xl flex items-center justify-center ">
+      <Card className="w-full md:max-w-xl">
         <CardHeader>
-          <CardTitle className="text-center text-2xl flex items-center justify-center gap-2">
+          <CardTitle className="text-center text-xl flex items-center justify-center gap-2">
             <Lock className="h-6 w-6" />
             Cardápio Digital (Premium)
           </CardTitle>
@@ -24,7 +24,7 @@ export const CardapioNotAvailable = () => {
         </CardHeader>
 
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
             <div className="border rounded-lg p-6 ">
               <h3 className="font-bold text-lg flex items-center gap-2  mb-4">
                 <Rocket className="h-5 w-5" />

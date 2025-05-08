@@ -43,7 +43,7 @@ export function FinanceNotAvailable() {
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
-              <p>
+              <p className="text-sm">
                 Desbloqueie todo o potencial do módulo Financeiro com nosso
                 plano Premium:
               </p>
@@ -51,15 +51,15 @@ export function FinanceNotAvailable() {
               <ul className="space-y-3">
                 <li className="flex items-start gap-2">
                   <BarChartIcon className="h-4 w-4 mt-1 flex-shrink-0" />
-                  <span>Análises financeiras detalhadas</span>
+                  <span className="text-sm">Análises financeiras detalhadas</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <DollarSignIcon className="h-4 w-4 mt-1 flex-shrink-0" />
-                  <span>Relatórios personalizáveis</span>
+                  <span className="text-sm">Relatórios personalizáveis</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CreditCardIcon className="h-4 w-4 mt-1 flex-shrink-0" />
-                  <span>Controle de fluxo de caixa</span>
+                  <span className="text-sm">Controle de fluxo de caixa</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <svg
@@ -77,7 +77,7 @@ export function FinanceNotAvailable() {
                     <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
                     <polyline points="16 7 22 7 22 13" />
                   </svg>
-                  <span>Previsões e métricas de crescimento</span>
+                  <span className="text-sm">Previsões e métricas de crescimento</span>
                 </li>
               </ul>
 
@@ -100,7 +100,7 @@ export function FinanceNotAvailable() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 No plano básico, você tem acesso limitado às funcionalidades
                 financeiras:
               </p>
@@ -108,7 +108,7 @@ export function FinanceNotAvailable() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between p-3 border rounded-lg">
                   <div>
-                    <p className="font-medium">Dashboard </p>
+                    <p className="text-sm">Dashboard </p>
                     <p className="text-sm text-muted-foreground">
                       Visualize as vendas em tempo real
                     </p>
@@ -121,7 +121,7 @@ export function FinanceNotAvailable() {
                 </div>
                 <div className="flex items-center justify-between p-3 border rounded-lg">
                   <div>
-                    <p className="font-medium">Vendas </p>
+                    <p className="text-sm">Vendas </p>
                     <p className="text-sm text-muted-foreground">
                       Ver todas as vendas realizadas
                     </p>
@@ -167,7 +167,7 @@ export function FinanceNotAvailable() {
         </CardHeader>
         <CardContent>
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Entre em contato com nosso suporte para entender como o módulo
               Financeiro pode ajudar seu negócio.
             </p>
