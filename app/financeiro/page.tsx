@@ -355,7 +355,7 @@ export default function FinancePage() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="border rounded-lg p-4">
-                  <h3 className="font-medium mb-2">Total de Vendas</h3>
+                  <h3 className="font-medium text-sm mb-2">Total de Vendas</h3>
                   <p className="text-2xl font-bold">
                     <AnimatedNumber
                       value={dadosFinanceiro?.total_vendas}
@@ -367,7 +367,7 @@ export default function FinancePage() {
                 </div>
 
                 <div className="border rounded-lg p-4">
-                  <h3 className="font-medium mb-2">Ticket Médio</h3>
+                  <h3 className="font-medium text-sm mb-2">Ticket Médio</h3>
                   <p className="text-2xl font-bold">
                     <AnimatedNumber
                       isCurrency={true}
@@ -378,7 +378,7 @@ export default function FinancePage() {
                 </div>
 
                 <div className="border rounded-lg p-4">
-                  <h3 className="font-medium mb-2">Margem de Lucro</h3>
+                  <h3 className="font-medium text-sm mb-2">Margem de Lucro</h3>
                   <p className="text-2xl flex font-bold ">
                     <AnimatedNumber
                       value={
