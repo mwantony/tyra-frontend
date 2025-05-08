@@ -192,7 +192,7 @@ export default function CardapioQRCodePage() {
 
   return (
     <div className="min-h-150 flex items-center justify-center px-4 ">
-      {restaurante.plano_id !== 1 ? (
+      {restaurante.plano_id !== 1 && restaurante.plano_id !== null ? (
         <>
           <Card className="w-full max-w-xl">
             <CardHeader>
