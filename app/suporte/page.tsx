@@ -200,7 +200,7 @@ export default function SupportPage() {
                 Envie um e-mail diretamente para nossa equipe de suporte
               </p>
               <a
-                href="mailto:againplayi7@gmail.com"
+                href={`mailto:${process.env.NEXT_PUBLIC_EMAIL}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >

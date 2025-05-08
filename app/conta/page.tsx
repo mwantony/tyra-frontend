@@ -252,19 +252,28 @@ export default function RestaurantAccountPage() {
                   {isEditing ? (
                     <div className="flex flex-col w-full gap-2">
                       <Button
-                      className="w-full"
+                        className="w-full"
                         variant="outline"
                         onClick={() => setIsEditing(false)}
                         disabled={isLoading}
                       >
                         Cancelar
                       </Button>
-                      <Button className="w-full" onClick={handleSaveChanges} disabled={isLoading}>
+                      <Button
+                        className="w-full"
+                        onClick={handleSaveChanges}
+                        disabled={isLoading}
+                      >
                         {isLoading ? "Salvando..." : "Salvar Alterações"}
                       </Button>
                     </div>
                   ) : (
-                    <Button className="w-full" onClick={() => setIsEditing(true)}>Editar</Button>
+                    <Button
+                      className="w-full"
+                      onClick={() => setIsEditing(true)}
+                    >
+                      Editar
+                    </Button>
                   )}
                 </div>
               </div>
@@ -281,7 +290,8 @@ export default function RestaurantAccountPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <Button className="w-full md:w-auto"
+                <Button
+                  className="w-full md:w-auto"
                   variant="outline"
                   onClick={() => setIsPasswordDialogOpen(true)}
                 >
@@ -301,7 +311,7 @@ export default function RestaurantAccountPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <a
-                href="mailto:againplayi7@gmail.com"
+                href={`mailto:${process.env.NEXT_PUBLIC_EMAIL}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
