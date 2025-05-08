@@ -374,7 +374,7 @@ export default function FinancePage() {
                       value={Number(dadosFinanceiro?.ticket_medio)}
                     ></AnimatedNumber>
                   </p>
-                  <p className="text-sm text-muted-foreground">por transação</p>
+                  <p className="text-sm text-muted-foreground">por venda</p>
                 </div>
 
                 <div className="border rounded-lg p-4">
