@@ -36,6 +36,9 @@ import {
 import { FinanceSkeleton } from "./finance-skeleton";
 import { AnimatedNumber } from "@/components/section-cards";
 import { motion } from "framer-motion";
+import { useAuth } from "@/contexts/auth-provider";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function FinancePage() {
   const barraAnimada = (porcentagem, cor = "bg-blue-500") => (
@@ -46,6 +49,7 @@ export default function FinancePage() {
       className={`h-2 ${cor} rounded-full`}
     />
   );
+  const { restaurante } = useAuth();
   const [dadosFinanceiro, setDadosFinanceiro] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -93,20 +97,30 @@ export default function FinancePage() {
     handleRefresh();
   };
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoading(true); // Inicia o carregamento
+
     const fetchData = async () => {
-      const response = await getDadosFinanceiros(date.from, date.to);
-      console.log(response);
-      setDadosFinanceiro(response);
-      setIsLoading(false);
+      try {
+        const response = await getDadosFinanceiros(date.from, date.to);
+        console.log(response);
+        setDadosFinanceiro(response);
+      } catch (error: any) {
+        toast.error(error.response.data.message);
+        console.error("Erro ao carregar dados financeiros:", error);
+      } finally {
+        setIsLoading(false); // Garante que o loading seja desativado no final
+      }
     };
+
     fetchData();
-  }, [date.from, date.to]);
+  }, [date.from, date.to, restaurante.plano_id]); // Depende apenas de 'date.from', 'date.to' e 'restaurante.plano_id'
+
   if (dadosFinanceiro === null) {
     return <FinanceSkeleton></FinanceSkeleton>;
   } else {
     return (
       <div className="flex flex-col h-full">
+        <Toaster></Toaster>
         <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 p-6">
           <div className="flex flex-col gap-1">
             <h1 className="text-2xl font-bold tracking-tight">Financeiro</h1>
