@@ -385,7 +385,7 @@ export default function FinancePage() {
                       value={dadosFinanceiro?.total_vendas}
                     ></AnimatedNumber>
                   </p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     no período selecionado
                   </p>
                 </div>
@@ -398,7 +398,7 @@ export default function FinancePage() {
                       value={Number(dadosFinanceiro?.ticket_medio)}
                     ></AnimatedNumber>
                   </p>
-                  <p className="text-sm text-muted-foreground">por venda</p>
+                  <p className="text-xs text-muted-foreground">por venda</p>
                 </div>
 
                 <div className="border rounded-lg p-4">
@@ -415,7 +415,7 @@ export default function FinancePage() {
                     />
                     %
                   </p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs text-muted-foreground">
                     em relação à receita
                   </p>
                 </div>
