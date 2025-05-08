@@ -10,7 +10,6 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { ArrowDown, ArrowRight, ChevronDown } from "lucide-react";
-import Link from "next/link";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 
