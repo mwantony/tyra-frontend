@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -54,7 +55,7 @@ export function NavMain({ items }: { items: NavItem[] }) {
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-1">
         <SidebarMenu className="mb-2">
-          <Link href={"/vendas/adicionar"}>
+          <Link href={"/vendas/adicionar"} onClick={handleItemClick}>
             <SidebarMenuItem className="flex items-center gap-2">
               <SidebarMenuButton
                 variant="outline"
@@ -69,25 +70,41 @@ export function NavMain({ items }: { items: NavItem[] }) {
         </SidebarMenu>
 
         <SidebarMenu>
-          {items.map((item) => {
+          {items.map((item: any) => {
             const hasItems = item.items && item.items.length > 0;
             const isItemActive = isActive(item.url, item.items);
             const isExpanded = expandedItems[item.title] ?? false;
 
             const content = (
               <SidebarMenuItem className="flex items-center gap-2 w-full">
-                <SidebarMenuButton
-                  tooltip={item.title}
-                  className={`w-full justify-start ${
-                    isItemActive
-                      ? "bg-muted text-primary"
-                      : "hover:bg-muted cursor-pointer"
-                  }`}
-                >
-                  {item.icon && <item.icon className="h-4 w-4" />}
-                  <span>{item.title}</span>
-                </SidebarMenuButton>
-
+                {item.items && (
+                  <Link href={item.url} className="w-full" onClick={handleItemClick}>
+                    <SidebarMenuButton
+                      tooltip={item.title}
+                      className={`w-full justify-start ${
+                        isItemActive
+                          ? "bg-muted text-primary"
+                          : "hover:bg-muted cursor-pointer"
+                      }`}
+                    >
+                      {item.icon && <item.icon className="h-4 w-4" />}
+                      <span>{item.title}</span>
+                    </SidebarMenuButton>
+                  </Link>
+                )}
+                {!item.items && (
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    className={`w-full justify-start ${
+                      isItemActive
+                        ? "bg-muted text-primary"
+                        : "hover:bg-muted cursor-pointer"
+                    }`}
+                  >
+                    {item.icon && <item.icon className="h-4 w-4" />}
+                    <span>{item.title}</span>
+                  </SidebarMenuButton>
+                )}
                 {hasItems && (
                   <button
                     onClick={(e) => {
@@ -108,7 +125,7 @@ export function NavMain({ items }: { items: NavItem[] }) {
 
             return (
               <div key={item.title} className="space-y-1">
-                {item.url ? (
+                {item.url && !item.items ? (
                   <Link href={item.url} onClick={handleItemClick}>
                     {content}
                   </Link>
