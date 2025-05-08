@@ -56,6 +56,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Toaster } from "@/components/ui/sonner";
+import { PaymentMethodDialog } from "./payment-method-modal";
 
 export default function DetalhesComandaPage() {
   const { numeroComanda } = useParams();
@@ -67,7 +68,7 @@ export default function DetalhesComandaPage() {
   const [produtosDisponiveis, setProdutosDisponiveis] = useState<any[]>([]);
   const [quantidades, setQuantidades] = useState<any>({});
   const [termoPesquisa, setTermoPesquisa] = useState("");
-
+  const [showPaymentMethodDialog, setShowPaymentMethodDialog] = useState(false);
   const fetchComanda = async () => {
     try {
       const resultado = await getComanda(numeroComanda);
@@ -359,10 +360,13 @@ export default function DetalhesComandaPage() {
               Cancelar
             </Button>
             <Button
-              onClick={handleConfirmarFechamento}
+              onClick={() => {
+                setShowModalFechamento(false);
+                setShowPaymentMethodDialog(true);
+              }}
               disabled={confirmFechamento}
             >
-              {confirmFechamento ? "Confirmando..." : "Confirmar"}
+              {confirmFechamento ? "Presseguindo..." : "Prosseguir"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -438,6 +442,30 @@ export default function DetalhesComandaPage() {
           )}
         </DialogContent>
       </Dialog>
+      <PaymentMethodDialog
+        open={showPaymentMethodDialog}
+        onOpenChange={setShowPaymentMethodDialog}
+        total={calcularTotal()}
+        onConfirm={async (method) => {
+          try {
+            if (calcularTotal() !== 0) {
+              await fechaComanda(comanda.numero_comanda, {
+                metodo_pagamento: method,
+              });
+              toast.success("Comanda fechada com sucesso!", {
+                description: `Valor total: R$ ${calcularTotal().toFixed(
+                  2
+                )} - Método: ${method}`,
+              });
+              await fetchComanda();
+            } else {
+              toast.error("Não é possível fechar uma comanda sem produtos.");
+            }
+          } catch (err) {
+            toast.error("Erro ao fechar comanda.");
+          }
+        }}
+      />
     </div>
   );
 }
