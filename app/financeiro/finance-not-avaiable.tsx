@@ -12,7 +12,7 @@ import Link from "next/link";
 
 export function FinanceNotAvailable() {
   return (
-    <div className="flex flex-col h-full p-6">
+    <div className="flex flex-col h-full p-4 md:p-6">
       <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
         <div className="flex flex-col gap-1">
           <h1 className="text-2xl font-bold tracking-tight">Financeiro</h1>
@@ -91,7 +91,7 @@ export function FinanceNotAvailable() {
         </Card>
 
         {/* Card de Recursos Básicos */}
-        <Card className="border-gray-200">
+        <Card >
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Lock className="h-5 w-5" />
