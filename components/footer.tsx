@@ -16,8 +16,10 @@ export const Footer = () => {
                 <Image
                   alt="Logo Dark"
                   src={logoDark}
-                  height={100}
-                  width={100}
+                  className="w-[100px]"
+                  quality={100}
+                  priority
+                  unoptimized={false}
                 ></Image>
               </a>
             ) : (
@@ -25,8 +27,10 @@ export const Footer = () => {
                 <Image
                   alt="Logo White"
                   src={logoWhite}
-                  height={100}
-                  width={100}
+                  className="w-[100px]"
+                  quality={100}
+                  priority
+                  unoptimized={false}
                 ></Image>
               </a>
             )}
