@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { useAuth } from "@/contexts/auth-provider";
 import Link from "next/link";
-import lofg from "@/assets/svg/undraw_projections_fhch.svg"
+import lofg from "@/assets/svg/undraw_projections_fhch.svg";
 import { motion } from "framer-motion";
 
 export function LoginForm({
@@ -85,7 +85,7 @@ export function LoginForm({
                     <div className="flex items-center">
                       <Label htmlFor="password">Senha</Label>
                       <a
-                        href="https://wa.me/5549991042777?text=Olá!%20Preciso%20de%20ajuda%20com%20a%20minha%20senha."
+                        href={`https://wa.me/55${process.env.NEXT_PUBLIC_WHATSAPP}?text=Olá!%20Preciso%20de%20ajuda%20com%20a%20minha%20senha.`}
                         className="ml-auto text-sm underline-offset-2 hover:underline"
                         target="_blank"
                       >
@@ -108,11 +108,7 @@ export function LoginForm({
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
                 >
-                  <Button 
-                    type="submit" 
-                    className="w-full" 
-                    disabled={loading}
-                  >
+                  <Button type="submit" className="w-full" disabled={loading}>
                     {loading ? "Entrando..." : "Entrar"}
                   </Button>
                 </motion.div>
@@ -124,8 +120,8 @@ export function LoginForm({
                 >
                   <div className="text-center text-sm">
                     Ainda não tem conta?{" "}
-                    <Link 
-                      href="/signup" 
+                    <Link
+                      href="/signup"
                       className="underline underline-offset-4 hover:text-primary"
                     >
                       Cadastrar
@@ -135,7 +131,7 @@ export function LoginForm({
               </div>
             </form>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}

@@ -2,7 +2,14 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Check } from "lucide-react";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 const cardVariants = {
@@ -13,18 +20,21 @@ const cardVariants = {
     transition: {
       delay: i * 0.2,
       duration: 1,
-      ease: "easeOut"
-    }
-  })
+      ease: "easeOut",
+    },
+  }),
 };
 
 export default function AnimatedPricingSection() {
   return (
     <section id="pricing" className="container mx-auto px-4 py-20 md:py-32">
       <div className="text-center mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold">Planos que se adaptam ao seu negócio</h2>
+        <h2 className="text-3xl md:text-4xl font-bold">
+          Planos que se adaptam ao seu negócio
+        </h2>
         <p className="text-muted-foreground max-w-2xl mx-auto mt-4">
-          Escolha o plano ideal para o tamanho do seu restaurante. Sem surpresas.
+          Escolha o plano ideal para o tamanho do seu restaurante. Sem
+          surpresas.
         </p>
       </div>
 
@@ -38,9 +48,9 @@ export default function AnimatedPricingSection() {
               "Até 5 comandas",
               "Suporte 24/7",
               "Até 5 mesas",
-              "Suporte por e-mail"
+              "Suporte por e-mail",
             ],
-            href: "/signup"
+            href: "/signup",
           },
           {
             title: "Intermediário",
@@ -52,9 +62,9 @@ export default function AnimatedPricingSection() {
               "Suporte 24/7",
               "Até 30 mesas",
               "Relatório de Desempenho",
-              "Cardápio Digital"
+              "Cardápio Digital",
             ],
-            href: "/signup"
+            href: "/signup",
           },
           {
             title: "Premium",
@@ -66,10 +76,10 @@ export default function AnimatedPricingSection() {
               "Relatórios personalizados",
               "Recebimento de pagamentos",
               "Suporte 24/7",
-              "Cardápio Digital"
+              "Cardápio Digital",
             ],
-            href: "/signup"
-          }
+            href: "/signup",
+          },
         ].map((plan, i) => (
           <motion.div
             key={plan.title}
@@ -79,7 +89,11 @@ export default function AnimatedPricingSection() {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <Card className={`relative transition hover:border-primary ${plan.popular ? "border-2 border-primary" : ""}`}>
+            <Card
+              className={`relative transition hover:border-primary ${
+                plan.popular ? "border-2 border-primary" : ""
+              }`}
+            >
               {plan.popular && (
                 <div className="absolute top-0 right-0 px-3 py-1 text-xs font-bold rounded-bl-lg">
                   MAIS POPULAR
@@ -93,7 +107,9 @@ export default function AnimatedPricingSection() {
                     <span className="text-muted-foreground ml-1">/mês</span>
                   )}
                 </div>
-                <CardDescription className="mt-4">{plan.description}</CardDescription>
+                <CardDescription className="mt-4">
+                  {plan.description}
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3">
@@ -119,7 +135,7 @@ export default function AnimatedPricingSection() {
         <p>
           Precisa de um plano personalizado?{" "}
           <a
-            href="https://wa.me/5549991042777"
+            href={`https://wa.me/55${process.env.NEXT_PUBLIC_WHATSAPP}`}
             target="_blank"
             className="text-primary hover:underline"
           >

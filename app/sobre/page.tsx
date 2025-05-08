@@ -163,7 +163,10 @@ export default function AboutPage() {
                 ajudando empresários a focarem no que realmente importa: a
                 experiência gastronômica.
               </p>
-              <a href="https://wa.me/5549991042777" target="_blank">
+              <a
+                href={`https://wa.me/55${process.env.NEXT_PUBLIC_WHATSAPP}`}
+                target="_blank"
+              >
                 <Button className={"w-full md:w-auto"} size={"lg"}>
                   Fale conosco <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -415,7 +418,10 @@ export default function AboutPage() {
               Converse com nosso time e descubra como a Tyra pode ajudar seu
               negócio.
             </p>
-            <a href="https://wa.me/5549991042777?text=Olá, gostaria de agendar uma demonstração!" target="_blank">
+            <a
+              href={`https://wa.me/55${process.env.NEXT_PUBLIC_WHATSAPP}?text=Olá, gostaria de agendar uma demonstração!`}
+              target="_blank"
+            >
               <Button className="w-full md:w-auto" size={"lg"}>
                 Agendar demonstração <ArrowRight className="ml-2 h-4 w-4" />
               </Button>

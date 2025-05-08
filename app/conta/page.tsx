@@ -310,7 +310,7 @@ export default function RestaurantAccountPage() {
                 </Button>
               </a>
               <a
-                href="https://wa.me/5549991042777"
+                href={`https://wa.me/55${process.env.NEXT_PUBLIC_WHATSAPP}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >

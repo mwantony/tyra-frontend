@@ -72,7 +72,7 @@ export const Footer = () => {
             </li>
             <li>
               <a
-                href="https://wa.me/5549991042777"
+                href={`https://wa.me/55${process.env.NEXT_PUBLIC_WHATSAPP}`}
                 target="_blank"
                 className="hover:text-foreground transition"
               >

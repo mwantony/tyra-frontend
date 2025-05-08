@@ -73,7 +73,7 @@ export const AnimatedLeadSection = () => {
           </Button>
         </Link>
         <Link
-          href="https://wa.me/5549991042777?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20o%20Tyra."
+          href={`https://wa.me/55${process.env.NEXT_PUBLIC_WHATSAPP}?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20o%20Tyra.`}
           target="_blank"
           rel="noopener noreferrer"
         >

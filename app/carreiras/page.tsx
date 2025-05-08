@@ -243,7 +243,9 @@ export default function CareersPage() {
                   </CardContent>
                   <CardFooter>
                     <Link
-                      href={`https://wa.me/5549991042777/?text=Olá, gostaria de mais informações sobre a vaga ${position.title
+                      href={`https://wa.me/55${
+                        process.env.NEXT_PUBLIC_WHATSAPP
+                      }/?text=Olá, gostaria de mais informações sobre a vaga ${position.title
                         .toLowerCase()
                         .replace(/\s+/g, "-")}`}
                       className="w-full"
@@ -270,7 +272,7 @@ export default function CareersPage() {
               Não encontrou a vaga ideal? Envie seu currículo mesmo assim!
             </p>
             <Link
-              href="https://wa.me/5549991042777/?text=Oi%2C%20gostaria%20de%20enviar%20meu%20curriculo!"
+              href={`https://wa.me/55${process.env.NEXT_PUBLIC_WHATSAPP}/?text=Oi%2C%20gostaria%20de%20enviar%20meu%20curriculo!`}
               target="_blank"
             >
               <Button variant="outline" className={"w-full md:w-auto"}>
@@ -290,8 +292,12 @@ export default function CareersPage() {
               Estamos ansiosos para conhecer você e seu potencial.
             </motion.p>
             <motion.div>
-              <a href="https://wa.me/5549991042777/?text=Oi%2C%20gostaria%20de%20me%20candidatar%20a%20vaga!">
-                <Button className="w-full md:w-auto" size={"lg"}>Candidatar-se agora</Button>
+              <a
+                href={`https://wa.me/55${process.env.NEXT_PUBLIC_WHATSAPP}/?text=Oi%2C%20gostaria%20de%20me%20candidatar%20a%20vaga!`}
+              >
+                <Button className="w-full md:w-auto" size={"lg"}>
+                  Candidatar-se agora
+                </Button>
               </a>
             </motion.div>
           </div>

@@ -72,7 +72,8 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="flex flex-col h-full"><Toaster></Toaster>
+    <div className="flex flex-col h-full">
+      <Toaster></Toaster>
       <div className="flex items-center justify-between p-6">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Suporte</h1>
@@ -218,7 +219,7 @@ export default function SupportPage() {
                 Fale diretamente com um de nossos atendentes
               </p>
               <a
-                href="https://wa.me/5549991042777"
+                href={`https://wa.me/55${process.env.NEXT_PUBLIC_WHATSAPP}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -271,7 +272,7 @@ export default function SupportPage() {
             </div>
 
             <a
-              href="https://wa.me/5549991042777?text=Olá, gostaria de fazer uma pergunta sobre o sistema."
+              href={`https://wa.me/55${process.env.NEXT_PUBLIC_WHATSAPP}?text=Olá, gostaria de fazer uma pergunta sobre o sistema.`}
               target="_blank"
               rel="noopener noreferrer"
             >
