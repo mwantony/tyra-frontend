@@ -57,6 +57,7 @@ import { ptBR } from "date-fns/locale";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Toaster } from "@/components/ui/sonner";
 import { PaymentMethodDialog } from "./payment-method-modal";
+import { formatCurrency } from "@/utils/currencyUtils";
 
 export default function DetalhesComandaPage() {
   const { numeroComanda } = useParams();
@@ -227,7 +228,7 @@ export default function DetalhesComandaPage() {
           <Button
             variant="outline"
             onClick={abrirModalAdicionarProdutos}
-            className="gap-1"
+            className="gap-1 w-[90%] md:w-auto"
           >
             <PlusCircle className="h-4 w-4" />
             Adicionar Produtos
@@ -235,7 +236,7 @@ export default function DetalhesComandaPage() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">
+              <Button className="w-[10%] md:w-auto" variant="outline">
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -295,13 +296,14 @@ export default function DetalhesComandaPage() {
                         {produto.pivot.quantidade}
                       </TableCell>
                       <TableCell className="text-right">
-                        R$ {Number(produto.preco).toFixed(2)}
+                        {formatCurrency(produto.preco)}
                       </TableCell>
                       <TableCell className="text-right font-medium">
-                        R${" "}
-                        {(
-                          Number(produto.preco) * produto.pivot.quantidade
-                        ).toFixed(2)}
+                        {formatCurrency(
+                          (
+                            Number(produto.preco) * produto.pivot.quantidade
+                          ).toFixed(2)
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -310,19 +312,19 @@ export default function DetalhesComandaPage() {
             </ScrollArea>
 
             <CardFooter className="bg-muted/50 h-25">
-              <div className="flex items-center justify-between w-full">
+              <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between w-full">
                 <span className="text-sm text-muted-foreground">
                   {comanda.produtos.length}{" "}
                   {comanda.produtos.length === 1 ? "item" : "itens"}
                 </span>
-                <div className="space-y-1 text-right">
+                <div className="flex flex-col items-end gap-2">
                   <div className="text-lg font-semibold">
-                    Total: R$ {calcularTotal().toFixed(2)}
+                    Total: {formatCurrency(calcularTotal().toFixed(2))}
                   </div>
                   {comanda.status === "aberta" && (
                     <Button
                       onClick={() => setShowModalFechamento(true)}
-                      className="gap-1"
+                      className="gap-1 w-full md:w-auto"
                     >
                       <CheckCircle2 className="h-4 w-4" />
                       Fechar Comanda
@@ -347,7 +349,7 @@ export default function DetalhesComandaPage() {
               <div className="flex justify-between">
                 <span>Total:</span>
                 <span className="font-semibold">
-                  R$ {calcularTotal().toFixed(2)}
+                  {formatCurrency(calcularTotal().toFixed(2))}
                 </span>
               </div>
             </div>
@@ -410,7 +412,7 @@ export default function DetalhesComandaPage() {
 
                       <div className="flex items-center justify-between">
                         <span className="font-medium">
-                          R$ {Number(produto.preco).toFixed(2)}
+                          {formatCurrency(Number(produto.preco).toFixed(2))}
                         </span>
                         {produto.codigo_ean && (
                           <Badge variant="outline">{produto.codigo_ean}</Badge>
