@@ -13,6 +13,7 @@ import { Toaster } from "./ui/sonner";
 import { toast } from "sonner";
 import { formatCNPJ, unformatCNPJ } from "@/utils/cnpjUtils";
 import { formatPhoneNumber } from "@/utils/phoneUtils";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function SignUpForm({
   className,
@@ -116,123 +117,193 @@ export function SignUpForm({
     }
   };
 
-  const renderStep = () => {
-    switch (step) {
-      case 1:
-        return (
-          <div className="flex flex-col gap-6">
-            <div className="grid gap-1">
-              <Label htmlFor="cnpj">CNPJ</Label>
-              <Input
-                id="cnpj"
-                placeholder="00.000.000/0000-00"
-                required
-                value={cnpj}
-                onChange={handleCnpjChange}
-                disabled={fetchingCnpj}
-                maxLength={18}
-              />
-              {fetchingCnpj && (
-                <p className="text-sm text-muted-foreground">
-                  Buscando dados do CNPJ...
-                </p>
-              )}
-            </div>
-            <div className="grid gap-1">
-              <Label htmlFor="nomeFantasia">Nome Fantasia</Label>
-              <Input
-                id="nomeFantasia"
-                placeholder="Digite o nome fantasia"
-                required
-                value={nomeFantasia}
-                onChange={(e) => setNomeFantasia(e.target.value)}
-              />
-            </div>
-            <div className="grid gap-1">
-              <Label htmlFor="razaoSocial">Razão Social</Label>
-              <Input
-                id="razaoSocial"
-                placeholder="Digite a razão social"
-                required
-                value={razaoSocial}
-                onChange={(e) => setRazaoSocial(e.target.value)}
-              />
-            </div>
-          </div>
-        );
-      case 2:
-        return (
-          <div className="flex flex-col gap-6">
-            <div className="grid gap-1">
-              <Label htmlFor="whatsapp">WhatsApp</Label>
-              <Input
-                id="whatsapp"
-                type="text"
-                placeholder="(00) 00000-0000"
-                required
-                maxLength={15}
-                value={whatsapp}
-                onChange={(e) => setWhatsApp(formatPhoneNumber(e.target.value))}
-              />
-            </div>
-            <div className="grid gap-1">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Digite seu email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-          </div>
-        );
-      case 3:
-        return (
-          <div className="flex flex-col gap-6">
-            <div className="grid gap-1">
-              <Label htmlFor="password">Senha</Label>
-              <Input
-                id="password"
-                placeholder="Digite sua senha (mínimo 6 caracteres)"
-                type="password"
-                required
-                minLength={6}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className={!passwordValid ? "border-destructive" : ""}
-              />
-              {!passwordValid && (
-                <p className="text-sm text-destructive">
-                  A senha deve ter pelo menos 6 caracteres
-                </p>
-              )}
-            </div>
-            <div className="grid gap-1">
-              <Label htmlFor="passwordConfirmation">Confirme a Senha</Label>
-              <Input
-                id="passwordConfirmation"
-                placeholder="Confirme sua senha"
-                type="password"
-                required
-                minLength={6}
-                value={passwordConfirmation}
-                onChange={(e) => setPasswordConfirmation(e.target.value)}
-                className={!passwordsMatch ? "border-destructive" : ""}
-              />
-              {!passwordsMatch && (
-                <p className="text-sm text-destructive">
-                  As senhas não coincidem
-                </p>
-              )}
-            </div>
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
+
+const renderStep = () => {
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={step}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="flex flex-col gap-6 w-full"
+      >
+        {(() => {
+          switch (step) {
+            case 1:
+              return (
+                <>
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.1 }}
+                    className="grid gap-1"
+                  >
+                    <Label htmlFor="cnpj">CNPJ</Label>
+                    <Input
+                      id="cnpj"
+                      placeholder="00.000.000/0000-00"
+                      required
+                      value={cnpj}
+                      onChange={handleCnpjChange}
+                      disabled={fetchingCnpj}
+                      maxLength={18}
+                    />
+                    {fetchingCnpj && (
+                      <motion.p 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-sm text-muted-foreground"
+                      >
+                        Buscando dados do CNPJ...
+                      </motion.p>
+                    )}
+                  </motion.div>
+
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className="grid gap-1"
+                  >
+                    <Label htmlFor="nomeFantasia">Nome Fantasia</Label>
+                    <Input
+                      id="nomeFantasia"
+                      placeholder="Digite o nome fantasia"
+                      required
+                      value={nomeFantasia}
+                      onChange={(e) => setNomeFantasia(e.target.value)}
+                    />
+                  </motion.div>
+
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                    className="grid gap-1"
+                  >
+                    <Label htmlFor="razaoSocial">Razão Social</Label>
+                    <Input
+                      id="razaoSocial"
+                      placeholder="Digite a razão social"
+                      required
+                      value={razaoSocial}
+                      onChange={(e) => setRazaoSocial(e.target.value)}
+                    />
+                  </motion.div>
+                </>
+              );
+
+            case 2:
+              return (
+                <>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.1 }}
+                    className="grid gap-1"
+                  >
+                    <Label htmlFor="whatsapp">WhatsApp</Label>
+                    <Input
+                      id="whatsapp"
+                      type="text"
+                      placeholder="(00) 00000-0000"
+                      required
+                      maxLength={15}
+                      value={whatsapp}
+                      onChange={(e) => setWhatsApp(formatPhoneNumber(e.target.value))}
+                    />
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className="grid gap-1"
+                  >
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="Digite seu email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </motion.div>
+                </>
+              );
+
+            case 3:
+              return (
+                <>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.1 }}
+                    className="grid gap-1"
+                  >
+                    <Label htmlFor="password">Senha</Label>
+                    <Input
+                      id="password"
+                      placeholder="Digite sua senha (mínimo 6 caracteres)"
+                      type="password"
+                      required
+                      minLength={6}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className={!passwordValid ? "border-destructive" : ""}
+                    />
+                    {!passwordValid && (
+                      <motion.p 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-sm text-destructive"
+                      >
+                        A senha deve ter pelo menos 6 caracteres
+                      </motion.p>
+                    )}
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className="grid gap-1"
+                  >
+                    <Label htmlFor="passwordConfirmation">Confirme a Senha</Label>
+                    <Input
+                      id="passwordConfirmation"
+                      placeholder="Confirme sua senha"
+                      type="password"
+                      required
+                      minLength={6}
+                      value={passwordConfirmation}
+                      onChange={(e) => setPasswordConfirmation(e.target.value)}
+                      className={!passwordsMatch ? "border-destructive" : ""}
+                    />
+                    {!passwordsMatch && (
+                      <motion.p 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-sm text-destructive"
+                      >
+                        As senhas não coincidem
+                      </motion.p>
+                    )}
+                  </motion.div>
+                </>
+              );
+
+            default:
+              return null;
+          }
+        })()}
+      </motion.div>
+    </AnimatePresence>
+  );
+};
 
   return (
     <div className={cn("flex flex-col gap-6 ", className)} {...props}>
@@ -252,13 +323,13 @@ export function SignUpForm({
 
               {renderStep()}
 
-              <div className="flex flex-col md:flex-row gap-4 justify-between">
+              <div className="flex flex-col gap-4 justify-between">
                 {step > 1 && (
                   <Button
                     variant="outline"
                     type="button"
                     onClick={() => setStep((prev) => prev - 1)}
-                    className="w-full md:w-auto"
+                    className="w-full "
                   >
                     Voltar
                   </Button>
@@ -268,7 +339,7 @@ export function SignUpForm({
                   <Button
                     type="button"
                     onClick={() => setStep((prev) => prev + 1)}
-                    className={`w-full md:w-auto ${
+                    className={`w-full  ${
                       step === 1 ? "md:ml-auto" : ""
                     }`}
                     disabled={
