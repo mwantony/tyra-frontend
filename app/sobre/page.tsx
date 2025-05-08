@@ -113,7 +113,7 @@ export default function AboutPage() {
 
             <motion.div variants={item}>
               <a href="#nossa-historia">
-                <Button size={"lg"}>
+                <Button className="w-full md:w-auto" size={"lg"}>
                   Conheça nossa jornada
                   <ArrowDown className="ml-2 h-5 w-5" />
                 </Button>
