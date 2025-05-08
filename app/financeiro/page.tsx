@@ -39,6 +39,7 @@ import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/auth-provider";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { FinanceNotAvailable } from "./finance-not-avaiable";
 
 export default function FinancePage() {
   const barraAnimada = (porcentagem, cor = "bg-blue-500") => (
@@ -53,6 +54,7 @@ export default function FinancePage() {
   const [dadosFinanceiro, setDadosFinanceiro] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [blocked, setBlocked] = useState(false);
   const [date, setDate] = React.useState({
     from: dayjs(subDays(new Date(), 7)).format("YYYY-MM-DD"),
     to: dayjs().format("YYYY-MM-DD"),
@@ -105,7 +107,10 @@ export default function FinancePage() {
         console.log(response);
         setDadosFinanceiro(response);
       } catch (error: any) {
-        toast.error(error.response.data.message);
+        setDadosFinanceiro([])
+        if (error.response.data.message) {
+          setBlocked(true);
+        }
         console.error("Erro ao carregar dados financeiros:", error);
       } finally {
         setIsLoading(false); // Garante que o loading seja desativado no final
@@ -117,6 +122,8 @@ export default function FinancePage() {
 
   if (dadosFinanceiro === null) {
     return <FinanceSkeleton></FinanceSkeleton>;
+  } else if (blocked) {
+    return <FinanceNotAvailable></FinanceNotAvailable>;
   } else {
     return (
       <div className="flex flex-col h-full">
