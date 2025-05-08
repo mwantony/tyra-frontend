@@ -96,7 +96,7 @@ export const AuthProvider = ({ children }: any) => {
 
       .catch((error) => {
         if (
-          error.response.data.message ===
+          error?.response?.data.message ===
           "Você precisa ter um plano ativo para usar o sistema."
         ) {
           if (
@@ -111,7 +111,7 @@ export const AuthProvider = ({ children }: any) => {
             router.push("/planos");
           }
         }
-        if (error.response.data.message === "Unauthenticated.") {
+        if (error?.response?.data?.message === "Unauthenticated.") {
           if (pathname !== "/signup" && pathname !== "/login") {
             router.push("/login");
             localStorage.removeItem("restaurante");
@@ -120,7 +120,7 @@ export const AuthProvider = ({ children }: any) => {
         }
         if (
           restaurante.proxima_cobranca_em < dayjs().format("YYYY-MM-DD") ||
-          error.response.data.message ===
+          error?.response?.data.message ===
             "Seu plano expirou. Renove para continuar usando o sistema."
         ) {
           toast.error(
@@ -128,7 +128,7 @@ export const AuthProvider = ({ children }: any) => {
           );
           router.push("/planos");
         }
-        throw new Error(error.response.data.message);
+        throw new Error(error?.response?.data.message);
       });
   };
 

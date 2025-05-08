@@ -107,10 +107,12 @@ export default function FinancePage() {
         console.log(response);
         setDadosFinanceiro(response);
       } catch (error: any) {
-        setDadosFinanceiro([]);
         if (error?.response?.data?.message) {
           setBlocked(true);
+          return;
         }
+        toast.error("Erro ao carregar dados financeiros");
+
         console.error("Erro ao carregar dados financeiros:", error);
       } finally {
         setIsLoading(false); // Garante que o loading seja desativado no final
@@ -380,11 +382,11 @@ export default function FinancePage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="border rounded-lg p-4">
                   <h3 className="font-medium text-sm mb-2">Total de Vendas</h3>
-                  <p className="text-2xl font-bold">
+                  <div className="text-2xl font-bold">
                     <AnimatedNumber
                       value={dadosFinanceiro?.total_vendas}
                     ></AnimatedNumber>
-                  </p>
+                  </div>
                   <p className="text-xs text-muted-foreground">
                     no período selecionado
                   </p>
@@ -392,18 +394,18 @@ export default function FinancePage() {
 
                 <div className="border rounded-lg p-4">
                   <h3 className="font-medium text-sm mb-2">Ticket Médio</h3>
-                  <p className="text-2xl font-bold">
+                  <div className="text-2xl font-bold">
                     <AnimatedNumber
                       isCurrency={true}
                       value={Number(dadosFinanceiro?.ticket_medio)}
                     ></AnimatedNumber>
-                  </p>
+                  </div>
                   <p className="text-xs text-muted-foreground">por venda</p>
                 </div>
 
                 <div className="border rounded-lg p-4">
                   <h3 className="font-medium text-sm mb-2">Margem de Lucro</h3>
-                  <p className="text-2xl flex font-bold ">
+                  <div className="text-2xl flex font-bold ">
                     <AnimatedNumber
                       value={
                         typeof dadosFinanceiro?.margem_lucro === "string"
@@ -414,7 +416,7 @@ export default function FinancePage() {
                       }
                     />
                     %
-                  </p>
+                  </div>
                   <p className="text-xs text-muted-foreground">
                     em relação à receita
                   </p>
