@@ -36,7 +36,7 @@ export function SignUpForm({
   const [passwordValid, setPasswordValid] = useState(true);
 
   // Função para formatar o CNPJ
-  
+
   // Handler para mudanças no input de CNPJ
   const handleCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatCNPJ(e.target.value);
@@ -117,274 +117,283 @@ export function SignUpForm({
     }
   };
 
+  const renderStep = () => {
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={step}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="flex flex-col gap-6 w-full"
+        >
+          {(() => {
+            switch (step) {
+              case 1:
+                return (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.1 }}
+                      className="grid gap-1"
+                    >
+                      <Label htmlFor="cnpj">CNPJ</Label>
+                      <Input
+                        id="cnpj"
+                        placeholder="00.000.000/0000-00"
+                        required
+                        value={cnpj}
+                        onChange={handleCnpjChange}
+                        disabled={fetchingCnpj}
+                        maxLength={18}
+                      />
+                      {fetchingCnpj && (
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="text-sm text-muted-foreground"
+                        >
+                          Buscando dados do CNPJ...
+                        </motion.p>
+                      )}
+                    </motion.div>
 
-const renderStep = () => {
-  return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={step}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="flex flex-col gap-6 w-full"
-      >
-        {(() => {
-          switch (step) {
-            case 1:
-              return (
-                <>
-                  <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.1 }}
-                    className="grid gap-1"
-                  >
-                    <Label htmlFor="cnpj">CNPJ</Label>
-                    <Input
-                      id="cnpj"
-                      placeholder="00.000.000/0000-00"
-                      required
-                      value={cnpj}
-                      onChange={handleCnpjChange}
-                      disabled={fetchingCnpj}
-                      maxLength={18}
-                    />
-                    {fetchingCnpj && (
-                      <motion.p 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="text-sm text-muted-foreground"
-                      >
-                        Buscando dados do CNPJ...
-                      </motion.p>
-                    )}
-                  </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="grid gap-1"
+                    >
+                      <Label htmlFor="nomeFantasia">Nome Fantasia</Label>
+                      <Input
+                        id="nomeFantasia"
+                        placeholder="Digite o nome fantasia"
+                        required
+                        value={nomeFantasia}
+                        onChange={(e) => setNomeFantasia(e.target.value)}
+                      />
+                    </motion.div>
 
-                  <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                    className="grid gap-1"
-                  >
-                    <Label htmlFor="nomeFantasia">Nome Fantasia</Label>
-                    <Input
-                      id="nomeFantasia"
-                      placeholder="Digite o nome fantasia"
-                      required
-                      value={nomeFantasia}
-                      onChange={(e) => setNomeFantasia(e.target.value)}
-                    />
-                  </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.3 }}
+                      className="grid gap-1"
+                    >
+                      <Label htmlFor="razaoSocial">Razão Social</Label>
+                      <Input
+                        id="razaoSocial"
+                        placeholder="Digite a razão social"
+                        required
+                        value={razaoSocial}
+                        onChange={(e) => setRazaoSocial(e.target.value)}
+                      />
+                    </motion.div>
+                  </>
+                );
 
-                  <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3 }}
-                    className="grid gap-1"
-                  >
-                    <Label htmlFor="razaoSocial">Razão Social</Label>
-                    <Input
-                      id="razaoSocial"
-                      placeholder="Digite a razão social"
-                      required
-                      value={razaoSocial}
-                      onChange={(e) => setRazaoSocial(e.target.value)}
-                    />
-                  </motion.div>
-                </>
-              );
+              case 2:
+                return (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.1 }}
+                      className="grid gap-1"
+                    >
+                      <Label htmlFor="whatsapp">WhatsApp</Label>
+                      <Input
+                        id="whatsapp"
+                        type="text"
+                        placeholder="(00) 00000-0000"
+                        required
+                        maxLength={15}
+                        value={whatsapp}
+                        onChange={(e) =>
+                          setWhatsApp(formatPhoneNumber(e.target.value))
+                        }
+                      />
+                    </motion.div>
 
-            case 2:
-              return (
-                <>
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.1 }}
-                    className="grid gap-1"
-                  >
-                    <Label htmlFor="whatsapp">WhatsApp</Label>
-                    <Input
-                      id="whatsapp"
-                      type="text"
-                      placeholder="(00) 00000-0000"
-                      required
-                      maxLength={15}
-                      value={whatsapp}
-                      onChange={(e) => setWhatsApp(formatPhoneNumber(e.target.value))}
-                    />
-                  </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="grid gap-1"
+                    >
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="Digite seu email"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                    </motion.div>
+                  </>
+                );
 
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                    className="grid gap-1"
-                  >
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="Digite seu email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </motion.div>
-                </>
-              );
+              case 3:
+                return (
+                  <>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.1 }}
+                      className="grid gap-1"
+                    >
+                      <Label htmlFor="password">Senha</Label>
+                      <Input
+                        id="password"
+                        placeholder="Digite sua senha (mínimo 6 caracteres)"
+                        type="password"
+                        required
+                        minLength={6}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className={!passwordValid ? "border-destructive" : ""}
+                      />
+                      {!passwordValid && (
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="text-sm text-destructive"
+                        >
+                          A senha deve ter pelo menos 6 caracteres
+                        </motion.p>
+                      )}
+                    </motion.div>
 
-            case 3:
-              return (
-                <>
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.1 }}
-                    className="grid gap-1"
-                  >
-                    <Label htmlFor="password">Senha</Label>
-                    <Input
-                      id="password"
-                      placeholder="Digite sua senha (mínimo 6 caracteres)"
-                      type="password"
-                      required
-                      minLength={6}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className={!passwordValid ? "border-destructive" : ""}
-                    />
-                    {!passwordValid && (
-                      <motion.p 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="text-sm text-destructive"
-                      >
-                        A senha deve ter pelo menos 6 caracteres
-                      </motion.p>
-                    )}
-                  </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="grid gap-1"
+                    >
+                      <Label htmlFor="passwordConfirmation">
+                        Confirme a Senha
+                      </Label>
+                      <Input
+                        id="passwordConfirmation"
+                        placeholder="Confirme sua senha"
+                        type="password"
+                        required
+                        minLength={6}
+                        value={passwordConfirmation}
+                        onChange={(e) =>
+                          setPasswordConfirmation(e.target.value)
+                        }
+                        className={!passwordsMatch ? "border-destructive" : ""}
+                      />
+                      {!passwordsMatch && (
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="text-sm text-destructive"
+                        >
+                          As senhas não coincidem
+                        </motion.p>
+                      )}
+                    </motion.div>
+                  </>
+                );
 
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                    className="grid gap-1"
-                  >
-                    <Label htmlFor="passwordConfirmation">Confirme a Senha</Label>
-                    <Input
-                      id="passwordConfirmation"
-                      placeholder="Confirme sua senha"
-                      type="password"
-                      required
-                      minLength={6}
-                      value={passwordConfirmation}
-                      onChange={(e) => setPasswordConfirmation(e.target.value)}
-                      className={!passwordsMatch ? "border-destructive" : ""}
-                    />
-                    {!passwordsMatch && (
-                      <motion.p 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="text-sm text-destructive"
-                      >
-                        As senhas não coincidem
-                      </motion.p>
-                    )}
-                  </motion.div>
-                </>
-              );
-
-            default:
-              return null;
-          }
-        })()}
-      </motion.div>
-    </AnimatePresence>
-  );
-};
+              default:
+                return null;
+            }
+          })()}
+        </motion.div>
+      </AnimatePresence>
+    );
+  };
 
   return (
     <div className={cn("flex flex-col gap-6 ", className)} {...props}>
       <Toaster />
-      <Card className="overflow-hidden">
-        <CardContent className="grid p-0 md:grid-cols-1">
-          <form onSubmit={handleSubmit} className="p-6 md:p-8">
-            <div className="flex flex-col gap-6">
-              <div className="flex flex-col items-center text-center">
-                <h1 className="text-2xl font-bold">Crie sua conta</h1>
-                <p className="text-balance text-muted-foreground">
-                  {step === 1 && "Informações da empresa"}
-                  {step === 2 && "Dados de contato"}
-                  {step === 3 && "Dados de acesso"}
-                </p>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Card className="overflow-hidden">
+          <CardContent className="grid p-0 md:grid-cols-1">
+            <form onSubmit={handleSubmit} className="p-6 md:p-8">
+              <div className="flex flex-col gap-6">
+                <div className="flex flex-col items-center text-center">
+                  <h1 className="text-2xl font-bold">Crie sua conta</h1>
+                  <p className="text-balance text-muted-foreground">
+                    {step === 1 && "Informações da empresa"}
+                    {step === 2 && "Dados de contato"}
+                    {step === 3 && "Dados de acesso"}
+                  </p>
+                </div>
+
+                {renderStep()}
+
+                <div className="flex flex-col gap-4 justify-between">
+                  {step > 1 && (
+                    <Button
+                      variant="outline"
+                      type="button"
+                      onClick={() => setStep((prev) => prev - 1)}
+                      className="w-full "
+                    >
+                      Voltar
+                    </Button>
+                  )}
+
+                  {step < 3 ? (
+                    <Button
+                      type="button"
+                      onClick={() => setStep((prev) => prev + 1)}
+                      className={`w-full  ${step === 1 ? "md:ml-auto" : ""}`}
+                      disabled={
+                        (step === 1 &&
+                          (!cnpj ||
+                            !nomeFantasia ||
+                            !razaoSocial ||
+                            fetchingCnpj ||
+                            unformatCNPJ(cnpj).length < 14)) ||
+                        (step === 2 && (!whatsapp || !email))
+                      }
+                    >
+                      Próximo
+                    </Button>
+                  ) : (
+                    <Button
+                      type="submit"
+                      className="w-full md:w-auto"
+                      disabled={
+                        loading ||
+                        !email ||
+                        !password ||
+                        !passwordConfirmation ||
+                        !passwordsMatch ||
+                        !passwordValid
+                      }
+                    >
+                      {loading ? "Cadastrando..." : "Finalizar Cadastro"}
+                    </Button>
+                  )}
+                </div>
               </div>
+            </form>
+          </CardContent>
+        </Card>
 
-              {renderStep()}
-
-              <div className="flex flex-col gap-4 justify-between">
-                {step > 1 && (
-                  <Button
-                    variant="outline"
-                    type="button"
-                    onClick={() => setStep((prev) => prev - 1)}
-                    className="w-full "
-                  >
-                    Voltar
-                  </Button>
-                )}
-
-                {step < 3 ? (
-                  <Button
-                    type="button"
-                    onClick={() => setStep((prev) => prev + 1)}
-                    className={`w-full  ${
-                      step === 1 ? "md:ml-auto" : ""
-                    }`}
-                    disabled={
-                      (step === 1 &&
-                        (!cnpj ||
-                          !nomeFantasia ||
-                          !razaoSocial ||
-                          fetchingCnpj ||
-                          unformatCNPJ(cnpj).length < 14)) ||
-                      (step === 2 && (!whatsapp || !email))
-                    }
-                  >
-                    Próximo
-                  </Button>
-                ) : (
-                  <Button
-                    type="submit"
-                    className="w-full md:w-auto"
-                    disabled={
-                      loading ||
-                      !email ||
-                      !password ||
-                      !passwordConfirmation ||
-                      !passwordsMatch ||
-                      !passwordValid
-                    }
-                  >
-                    {loading ? "Cadastrando..." : "Finalizar Cadastro"}
-                  </Button>
-                )}
-              </div>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-
-      <div className="text-balance text-center text-sm">
-        Já tem uma conta?{" "}
-        <Link
-          href="/login"
-          className="underline underline-offset-4 hover:text-primary"
-        >
-          Faça login
-        </Link>
-      </div>
+      </motion.div>
+        <div className="text-balance text-center text-sm">
+          Já tem uma conta?{" "}
+          <Link
+            href="/login"
+            className="underline underline-offset-4 hover:text-primary"
+          >
+            Faça login
+          </Link>
+        </div>
     </div>
   );
 }
