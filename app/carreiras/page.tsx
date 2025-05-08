@@ -290,7 +290,7 @@ export default function CareersPage() {
               Estamos ansiosos para conhecer você e seu potencial.
             </motion.p>
             <motion.div>
-              <a href="#vagas">
+              <a href="https://wa.me/5549991042777/?text=Oi%2C%20gostaria%20de%20me%20candidatar%20a%20vaga!">
                 <Button size={"lg"}>Candidatar-se agora</Button>
               </a>
             </motion.div>
