@@ -53,6 +53,7 @@ export default function FinancePage() {
   const { restaurante } = useAuth();
   const [dadosFinanceiro, setDadosFinanceiro] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [blocked, setBlocked] = useState(false);
   const [date, setDate] = React.useState({
@@ -61,11 +62,11 @@ export default function FinancePage() {
   });
 
   const handleRefresh = async () => {
-    setIsLoading(true);
+    setIsRefreshing(true);
     const response = await getDadosFinanceiros(date.from, date.to);
     console.log(response);
     setDadosFinanceiro(response);
-    setIsLoading(false);
+    setIsRefreshing(false);
   };
   const handleDownloadPdf = async () => {
     try {
@@ -106,16 +107,16 @@ export default function FinancePage() {
         const response = await getDadosFinanceiros(date.from, date.to);
         console.log(response);
         setDadosFinanceiro(response);
+        setIsLoading(false); // Garante que o loading seja desativado no final
       } catch (error: any) {
         if (error?.response?.data?.message) {
           setBlocked(true);
+          setIsLoading(false);
           return;
         }
         toast.error("Erro ao carregar dados financeiros");
 
         console.error("Erro ao carregar dados financeiros:", error);
-      } finally {
-        setIsLoading(false); // Garante que o loading seja desativado no final
       }
     };
 
@@ -143,7 +144,7 @@ export default function FinancePage() {
     return "text-muted-foreground";
   };
 
-  if (dadosFinanceiro === null) {
+  if (isLoading) {
     return <FinanceSkeleton></FinanceSkeleton>;
   } else if (blocked) {
     return <FinanceNotAvailable></FinanceNotAvailable>;
@@ -163,11 +164,11 @@ export default function FinancePage() {
               variant="outline"
               size="sm"
               onClick={handleRefresh}
-              disabled={isLoading}
+              disabled={isRefreshing}
               className="w-full md:w-auto" // Ocupa toda largura no mobile, largura automática no desktop
             >
               <RefreshCw
-                className={`h-4 w-4 mr-2 ${isLoading ? "animate-spin" : ""}`}
+                className={`h-4 w-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`}
               />
               Atualizar
             </Button>
