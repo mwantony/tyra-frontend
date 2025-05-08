@@ -107,7 +107,7 @@ export default function FinancePage() {
         console.log(response);
         setDadosFinanceiro(response);
       } catch (error: any) {
-        setDadosFinanceiro([])
+        setDadosFinanceiro([]);
         if (error.response.data.message) {
           setBlocked(true);
         }
@@ -119,6 +119,27 @@ export default function FinancePage() {
 
     fetchData();
   }, [date.from, date.to, restaurante.plano_id]); // Depende apenas de 'date.from', 'date.to' e 'restaurante.plano_id'
+
+  const calcularVariacaoSemanal = (
+    valorAtual: number,
+    valorSemanaPassada: number
+  ) => {
+    if (valorSemanaPassada === 0) {
+      return valorAtual === 0 ? 0 : 100; // Se não havia valor na semana passada, considera 100% de variação
+    }
+    return ((valorAtual - valorSemanaPassada) / valorSemanaPassada) * 100;
+  };
+
+  const formatarVariacao = (variacao: number) => {
+    const sinal = variacao >= 0 ? "+" : "";
+    return `${sinal}${Math.round(variacao)}%`;
+  };
+
+  const getCorVariacao = (variacao: number) => {
+    if (variacao > 0) return "text-green-500";
+    if (variacao < 0) return "text-red-500";
+    return "text-muted-foreground";
+  };
 
   if (dadosFinanceiro === null) {
     return <FinanceSkeleton></FinanceSkeleton>;
@@ -202,7 +223,8 @@ export default function FinancePage() {
                   ></AnimatedNumber>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  +12% em relação à semana passada
+                  {formatarVariacao(dadosFinanceiro?.variacao_receita || 0)} em
+                  relação à semana passada
                 </p>
               </CardContent>
             </Card>
@@ -220,7 +242,8 @@ export default function FinancePage() {
                   ></AnimatedNumber>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  +8% em relação à semana passada
+                  {formatarVariacao(dadosFinanceiro?.variacao_despesas || 0)} em
+                  relação à semana passada
                 </p>
               </CardContent>
             </Card>
@@ -240,7 +263,8 @@ export default function FinancePage() {
                   ></AnimatedNumber>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  +18% em relação à semana passada
+                  {formatarVariacao(dadosFinanceiro?.variacao_lucro || 0)} em
+                  relação à semana passada
                 </p>
               </CardContent>
             </Card>
