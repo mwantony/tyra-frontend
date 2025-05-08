@@ -29,7 +29,10 @@ import { DatePickerWithRange } from "@/components/date-range-picker";
 import dayjs from "dayjs";
 import React from "react";
 import { subDays } from "date-fns";
-import { getDadosFinanceiros } from "@/services/financeiro";
+import {
+  getDadosFinanceiros,
+  getDadosFinanceirosPdf,
+} from "@/services/financeiro";
 import { FinanceSkeleton } from "./finance-skeleton";
 import { AnimatedNumber } from "@/components/section-cards";
 import { motion } from "framer-motion";
@@ -45,6 +48,7 @@ export default function FinancePage() {
   );
   const [dadosFinanceiro, setDadosFinanceiro] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [date, setDate] = React.useState({
     from: dayjs(subDays(new Date(), 7)).format("YYYY-MM-DD"),
     to: dayjs().format("YYYY-MM-DD"),
@@ -56,6 +60,29 @@ export default function FinancePage() {
     console.log(response);
     setDadosFinanceiro(response);
     setIsLoading(false);
+  };
+  const handleDownloadPdf = async () => {
+    try {
+      setIsDownloading(true);
+
+      const response: any = await getDadosFinanceirosPdf(date.from, date.to);
+
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "relatorio-financeiro.pdf");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Erro ao baixar PDF:", error);
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   const handleDateChange = (newDateRange: any) => {
@@ -103,10 +130,12 @@ export default function FinancePage() {
             <Button
               variant="outline"
               size="sm"
+              onClick={() => handleDownloadPdf()}
+              disabled={isDownloading}
               className="w-full md:w-auto" // Ocupa toda largura no mobile, largura automática no desktop
             >
               <Download className="h-4 w-4 mr-2" />
-              Exportar
+              {isDownloading ? "Exportando..." : "Exportar"}
             </Button>
           </div>
         </div>
