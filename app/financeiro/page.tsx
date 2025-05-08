@@ -66,12 +66,12 @@ export default function FinancePage() {
     handleRefresh();
   };
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     const fetchData = async () => {
       const response = await getDadosFinanceiros(date.from, date.to);
       console.log(response);
       setDadosFinanceiro(response);
-      setIsLoading(false)
+      setIsLoading(false);
     };
     fetchData();
   }, [date.from, date.to]);
@@ -255,7 +255,12 @@ export default function FinancePage() {
                 </CardTitle>
                 <CardDescription>Últimas 5 vendas registradas</CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="min-h-[180px]">
+                {dadosFinanceiro?.vendas_recentes.length === 0 && (
+                  <div className="flex items-center justify-center min-h-full text-sm text-muted-foreground">
+                    Nenhuma venda registrada no período selecionado.
+                  </div>
+                )}
                 <div className="space-y-4">
                   {dadosFinanceiro?.vendas_recentes.map((venda) => (
                     <div
@@ -278,11 +283,13 @@ export default function FinancePage() {
                     </div>
                   ))}
                 </div>
-                <Link href="/vendas" passHref>
-                  <Button variant="outline" className="w-full mt-4">
-                    Ver todas as vendas
-                  </Button>
-                </Link>
+                {dadosFinanceiro?.vendas_recentes.length > 0 && (
+                  <Link href="/vendas" passHref>
+                    <Button variant="outline" className="w-full mt-4">
+                      Ver todas as vendas
+                    </Button>
+                  </Link>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -324,11 +331,14 @@ export default function FinancePage() {
                   <h3 className="font-medium mb-2">Margem de Lucro</h3>
                   <p className="text-2xl flex font-bold ">
                     <AnimatedNumber
-                      value={Number(
-                        (dadosFinanceiro?.despesas / dadosFinanceiro?.receita) *
-                          100
-                      )}
-                    ></AnimatedNumber>
+                      value={
+                        typeof dadosFinanceiro?.margem_lucro === "string"
+                          ? parseFloat(
+                              dadosFinanceiro.margem_lucro.replace("%", "")
+                            )
+                          : 0
+                      }
+                    />
                     %
                   </p>
                   <p className="text-sm text-muted-foreground">

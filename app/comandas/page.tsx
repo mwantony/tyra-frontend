@@ -6,13 +6,11 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Plus, Search } from "lucide-react";
-import dayjs from "dayjs";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { getComandas, postComanda } from "@/services/comandas";
 import { DataTableComandas } from "@/components/data-table-comandas";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -96,15 +94,6 @@ export default function ComandasPage() {
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Buscar comandas..."
-              className="w-full pl-9"
-              value={termoBusca}
-              onChange={(e) => setTermoBusca(e.target.value)}
-            />
-          </div>
           <Button onClick={handleNovaComanda}>
             <Plus className="mr-2 h-4 w-4" />
             Nova Comanda
