@@ -416,11 +416,11 @@ export default function AboutPage() {
               Converse com nosso time e descubra como a Tyra pode ajudar seu
               negócio.
             </p>
-            <Link href="/contato">
+            <a href="https://wa.me/5549991042777?text=Olá, gostaria de agendar uma demonstração!" target="_blank">
               <Button className="w-full md:w-auto" size={"lg"}>
                 Agendar demonstração <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-            </Link>
+            </a>
           </motion.div>
         </section>
       </div>
