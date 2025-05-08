@@ -123,7 +123,7 @@ export default function FinancePage() {
     };
 
     fetchData();
-  }, [date.from, date.to, restaurante.plano_id]); // Depende apenas de 'date.from', 'date.to' e 'restaurante.plano_id'
+  }, [count, date.from, date.to, restaurante.plano_id]); // Depende apenas de 'date.from', 'date.to' e 'restaurante.plano_id'
 
   const calcularVariacaoSemanal = (
     valorAtual: number,
