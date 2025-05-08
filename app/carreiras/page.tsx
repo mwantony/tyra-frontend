@@ -273,7 +273,9 @@ export default function CareersPage() {
               href="https://wa.me/5549991042777/?text=Oi%2C%20gostaria%20de%20enviar%20meu%20curriculo!"
               target="_blank"
             >
-              <Button variant="outline" className={'w-full md:w-auto'}>Enviar currículo</Button>
+              <Button variant="outline" className={"w-full md:w-auto"}>
+                Enviar currículo
+              </Button>
             </Link>
           </motion.div>
         </section>
@@ -281,30 +283,13 @@ export default function CareersPage() {
         {/* CTA Final */}
         <section className=" py-20">
           <div className="container mx-auto px-4 text-center">
-            <motion.h2
-              className="text-3xl md:text-4xl font-bold mb-6 "
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
+            <motion.h2 className="text-3xl md:text-4xl font-bold mb-6 ">
               Pronto para fazer parte do time?
             </motion.h2>
-            <motion.p
-              className="text-md  max-w-2md mx-auto mb-8"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
+            <motion.p className="text-md  max-w-2md mx-auto mb-8">
               Estamos ansiosos para conhecer você e seu potencial.
             </motion.p>
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 }}
-            >
+            <motion.div>
               <a href="#vagas">
                 <Button size={"lg"}>Candidatar-se agora</Button>
               </a>
