@@ -248,22 +248,23 @@ export default function RestaurantAccountPage() {
                   </div>
                 </div>
 
-                <div className="flex justify-end gap-2 pt-4">
+                <div className="flex gap-2 pt-4">
                   {isEditing ? (
-                    <>
+                    <div className="flex flex-col w-full gap-2">
                       <Button
+                      className="w-full"
                         variant="outline"
                         onClick={() => setIsEditing(false)}
                         disabled={isLoading}
                       >
                         Cancelar
                       </Button>
-                      <Button onClick={handleSaveChanges} disabled={isLoading}>
+                      <Button className="w-full" onClick={handleSaveChanges} disabled={isLoading}>
                         {isLoading ? "Salvando..." : "Salvar Alterações"}
                       </Button>
-                    </>
+                    </div>
                   ) : (
-                    <Button className="w-full md:w-auto" onClick={() => setIsEditing(true)}>Editar</Button>
+                    <Button className="w-full" onClick={() => setIsEditing(true)}>Editar</Button>
                   )}
                 </div>
               </div>
