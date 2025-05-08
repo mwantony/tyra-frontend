@@ -224,7 +224,7 @@ export default function FinancePage() {
                 </div>
                 <p className="text-xs text-muted-foreground">
                   {formatarVariacao(dadosFinanceiro?.variacao_receita || 0)} em
-                  relação à semana passada
+                  relação ao último período
                 </p>
               </CardContent>
             </Card>
@@ -243,7 +243,7 @@ export default function FinancePage() {
                 </div>
                 <p className="text-xs text-muted-foreground">
                   {formatarVariacao(dadosFinanceiro?.variacao_despesas || 0)} em
-                  relação à semana passada
+                  relação ao último período
                 </p>
               </CardContent>
             </Card>
@@ -264,7 +264,7 @@ export default function FinancePage() {
                 </div>
                 <p className="text-xs text-muted-foreground">
                   {formatarVariacao(dadosFinanceiro?.variacao_lucro || 0)} em
-                  relação à semana passada
+                  relação ao último período
                 </p>
               </CardContent>
             </Card>
