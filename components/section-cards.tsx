@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { useSpring, animated } from "@react-spring/web";
 
-const AnimatedNumber = ({
+export const AnimatedNumber = ({
   value,
   isCurrency = false,
 }: {
