@@ -10,13 +10,15 @@ export const Header = () => {
   const { theme } = useTheme();
   return (
     <header
-      style={{
-        backgroundColor: "red !important",
-        position: "absolute",
-        zIndex: 10,
-      }}
-      className="container position-absolute bg-danger mx-auto py-6 px-4 flex justify-between items-center"
-    >
+    style={{
+      position: "absolute",
+      zIndex: 10,
+      width: "100%", // ocupa toda a largura
+      left: 0,       // garante que começa no canto esquerdo
+      right: 0       // garante que termina no canto direito
+    }}
+    className="bg-danger py-6 px-4 flex justify-between items-center"
+  >
       <div className="flex items-center space-x-2">
         {theme === "light" ? (
           <a href={"/"}>
