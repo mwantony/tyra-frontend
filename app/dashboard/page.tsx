@@ -139,7 +139,7 @@ export default function Page() {
                     <Skeleton className="h-9 w-32 rounded-md" />
                   </div>
                   <div className="flex items-end space-x-2 h-[300px]">
-                    {[...Array(12)].map((_, i) => (
+                    {[...Array(5)].map((_, i) => (
                       <div
                         key={i}
                         className="flex flex-col items-center flex-1"
