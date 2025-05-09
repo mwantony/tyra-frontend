@@ -34,6 +34,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
+import { limitarTexto } from "@/utils/textUtils";
 
 export function NavUser() {
   const { isMobile, setOpenMobile } = useSidebar();
@@ -91,7 +92,7 @@ export function NavUser() {
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">
-                    {restaurante.nome_fantasia}
+                    {limitarTexto(restaurante.nome_fantasia, 15)}
                   </span>
                   <span className="truncate text-xs text-muted-foreground">
                     {restaurante.email}
