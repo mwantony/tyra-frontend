@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
@@ -22,7 +23,10 @@ import {
   AlertCircle,
   CheckCircle2,
 } from "lucide-react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
+import emailjs from "@emailjs/browser";
+import React from "react";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function SupportPage() {
   const { theme } = useTheme();
@@ -30,11 +34,12 @@ export default function SupportPage() {
   const [submissionStatus, setSubmissionStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
+  const formRef = React.useRef<any>(null);
   const [formData, setFormData] = useState({
-    name: "",
+    nome: "",
     email: "",
-    subject: "",
-    message: "",
+    assunto: "",
+    feedback: "",
   });
 
   const handleChange = (
@@ -54,14 +59,25 @@ export default function SupportPage() {
 
     try {
       // Simulação de envio do formulário
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      toast.success("Mensagem enviada com sucesso!");
+      emailjs
+        .sendForm("service_0dov8bj", "template_lyeyt59", formRef.current, {
+          publicKey: "h7MCcuvNqiAnSz7tO",
+        })
+        .then(
+          () => {
+            toast.success("Feedback enviado com sucesso!");
+          },
+          (error) => {
+            toast.error("Erro ao tentar enviar feedback.");
+            console.log("FAILED...", error.text);
+          }
+        );
       setSubmissionStatus("success");
       setFormData({
-        name: "",
+        nome: "",
         email: "",
-        subject: "",
-        message: "",
+        assunto: "",
+        feedback: "",
       });
     } catch (error) {
       toast.error("Erro ao enviar mensagem. Tente novamente.");
@@ -98,19 +114,19 @@ export default function SupportPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} ref={formRef} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label
-                    htmlFor="name"
+                    htmlFor="nome"
                     className="block text-sm font-medium mb-1"
                   >
                     Nome
                   </label>
                   <Input
-                    id="name"
-                    name="name"
-                    value={formData.name}
+                    id="nome"
+                    name="nome"
+                    value={formData.nome}
                     onChange={handleChange}
                     placeholder="Seu nome completo"
                     required
@@ -137,15 +153,15 @@ export default function SupportPage() {
 
               <div>
                 <label
-                  htmlFor="subject"
+                  htmlFor="assunto"
                   className="block text-sm font-medium mb-1"
                 >
                   Assunto
                 </label>
                 <Input
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
+                  id="assunto"
+                  name="assunto"
+                  value={formData.assunto}
                   onChange={handleChange}
                   placeholder="Qual é o assunto?"
                   required
@@ -154,15 +170,15 @@ export default function SupportPage() {
 
               <div>
                 <label
-                  htmlFor="message"
+                  htmlFor="feedback"
                   className="block text-sm font-medium mb-1"
                 >
-                  Mensagem
+                  Feedback
                 </label>
                 <Textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
+                  id="feedback"
+                  name="feedback"
+                  value={formData.feedback}
                   onChange={handleChange}
                   placeholder="Descreva o que podemos melhorar..."
                   rows={5}
