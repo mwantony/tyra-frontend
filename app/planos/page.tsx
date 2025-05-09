@@ -524,7 +524,7 @@ export default function BillingPage() {
                         ) : (
                           <span><X size={16}></X></span>
                         )}
-                        <p>Recebimento de pagamentos</p>
+                        <p>Resumo Financeiro</p>
                       </li>
                     </ul>
                     {currentPlan?.id === plan.id ? (
