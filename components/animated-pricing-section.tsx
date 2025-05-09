@@ -74,6 +74,7 @@ export default function AnimatedPricingSection() {
               "Comandas ilimitadas",
               "Todos os recursos avançados",
               "Relatórios personalizados",
+              "Mesas ilimitadas",
               "Recebimento de pagamentos",
               "Suporte 24/7",
               "Cardápio Digital",

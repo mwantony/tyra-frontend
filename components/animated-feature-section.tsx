@@ -34,7 +34,7 @@ const itemVariants = {
 
 const features = [
   {
-    title: "Recebimento de Pagamentos",
+    title: "Resumo Financeiro",
     description:
       "Tenha controle total do fluxo de caixa, custos e lucratividade em tempo real — com o dinheiro caindo direto na sua conta.",
     icon: (
