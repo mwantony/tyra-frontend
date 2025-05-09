@@ -63,16 +63,16 @@ export default function VendasPage() {
           <TabsTrigger value="all">
             Todas <Badge className="ml-2">{vendas.length}</Badge>
           </TabsTrigger>
-          <TabsTrigger value="pending">
-            Pendentes{" "}
+          <TabsTrigger value="pix">
+            PIX{" "}
             <Badge className="ml-2">
-              {vendas.filter((v) => v.status === "pending").length}
+              {vendas.filter((v) => v.metodo_pagamento === "pix").length}
             </Badge>
           </TabsTrigger>
-          <TabsTrigger value="completed">
-            Concluídas{" "}
+          <TabsTrigger value="cartao">
+            Cartão{" "}
             <Badge className="ml-2">
-              {vendas.filter((v) => v.status === "completed").length}
+              {vendas.filter((v) => v.metodo_pagamento === "cartao").length}
             </Badge>
           </TabsTrigger>
         </TabsList>
@@ -143,10 +143,10 @@ export default function VendasPage() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="pending">
+        <TabsContent value="pix">
           <Card>
             <CardHeader>
-              <CardTitle>Vendas Pendentes</CardTitle>
+              <CardTitle>Vendas no PIX</CardTitle>
             </CardHeader>
             <CardContent>
               {loading ? (
@@ -157,17 +157,17 @@ export default function VendasPage() {
                 </div>
               ) : (
                 <DataTableVendas
-                  data={filteredVendas.filter((v) => v.status === "pending")}
+                  data={filteredVendas.filter((v) => v.metodo_pagamento === "pix")}
                 />
               )}
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="completed">
+        <TabsContent value="cartao">
           <Card>
             <CardHeader>
-              <CardTitle>Vendas Concluídas</CardTitle>
+              <CardTitle>Vendas no Cartão</CardTitle>
             </CardHeader>
             <CardContent>
               {loading ? (
@@ -178,7 +178,7 @@ export default function VendasPage() {
                 </div>
               ) : (
                 <DataTableVendas
-                  data={filteredVendas.filter((v) => v.status === "completed")}
+                  data={filteredVendas.filter((v) => v.metodo_pagamento === "cartao")}
                 />
               )}
             </CardContent>
