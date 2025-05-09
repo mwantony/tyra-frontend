@@ -51,23 +51,19 @@ export default function SupportPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-
+    setIsSubmitting(true); // Isso deve desativar o botão imediatamente
+  
     try {
-      // Simulação de envio do formulário
-      emailjs
-        .sendForm("service_0dov8bj", "template_lyeyt59", formRef.current, {
+      await emailjs.sendForm(
+        "service_0dov8bj", 
+        "template_lyeyt59", 
+        formRef.current!, // Usando a referência do formulário
+        {
           publicKey: "h7MCcuvNqiAnSz7tO",
-        })
-        .then(
-          () => {
-            toast.success("Feedback enviado com sucesso!");
-          },
-          (error) => {
-            toast.error("Erro ao tentar enviar feedback.");
-            console.log("FAILED...", error.text);
-          }
-        );
+        }
+      );
+      
+      toast.success("Feedback enviado com sucesso!");
       setFormData({
         nome: "",
         email: "",
@@ -76,8 +72,9 @@ export default function SupportPage() {
       });
     } catch (error) {
       toast.error("Erro ao enviar mensagem. Tente novamente.");
+      console.error("Erro ao enviar email:", error);
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false); // Isso deve reativar o botão
     }
   };
 
