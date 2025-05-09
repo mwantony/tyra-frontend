@@ -19,7 +19,7 @@ export const CardapioNotAvailable = () => {
             Cardápio Digital (Premium)
           </CardTitle>
           <CardDescription className="text-center">
-            Este recurso completo está disponível apenas no plano Premium
+            Este recurso completo está disponível apenas nos planos pagos
           </CardDescription>
         </CardHeader>
 
@@ -47,9 +47,7 @@ export const CardapioNotAvailable = () => {
                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
                     <path d="m9 11 3 3L22 4" />
                   </svg>
-                  <span className="text-sm">
-                    QR Code personalizado com seu logo
-                  </span>
+                  <span className="text-sm">QR Code personalizado</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <svg
@@ -107,10 +105,10 @@ export const CardapioNotAvailable = () => {
                 </li>
               </ul>
               <Link href={"/planos"}>
-                  <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white">
-                    <Rocket className="h-4 w-4 mr-2" />
-                    Atualizar Plano
-                  </Button>
+                <Button className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white">
+                  <Rocket className="h-4 w-4 mr-2" />
+                  Atualizar Plano
+                </Button>
               </Link>
             </div>
           </div>
