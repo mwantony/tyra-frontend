@@ -171,7 +171,7 @@ export default function SupportPage() {
                   name="feedback"
                   value={formData.feedback}
                   onChange={handleChange}
-                  placeholder="Descreva o que podemos melhorar..."
+                  placeholder="Descreva sugestões de melhorias..."
                   rows={5}
                   required
                 />
