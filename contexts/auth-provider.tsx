@@ -38,8 +38,13 @@ export const AuthProvider = ({ children }: any) => {
         localStorage.setItem("restaurante", JSON.stringify(response.data));
         window.location.href = "/dashboard";
       }
-    } catch (error) {
-      toast.error("Email ou senha inválidos!");
+    } catch (error: any) {
+      if (error.response.data.message === "Credenciais inválidas") {
+        toast.error("Email ou senha inválidos!");
+        return;
+      }
+      toast.error("Erro ao fazer login");
+
       return;
     }
   };

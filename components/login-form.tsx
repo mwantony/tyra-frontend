@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState } from "react";
@@ -11,6 +12,7 @@ import { useAuth } from "@/contexts/auth-provider";
 import Link from "next/link";
 import lofg from "@/assets/svg/undraw_projections_fhch.svg";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 export function LoginForm({
   className,
@@ -28,7 +30,7 @@ export function LoginForm({
     try {
       await login(email, password);
     } catch (error) {
-      console.error("Erro ao fazer login:", error);
+      toast.error("Erro ao fazer login. Tente novamente.");
     } finally {
       setLoading(false);
     }
