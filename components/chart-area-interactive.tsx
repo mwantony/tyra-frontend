@@ -42,9 +42,8 @@ export function ChartAreaInteractive({ grafico }) {
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(valor) => {
-                return dayjs(valor).format("DD/MM");
-              }}
+              tickFormatter={(valor) => dayjs(valor).format("DD/MM")}
+              tick={{ style: { fontSize: 13 } }} // <-- define o tamanho da fonte
             />
             <Tooltip
               contentStyle={{
@@ -55,7 +54,6 @@ export function ChartAreaInteractive({ grafico }) {
                 color: "var(--primary)",
                 fontSize: "14px",
                 fontWeight: "500",
-                
               }}
               formatter={(valor) => formatarReal(valor)}
               labelFormatter={(label) => {
