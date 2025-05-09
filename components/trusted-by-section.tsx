@@ -33,7 +33,7 @@ export const TrustedBySection = () => {
   }, []);
 
   const restaurants = [
-    "Restaurante A",
+    "Restaurante A",  
     "Restaurante B",
     "Restaurante C",
     "Restaurante D",
@@ -60,7 +60,7 @@ export const TrustedBySection = () => {
           {[...restaurants, ...restaurants].map((restaurant, index) => (
             <div 
               key={index}
-              className="text-xl font-bold flex-shrink-0 px-4 py-2"
+              className="text-xl flex font-bold flex-shrink-0 px-4 py-2"
             >
               {restaurant}
             </div>

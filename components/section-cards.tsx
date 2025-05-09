@@ -91,7 +91,7 @@ export function SectionCards({
         icon: <TrendingUpIcon className="size-4" />,
         badge: (
           <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-            <TrendingUpIcon className="size-3" />+{value}%
+            <TrendingUpIcon className="size-3" />+{Number(value).toFixed(2)}%
           </Badge>
         ),
       };
