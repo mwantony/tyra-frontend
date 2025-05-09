@@ -34,7 +34,7 @@ export function ChartAreaInteractive({ grafico }) {
         <CardDescription>Vendas totais no período selecionado</CardDescription>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={250}>
+        <ResponsiveContainer width="100%" height={300}>
           <AreaChart data={dadosConvertidos}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis

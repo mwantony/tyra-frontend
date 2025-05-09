@@ -261,13 +261,13 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
                         <Barcode className="w-4 h-4 mr-2" />
                         Baixar Código
                       </DropdownMenuItem>
-                      <DropdownMenuItem
+                      {/* <DropdownMenuItem
                         onClick={() => openDeleteModal(comanda.numero_comanda)}
                         className="text-destructive focus:text-destructive"
                       >
                         <Trash2 className="w-4 h-4 mr-2 text-destructive" />
                         Excluir
-                      </DropdownMenuItem>
+                      </DropdownMenuItem> */}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
