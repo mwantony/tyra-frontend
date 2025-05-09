@@ -383,17 +383,21 @@ export function SignUpForm({
             </form>
           </CardContent>
         </Card>
-
       </motion.div>
-        <div className="text-balance text-center text-sm">
-          Já tem uma conta?{" "}
-          <Link
-            href="/login"
-            className="underline underline-offset-4 hover:text-primary"
-          >
-            Faça login
-          </Link>
-        </div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="text-balance text-center text-sm"
+      >
+        Já tem uma conta?{" "}
+        <Link
+          href="/login"
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          Faça login
+        </Link>
+      </motion.div>
     </div>
   );
 }
