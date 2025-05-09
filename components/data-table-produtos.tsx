@@ -50,6 +50,7 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [produtoIdToDelete, setProdutoIdToDelete] = useState<number | null>(
     null
   );
@@ -85,6 +86,7 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
   };
 
   const handleDeleteProduto = async () => {
+    setConfirmDelete(true);
     if (produtoIdToDelete !== null) {
       try {
         await deleteProduto(produtoIdToDelete);
@@ -93,6 +95,7 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
       } catch (err) {
         console.error("Erro ao excluir produto:", err);
       }
+      setConfirmDelete(false);
     }
   };
 
@@ -289,7 +292,9 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
             <Button variant="outline" onClick={() => setIsModalOpen(false)}>
               Cancelar
             </Button>
-            <Button onClick={handleDeleteProduto}>Confirmar</Button>
+            <Button disabled={confirmDelete} onClick={handleDeleteProduto}>
+              {confirmDelete ? "Confirmando..." : "Confirmar"}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
