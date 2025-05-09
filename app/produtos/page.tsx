@@ -51,8 +51,8 @@ export default function ProdutosPage() {
     );
 
     if (activeTab === "all") return matchesSearch;
-    if (activeTab === "active") return matchesSearch && !produto.ativo;
-    if (activeTab === "inactive") return matchesSearch && produto.ativo;
+    if (activeTab === "pratos") return matchesSearch && produto.tipo === "prato";
+    if (activeTab === "bebidas") return matchesSearch && produto.tipo === "bebida";
 
     return matchesSearch;
   });
@@ -94,16 +94,16 @@ export default function ProdutosPage() {
           <TabsTrigger value="all">
             Todos <Badge className="ml-2">{produtos.length}</Badge>
           </TabsTrigger>
-          <TabsTrigger value="active">
-            Ativos{" "}
+          <TabsTrigger value="pratos">
+            Pratos{" "}
             <Badge className="ml-2">
-              {produtos.filter((p) => !p.ativo).length}
+              {produtos.filter((p) => p.tipo === 'prato').length}
             </Badge>
           </TabsTrigger>
-          <TabsTrigger value="inactive">
-            Inativos{" "}
+          <TabsTrigger value="bebidas">
+            Bebidas{" "}
             <Badge className="ml-2">
-              {produtos.filter((p) => p.ativo).length}
+              {produtos.filter((p) => p.tipo === 'bebida').length}
             </Badge>
           </TabsTrigger>
         </TabsList>
