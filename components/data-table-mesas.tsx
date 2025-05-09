@@ -331,20 +331,8 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
                 </TableCell>
                 <TableCell className="flex space-x-2">
                   <Link href={`/mesas/detalhes/${mesa.id}`}>
-                    <Button variant="outline">
-                      Detalhes
-                    </Button>
+                    <Button variant="outline">Detalhes</Button>
                   </Link>
-
-                  {mesa.status === "ocupada" && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleLiberarMesa(mesa.id)}
-                    >
-                      <Check className="w-4 h-4 mr-1" /> Liberar
-                    </Button>
-                  )}
                 </TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>
@@ -354,15 +342,16 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-44">
-                      {mesa.status !== "reservada" && (
-                        <DropdownMenuItem
-                          onClick={() => openReservarModal(mesa.id)}
-                          className="focus:text-primary"
-                        >
-                          <CalendarCheck className="w-4 h-4 mr-2" />
-                          Reservar
-                        </DropdownMenuItem>
-                      )}
+                      {mesa.status !== "reservada" &&
+                        mesa.status !== "ocupada" && (
+                          <DropdownMenuItem
+                            onClick={() => openReservarModal(mesa.id)}
+                            className="focus:text-primary"
+                          >
+                            <CalendarCheck className="w-4 h-4 mr-2" />
+                            Reservar
+                          </DropdownMenuItem>
+                        )}
                       {mesa.status !== "livre" && (
                         <DropdownMenuItem
                           onClick={() => openLiberarModal(mesa.id)}
