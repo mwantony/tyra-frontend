@@ -213,16 +213,21 @@ export default function Page() {
 
             <Separator />
 
-            <div className="flex justify-end gap-3">
+            <div className="flex flex-col md:flex-row justify-end gap-3">
               <Button
                 type="button"
                 variant="outline"
+                className="w-full md:w-auto"
                 onClick={() => router.push("/produtos")}
                 disabled={isLoading}
               >
                 Cancelar
               </Button>
-              <Button type="submit" disabled={isLoading}>
+              <Button
+                className="w-full md:w-auto"
+                type="submit"
+                disabled={isLoading}
+              >
                 {isLoading && <Loader2 className="animate-spin"></Loader2>}
                 Atualizar Produto
               </Button>

@@ -57,11 +57,12 @@ export default function Page() {
     const ean = e.target.value;
     setForm({ ...form, ean });
 
-    if (ean.length === 13) {
+    if (ean.length) {
       setIsLoading(true);
       try {
         const produtoData = await fetchProdutoByEAN(ean);
         if (produtoData) {
+          console.log(produtoData);
           setForm({
             ...form,
             nome: produtoData.product_name || "",
@@ -178,15 +179,20 @@ export default function Page() {
 
               <Separator />
 
-              <div className="flex justify-end gap-4">
+              <div className="flex flex-col md:flex-row justify-end gap-4">
                 <Button
                   type="button"
                   variant="outline"
+                  className="w-full md:w-auto"
                   onClick={() => router.push("/produtos")}
                 >
                   Cancelar
                 </Button>
-                <Button type="submit" disabled={isLoading}>
+                <Button
+                  className="w-full md:w-auto"
+                  type="submit"
+                  disabled={isLoading}
+                >
                   {isLoading && <Loader2 className="animate-spin"></Loader2>}
                   Salvar Produto
                 </Button>
