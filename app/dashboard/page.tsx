@@ -102,16 +102,105 @@ export default function Page() {
 
             {loading ? (
               <div className="px-4 lg:px-6 flex flex-col gap-6">
+                {/* Cards de métricas */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <Skeleton className="h-45 w-full rounded-md" />
-                  <Skeleton className="h-45 w-full rounded-md" />
-                  <Skeleton className="h-45 w-full rounded-md" />
+                  <Card className="p-6 min-h-45">
+                    <div className="flex flex-col space-y-3">
+                      <Skeleton className="h-4 w-3/4 rounded-md" />
+                      <Skeleton className="h-9 w-full rounded-md" />
+                      <Skeleton className="h-5 w-2/3 rounded-md" />
+                      <Skeleton className="h-5 w-1/2 rounded-md" />
+                    </div>
+                  </Card>
+                  <Card className="p-6 min-h-45">
+                    <div className="flex flex-col space-y-3">
+                      <Skeleton className="h-4 w-3/4 rounded-md" />
+                      <Skeleton className="h-9 w-full rounded-md" />
+                      <Skeleton className="h-5 w-2/3 rounded-md" />
+                      <Skeleton className="h-5 w-1/2 rounded-md" />
+                    </div>
+                  </Card>
+                  <Card className="p-6 min-h-45">
+                    <div className="flex flex-col space-y-3">
+                      <Skeleton className="h-4 w-3/4 rounded-md" />
+                      <Skeleton className="h-9 w-full rounded-md" />
+                      <Skeleton className="h-5 w-2/3 rounded-md" />
+                      <Skeleton className="h-5 w-1/2 rounded-md" />
+                    </div>
+                  </Card>
                 </div>
 
-                <Skeleton className="h-[300px] w-full rounded-md" />
-                <Skeleton className="h-[400px] w-full rounded-md" />
+                {/* Gráfico */}
+                <Card className="p-6 min-h-35">
+                  <div className="flex justify-between items-center mb-6">
+                    <Skeleton className="h-6 w-1/4 rounded-md" />
+                    <Skeleton className="h-9 w-32 rounded-md" />
+                  </div>
+                  <div className="flex items-end space-x-2 h-[300px]">
+                    {[...Array(12)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="flex flex-col items-center flex-1"
+                      >
+                        <Skeleton
+                          className="w-full rounded-t-md"
+                          style={{
+                            height: `${Math.random() * 80 + 20}%`,
+                          }}
+                        />
+                        <Skeleton className="h-4 w-10 mt-2 rounded-md" />
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+
+                {/* Tabela de vendas */}
+                <Card className="p-6">
+                  <div className="flex justify-between items-center mb-6">
+                    <Skeleton className="h-6 w-1/4 rounded-md" />
+                    <div className="flex space-x-2">
+                      <Skeleton className="h-9 w-24 rounded-md" />
+                      <Skeleton className="h-9 w-32 rounded-md" />
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    {/* Cabeçalho da tabela */}
+                    <div className="grid grid-cols-12 gap-4">
+                      {[...Array(6)].map((_, i) => (
+                        <Skeleton
+                          key={i}
+                          className="h-6 rounded-md col-span-2"
+                        />
+                      ))}
+                    </div>
+                    {/* Linhas da tabela */}
+                    {[...Array(5)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="grid grid-cols-12 gap-4 items-center py-3"
+                      >
+                        <Skeleton className="h-4 rounded-md col-span-2" />
+                        <Skeleton className="h-4 rounded-md col-span-2" />
+                        <Skeleton className="h-4 rounded-md col-span-2" />
+                        <Skeleton className="h-4 rounded-md col-span-2" />
+                        <Skeleton className="h-4 rounded-md col-span-2" />
+                        <Skeleton className="h-9 rounded-md col-span-2" />
+                      </div>
+                    ))}
+                  </div>
+                  {/* Paginação */}
+                  <div className="flex justify-between items-center mt-6">
+                    <Skeleton className="h-4 w-32 rounded-md" />
+                    <div className="flex space-x-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Skeleton key={i} className="h-9 w-9 rounded-md" />
+                      ))}
+                    </div>
+                  </div>
+                </Card>
               </div>
             ) : (
+              // Seu conteúdo real do dashboard aqui
               <>
                 <SectionCards
                   totalFaturado={vendaFiltrada?.total_faturado}

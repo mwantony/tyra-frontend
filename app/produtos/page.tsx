@@ -122,10 +122,57 @@ export default function ProdutosPage() {
 
         <CardContent>
           {loading ? (
-            <div className="space-y-4">
-              {[...Array(6)].map((_, i) => (
-                <Skeleton key={i} className="h-12 w-full rounded-lg" />
+            <div className="space-y-4 w-full">
+              {/* Cabeçalho da tabela - agora com 5 colunas proporcionais */}
+              <div className="grid grid-cols-5 gap-4 w-full">
+                {["20%", "25%", "20%", "15%", "20%"].map((_, i) => (
+                  <Skeleton
+                    key={`header-${i}`}
+                    className="h-8 w-full rounded-md" // Adicionado w-full
+                  />
+                ))}
+              </div>
+
+              {/* Linhas da tabela - 6 linhas de loading */}
+              {[...Array(6)].map((_, rowIndex) => (
+                <div
+                  key={`row-${rowIndex}`}
+                  className="grid grid-cols-5 gap-4 items-center py-3 w-full"
+                >
+                  {/* ID */}
+                  <Skeleton className="h-4 w-full rounded-md" />
+
+                  {/* Cliente */}
+                  <Skeleton
+                    className="h-4 w-full rounded-md"
+                    style={{ animationDelay: `${rowIndex * 0.1}s` }} // Efeito cascata
+                  />
+
+                  {/* Data */}
+                  <Skeleton className="h-4 w-full rounded-md" />
+
+                  {/* Valor */}
+                  <Skeleton className="h-4 w-full rounded-md" />
+
+                  {/* Status */}
+                  <div className="flex items-center gap-2">
+                    <Skeleton className="h-3 w-3 rounded-full" />
+                    <Skeleton className="h-4 flex-1 rounded-md" />
+                  </div>
+                </div>
               ))}
+
+              {/* Paginação - centralizada */}
+              <div className="flex justify-center items-center pt-4 w-full">
+                <div className="flex gap-2">
+                  {[...Array(5)].map((_, i) => (
+                    <Skeleton
+                      key={`page-${i}`}
+                      className="h-8 w-8 rounded-md"
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
           ) : (
             <DataTableProdutos
