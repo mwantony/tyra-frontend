@@ -54,13 +54,13 @@ export const AuthProvider = ({ children }: any) => {
         toast.error("O CNPJ já está em uso.", {
           description: "Verifique os dados e tente novamente",
         });
-        return
+        return;
       }
       if (error.response.data.email) {
         toast.error("O email já está em uso.", {
           description: "Verifique os dados e tente novamente",
         });
-        return
+        return;
       }
       toast.error("Erro ao cadastrar", {
         description: "Verifique os dados e tente novamente",
