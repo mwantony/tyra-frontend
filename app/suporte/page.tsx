@@ -29,11 +29,8 @@ import React from "react";
 import { Toaster } from "@/components/ui/sonner";
 
 export default function SupportPage() {
-  const { theme } = useTheme();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionStatus, setSubmissionStatus] = useState<
-    "idle" | "success" | "error"
-  >("idle");
+ 
   const formRef = React.useRef<any>(null);
   const [formData, setFormData] = useState({
     nome: "",
@@ -55,7 +52,6 @@ export default function SupportPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setSubmissionStatus("idle");
 
     try {
       // Simulação de envio do formulário
@@ -72,7 +68,6 @@ export default function SupportPage() {
             console.log("FAILED...", error.text);
           }
         );
-      setSubmissionStatus("success");
       setFormData({
         nome: "",
         email: "",
@@ -81,7 +76,6 @@ export default function SupportPage() {
       });
     } catch (error) {
       toast.error("Erro ao enviar mensagem. Tente novamente.");
-      setSubmissionStatus("error");
     } finally {
       setIsSubmitting(false);
     }
