@@ -349,7 +349,7 @@ export default function FinancePage() {
                       <div>
                         <p className="text-sm">{venda.descricao}</p>
                         <p className="text-sm text-muted-foreground">
-                          {new Date(venda.data).toLocaleDateString("pt-BR")}
+                          {dayjs(venda.data).format("MM/DD/YYYY HH:mm")}
                         </p>
                       </div>
                       <div className={`font-bold text-sm `}>
