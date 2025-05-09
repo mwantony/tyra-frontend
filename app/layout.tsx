@@ -41,13 +41,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <Analytics></Analytics>
       <body
         className={`${poppins.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+        >
         <ThemeProvider>
           <AuthWrapper>{children}</AuthWrapper>
         </ThemeProvider>
+        <Analytics></Analytics>
       </body>
     </html>
   );
