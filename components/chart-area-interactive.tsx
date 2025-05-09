@@ -43,7 +43,7 @@ export function ChartAreaInteractive({ grafico }) {
               axisLine={false}
               tickMargin={8}
               tickFormatter={(valor) => dayjs(valor).format("DD/MM")}
-              tick={{ style: { fontSize: 13 } }} // <-- define o tamanho da fonte
+              tick={{ style: { fontSize: 13 } }}
             />
             <Tooltip
               contentStyle={{
