@@ -78,19 +78,21 @@ export default function Page() {
         <div className="@container/main flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
             <div className="flex flex-col items-stretch gap-y-4 px-4 lg:flex-row lg:justify-end lg:items-center lg:gap-x-2 lg:px-6">
-              <Button
-                variant="outline"
-                ref={refreshRef}
-                size="icon"
-                onClick={handleRefresh}
-                disabled={isRefreshing}
-                className="hidden lg:flex"
-              >
-                <RefreshCw
-                  className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
-                />
-              </Button>
-              <DatePickerWithRange onChange={handleDateChange} />
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  ref={refreshRef}
+                  size="icon"
+                  onClick={handleRefresh}
+                  disabled={isRefreshing}
+                  className="lg:flex"
+                >
+                  <RefreshCw
+                    className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
+                  />
+                </Button>
+                <DatePickerWithRange className="w-full" onChange={handleDateChange} />
+              </div>
               <Button
                 className="w-full md:w-auto"
                 onClick={handleGerarPdf}
