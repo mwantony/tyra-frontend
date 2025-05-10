@@ -57,10 +57,10 @@ export const ProdutosSkeleton = () => {
                 <Skeleton className="h-4 w-28" />
               </TableCell>
               <TableCell>
-                <Skeleton className="h-4 w-40" />
+                <Skeleton className="h-4 w-30" />
               </TableCell>
               <TableCell>
-                <Skeleton className="h-4 w-36" />
+                <Skeleton className="h-4 w-30" />
               </TableCell>
               <TableCell>
                 <Skeleton className="h-9 w-9 rounded-md" />
