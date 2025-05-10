@@ -15,7 +15,6 @@ import {
   PaginationContent,
   PaginationItem,
 } from "@/components/ui/pagination";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const MesasSkeleton = () => {
   // Número de linhas do skeleton
@@ -29,16 +28,7 @@ export const MesasSkeleton = () => {
       </div>
 
       {/* Skeleton para as abas */}
-      <Tabs defaultValue="todas">
-        <TabsList>
-          {["Todas", "Livres", "Reservadas", "Ocupadas"].map((tab) => (
-            <TabsTrigger key={tab} value={tab.toLowerCase()}>
-              <Skeleton className="h-5 w-16" />
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
-
+      
       {/* Skeleton para a tabela */}
       <Table>
         <TableHeader>
