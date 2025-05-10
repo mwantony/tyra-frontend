@@ -68,7 +68,7 @@ export default function AnimatedPricingSection() {
           },
           {
             title: "Premium",
-            price: "R$169,90",
+            price: "R$149,90",
             description: "Solução completa para grandes restaurantes",
             features: [
               "Comandas ilimitadas",
