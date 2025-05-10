@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { setMesas } from "@/store/slices/mesasSlice";
 import Link from "next/link";
+import { MesasSkeleton } from "./mesas-skeleton";
 
 export default function MesasPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -92,11 +93,7 @@ export default function MesasPage() {
 
         <CardContent>
           {loading ? (
-            <div className="space-y-4">
-              {[...Array(6)].map((_, i) => (
-                <Skeleton key={i} className="h-12 w-full rounded-lg" />
-              ))}
-            </div>
+            <MesasSkeleton></MesasSkeleton>
           ) : mesasFiltradas.length > 0 ? (
             <DataTableMesas
               recarregarMesas={recarregarMesas}

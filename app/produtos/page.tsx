@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { setProdutos } from "@/store/slices/produtosSlice";
+import { ProdutosSkeleton } from "./produtos-skeleton";
 
 export default function ProdutosPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -124,11 +125,7 @@ export default function ProdutosPage() {
 
         <CardContent>
           {loading ? (
-            <div className="space-y-4">
-              {[...Array(6)].map((_, i) => (
-                <Skeleton key={i} className="h-12 w-full rounded-lg" />
-              ))}
-            </div>
+            <ProdutosSkeleton></ProdutosSkeleton>
           ) : (
             <DataTableProdutos
               fetchProdutos={fetchData}

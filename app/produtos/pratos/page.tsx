@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { ProdutosSkeleton } from "../produtos-skeleton";
 
 export default function PratosPage() {
   const [pratos, setPratos] = useState<any[]>([]);
@@ -26,7 +27,9 @@ export default function PratosPage() {
     try {
       const resposta = await getProdutos();
       // Filtra apenas os produtos do tipo "prato"
-      const pratosFiltrados = resposta.filter(produto => produto.tipo === "prato");
+      const pratosFiltrados = resposta.filter(
+        (produto) => produto.tipo === "prato"
+      );
       setPratos(pratosFiltrados);
     } catch (error) {
       console.error("Erro ao buscar pratos:", error);
@@ -84,13 +87,13 @@ export default function PratosPage() {
           <TabsTrigger value="active">
             Ativos{" "}
             <Badge className="ml-2">
-              {pratos.filter(p => !p.ativo).length}
+              {pratos.filter((p) => !p.ativo).length}
             </Badge>
           </TabsTrigger>
           <TabsTrigger value="inactive">
             Inativos{" "}
             <Badge className="ml-2">
-              {pratos.filter(p => p.ativo).length}
+              {pratos.filter((p) => p.ativo).length}
             </Badge>
           </TabsTrigger>
         </TabsList>
@@ -109,11 +112,7 @@ export default function PratosPage() {
 
         <CardContent>
           {loading ? (
-            <div className="space-y-4">
-              {[...Array(6)].map((_, i) => (
-                <Skeleton key={i} className="h-12 w-full rounded-lg" />
-              ))}
-            </div>
+            <ProdutosSkeleton></ProdutosSkeleton>
           ) : (
             <DataTableProdutos
               fetchProdutos={fetchData}
