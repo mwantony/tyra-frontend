@@ -25,6 +25,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { setComandas } from "@/store/slices/comandasSlice";
+import { ComandasSkeleton } from "./comandas-skeleton";
 
 export default function ComandasPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -117,11 +118,7 @@ export default function ComandasPage() {
 
         <CardContent>
           {loading ? (
-            <div className="space-y-4">
-              {[...Array(6)].map((_, i) => (
-                <Skeleton key={i} className="h-12 w-full rounded-lg" />
-              ))}
-            </div>
+            <ComandasSkeleton></ComandasSkeleton>
           ) : comandasFiltradas.length > 0 ? (
             <DataTableComandas
               data={comandasFiltradas}

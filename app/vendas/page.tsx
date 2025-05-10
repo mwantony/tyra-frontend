@@ -15,6 +15,7 @@ import { Plus } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { VendasSkeleton } from "./vendas-skeleton";
 
 export default function VendasPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -84,11 +85,7 @@ export default function VendasPage() {
             </CardHeader>
             <CardContent>
               {loading ? (
-                <div className="space-y-4">
-                  {[...Array(6)].map((_, i) => (
-                    <Skeleton key={i} className="h-12 w-full rounded-lg" />
-                  ))}
-                </div>
+                <VendasSkeleton></VendasSkeleton>
               ) : (
                 <DataTableVendas data={filteredVendas} />
               )}
