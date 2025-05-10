@@ -12,7 +12,6 @@ import { DataTableVendas } from "@/components/data-table-vendas";
 import { SectionCards } from "@/components/section-cards";
 import { DatePickerWithRange } from "@/components/date-range-picker";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { filtrarVendas, gerarPdf } from "@/services/vendas";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
