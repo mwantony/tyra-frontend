@@ -17,6 +17,7 @@ import {
   Phone,
   User,
   RockingChair,
+  Loader2,
 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -31,6 +32,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export default function MesaDetailsPage() {
   const { id } = useParams();
@@ -39,6 +48,8 @@ export default function MesaDetailsPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [confirmOcupacao, setConfirmOcupacao] = useState(false);
   const [confirmLiberacao, setConfirmLiberacao] = useState(false);
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+  const [isCanceling, setIsCanceling] = useState(false);
   const [formData, setFormData] = useState({
     identificacao: "",
     capacidade: 4,
@@ -337,7 +348,7 @@ export default function MesaDetailsPage() {
 
                 <Button
                   variant="destructive"
-                  onClick={handleCancelarReserva}
+                  onClick={() => setIsCancelDialogOpen(true)}
                   className="w-full"
                 >
                   Cancelar Reserva
@@ -408,6 +419,53 @@ export default function MesaDetailsPage() {
           )}
         </div>
       </div>
+      <Dialog open={isCancelDialogOpen} onOpenChange={setIsCancelDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Cancelar Reserva</DialogTitle>
+            <DialogDescription>
+              Tem certeza que deseja cancelar esta reserva? Esta ação não pode
+              ser desfeita.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsCancelDialogOpen(false)}
+              disabled={isCanceling}
+            >
+              Voltar
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={async () => {
+                setIsCanceling(true);
+                try {
+                  await liberarMesa(Number(id));
+                  const updatedMesa = await getMesa(Number(id));
+                  setMesa(updatedMesa);
+                  toast.success("Reserva cancelada com sucesso!");
+                } catch (error) {
+                  toast.error("Erro ao cancelar reserva");
+                } finally {
+                  setIsCanceling(false);
+                  setIsCancelDialogOpen(false);
+                }
+              }}
+              disabled={isCanceling}
+            >
+              {isCanceling ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Cancelando...
+                </>
+              ) : (
+                "Confirmar Cancelamento"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
