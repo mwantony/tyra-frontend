@@ -54,6 +54,7 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 import { format, parseISO, subHours } from "date-fns";
+import { formatPhoneNumber } from "@/utils/phoneUtils";
 
 interface DataTableProps {
   data: Mesa[];
@@ -522,11 +523,12 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
                 <Input
                   id="telefone_reserva"
                   type="tel"
+                  maxLength={15}
                   value={reservaData.telefone_reserva}
                   onChange={(e) =>
                     setReservaData({
                       ...reservaData,
-                      telefone_reserva: e.target.value,
+                      telefone_reserva: formatPhoneNumber(e.target.value),
                     })
                   }
                   required
