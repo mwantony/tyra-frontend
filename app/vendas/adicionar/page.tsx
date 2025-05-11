@@ -25,6 +25,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Toaster } from "@/components/ui/sonner";
+import { formatCurrency } from "@/utils/currencyUtils";
 
 export default function NovaVendaPage() {
   const [comandas, setComandas] = useState<any[]>([]);
@@ -294,7 +295,7 @@ export default function NovaVendaPage() {
                                   </p>
                                 </div>
                                 <Badge variant="secondary">
-                                  R$ {Number(produto.preco).toFixed(2)}
+                                  {formatCurrency(produto.preco)}
                                 </Badge>
                               </div>
                             ))}
