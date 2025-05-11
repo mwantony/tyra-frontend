@@ -71,7 +71,7 @@ export default function CardapioQRCodePage() {
         const logoHeight = 60;
         const totalExtraSpace = padding * 2 + textHeight + logoHeight;
 
-        canvas.width = Math.max(img.width, 400);
+        canvas.width = Math.max(img.width, + padding);
         canvas.height = img.height + totalExtraSpace;
 
         const ctx = canvas.getContext("2d");
