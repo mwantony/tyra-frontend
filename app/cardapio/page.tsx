@@ -28,7 +28,7 @@ export default function CardapioQRCodePage() {
     const loadCardapio = async () => {
       try {
         setIsLoading(true);
-        const qrUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/produtos/cardapio/${restaurante.id}`;
+        const qrUrl = `${process.env.NEXT_PUBLIC_API_URL}/produtos/cardapio/${restaurante.id}`;
         setQrValue(qrUrl);
       } catch (error) {
         toast.error("Erro ao carregar o cardápio");
