@@ -316,7 +316,7 @@ export default function RestaurantAccountPage() {
                 rel="noopener noreferrer"
               >
                 <Button className="w-full" variant="outline">
-                  againplayi7@gmail.com
+                  {process.env.NEXT_PUBLIC_EMAIL}
                 </Button>
               </a>
               <a
