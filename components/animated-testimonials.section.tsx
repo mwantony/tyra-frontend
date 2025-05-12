@@ -11,25 +11,31 @@ import { Star } from "lucide-react";
 
 const testimonials = [
   {
+    title: "Transformou nosso negócio!",
     name: "João Silva",
     company: "Restaurante da Praça",
     message:
       "A Tyra nos ajudou a reduzir custos em 30% e aumentar nossa eficiência operacional significativamente.",
-    img_url: "https://github.com/mwantony.png",
+    img_url:
+      "https://t4.ftcdn.net/jpg/01/86/29/31/360_F_186293166_P4yk3uXQBDapbDFlR17ivpM6B1ux0fHG.jpg",
   },
   {
+    title: "A melhor decisão que tomamos",
     name: "Maria Oliveira",
     company: "Cantina da Maria",
     message:
       "Com a Tyra, digitalizamos todo o atendimento e o feedback dos clientes melhorou muito!",
-    img_url: "https://github.com/mwantony.png",
+    img_url:
+      "https://t4.ftcdn.net/jpg/01/86/29/31/360_F_186293166_P4yk3uXQBDapbDFlR17ivpM6B1ux0fHG.jpg",
   },
   {
+    title: "Aumentou nossa eficiência",
     name: "Carlos Souza",
     company: "Bistrô do Centro",
     message:
       "Muito mais controle e organização. Estamos economizando tempo todos os dias.",
-    img_url: "https://github.com/mwantony.png",
+    img_url:
+      "https://t4.ftcdn.net/jpg/01/86/29/31/360_F_186293166_P4yk3uXQBDapbDFlR17ivpM6B1ux0fHG.jpg",
   },
 ];
 
@@ -87,7 +93,7 @@ export function AnimatedTestimonialsSection() {
                     />
                   ))}
                 </div>
-                <CardTitle>Transformou nosso negócio</CardTitle>
+                <CardTitle>{item.title}</CardTitle>
                 <CardDescription className="text-muted-foreground">
                   &quot;{item.message}&quot;
                 </CardDescription>
