@@ -10,15 +10,15 @@ export const Header = () => {
   const { theme } = useTheme();
   return (
     <header
-    style={{
-      position: "absolute",
-      zIndex: 10,
-      width: "100%", // ocupa toda a largura
-      left: 0,       // garante que começa no canto esquerdo
-      right: 0       // garante que termina no canto direito
-    }}
-    className="bg-danger py-6 px-4 flex justify-between items-center"
-  >
+      style={{
+        position: "absolute",
+        zIndex: 10,
+        width: "100%", // ocupa toda a largura
+        left: 0, // garante que começa no canto esquerdo
+        right: 0, // garante que termina no canto direito
+      }}
+      className="bg-danger py-6 px-4 flex justify-between items-center"
+    >
       <div className="flex items-center space-x-2">
         {theme === "light" ? (
           <a href={"/"}>
@@ -48,12 +48,6 @@ export const Header = () => {
       <div className="flex items-center gap-4">
         <nav className="hidden md:flex space-x-8">
           <a
-            href="/#features"
-            className="text-sm font-medium hover:text-primary transition"
-          >
-            Recursos
-          </a>
-          <a
             href="/#pricing"
             className="text-sm font-medium hover:text-primary transition"
           >
@@ -70,6 +64,12 @@ export const Header = () => {
             className="text-sm font-medium hover:text-primary transition"
           >
             FAQ
+          </a>
+          <a
+            href="/sobre"
+            className="text-sm font-medium hover:text-primary transition"
+          >
+            Sobre
           </a>
         </nav>
 
