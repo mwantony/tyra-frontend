@@ -65,7 +65,11 @@ export const Footer = () => {
                 Carreiras
               </a>
             </li>
-
+            <li>
+              <a href="#" className="hover:text-foreground transition">
+                Blog
+              </a>
+            </li>
             <li>
               <a
                 href={`https://wa.me/55${process.env.NEXT_PUBLIC_WHATSAPP}`}
