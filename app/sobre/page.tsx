@@ -43,19 +43,19 @@ export default function AboutPage() {
       name: "Antony Maziero Warken",
       role: "CEO & Fundador",
       bio: "Especialista em tecnologia para food service com 5+ anos de experiência.",
-      img: "https://github.com/mwantony.png",
+      img: "https://t4.ftcdn.net/jpg/01/86/29/31/360_F_186293166_P4yk3uXQBDapbDFlR17ivpM6B1ux0fHG.jpg",
     },
     {
       name: "Juliana Santos",
       role: "CTO",
       bio: "Engenheira de software com expertise em sistemas de gestão empresarial.",
-      img: "https://github.com/mwantony.png",
+      img: "https://t4.ftcdn.net/jpg/01/86/29/31/360_F_186293166_P4yk3uXQBDapbDFlR17ivpM6B1ux0fHG.jpg",
     },
     {
       name: "Carlos Mendes",
       role: "Head de Produto",
       bio: "Ex-gestor de restaurantes, traz a visão do usuário para nosso produto.",
-      img: "https://github.com/mwantony.png",
+      img: "https://t4.ftcdn.net/jpg/01/86/29/31/360_F_186293166_P4yk3uXQBDapbDFlR17ivpM6B1ux0fHG.jpg",
     },
   ];
 
