@@ -117,14 +117,35 @@ export function SignUpForm({
     }
   };
 
+  const [direction, setDirection] = useState<'up' | 'down'>('up');
+
+  const handleNext = () => {
+    setDirection('up');
+    setStep((prev) => prev + 1);
+  };
+
+  const handleBack = () => {
+    setDirection('down');
+    setStep((prev) => prev - 1);
+  };
   const renderStep = () => {
     return (
       <AnimatePresence mode="wait">
         <motion.div
           key={step}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
+          custom={direction}
+          initial={{
+            opacity: 0,
+            y: direction === "up" ? 20 : -20,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          exit={{
+            opacity: 0,
+            y: direction === "up" ? -20 : 20,
+          }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
           className="flex flex-col gap-6 w-full"
         >
@@ -338,18 +359,17 @@ export function SignUpForm({
                     <Button
                       variant="outline"
                       type="button"
-                      onClick={() => setStep((prev) => prev - 1)}
-                      className="w-full "
+                      onClick={handleBack}
+                      className="w-full"
                     >
                       Voltar
                     </Button>
                   )}
-
                   {step < 3 ? (
                     <Button
                       type="button"
-                      onClick={() => setStep((prev) => prev + 1)}
-                      className={`w-full  ${step === 1 ? "md:ml-auto" : ""}`}
+                      onClick={handleNext}
+                      className={`w-full ${step === 1 ? "md:ml-auto" : ""}`}
                       disabled={
                         (step === 1 &&
                           (!cnpj ||
