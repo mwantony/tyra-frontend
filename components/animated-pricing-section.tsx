@@ -54,7 +54,7 @@ export default function AnimatedPricingSection() {
           },
           {
             title: "Intermediário",
-            price: "R$89,90",
+            price: "R$79,90",
             popular: true,
             description: "Perfeito para restaurantes médios",
             features: [
@@ -68,7 +68,7 @@ export default function AnimatedPricingSection() {
           },
           {
             title: "Premium",
-            price: "R$149,90",
+            price: "R$129,90",
             description: "Solução completa para grandes restaurantes",
             features: [
               "Comandas ilimitadas",
