@@ -144,8 +144,9 @@ export default function NovaMesaPage() {
             </div>
           </div>
 
-          <div className="flex justify-end gap-4">
+          <div className="flex-col justify-end gap-4 md:flex-row w-full flex">
             <Button
+              className="w-full md:w-auto"
               type="button"
               variant="outline"
               onClick={() => router.push("/mesas")}
@@ -153,7 +154,11 @@ export default function NovaMesaPage() {
             >
               Cancelar
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button
+              className="w-full md:w-auto"
+              type="submit"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? "Salvando..." : "Salvar Mesa"}
             </Button>
           </div>
