@@ -220,7 +220,7 @@ export default function SupportPage() {
                   variant="outline"
                   size="sm"
                 >
-                  againplayi7@gmail.com
+                  {process.env.NEXT_PUBLIC_EMAIL}
                 </Button>
               </a>
             </div>
