@@ -282,7 +282,7 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
                         }
                       >
                         <CreditCardIcon className="w-4 h-4 mr-2" />
-                        Baixar Cartão
+                        Gerar Cartão
                       </DropdownMenuItem>
                       {/* <DropdownMenuItem
                         onClick={() => openDeleteModal(comanda.numero_comanda)}
