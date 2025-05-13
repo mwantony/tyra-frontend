@@ -20,7 +20,7 @@ export const Faq = () => {
           {
             question: "Há limite de comandas?",
             answer:
-              "Nosso plano Básico permite até 5 comandas, o Intermediário até 15 e o Premium é ilimitado.",
+              "Nosso plano Básico permite até 5 comandas, o Intermediário até 30 e o Premium é ilimitado.",
           },
           {
             question: "Quanto tempo leva para implementar?",
