@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { formatCNPJ, unformatCNPJ } from "@/utils/cnpjUtils";
 import { formatPhoneNumber } from "@/utils/phoneUtils";
 import { motion, AnimatePresence } from "framer-motion";
+import { Checkbox } from "./ui/checkbox";
 
 export function SignUpForm({
   className,
@@ -29,13 +30,13 @@ export function SignUpForm({
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [loading, setLoading] = useState(false);
   const [fetchingCnpj, setFetchingCnpj] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [acceptPrivacy, setAcceptPrivacy] = useState(false);
   const { signup } = useAuth();
 
   // Password validation states
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [passwordValid, setPasswordValid] = useState(true);
-
-  // Função para formatar o CNPJ
 
   // Handler para mudanças no input de CNPJ
   const handleCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,6 +91,11 @@ export function SignUpForm({
     e.preventDefault();
 
     // Final validation before submit
+    if (!acceptTerms || !acceptPrivacy) {
+      toast.error("Você deve aceitar os termos e políticas para continuar");
+      return;
+    }
+
     if (password !== passwordConfirmation) {
       toast.error("As senhas não coincidem");
       return;
@@ -128,6 +134,7 @@ export function SignUpForm({
     setDirection('down');
     setStep((prev) => prev - 1);
   };
+
   const renderStep = () => {
     return (
       <AnimatePresence mode="wait">
@@ -322,6 +329,55 @@ export function SignUpForm({
                   </>
                 );
 
+              case 4:
+                return (
+                  <div className="space-y-4 min-h-30 flex flex-col justify-end">
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.1 }}
+                      className="flex items-center space-x-2"
+                    >
+                      <Checkbox
+                        id="terms"
+                        checked={acceptTerms}
+                        onCheckedChange={(checked) => setAcceptTerms(!!checked)}
+                      />
+                      <label
+                        htmlFor="terms"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Eu li e aceito os{" "}
+                        <Link href="/termos" className="underline underline-offset-4 hover:text-primary">
+                          Termos de Uso
+                        </Link>
+                      </label>
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="flex items-center space-x-2"
+                    >
+                      <Checkbox
+                        id="privacy"
+                        checked={acceptPrivacy}
+                        onCheckedChange={(checked) => setAcceptPrivacy(!!checked)}
+                      />
+                      <label
+                        htmlFor="privacy"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Eu li e aceito a{" "}
+                        <Link href="/politica" className="underline underline-offset-4 hover:text-primary">
+                          Política de Privacidade
+                        </Link>
+                      </label>
+                    </motion.div>
+                  </div>
+                );
+
               default:
                 return null;
             }
@@ -349,6 +405,7 @@ export function SignUpForm({
                     {step === 1 && "Informações da empresa"}
                     {step === 2 && "Dados de contato"}
                     {step === 3 && "Dados de acesso"}
+                    {step === 4 && "Termos e Políticas"}
                   </p>
                 </div>
 
@@ -365,7 +422,7 @@ export function SignUpForm({
                       Voltar
                     </Button>
                   )}
-                  {step < 3 ? (
+                  {step < 4 ? (
                     <Button
                       type="button"
                       onClick={handleNext}
@@ -377,7 +434,12 @@ export function SignUpForm({
                             !razaoSocial ||
                             fetchingCnpj ||
                             unformatCNPJ(cnpj).length < 14)) ||
-                        (step === 2 && (!whatsapp || !email))
+                        (step === 2 && (!whatsapp || !email)) ||
+                        (step === 3 && 
+                          (!password || 
+                           !passwordConfirmation || 
+                           !passwordsMatch || 
+                           !passwordValid))
                       }
                     >
                       Próximo
@@ -388,11 +450,8 @@ export function SignUpForm({
                       className="w-full md:w-auto"
                       disabled={
                         loading ||
-                        !email ||
-                        !password ||
-                        !passwordConfirmation ||
-                        !passwordsMatch ||
-                        !passwordValid
+                        !acceptTerms ||
+                        !acceptPrivacy
                       }
                     >
                       {loading ? "Cadastrando..." : "Finalizar Cadastro"}
