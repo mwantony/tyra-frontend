@@ -18,9 +18,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { Barcode, MoreHorizontal, Trash2 } from "lucide-react";
+import { Barcode, CreditCardIcon, MoreHorizontal, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { deleteComanda, getComandaCodigo } from "@/services/comandas";
+import { deleteComanda, getComandaCartao, getComandaCodigo } from "@/services/comandas";
 import { Button } from "./ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import Link from "next/link";
@@ -146,6 +146,21 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
       console.error("Erro ao baixar código:", error);
     }
   };
+  const handleBaixarCartao = async (numeroComanda: string) => {
+    try {
+      const blob = await getComandaCartao(numeroComanda);
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `cartao-comanda-${numeroComanda}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Erro ao baixar cartão:", error);
+    }
+  };
 
   const openDeleteModal = (numeroComanda: string) => {
     setComandaToDelete(numeroComanda);
@@ -260,6 +275,14 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
                       >
                         <Barcode className="w-4 h-4 mr-2" />
                         Baixar Código
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() =>
+                          handleBaixarCartao(comanda.numero_comanda)
+                        }
+                      >
+                        <CreditCardIcon className="w-4 h-4 mr-2" />
+                        Baixar Cartão
                       </DropdownMenuItem>
                       {/* <DropdownMenuItem
                         onClick={() => openDeleteModal(comanda.numero_comanda)}

@@ -73,6 +73,20 @@ export async function getComandaCodigo(numeroComanda: string) {
     throw error;
   }
 }
+export async function getComandaCartao(numeroComanda: string) {
+  try {
+    const response = await api.get(
+      `/comandas/${numeroComanda}/cartao`,
+      {
+        responseType: "blob", // 👈 importante para arquivos
+      }
+    );
+
+    return response.data; 
+  } catch (error) {
+    throw error;
+  }
+}
 
 export async function deleteComanda(numeroComanda: any) {
   try {
