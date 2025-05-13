@@ -44,7 +44,7 @@ export const AnimatedLeadSection = () => {
         Revolucione a gestão do seu{" "}
         <span className="relative inline-block text-white z-10">
           <span
-            className="absolute inset-0 -z-10 bg-red-500 mt-1 opacity-70 rounded-sm"
+            className="absolute inset-0 -z-10 bg-[#B5252C] mt-1 rounded-sm"
             style={{
               animation: "drawBackground 1s ease-out forwards",
               animationDelay: "0.3s",
