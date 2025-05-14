@@ -100,8 +100,8 @@ export default function FinancePage() {
     handleRefresh();
   };
   useEffect(() => {
-    if(count === 0) {
-      setIsLoading(true); 
+    if (count === 0) {
+      setIsLoading(true);
       setCount(1);
     }
     const fetchData = async () => {
@@ -228,27 +228,8 @@ export default function FinancePage() {
                   ></AnimatedNumber>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  {formatarVariacao(dadosFinanceiro?.variacao_receita || 0)} em
-                  relação ao último período
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Despesas</CardTitle>
-                <CreditCard className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold ">
-                  <AnimatedNumber
-                    isCurrency={true}
-                    value={Number(dadosFinanceiro?.despesas)}
-                  ></AnimatedNumber>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  {formatarVariacao(dadosFinanceiro?.variacao_despesas || 0)} em
-                  relação ao último período
+                  {formatarVariacao(dadosFinanceiro?.receita || 0)} em relação
+                  ao último período
                 </p>
               </CardContent>
             </Card>
@@ -256,7 +237,26 @@ export default function FinancePage() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Lucro Líquido
+                  Comanda mais utilizada
+                </CardTitle>
+                <CreditCard className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold ">
+                  <AnimatedNumber
+                    value={Number(dadosFinanceiro?.comanda_mais_usada)}
+                  ></AnimatedNumber>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Variação recente no uso{" "}
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Dia com maior faturamento
                 </CardTitle>
                 <PieChart className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
@@ -264,12 +264,12 @@ export default function FinancePage() {
                 <div className="text-2xl font-bold ">
                   <AnimatedNumber
                     isCurrency={true}
-                    value={Number(dadosFinanceiro?.lucro)}
+                    value={Number(dadosFinanceiro?.faturamento_dia_top)}
                   ></AnimatedNumber>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  {formatarVariacao(dadosFinanceiro?.variacao_lucro || 0)} em
-                  relação ao último período
+                  Data maior faturamento:{" "}
+                  {dadosFinanceiro?.dia_com_maior_faturamento}
                 </p>
               </CardContent>
             </Card>
@@ -407,21 +407,15 @@ export default function FinancePage() {
                 </div>
 
                 <div className="border rounded-lg p-4">
-                  <h3 className="font-medium text-sm mb-2">Margem de Lucro</h3>
+                  <h3 className="font-medium text-sm mb-2">Média Diária</h3>
                   <div className="text-2xl flex font-bold ">
                     <AnimatedNumber
-                      value={
-                        typeof dadosFinanceiro?.margem_lucro === "string"
-                          ? parseFloat(
-                              dadosFinanceiro.margem_lucro.replace("%", "")
-                            )
-                          : 0
-                      }
+                      isCurrency={true}
+                      value={dadosFinanceiro?.media_diaria || 0}
                     />
-                    %
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    em relação à receita
+                    no período selecionado
                   </p>
                 </div>
               </div>
