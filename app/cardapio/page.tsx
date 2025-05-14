@@ -45,9 +45,10 @@ export default function CardapioQRCodePage() {
     setConfirmDownload(true);
 
     try {
+      // Aumente ainda mais o tamanho do QR code para melhor qualidade
       const qrBuffer = qrImage.imageSync(qrValue, {
         type: "png",
-        size: 10,
+        size: 25, // Aumentado para 25
         margin: 2,
       });
 
@@ -64,15 +65,18 @@ export default function CardapioQRCodePage() {
       logo.src = logoDark.src;
 
       const onAssetsLoaded = () => {
+        // Fator de escala para alta qualidade
+        const scale = 2;
+        
+        // Aumentei os tamanhos aqui:
+        const padding = 40 * scale;         // Aumentado de 30 para 40
+        const textHeight = 70 * scale;      // Aumentado de 30 para 40
+        const logoHeight = 150 * scale;     // Aumentado de 60 para 100
+        const totalExtraSpace = padding * 2 + textHeight ;
+
         const canvas = document.createElement("canvas");
-
-        const padding = 30;
-        const textHeight = 30;
-        const logoHeight = 60;
-        const totalExtraSpace = padding * 2 + textHeight + logoHeight;
-
-        canvas.width = Math.max(img.width, + padding);
-        canvas.height = img.height + totalExtraSpace;
+        canvas.width = Math.max(img.width, 400) * scale; // Largura mínima aumentada
+        canvas.height = (img.height + totalExtraSpace) * scale;
 
         const ctx = canvas.getContext("2d");
         if (!ctx) {
@@ -82,39 +86,51 @@ export default function CardapioQRCodePage() {
           return;
         }
 
-        // Fundo branco
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Logo com alta qualidade
-        const logoRatio = logo.width / logo.height;
-        const logoDrawHeight = logoHeight;
-        const logoDrawWidth = logoHeight * logoRatio;
-
+        // Configurações de qualidade
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
+        ctx.scale(scale, scale);
+
+        // Fundo branco
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width / scale, canvas.height / scale);
+
+        // Logo maior
+        const logoRatio = logo.width / logo.height;
+        const logoDrawHeight = logoHeight / scale;
+        const logoDrawWidth = logoDrawHeight * logoRatio;
 
         ctx.drawImage(
           logo,
-          canvas.width / 2 - logoDrawWidth / 2,
-          padding,
+          canvas.width / scale / 2 - logoDrawWidth / 2,
+          padding / scale,
           logoDrawWidth,
           logoDrawHeight
         );
 
-        // Nome do restaurante
+        // Texto maior e mais destacado
         ctx.fillStyle = "#000000";
-        ctx.font = "bold 24px Poppins";
+        ctx.font = `bold ${46 * scale / 1.5}px 'Poppins', sans-serif`; // Aumentado de 24 para 36
+        
+        // Efeito de sombra para melhor legibilidade
+        ctx.shadowColor = "rgba(0,0,0,0.15)";
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetY = 2;
+        
         ctx.textAlign = "center";
+        ctx.textBaseline = "top";
         ctx.fillText(
           restaurante.nome || "Cardápio Digital",
-          canvas.width / 2,
-          padding + logoDrawHeight + 30
+          canvas.width / scale / 2,
+          padding / scale + logoDrawHeight + 40 / scale // Aumentado espaçamento
         );
+        
+        // Remove sombra para o resto do desenho
+        ctx.shadowColor = "transparent";
 
         // QR Code com bordas arredondadas
-        const qrOffsetY = padding + logoDrawHeight + textHeight + 20;
-        const qrX = canvas.width / 2 - img.width / 2;
+        const qrOffsetY = padding / scale + logoDrawHeight + textHeight / scale + 30 / scale;
+        const qrX = canvas.width / scale / 2 - img.width / 2;
         const qrY = qrOffsetY;
         const qrWidth = img.width;
         const qrHeight = img.height;
@@ -142,7 +158,7 @@ export default function CardapioQRCodePage() {
         ctx.drawImage(img, qrX, qrY);
         ctx.restore();
 
-        // Exporta imagem final
+        // Exporta imagem final com qualidade máxima
         canvas.toBlob((finalBlob) => {
           if (!finalBlob) {
             console.error("Erro ao gerar o blob do canvas");
@@ -160,10 +176,13 @@ export default function CardapioQRCodePage() {
               .toLowerCase() + `.png`;
           link.click();
 
-          setTimeout(() => URL.revokeObjectURL(downloadUrl), 100);
+          setTimeout(() => {
+            URL.revokeObjectURL(downloadUrl);
+            URL.revokeObjectURL(url);
+          }, 100);
           setConfirmDownload(false);
           toast.dismiss();
-        }, "image/png");
+        }, "image/png", 1.0);
       };
 
       img.onload = () => {
@@ -189,7 +208,6 @@ export default function CardapioQRCodePage() {
       toast.error("Erro ao baixar QR Code");
     }
   };
-
   return (
     <div className="min-h-150 flex items-center justify-center px-4 ">
       {restaurante.plano_id !== 1 && restaurante.plano_id !== null ? (
