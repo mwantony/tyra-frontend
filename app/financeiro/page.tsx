@@ -243,9 +243,7 @@ export default function FinancePage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold ">
-                  <AnimatedNumber
-                    value={Number(dadosFinanceiro?.comanda_mais_usada)}
-                  ></AnimatedNumber>
+                  {dadosFinanceiro?.comanda_mais_usada}
                 </div>
                 <p className="text-xs text-muted-foreground">
                   Variação recente no uso{" "}
