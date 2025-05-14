@@ -45,6 +45,7 @@ export async function gerarPdf(inicio: string, fim: string) {
     link.remove();
     window.URL.revokeObjectURL(url);
   } catch (error: any) {
+    console.log(error)
     return error;
   }
   
