@@ -106,7 +106,7 @@ export default function SettingsPage() {
           <CardContent className="space-y-6">
             <div className="flex items-center justify-between rounded-lg border p-4">
               <div className="space-y-0.5">
-                <Label className="text-base">Tema</Label>
+                <Label className="text-base">Tema escuro</Label>
                 <p className="text-sm text-muted-foreground">
                   Altere para o modo claro ou escuro
                 </p>
