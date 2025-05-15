@@ -40,6 +40,7 @@ import { useAuth } from "@/contexts/auth-provider";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { FinanceNotAvailable } from "./finance-not-avaiable";
+import { Badge } from "@/components/ui/badge";
 
 export default function FinancePage() {
   const barraAnimada = (porcentagem, cor = "bg-blue-500") => (
@@ -243,7 +244,7 @@ export default function FinancePage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold ">
-                  {dadosFinanceiro?.comanda_mais_usada}
+                  <Badge className="text-xl font-bold " variant={'outline'}>{dadosFinanceiro?.comanda_mais_usada}</Badge>
                 </div>
                 <p className="text-xs text-muted-foreground">
                   Variação recente no uso{" "}
