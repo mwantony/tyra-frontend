@@ -347,7 +347,7 @@ export default function FinancePage() {
                       <div>
                         <p className="text-sm">{venda.descricao}</p>
                         <p className="text-sm text-muted-foreground">
-                          {dayjs(venda.data).format("DD/MM/YYYY HH:mm")}
+                          {venda.data}
                         </p>
                       </div>
                       <div className={`font-bold text-sm `}>
