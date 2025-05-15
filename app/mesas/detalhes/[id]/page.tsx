@@ -241,7 +241,7 @@ export default function MesaDetailsPage() {
                   />
                 </div>
 
-                <Button type="submit">Salvar Alterações</Button>
+                <Button type="submit" className="w-full md:w-auto">Salvar Alterações</Button>
               </form>
             ) : (
               <div className="space-y-4">
