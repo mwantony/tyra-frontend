@@ -221,7 +221,6 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
       return (
         <PaginationItem key={index}>
           <PaginationLink
-            href="#"
             isActive={pageNumber === currentPage}
             onClick={() => setCurrentPage(Number(pageNumber))}
           >
