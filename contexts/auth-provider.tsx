@@ -96,6 +96,12 @@ export const AuthProvider = ({ children }: any) => {
       .get(`/restaurantes/${restaurante?.id}`)
       .then((res) => {
         console.log(res);
+        if (restaurante?.password !== res.data.password) {
+          toast.error("Sua sessão expirou, faça login novamente.");
+          localStorage.removeItem("restaurante");
+          router.push("/login");
+          return;
+        }
         setRestaurante(res.data);
       })
 
