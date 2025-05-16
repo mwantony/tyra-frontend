@@ -306,7 +306,6 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
               <PaginationContent>
                 <PaginationItem>
                   <PaginationPrevious
-                    href="#"
                     onClick={() =>
                       setCurrentPage((prev) => Math.max(prev - 1, 1))
                     }
@@ -318,7 +317,6 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
 
                 <PaginationItem>
                   <PaginationNext
-                    href="#"
                     onClick={() =>
                       setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                     }
