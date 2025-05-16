@@ -384,7 +384,7 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
             <Pagination>
               <PaginationContent>
                 <PaginationItem>
-                  <PaginationPrevious
+                  <PaginationPrevious className="hover:cursor-pointer"
                     onClick={() =>
                       setCurrentPage((prev) => Math.max(prev - 1, 1))
                     }
@@ -395,7 +395,7 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
                 {renderPageNumbers()}
 
                 <PaginationItem>
-                  <PaginationNext
+                  <PaginationNext className="hover:cursor-pointer"
                     onClick={() =>
                       setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                     }
