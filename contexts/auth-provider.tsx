@@ -98,7 +98,9 @@ export const AuthProvider = ({ children }: any) => {
         if (restaurante?.password !== res.data.password) {
           toast.error("Sua sessão expirou, faça login novamente.");
           localStorage.removeItem("restaurante");
-          router.push("/login");
+          setTimeout(() => {
+            router.push("/login");
+          }, 1500);
           return;
         }
         setRestaurante(res.data);
