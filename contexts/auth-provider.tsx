@@ -95,7 +95,6 @@ export const AuthProvider = ({ children }: any) => {
     await api
       .get(`/restaurantes/${restaurante?.id}`)
       .then((res) => {
-        console.log(res);
         if (restaurante?.password !== res.data.password) {
           toast.error("Sua sessão expirou, faça login novamente.");
           localStorage.removeItem("restaurante");
