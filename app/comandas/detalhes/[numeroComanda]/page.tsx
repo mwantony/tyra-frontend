@@ -228,7 +228,7 @@ export default function DetalhesComandaPage() {
           <Button
             variant="outline"
             onClick={abrirModalAdicionarProdutos}
-            className="gap-1 w-[90%] md:w-auto"
+            className="w-[90%] md:w-auto"
           >
             <PlusCircle className="h-4 w-4" />
             Adicionar Produtos
