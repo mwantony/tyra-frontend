@@ -14,30 +14,41 @@ import PrivacyPolicy from "@/app/privacidade/page";
 import Termos from "@/app/termos/page";
 import AboutPage from "@/app/sobre/page";
 import CareersPage from "@/app/carreiras/page";
+
+// Define public routes configuration
+const PUBLIC_ROUTES = [
+  { path: "/", component: LandingPage },
+  { path: "/login", component: LoginPage },
+  { path: "/signup", component: SignUpPage },
+  { path: "/privacidade", component: PrivacyPolicy },
+  { path: "/termos", component: Termos },
+  { path: "/sobre", component: AboutPage },
+  { path: "/carreiras", component: CareersPage },
+];
+
 function ProtectedApp({ children }: { children: ReactNode }) {
   const { restaurante, loading, refreshRestaurante } = useAuth();
   const [isAuthChecked, setIsAuthChecked] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const [count, setCount] = useState(0);
+
   useEffect(() => {
     if (restaurante?.id && count === 0) {
       setCount(1);
       refreshRestaurante();
     }
+    
     if (loading) return;
 
     setIsAuthChecked(true);
     if (restaurante === null) return;
 
+    // Check if current route is not public and user hasn't completed profile
+    const isPublicRoute = PUBLIC_ROUTES.some(route => route.path === pathname);
     if (
-      !restaurante?.nome_fantasia &&
-      pathname !== "/signup" &&
-      pathname !== "/" &&
-      pathname !== "/privacidade" &&
-      pathname !== "/termos" &&
-      pathname !== "/sobre" &&
-      pathname !== "/carreiras"
+      !restaurante?.nome_fantasia && 
+      !isPublicRoute
     ) {
       router.push("/login");
     }
@@ -47,27 +58,20 @@ function ProtectedApp({ children }: { children: ReactNode }) {
     return <Spinner />;
   }
 
-  if (pathname === "/signup") {
-    return <SignUpPage />;
-  } else if (pathname === "/login") {
-    return <LoginPage />;
-  } else if (pathname === "/") {
-    return <LandingPage />;
-  } else if (pathname === "/privacidade") {
-    return <PrivacyPolicy />;
-  } else if (pathname === "/termos") {
-    return <Termos />;
-  } else if (pathname === "/sobre") {
-    return <AboutPage />;
-  } else if (pathname === "/carreiras") {
-    return <CareersPage />;
-  } else if (restaurante?.nome_fantasia) {
-    return <CustomLayout>{children}</CustomLayout>;
-  } else {
-    return <Spinner />;
+  // Check for public routes first
+  const publicRoute = PUBLIC_ROUTES.find(route => route.path === pathname);
+  if (publicRoute) {
+    const PublicComponent = publicRoute.component;
+    return <PublicComponent />;
   }
 
-  // Enquanto o redirecionamento acontece, pode exibir um Spinner
+  // Protected routes
+  if (restaurante?.nome_fantasia) {
+    return <CustomLayout>{children}</CustomLayout>;
+  }
+
+  // Fallback spinner while redirecting
+  return <Spinner />;
 }
 
 export default function AuthWrapper({ children }: { children: ReactNode }) {
