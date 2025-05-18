@@ -66,7 +66,11 @@ export const Footer = () => {
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-foreground transition">
+              <a
+                href="https://blog.tyra.com.br"
+                target="_blank"
+                className="hover:text-foreground transition"
+              >
                 Blog
               </a>
             </li>
