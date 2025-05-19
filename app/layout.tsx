@@ -41,6 +41,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
+      <head>
+        <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+      </head>
       <body
         className={`${poppins.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
         >
