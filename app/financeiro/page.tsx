@@ -41,6 +41,7 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { FinanceNotAvailable } from "./finance-not-avaiable";
 import { Badge } from "@/components/ui/badge";
+import { ChartComponent } from "./chart-component";
 
 export default function FinancePage() {
   const barraAnimada = (porcentagem, cor = "bg-blue-500") => (
@@ -244,7 +245,9 @@ export default function FinancePage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold ">
-                  <Badge className="text-xl font-bold " variant={'outline'}>{dadosFinanceiro?.comanda_mais_usada}</Badge>
+                  <Badge className="text-xl font-bold " variant={"outline"}>
+                    {dadosFinanceiro?.comanda_mais_usada}
+                  </Badge>
                 </div>
                 <p className="text-xs text-muted-foreground">
                   Variação recente no uso{" "}
@@ -372,6 +375,7 @@ export default function FinancePage() {
             </Card>
           </div>
 
+          <ChartComponent grafico={dadosFinanceiro?.grafico}></ChartComponent>
           {/* Estatísticas Adicionais */}
           <Card>
             <CardHeader>
@@ -411,6 +415,38 @@ export default function FinancePage() {
                     <AnimatedNumber
                       isCurrency={true}
                       value={dadosFinanceiro?.media_diaria || 0}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    no período selecionado
+                  </p>
+                </div>
+                <div className="border rounded-lg p-4">
+                  <h3 className="font-medium text-sm mb-2">Horário Pico</h3>
+                  <div className="text-2xl flex font-bold ">
+                    {dadosFinanceiro?.horario_pico}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    no período selecionado
+                  </p>
+                </div>
+                <div className="border rounded-lg p-4">
+                  <h3 className="font-medium text-sm mb-2">
+                    Dia mais movimentado
+                  </h3>
+                  <div className="text-2xl flex font-bold ">
+                    {dadosFinanceiro?.dia_com_mais_vendas}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    no período selecionado
+                  </p>
+                </div>
+                <div className="border rounded-lg p-4">
+                  <h3 className="font-medium text-sm mb-2">Maior venda</h3>
+                  <div className="text-2xl flex font-bold ">
+                    <AnimatedNumber
+                      isCurrency={true}
+                      value={dadosFinanceiro?.maior_venda || 0}
                     />
                   </div>
                   <p className="text-xs text-muted-foreground">
