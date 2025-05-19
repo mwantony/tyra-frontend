@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://tyra.com.br/sitemap.xml
