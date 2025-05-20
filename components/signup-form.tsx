@@ -76,7 +76,6 @@ export function SignUpForm({
       setNomeFantasia(data.fantasia || data.razao_social || "");
       setRazaoSocial(data.razao_social || "");
       setEmail(data.email || "");
-      toast.success("Dados da empresa carregados automaticamente");
     } catch (error: any) {
       toast.error(
         "Não foi possível buscar os dados do CNPJ. Preencha manualmente."
