@@ -275,7 +275,8 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
 
       return (
         <PaginationItem key={index}>
-          <PaginationLink className="hover:cursor-pointer"
+          <PaginationLink
+            className="hover:cursor-pointer"
             isActive={pageNumber === currentPage}
             onClick={() => setCurrentPage(Number(pageNumber))}
           >
@@ -383,7 +384,8 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
             <Pagination>
               <PaginationContent>
                 <PaginationItem>
-                  <PaginationPrevious className="hover:cursor-pointer"
+                  <PaginationPrevious
+                    className="hover:cursor-pointer"
                     onClick={() =>
                       setCurrentPage((prev) => Math.max(prev - 1, 1))
                     }
@@ -394,7 +396,8 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
                 {renderPageNumbers()}
 
                 <PaginationItem>
-                  <PaginationNext className="hover:cursor-pointer"
+                  <PaginationNext
+                    className="hover:cursor-pointer"
                     onClick={() =>
                       setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                     }
@@ -571,15 +574,20 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
               </div>
             </div>
 
-            <div className="flex justify-end gap-4 pt-4">
+            <div className="flex flex-col md:flex-row md:justify-end gap-4 ">
               <Button
                 type="button"
+                className="w-full md:w-auto"
                 variant="outline"
                 onClick={() => setReservarModalOpen(false)}
               >
                 Cancelar
               </Button>
-              <Button disabled={confirmReserva} type="submit">
+              <Button
+                className="w-full md:w-auto"
+                disabled={confirmReserva}
+                type="submit"
+              >
                 {confirmReserva ? "Confirmando..." : "Confirmar Reserva"}
               </Button>
             </div>
