@@ -99,7 +99,27 @@ export function FinanceSkeleton() {
             </div>
           </div>
         </div>
-
+        <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
+        <div className="flex flex-col space-y-1.5 p-6">
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-5 w-5" />
+            <Skeleton className="h-6 w-48" />
+          </div>
+          <Skeleton className="h-5 w-64" />
+        </div>
+        <div className="p-6 pt-0">
+          <div className="h-[300px] w-full">
+            <div className="flex h-full items-end space-x-2">
+              {Array.from({ length: 7 }).map((_, i) => (
+                <div key={i} className="flex flex-1 flex-col items-center space-y-2">
+                  <Skeleton className="h-[200px] w-full" style={{ height: `${Math.random() * 70 + 30}%` }} />
+                  <Skeleton className="h-4 w-12" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
         {/* Estatísticas Adicionais */}
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
           <div className="flex flex-col space-y-1.5 p-6">
@@ -110,7 +130,7 @@ export function FinanceSkeleton() {
           </div>
           <div className="p-6 pt-0">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[...Array(3)].map((_, i) => (
+              {[...Array(6)].map((_, i) => (
                 <div key={i} className="border rounded-lg p-4">
                   <Skeleton className="h-5 w-32 mb-2" />
                   <Skeleton className="h-8 w-24 mb-1" />
