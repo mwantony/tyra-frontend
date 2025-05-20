@@ -113,7 +113,10 @@ export default function FinancePage() {
         setDadosFinanceiro(response);
         setIsLoading(false); // Garante que o loading seja desativado no final
       } catch (error: any) {
-        if (error?.response?.data?.message) {
+        if (
+          error?.response?.data?.message ===
+          "Recurso disponível apenas no Plano Premium"
+        ) {
           setBlocked(true);
           setIsLoading(false);
           return;
