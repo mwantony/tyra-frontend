@@ -369,7 +369,7 @@ export function SignUpForm({
                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       >
                         Eu li e aceito a{" "}
-                        <Link href="/politica" className="underline underline-offset-4 hover:text-primary">
+                        <Link href="/privacidade" className="underline underline-offset-4 hover:text-primary">
                           Política de Privacidade
                         </Link>
                       </label>
