@@ -53,6 +53,10 @@ const data = {
           title: "Bebidas",
           url: "/produtos/bebidas",
         },
+        {
+          title: "Sobremesas",
+          url: "/produtos/sobremesas",
+        },
       ],
     },
     {

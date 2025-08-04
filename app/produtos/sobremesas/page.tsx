@@ -14,15 +14,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/store";
-import { setProdutos } from "@/store/slices/produtosSlice";
-import { ProdutosSkeleton } from "./produtos-skeleton";
+import { ProdutosSkeleton } from "../produtos-skeleton";
 
-export default function ProdutosPage() {
-  const dispatch = useDispatch<AppDispatch>();
-  const produtos = useSelector((state: RootState) => state.produtos.produtos);
-
+export default function SobremesasPage() {
+  const [sobremesas, setSobremesas] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [activeTab, setActiveTab] = useState<string>("all");
@@ -31,9 +26,13 @@ export default function ProdutosPage() {
     setLoading(true);
     try {
       const resposta = await getProdutos();
-      dispatch(setProdutos(resposta));
+      // Filtra apenas os produtos do tipo "prato"
+      const sobremesasFiltradas = resposta.filter(
+        (produto) => produto.tipo === "sobremesa"
+      );
+      setSobremesas(sobremesasFiltradas);
     } catch (error) {
-      console.error("Erro ao buscar produtos:", error);
+      console.error("Erro ao buscar pratos:", error);
     } finally {
       setLoading(false);
     }
@@ -43,21 +42,17 @@ export default function ProdutosPage() {
     fetchData();
   }, []);
 
-  // Filtra os produtos com base no termo de busca e na aba ativa
-  const filteredProdutos = produtos.filter((produto) => {
-    const matchesSearch = Object.values(produto).some(
+  // Filtra os pratos com base no termo de busca e na aba ativa
+  const filteredPratos = sobremesas.filter((prato) => {
+    const matchesSearch = Object.values(prato).some(
       (value) =>
         value &&
         value.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     if (activeTab === "all") return matchesSearch;
-    if (activeTab === "pratos")
-      return matchesSearch && produto.tipo === "prato";
-    if (activeTab === "bebidas")
-      return matchesSearch && produto.tipo === "bebida";
-    if (activeTab === "outros")
-      return matchesSearch && produto.tipo === "outros";
+    if (activeTab === "active") return matchesSearch && !prato.ativo;
+    if (activeTab === "inactive") return matchesSearch && prato.ativo;
 
     return matchesSearch;
   });
@@ -67,27 +62,17 @@ export default function ProdutosPage() {
       {/* Cabeçalho */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Produtos</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Sobremesas</h1>
           <p className="text-muted-foreground">
-            Gerencie seu catálogo de produtos
+            Gerencie seu cardápio de sobremesas
           </p>
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row">
-          {/* <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Buscar produtos..."
-              className="w-full pl-9 sm:w-[300px]"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div> */}
-
           <Link href="/produtos/adicionar">
             <Button className="w-full sm:w-fit">
               <Plus className="mr-2 h-4 w-4" />
-              Novo Produto
+              Nova Sobremesa
             </Button>
           </Link>
         </div>
@@ -97,24 +82,18 @@ export default function ProdutosPage() {
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
           <TabsTrigger value="all">
-            Todos <Badge className="ml-2">{produtos.length}</Badge>
+            Todos <Badge className="ml-2">{sobremesas.length}</Badge>
           </TabsTrigger>
-          <TabsTrigger value="pratos">
-            Pratos{" "}
+          <TabsTrigger value="active">
+            Ativos{" "}
             <Badge className="ml-2">
-              {produtos.filter((p) => p.tipo === "prato").length}
+              {sobremesas.filter((p) => !p.ativo).length}
             </Badge>
           </TabsTrigger>
-          <TabsTrigger value="bebidas">
-            Bebidas{" "}
+          <TabsTrigger value="inactive">
+            Inativos{" "}
             <Badge className="ml-2">
-              {produtos.filter((p) => p.tipo === "bebida").length}
-            </Badge>
-          </TabsTrigger>
-          <TabsTrigger value="outros">
-            Outros{" "}
-            <Badge className="ml-2">
-              {produtos.filter((p) => p.tipo === "outros").length}
+              {sobremesas.filter((p) => p.ativo).length}
             </Badge>
           </TabsTrigger>
         </TabsList>
@@ -124,9 +103,9 @@ export default function ProdutosPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
-            <span>Lista de Produtos</span>
+            <span>Lista de Pratos</span>
             <span className="text-sm font-normal text-muted-foreground">
-              {filteredProdutos.length} itens
+              {filteredPratos.length} itens
             </span>
           </CardTitle>
         </CardHeader>
@@ -137,7 +116,7 @@ export default function ProdutosPage() {
           ) : (
             <DataTableProdutos
               fetchProdutos={fetchData}
-              data={filteredProdutos}
+              data={filteredPratos}
             />
           )}
         </CardContent>
