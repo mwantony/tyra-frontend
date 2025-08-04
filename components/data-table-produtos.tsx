@@ -199,7 +199,7 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
                     currency: "BRL",
                   }).format(Number(produto.preco))}
                 </TableCell>
-                <TableCell>{produto.tipo}</TableCell>
+                <TableCell>{produto.tipo.charAt(0).toUpperCase() + produto.tipo.slice(1)}</TableCell>
                 <TableCell>{produto.ean ? produto.ean : "- - -"}</TableCell>
                 <TableCell>
                   {produto.descricao ? produto.descricao : "- - -"}
