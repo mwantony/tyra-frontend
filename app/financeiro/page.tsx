@@ -378,7 +378,6 @@ export default function FinancePage() {
             </Card>
           </div>
 
-          <ChartComponent grafico={dadosFinanceiro?.grafico}></ChartComponent>
           {/* Estatísticas Adicionais */}
           <Card>
             <CardHeader>
