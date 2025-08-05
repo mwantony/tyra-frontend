@@ -199,3 +199,56 @@ html {
     @apply bg-background text-foreground;
   }
 }
+/* styles/globals.css */
+
+/* Densidade compacta */
+.density-compact {
+  --font-size-2xl: 1.2rem;
+  --button-padding: 0.25rem 0.5rem;
+  --input-padding: 0.25rem 0.5rem;
+  --spacing-unit: 0.5rem;
+  --font-size-sm: 0.75rem;
+  --font-size-md: 0.875rem;
+}
+
+/* Densidade padrão */
+.density-default {
+  --font-size-2xl: 1.5rem;
+  --button-padding: 0.5rem 1rem;
+  --input-padding: 0.5rem 0.75rem;
+  --spacing-unit: 1rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+}
+
+/* Densidade ampla */
+.density-spacious {
+  --font-size-2xl: 1.8rem;
+  --button-padding: 0.75rem 1.5rem;
+  --input-padding: 0.75rem 1rem;
+  --spacing-unit: 1.5rem;
+  --font-size-sm: 1rem;
+  --font-size-md: 1.125rem;
+}
+
+/* Exemplo de uso das variáveis */
+
+
+input {
+  padding: var(--input-padding);
+}
+
+.text-2xl {
+  font-size: var(--font-size-2xl);
+}
+
+.text-muted-foreground {
+  font-size: var(--font-size-md);
+}
+.text-sm {
+  font-size: var(--font-size-sm);
+}
+
+.text-md {
+  font-size: var(--font-size-md);
+}

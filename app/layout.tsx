@@ -7,6 +7,7 @@ import "./globals.css";
 import AuthWrapper from "@/components/auth-wrapper"; // <- certifique-se do caminho correto
 import { ThemeProvider } from "@/contexts/theme-provider";
 import { Analytics } from "@vercel/analytics/next";
+import { DensityProvider } from "@/contexts/density-provider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -46,9 +47,11 @@ export default function RootLayout({
       </head>
       <body
         className={`${poppins.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+      >
         <ThemeProvider>
-          <AuthWrapper>{children}</AuthWrapper>
+          <DensityProvider>
+            <AuthWrapper>{children}</AuthWrapper>
+          </DensityProvider>
         </ThemeProvider>
         <Analytics></Analytics>
       </body>

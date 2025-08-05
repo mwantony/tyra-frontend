@@ -32,9 +32,12 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { set } from "date-fns";
 import { DeleteAccountDialog } from "./delete-account-dialog";
+import { useDensity } from "@/contexts/density-provider";
 
 export default function SettingsPage() {
   const { theme, toggleTheme } = useTheme();
+  const { density, setDensity } = useDensity();
+
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isConfirmDeleteDialogOpen, setIsConfirmDeleteDialogOpen] =
@@ -129,17 +132,24 @@ export default function SettingsPage() {
               </div>
               <div className="flex flex-wrap gap-2 w-full lg:w-auto">
                 <Button
-                  variant="outline"
+                  variant={density === "compact" ? "outline" : "default"}
                   size="sm"
                   className="flex-1 lg:flex-none"
+                  onClick={() => setDensity("compact")}
                 >
                   Compacto
                 </Button>
-                <Button size="sm" className="flex-1 lg:flex-none">
+                <Button
+                  variant={density === "default" ? "outline" : "default"}
+                  onClick={() => setDensity("default")}
+                  size="sm"
+                  className="flex-1 lg:flex-none"
+                >
                   Padrão
                 </Button>
                 <Button
-                  variant="outline"
+                  variant={density === "spacious" ? "outline" : "default"}
+                  onClick={() => setDensity("spacious")}
                   size="sm"
                   className="flex-1 lg:flex-none"
                 >
