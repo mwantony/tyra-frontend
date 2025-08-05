@@ -132,7 +132,7 @@ export default function SettingsPage() {
               </div>
               <div className="flex flex-wrap gap-2 w-full lg:w-auto">
                 <Button
-                  variant={density === "compact" ? "outline" : "default"}
+                  variant={density === "compact" ? "default" : "outline"}
                   size="sm"
                   className="flex-1 lg:flex-none"
                   onClick={() => setDensity("compact")}
@@ -140,7 +140,7 @@ export default function SettingsPage() {
                   Compacto
                 </Button>
                 <Button
-                  variant={density === "default" ? "outline" : "default"}
+                  variant={density === "default" ? "default" : "outline"}
                   onClick={() => setDensity("default")}
                   size="sm"
                   className="flex-1 lg:flex-none"
@@ -148,7 +148,7 @@ export default function SettingsPage() {
                   Padrão
                 </Button>
                 <Button
-                  variant={density === "spacious" ? "outline" : "default"}
+                  variant={density === "spacious" ? "default" : "outline"}
                   onClick={() => setDensity("spacious")}
                   size="sm"
                   className="flex-1 lg:flex-none"
