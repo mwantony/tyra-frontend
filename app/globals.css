@@ -242,9 +242,7 @@ input {
   font-size: var(--font-size-2xl);
 }
 
-.text-muted-foreground {
-  font-size: var(--font-size-md);
-}
+
 .text-sm {
   font-size: var(--font-size-sm);
 }
