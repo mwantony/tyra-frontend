@@ -148,6 +148,11 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
     } catch (error) {
       setConfirmDelete(false);
       toast.error("Erro ao excluir mesa.");
+    } finally {
+      setTimeout(
+        () => document.body.style.removeProperty("pointer-events"),
+        500
+      );
     }
   };
 
@@ -478,7 +483,16 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
           </DialogHeader>
 
           <div className="flex justify-end space-x-4 mt-4">
-            <Button variant="outline" onClick={() => setModalOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setModalOpen(false);
+                setTimeout(
+                  () => document.body.style.removeProperty("pointer-events"),
+                  500
+                );
+              }}
+            >
               Cancelar
             </Button>
             <Button

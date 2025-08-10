@@ -304,8 +304,8 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
             >
               Cancelar
             </Button>
-            <Button disabled={confirmDelete} onClick={handleDeleteProduto}>
-              {confirmDelete ? "Confirmando..." : "Confirmar"}
+            <Button variant={"destructive"} disabled={confirmDelete} onClick={handleDeleteProduto}>
+              {confirmDelete ? "Confirmando..." : "Confirmar exclusão"}
             </Button>
           </DialogFooter>
         </DialogContent>
