@@ -97,6 +97,7 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
       }
       setConfirmDelete(false);
     }
+    setTimeout(() => document.body.style.removeProperty("pointer-events"), 500);
   };
 
   const renderPageNumbers = () => {
@@ -152,7 +153,8 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
 
       return (
         <PaginationItem key={index}>
-          <PaginationLink className="hover:cursor-pointer"
+          <PaginationLink
+            className="hover:cursor-pointer"
             isActive={pageNumber === currentPage}
             onClick={() => setCurrentPage(Number(pageNumber))}
           >
@@ -199,7 +201,9 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
                     currency: "BRL",
                   }).format(Number(produto.preco))}
                 </TableCell>
-                <TableCell>{produto.tipo.charAt(0).toUpperCase() + produto.tipo.slice(1)}</TableCell>
+                <TableCell>
+                  {produto.tipo.charAt(0).toUpperCase() + produto.tipo.slice(1)}
+                </TableCell>
                 <TableCell>{produto.ean ? produto.ean : "- - -"}</TableCell>
                 <TableCell>
                   {produto.descricao ? produto.descricao : "- - -"}
@@ -252,7 +256,8 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <PaginationPrevious className="hover:cursor-pointer"
+                <PaginationPrevious
+                  className="hover:cursor-pointer"
                   onClick={() =>
                     setCurrentPage((prev) => Math.max(prev - 1, 1))
                   }
@@ -265,7 +270,8 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
               {renderPageNumbers()}
 
               <PaginationItem>
-                <PaginationNext className="hover:cursor-pointer"
+                <PaginationNext
+                  className="hover:cursor-pointer"
                   onClick={() =>
                     setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                   }
@@ -286,7 +292,16 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
             </DialogTitle>
           </DialogHeader>
           <DialogFooter className="flex justify-end gap-4">
-            <Button variant="outline" onClick={() => setIsModalOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIsModalOpen(false);
+                setTimeout(
+                  () => document.body.style.removeProperty("pointer-events"),
+                  500
+                );
+              }}
+            >
               Cancelar
             </Button>
             <Button disabled={confirmDelete} onClick={handleDeleteProduto}>
