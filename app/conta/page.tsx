@@ -26,7 +26,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Toaster } from "@/components/ui/sonner";
+
 import { formatCNPJ } from "@/utils/cnpjUtils";
 
 export default function RestaurantAccountPage() {
@@ -144,7 +144,7 @@ export default function RestaurantAccountPage() {
 
   return (
     <div>
-      <Toaster></Toaster>
+      
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-4 md:p-6">
         <div>
           <h1 className="text-2xl font-bold">Minha Conta</h1>

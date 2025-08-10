@@ -16,14 +16,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Toaster } from "@/components/ui/sonner";
 import { useTranslate } from "@/hooks/use-translate";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Spinner } from "@/components/ui/spinner";
-import { MoonLoader } from "react-spinners";
+
 import { Loader2 } from "lucide-react";
-import { set } from "date-fns";
 import { formatCurrency, unformatCurrency } from "@/utils/currencyUtils";
 const fetchProdutoByEAN = async (ean: string) => {
   const response = await fetch(
@@ -101,7 +98,6 @@ export default function Page() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <Toaster />
       <div className="flex flex-col items-center">
         <Card className="w-full max-w-2xl">
           <CardHeader>

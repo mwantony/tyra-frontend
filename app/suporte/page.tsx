@@ -26,7 +26,6 @@ import {
 import { toast } from "sonner";
 import emailjs from "@emailjs/browser";
 import React from "react";
-import { Toaster } from "@/components/ui/sonner";
 
 export default function SupportPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,7 +79,7 @@ export default function SupportPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <Toaster></Toaster>
+      
       <div className="flex items-center justify-between p-6">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Suporte</h1>

@@ -44,7 +44,7 @@ import {
 import Mesa from "@/interfaces/Mesa";
 import { Textarea } from "./ui/textarea";
 import { toast } from "sonner";
-import { Toaster } from "./ui/sonner";
+
 import { Label } from "./ui/label";
 import {
   Dialog,
@@ -300,10 +300,6 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
   };
 
   const renderTable = (dataToRender: Mesa[]) => {
-    if (dataToRender.length === 0) {
-      return <p className="text-center p-4">Nenhuma mesa encontrada.</p>;
-    }
-
     return (
       <>
         <Table>
@@ -318,63 +314,78 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {dataToRender.map((mesa) => (
-              <TableRow key={mesa.id}>
-                <TableCell>{mesa.id}</TableCell>
-                <TableCell className="font-medium">
-                  {mesa.identificacao}
-                </TableCell>
-                <TableCell>{mesa.capacidade} pessoas</TableCell>
-                <TableCell>{getStatusBadge(mesa.status)}</TableCell>
-                <TableCell>
-                  {renderReservaInfo(mesa)}
-                  {mesa.nome_reserva ? <div>{mesa.nome_reserva}</div> : "- - -"}
-                </TableCell>
-                <TableCell className="flex space-x-2">
-                  <Link href={`/mesas/detalhes/${mesa.id}`}>
-                    <Button variant="outline">Detalhes</Button>
-                  </Link>
-                </TableCell>
-                <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button className="p-2 rounded-md hover:bg-muted transition-colors">
-                        <MoreHorizontal className="w-5 h-5 text-muted-foreground" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-44">
-                      {mesa.status !== "reservada" &&
-                        mesa.status !== "ocupada" && (
+            {dataToRender.length > 0 ? (
+              dataToRender.map((mesa) => (
+                <TableRow key={mesa.id}>
+                  <TableCell>{mesa.id}</TableCell>
+                  <TableCell className="font-medium">
+                    {mesa.identificacao}
+                  </TableCell>
+                  <TableCell>{mesa.capacidade} pessoas</TableCell>
+                  <TableCell>{getStatusBadge(mesa.status)}</TableCell>
+                  <TableCell>
+                    {renderReservaInfo(mesa)}
+                    {mesa.nome_reserva ? (
+                      <div>{mesa.nome_reserva}</div>
+                    ) : (
+                      "- - -"
+                    )}
+                  </TableCell>
+                  <TableCell className="flex space-x-2">
+                    <Link href={`/mesas/detalhes/${mesa.id}`}>
+                      <Button variant="outline">Detalhes</Button>
+                    </Link>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="p-2 rounded-md hover:bg-muted transition-colors">
+                          <MoreHorizontal className="w-5 h-5 text-muted-foreground" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-44">
+                        {mesa.status !== "reservada" &&
+                          mesa.status !== "ocupada" && (
+                            <DropdownMenuItem
+                              onClick={() => openReservarModal(mesa.id)}
+                              className="focus:text-primary"
+                            >
+                              <CalendarCheck className="w-4 h-4 mr-2" />
+                              Reservar
+                            </DropdownMenuItem>
+                          )}
+                        {mesa.status !== "livre" && (
                           <DropdownMenuItem
-                            onClick={() => openReservarModal(mesa.id)}
+                            onClick={() => openLiberarModal(mesa.id)}
                             className="focus:text-primary"
                           >
-                            <CalendarCheck className="w-4 h-4 mr-2" />
-                            Reservar
+                            <Unlock className="w-4 h-4 mr-2" />
+                            Liberar
                           </DropdownMenuItem>
                         )}
-                      {mesa.status !== "livre" && (
-                        <DropdownMenuItem
-                          onClick={() => openLiberarModal(mesa.id)}
-                          className="focus:text-primary"
-                        >
-                          <Unlock className="w-4 h-4 mr-2" />
-                          Liberar
-                        </DropdownMenuItem>
-                      )}
 
-                      <DropdownMenuItem
-                        onClick={() => openDeleteModal(mesa.id)}
-                        className="text-destructive focus:text-destructive"
-                      >
-                        <Trash2 className="w-4 h-4 mr-2 text-destructive" />
-                        Excluir
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                        <DropdownMenuItem
+                          onClick={() => openDeleteModal(mesa.id)}
+                          className="text-destructive focus:text-destructive"
+                        >
+                          <Trash2 className="w-4 h-4 mr-2 text-destructive" />
+                          Excluir
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={7}
+                  className="text-center text-muted-foreground text-sm py-10"
+                >
+                  Nenhuma mesa encontrada.
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
 
@@ -414,7 +425,6 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
 
   return (
     <div>
-      <Toaster></Toaster>
       <div className="pb-4">
         <Input
           type="text"

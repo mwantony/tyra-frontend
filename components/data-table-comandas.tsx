@@ -20,7 +20,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Barcode, CreditCardIcon, MoreHorizontal, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { deleteComanda, getComandaCartao, getComandaCodigo } from "@/services/comandas";
+import {
+  deleteComanda,
+  getComandaCartao,
+  getComandaCodigo,
+} from "@/services/comandas";
 import { Button } from "./ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import Link from "next/link";
@@ -35,7 +39,7 @@ import {
   PaginationEllipsis,
 } from "@/components/ui/pagination";
 import { toast } from "sonner";
-import { Toaster } from "./ui/sonner";
+
 import {
   Dialog,
   DialogContent,
@@ -220,7 +224,8 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
 
       return (
         <PaginationItem key={index}>
-          <PaginationLink className="hover:cursor-pointer"
+          <PaginationLink
+            className="hover:cursor-pointer"
             isActive={pageNumber === currentPage}
             onClick={() => setCurrentPage(Number(pageNumber))}
           >
@@ -232,13 +237,8 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
   };
 
   const renderTable = (dataToRender: Comanda[]) => {
-    if (dataToRender.length === 0) {
-      return <p className="text-center p-4">Nenhuma comanda encontrada.</p>;
-    }
-
     return (
       <>
-        <Toaster></Toaster>
         <Table>
           <TableHeader>
             <TableRow>
@@ -249,52 +249,63 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {dataToRender.map((comanda) => (
-              <TableRow key={comanda.id}>
-                <TableCell>{comanda.id}</TableCell>
-                <TableCell>{comanda.numero_comanda}</TableCell>
-                <TableCell>{getStatusBadge(comanda.status)}</TableCell>
-                <TableCell>
-                  <Link href={`/comandas/detalhes/${comanda.numero_comanda}`}>
-                    <Button variant="outline">Detalhes</Button>
-                  </Link>
-                </TableCell>
-                <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button className="p-2 rounded-md hover:bg-muted transition-colors">
-                        <MoreHorizontal className="w-5 h-5 text-muted-foreground" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-44">
-                      <DropdownMenuItem
-                        onClick={() =>
-                          handleBaixarCodigo(comanda.numero_comanda)
-                        }
-                      >
-                        <Barcode className="w-4 h-4 mr-2" />
-                        Baixar Código
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() =>
-                          handleBaixarCartao(comanda.numero_comanda)
-                        }
-                      >
-                        <CreditCardIcon className="w-4 h-4 mr-2" />
-                        Gerar Cartão
-                      </DropdownMenuItem>
-                      {/* <DropdownMenuItem
+            {dataToRender?.length > 0 ? (
+              dataToRender.map((comanda) => (
+                <TableRow key={comanda.id}>
+                  <TableCell>{comanda.id}</TableCell>
+                  <TableCell>{comanda.numero_comanda}</TableCell>
+                  <TableCell>{getStatusBadge(comanda.status)}</TableCell>
+                  <TableCell>
+                    <Link href={`/comandas/detalhes/${comanda.numero_comanda}`}>
+                      <Button variant="outline">Detalhes</Button>
+                    </Link>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="p-2 rounded-md hover:bg-muted transition-colors">
+                          <MoreHorizontal className="w-5 h-5 text-muted-foreground" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-44">
+                        <DropdownMenuItem
+                          onClick={() =>
+                            handleBaixarCodigo(comanda.numero_comanda)
+                          }
+                        >
+                          <Barcode className="w-4 h-4 mr-2" />
+                          Baixar Código
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() =>
+                            handleBaixarCartao(comanda.numero_comanda)
+                          }
+                        >
+                          <CreditCardIcon className="w-4 h-4 mr-2" />
+                          Gerar Cartão
+                        </DropdownMenuItem>
+                        {/* <DropdownMenuItem
                         onClick={() => openDeleteModal(comanda.numero_comanda)}
                         className="text-destructive focus:text-destructive"
                       >
                         <Trash2 className="w-4 h-4 mr-2 text-destructive" />
                         Excluir
                       </DropdownMenuItem> */}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={5}
+                  className="text-center h-24 text-muted-foreground"
+                >
+                  Nenhuma comanda encontrada.
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
 
@@ -304,7 +315,8 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
             <Pagination>
               <PaginationContent>
                 <PaginationItem>
-                  <PaginationPrevious className="hover:cursor-pointer"
+                  <PaginationPrevious
+                    className="hover:cursor-pointer"
                     onClick={() =>
                       setCurrentPage((prev) => Math.max(prev - 1, 1))
                     }
@@ -315,7 +327,8 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
                 {renderPageNumbers()}
 
                 <PaginationItem>
-                  <PaginationNext className="hover:cursor-pointer"
+                  <PaginationNext
+                    className="hover:cursor-pointer"
                     onClick={() =>
                       setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                     }

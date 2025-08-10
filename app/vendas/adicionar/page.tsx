@@ -24,7 +24,6 @@ import { X, Search, ArrowLeft } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Toaster } from "@/components/ui/sonner";
 import { formatCurrency } from "@/utils/currencyUtils";
 
 export default function NovaVendaPage() {
@@ -154,7 +153,7 @@ export default function NovaVendaPage() {
 
   return (
     <div className="p-4 md:p-8 w-full">
-      <Toaster></Toaster>
+      
       <div className="max-w-7xl mx-auto">
         <Card>
           <CardHeader>

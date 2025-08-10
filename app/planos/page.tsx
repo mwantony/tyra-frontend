@@ -28,7 +28,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { PaymentModal } from "./payment-modal";
 import { toast } from "sonner";
-import { Toaster } from "@/components/ui/sonner";
+
 import { Check, X } from "lucide-react";
 export default function BillingPage() {
   const [currentPlan, setCurrentPlan] = useState<any>();
@@ -229,7 +229,7 @@ export default function BillingPage() {
   );
   return (
     <div className="flex flex-col h-full">
-      <Toaster></Toaster>
+      
       <div className="flex items-center justify-between">
         <div className="p-6">
           <h1 className="text-2xl font-bold">Planos e Cobranças</h1>

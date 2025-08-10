@@ -38,7 +38,6 @@ import { AnimatedNumber } from "@/components/section-cards";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/auth-provider";
 import { toast } from "sonner";
-import { Toaster } from "@/components/ui/sonner";
 import { FinanceNotAvailable } from "./finance-not-avaiable";
 import { Badge } from "@/components/ui/badge";
 import { ChartComponent } from "./chart-component";
@@ -168,7 +167,7 @@ export default function FinancePage() {
   } else {
     return (
       <div className="flex flex-col h-full">
-        <Toaster></Toaster>
+        
         <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 p-6">
           <div className="flex flex-col gap-1">
             <h1 className="text-2xl font-bold tracking-tight">Financeiro</h1>

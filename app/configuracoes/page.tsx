@@ -29,7 +29,7 @@ import {
 import { deleteRestaurante, getJsonRestaurante } from "@/services/restaurantes";
 import { useAuth } from "@/contexts/auth-provider";
 import { toast } from "sonner";
-import { Toaster } from "@/components/ui/sonner";
+
 import { set } from "date-fns";
 import { DeleteAccountDialog } from "./delete-account-dialog";
 import { useDensity } from "@/contexts/density-provider";
@@ -85,7 +85,7 @@ export default function SettingsPage() {
   };
   return (
     <div className="flex flex-col h-full">
-      <Toaster></Toaster>
+      
       <div className="flex items-center justify-between p-6">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Configurações</h1>

@@ -55,7 +55,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Toaster } from "@/components/ui/sonner";
+
 import { PaymentMethodDialog } from "./payment-method-modal";
 import { formatCurrency } from "@/utils/currencyUtils";
 
@@ -207,7 +207,7 @@ export default function DetalhesComandaPage() {
 
   return (
     <div>
-      <Toaster></Toaster>
+      
       <div className="flex p-4  md:p-6 flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">

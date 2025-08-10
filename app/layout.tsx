@@ -8,6 +8,8 @@ import AuthWrapper from "@/components/auth-wrapper"; // <- certifique-se do cami
 import { ThemeProvider } from "@/contexts/theme-provider";
 import { Analytics } from "@vercel/analytics/next";
 import { DensityProvider } from "@/contexts/density-provider";
+import { Toaster } from "@/components/ui/sonner";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -48,6 +50,7 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Toaster richColors />
         <ThemeProvider>
           <DensityProvider>
             <AuthWrapper>{children}</AuthWrapper>

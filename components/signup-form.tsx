@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/auth-provider";
 import Link from "next/link";
-import { Toaster } from "./ui/sonner";
+
 import { toast } from "sonner";
 import { formatCNPJ, unformatCNPJ } from "@/utils/cnpjUtils";
 import { formatPhoneNumber } from "@/utils/phoneUtils";
@@ -388,7 +388,6 @@ export function SignUpForm({
 
   return (
     <div className={cn("flex flex-col gap-6 ", className)} {...props}>
-      <Toaster />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

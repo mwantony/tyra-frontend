@@ -5,7 +5,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import api from "../services/api";
 import { toast } from "sonner";
-import { Toaster } from "@/components/ui/sonner";
 import { usePathname, useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import path from "node:path/posix";
@@ -155,7 +154,7 @@ export const AuthProvider = ({ children }: any) => {
         refreshRestaurante,
       }}
     >
-      <Toaster></Toaster>
+      
       {children}
     </AuthContext.Provider>
   );

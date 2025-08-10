@@ -3,7 +3,7 @@
 "use client";
 
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
 import { Plus, Search } from "lucide-react";
 
@@ -21,7 +21,6 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Toaster } from "@/components/ui/sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { setComandas } from "@/store/slices/comandasSlice";
@@ -29,30 +28,41 @@ import { ComandasSkeleton } from "./comandas-skeleton";
 
 export default function ComandasPage() {
   const dispatch = useDispatch<AppDispatch>();
-
   const comandas = useSelector((state: RootState) => state.comandas.comandas);
+
   const [loading, setLoading] = useState<boolean>(true);
   const [confirmComanda, setConfirmComanda] = useState<boolean>(false);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const [termoBusca, setTermoBusca] = useState<string>("");
+  const toastShownRef = useRef(false); // Controle para toasts únicos
 
-  const recarregarComandas = async () => {
+  const recarregarComandas = React.useCallback(async () => {
     setLoading(true);
     try {
       const resposta = await getComandas();
       dispatch(setComandas(resposta));
     } catch (error) {
-      toast.error("Erro ao carregar comandas", {
-        description: "Não foi possível obter a lista de comandas",
-      });
+      if (!toastShownRef.current) {
+        toast.error("Erro ao carregar comandas", {
+          description: "Não foi possível obter a lista de comandas",
+        });
+        toastShownRef.current = true;
+      }
     } finally {
       setLoading(false);
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     recarregarComandas();
-  }, []);
+
+    return () => {
+      abortController.abort();
+      toastShownRef.current = false; // Reseta ao desmontar
+    };
+  }, [recarregarComandas]);
 
   const handleNovaComanda = () => {
     setModalOpen(true);
@@ -63,15 +73,16 @@ export default function ComandasPage() {
     try {
       await postComanda();
       toast.success("Comanda criada com sucesso!");
-      setConfirmComanda(false);
-
       setModalOpen(false);
     } catch (error: any) {
-      toast.error(error.response.data.error);
-      setConfirmComanda(false);
-      setModalOpen(false);
+      if (!toastShownRef.current) {
+        toast.error(error.response?.data?.error || "Erro ao criar comanda");
+        toastShownRef.current = true;
+      }
     } finally {
+      setConfirmComanda(false);
       await recarregarComandas();
+      toastShownRef.current = false; // Reseta para permitir novos toasts
     }
   };
 
@@ -83,8 +94,6 @@ export default function ComandasPage() {
 
   return (
     <div className="flex flex-col gap-4 p-4 pt-2 md:pt-2 lg:pt-2 md:gap-6 md:p-6 lg:p-6">
-      {" "}
-      <Toaster />
       {/* Cabeçalho */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -101,6 +110,7 @@ export default function ComandasPage() {
           </Button>
         </div>
       </div>
+
       {/* Card principal */}
       <Card>
         <CardHeader>
@@ -118,31 +128,16 @@ export default function ComandasPage() {
 
         <CardContent>
           {loading ? (
-            <ComandasSkeleton></ComandasSkeleton>
-          ) : comandasFiltradas.length > 0 ? (
+            <ComandasSkeleton />
+          ) : (
             <DataTableComandas
               data={comandasFiltradas}
               onDelete={recarregarComandas}
             />
-          ) : (
-            <div className="flex flex-col items-center justify-center py-10 gap-2 text-center">
-              <Search className="h-8 w-8 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">
-                Nenhuma comanda encontrada
-              </p>
-              {termoBusca && (
-                <Button
-                  variant="ghost"
-                  onClick={() => setTermoBusca("")}
-                  className="mt-2"
-                >
-                  Limpar busca
-                </Button>
-              )}
-            </div>
           )}
         </CardContent>
       </Card>
+
       {/* Modal de Confirmação */}
       <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
         <DialogContent>
@@ -161,7 +156,7 @@ export default function ComandasPage() {
               disabled={confirmComanda}
               onClick={handleConfirmacaoCriacao}
             >
-              {confirmComanda === true ? "Confirmando..." : "Confirmar"}
+              {confirmComanda ? "Confirmando..." : "Confirmar"}
             </Button>
           </DialogFooter>
         </DialogContent>

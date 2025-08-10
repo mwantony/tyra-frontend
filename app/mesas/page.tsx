@@ -3,51 +3,56 @@
 "use client";
 
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
 import { Plus, Search } from "lucide-react";
-import dayjs from "dayjs";
+import Link from "next/link";
 
-import { Skeleton } from "@/components/ui/skeleton";
-import { getMesas, postMesa } from "@/services/mesas";
+import { getMesas } from "@/services/mesas";
 import { DataTableMesas } from "@/components/data-table-mesas";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-
-import { Toaster } from "@/components/ui/sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { setMesas } from "@/store/slices/mesasSlice";
-import Link from "next/link";
 import { MesasSkeleton } from "./mesas-skeleton";
 
 export default function MesasPage() {
   const dispatch = useDispatch<AppDispatch>();
-
   const mesas = useSelector((state: RootState) => state.mesas.mesas);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [isModalOpen, setModalOpen] = useState<boolean>(false);
-  const [termoBusca, setTermoBusca] = useState<string>("");
 
-  const recarregarMesas = async () => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [termoBusca, setTermoBusca] = useState<string>("");
+  const toastShownRef = useRef(false); // Controle para toasts únicos
+
+  const recarregarMesas = React.useCallback(async () => {
     setLoading(true);
     try {
       const resposta = await getMesas();
       dispatch(setMesas(resposta));
     } catch (error) {
-      toast.error("Erro ao carregar mesas", {
-        description: "Não foi possível obter a lista de mesas",
-      });
+      if (!toastShownRef.current) {
+        toast.error("Erro ao carregar mesas", {
+          description: "Não foi possível obter a lista de mesas",
+        });
+        toastShownRef.current = true;
+      }
     } finally {
       setLoading(false);
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     recarregarMesas();
-  }, []);
+
+    return () => {
+      abortController.abort();
+      toastShownRef.current = false; // Reseta ao desmontar
+    };
+  }, [recarregarMesas]);
 
   const mesasFiltradas = mesas.filter((mesa) =>
     JSON.stringify(mesa).toLowerCase().includes(termoBusca.toLowerCase())
@@ -55,8 +60,6 @@ export default function MesasPage() {
 
   return (
     <div className="flex flex-col gap-4 p-4 pt-2 md:pt-2 lg:pt-2 md:gap-6 md:p-6 lg:p-6">
-      <Toaster />
-
       {/* Cabeçalho */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-1">
@@ -93,29 +96,13 @@ export default function MesasPage() {
 
         <CardContent>
           {loading ? (
-            <MesasSkeleton></MesasSkeleton>
-          ) : mesasFiltradas.length > 0 ? (
+            <MesasSkeleton />
+          ) : (
             <DataTableMesas
               recarregarMesas={recarregarMesas}
               data={mesasFiltradas}
               onDelete={recarregarMesas}
             />
-          ) : (
-            <div className="flex flex-col items-center justify-center py-10 gap-2 text-center">
-              <Search className="h-8 w-8 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">
-                Nenhuma mesa encontrada
-              </p>
-              {termoBusca && (
-                <Button
-                  variant="ghost"
-                  onClick={() => setTermoBusca("")}
-                  className="mt-2"
-                >
-                  Limpar busca
-                </Button>
-              )}
-            </div>
           )}
         </CardContent>
       </Card>
