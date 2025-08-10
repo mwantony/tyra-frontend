@@ -64,7 +64,7 @@ export default function FinancePage() {
   });
   const toastShownRef = useRef(false); // Controle para toasts únicos
   const abortControllerRef = useRef<AbortController | null>(null);
-
+  const refreshRef = useRef<HTMLButtonElement | null>(null);
   const handleRefresh = async () => {
     try {
       setIsRefreshing(true);
@@ -121,7 +121,7 @@ export default function FinancePage() {
   useEffect(() => {
     abortControllerRef.current = new AbortController();
     const signal = abortControllerRef.current.signal;
-
+  
     const fetchData = async () => {
       setIsLoading(true);
       try {
@@ -129,13 +129,17 @@ export default function FinancePage() {
         if (!signal.aborted) {
           setDadosFinanceiro(response);
           console.log(response);
+          
+          // Dispara o click no botão de refresh após 100ms
+          setTimeout(() => {
+            if (refreshRef.current && !signal.aborted) {
+              refreshRef.current.click();
+            }
+          }, 100);
         }
       } catch (error: any) {
         if (error.name !== "AbortError" && !signal.aborted) {
-          if (
-            error?.response?.data?.message ===
-            "Recurso disponível apenas no Plano Premium"
-          ) {
+          if (error?.response?.data?.message === "Recurso disponível apenas no Plano Premium") {
             setBlocked(true);
           } else if (!toastShownRef.current) {
             toast.error("Erro ao carregar dados financeiros");
@@ -149,35 +153,22 @@ export default function FinancePage() {
         }
       }
     };
-
+  
     fetchData();
-
+  
     return () => {
       abortControllerRef.current?.abort();
       toastShownRef.current = false;
     };
   }, [date.from, date.to, restaurante.plano_id]);
 
-  const calcularVariacaoSemanal = (
-    valorAtual: number,
-    valorSemanaPassada: number
-  ) => {
-    if (valorSemanaPassada === 0) {
-      return valorAtual === 0 ? 0 : 100;
-    }
-    return ((valorAtual - valorSemanaPassada) / valorSemanaPassada) * 100;
-  };
 
   const formatarVariacao = (variacao: number) => {
     const sinal = variacao >= 0 ? "+" : "";
     return `${sinal}${Math.round(variacao)}%`;
   };
 
-  const getCorVariacao = (variacao: number) => {
-    if (variacao > 0) return "text-green-500";
-    if (variacao < 0) return "text-red-500";
-    return "text-muted-foreground";
-  };
+
 
   if (isLoading) {
     return <FinanceSkeleton></FinanceSkeleton>;
@@ -199,6 +190,7 @@ export default function FinancePage() {
               size="sm"
               onClick={handleRefresh}
               disabled={isRefreshing}
+              ref={refreshRef}
               className="w-full md:w-auto" // Ocupa toda largura no mobile, largura automática no desktop
             >
               <RefreshCw
