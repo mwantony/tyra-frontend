@@ -23,7 +23,7 @@ import {
   RefreshCw,
   Filter,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { DatePickerWithRange } from "@/components/date-range-picker";
 import dayjs from "dayjs";
@@ -51,17 +51,19 @@ export default function FinancePage() {
       className={`h-2 ${cor} rounded-full`}
     />
   );
+
   const { restaurante } = useAuth();
   const [dadosFinanceiro, setDadosFinanceiro] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [blocked, setBlocked] = useState(false);
-  const [count, setCount] = useState(0);
   const [date, setDate] = React.useState({
     from: dayjs(subDays(new Date(), 7)).format("YYYY-MM-DD"),
     to: dayjs().format("YYYY-MM-DD"),
   });
+  const toastShownRef = useRef(false); // Controle para toasts únicos
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const handleRefresh = async () => {
     try {
@@ -69,18 +71,21 @@ export default function FinancePage() {
       const response = await getDadosFinanceiros(date.from, date.to);
       setDadosFinanceiro(response);
     } catch (error) {
-      console.error("Erro ao atualizar dados financeiros:", error);
-      toast.error(
-        "Não foi possível atualizar os dados financeiros. Tente novamente."
-      );
+      if (!toastShownRef.current) {
+        console.error("Erro ao atualizar dados financeiros:", error);
+        toast.error(
+          "Não foi possível atualizar os dados financeiros. Tente novamente."
+        );
+        toastShownRef.current = true;
+      }
     } finally {
       setIsRefreshing(false);
     }
   };
+
   const handleDownloadPdf = async () => {
     try {
       setIsDownloading(true);
-
       const response: any = await getDadosFinanceirosPdf(date.from, date.to);
 
       const blob = new Blob([response.data], { type: "application/pdf" });
@@ -95,9 +100,14 @@ export default function FinancePage() {
 
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("Erro ao baixar PDF:", error);
+      if (!toastShownRef.current) {
+        console.error("Erro ao baixar PDF:", error);
+        toast.error("Erro ao baixar relatório financeiro");
+        toastShownRef.current = true;
+      }
     } finally {
       setIsDownloading(false);
+      toastShownRef.current = false;
     }
   };
 
@@ -106,45 +116,54 @@ export default function FinancePage() {
       from: dayjs(newDateRange.from).format("YYYY-MM-DD"),
       to: dayjs(newDateRange.to).format("YYYY-MM-DD"),
     });
-    handleRefresh();
   };
+
   useEffect(() => {
-    if (count === 0) {
-      setIsLoading(true);
-      setCount(1);
-    }
+    abortControllerRef.current = new AbortController();
+    const signal = abortControllerRef.current.signal;
+
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const response = await getDadosFinanceiros(date.from, date.to);
-        console.log(response);
-        setDadosFinanceiro(response);
-        setIsLoading(false); // Garante que o loading seja desativado no final
-      } catch (error: any) {
-        if (
-          error?.response?.data?.message ===
-          "Recurso disponível apenas no Plano Premium"
-        ) {
-          setBlocked(true);
-          setIsLoading(false);
-          return;
+        if (!signal.aborted) {
+          setDadosFinanceiro(response);
+          console.log(response);
         }
-        setIsLoading(false);
-
-        toast.error("Erro ao carregar dados financeiros");
-
-        console.error("Erro ao carregar dados financeiros:", error);
+      } catch (error: any) {
+        if (error.name !== "AbortError" && !signal.aborted) {
+          if (
+            error?.response?.data?.message ===
+            "Recurso disponível apenas no Plano Premium"
+          ) {
+            setBlocked(true);
+          } else if (!toastShownRef.current) {
+            toast.error("Erro ao carregar dados financeiros");
+            toastShownRef.current = true;
+          }
+          console.error("Erro ao carregar dados financeiros:", error);
+        }
+      } finally {
+        if (!signal.aborted) {
+          setIsLoading(false);
+        }
       }
     };
 
     fetchData();
-  }, [count, date.from, date.to, restaurante.plano_id]); // Depende apenas de 'date.from', 'date.to' e 'restaurante.plano_id'
+
+    return () => {
+      abortControllerRef.current?.abort();
+      toastShownRef.current = false;
+    };
+  }, [date.from, date.to, restaurante.plano_id]);
 
   const calcularVariacaoSemanal = (
     valorAtual: number,
     valorSemanaPassada: number
   ) => {
     if (valorSemanaPassada === 0) {
-      return valorAtual === 0 ? 0 : 100; // Se não havia valor na semana passada, considera 100% de variação
+      return valorAtual === 0 ? 0 : 100;
     }
     return ((valorAtual - valorSemanaPassada) / valorSemanaPassada) * 100;
   };
@@ -167,7 +186,6 @@ export default function FinancePage() {
   } else {
     return (
       <div className="flex flex-col h-full">
-        
         <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 p-6">
           <div className="flex flex-col gap-1">
             <h1 className="text-2xl font-bold tracking-tight">Financeiro</h1>
