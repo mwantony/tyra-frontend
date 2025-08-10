@@ -50,10 +50,6 @@ export default function SobremesasPage() {
         value.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    if (activeTab === "all") return matchesSearch;
-    if (activeTab === "active") return matchesSearch && !prato.ativo;
-    if (activeTab === "inactive") return matchesSearch && prato.ativo;
-
     return matchesSearch;
   });
 
@@ -79,25 +75,6 @@ export default function SobremesasPage() {
       </div>
 
       {/* Abas de filtro */}
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList>
-          <TabsTrigger value="all">
-            Todos <Badge className="ml-2">{sobremesas.length}</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="active">
-            Ativos{" "}
-            <Badge className="ml-2">
-              {sobremesas.filter((p) => !p.ativo).length}
-            </Badge>
-          </TabsTrigger>
-          <TabsTrigger value="inactive">
-            Inativos{" "}
-            <Badge className="ml-2">
-              {sobremesas.filter((p) => p.ativo).length}
-            </Badge>
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
 
       {/* Card principal */}
       <Card>

@@ -71,6 +71,8 @@ export default function ProdutosPage() {
       return matchesSearch && produto.tipo === "prato";
     if (activeTab === "bebidas")
       return matchesSearch && produto.tipo === "bebida";
+    if (activeTab === "sobremesas")
+      return matchesSearch && produto.tipo === "sobremesa";
     if (activeTab === "outros")
       return matchesSearch && produto.tipo === "outros";
 
@@ -114,6 +116,12 @@ export default function ProdutosPage() {
             Bebidas{" "}
             <Badge className="ml-2">
               {produtos.filter((p) => p.tipo === "bebida").length}
+            </Badge>
+          </TabsTrigger>
+          <TabsTrigger value="sobremesas">
+            Sobremesas{" "}
+            <Badge className="ml-2">
+              {produtos.filter((p) => p.tipo === "sobremesa").length}
             </Badge>
           </TabsTrigger>
           <TabsTrigger value="outros">

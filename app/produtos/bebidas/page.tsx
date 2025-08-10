@@ -50,10 +50,6 @@ export default function BebidasPage() {
         value.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    if (activeTab === "all") return matchesSearch;
-    if (activeTab === "active") return matchesSearch && !bebida.ativo;
-    if (activeTab === "inactive") return matchesSearch && bebida.ativo;
-
     return matchesSearch;
   });
 
@@ -79,25 +75,6 @@ export default function BebidasPage() {
       </div>
 
       {/* Abas de filtro */}
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList>
-          <TabsTrigger value="all">
-            Todos <Badge className="ml-2">{bebidas.length}</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="active">
-            Ativos{" "}
-            <Badge className="ml-2">
-              {bebidas.filter((b) => !b.ativo).length}
-            </Badge>
-          </TabsTrigger>
-          <TabsTrigger value="inactive">
-            Inativos{" "}
-            <Badge className="ml-2">
-              {bebidas.filter((b) => b.ativo).length}
-            </Badge>
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
 
       {/* Card principal */}
       <Card>
