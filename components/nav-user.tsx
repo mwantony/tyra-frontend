@@ -149,7 +149,7 @@ export function NavUser() {
             >
               Cancelar
             </Button>
-            <Button onClick={handleLogout}>Confirmar</Button>
+            <Button variant={'destructive'} onClick={handleLogout}>Confirmar</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
