@@ -190,6 +190,11 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
       setConfirmReserve(false);
       console.error("Erro ao reservar mesa:", error);
       toast.error("Erro ao reservar mesa. Por favor, tente novamente.");
+    } finally {
+      setTimeout(
+        () => document.body.style.removeProperty("pointer-events"),
+        500
+      );
     }
   };
   const handleLiberarMesa = async (id: string | number) => {
@@ -205,6 +210,11 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
       setConfirmLiberacao(false);
 
       toast.error("Erro ao liberar a mesa.");
+    } finally {
+      setTimeout(
+        () => document.body.style.removeProperty("pointer-events"),
+        500
+      );
     }
   };
 
@@ -589,7 +599,13 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
                 type="button"
                 className="w-full md:w-auto"
                 variant="outline"
-                onClick={() => setReservarModalOpen(false)}
+                onClick={() => {
+                  setReservarModalOpen(false);
+                  setTimeout(
+                    () => document.body.style.removeProperty("pointer-events"),
+                    500
+                  );
+                }}
               >
                 Cancelar
               </Button>
@@ -617,7 +633,13 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
           <div className="flex justify-end space-x-4 mt-6">
             <Button
               variant="outline"
-              onClick={() => setLiberarModalOpen(false)}
+              onClick={() => {
+                setLiberarModalOpen(false);
+                setTimeout(
+                  () => document.body.style.removeProperty("pointer-events"),
+                  500
+                );
+              }}
             >
               Cancelar
             </Button>
