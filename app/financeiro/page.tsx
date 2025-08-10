@@ -65,10 +65,18 @@ export default function FinancePage() {
   });
 
   const handleRefresh = async () => {
-    setIsRefreshing(true);
-    const response = await getDadosFinanceiros(date.from, date.to);
-    setDadosFinanceiro(response);
-    setIsRefreshing(false);
+    try {
+      setIsRefreshing(true);
+      const response = await getDadosFinanceiros(date.from, date.to);
+      setDadosFinanceiro(response);
+    } catch (error) {
+      console.error("Erro ao atualizar dados financeiros:", error);
+      toast.error(
+        "Não foi possível atualizar os dados financeiros. Tente novamente."
+      );
+    } finally {
+      setIsRefreshing(false);
+    }
   };
   const handleDownloadPdf = async () => {
     try {
@@ -121,6 +129,8 @@ export default function FinancePage() {
           setIsLoading(false);
           return;
         }
+        setIsLoading(false);
+
         toast.error("Erro ao carregar dados financeiros");
 
         console.error("Erro ao carregar dados financeiros:", error);
@@ -215,7 +225,6 @@ export default function FinancePage() {
               </div>
             </CardContent>
           </Card>
-
           {/* Resumo Financeiro */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card>
@@ -279,7 +288,6 @@ export default function FinancePage() {
               </CardContent>
             </Card>
           </div>
-
           {/* Métodos de Pagamento e Transações Recentes */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Métodos de Pagamento */}
@@ -377,9 +385,9 @@ export default function FinancePage() {
               </CardContent>
             </Card>
           </div>
-
-{/*           <ChartComponent grafico={dadosFinanceiro?.grafico}></ChartComponent>
- */}          {/* Estatísticas Adicionais */}
+          {/*           <ChartComponent grafico={dadosFinanceiro?.grafico}></ChartComponent>
+           */}{" "}
+          {/* Estatísticas Adicionais */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">

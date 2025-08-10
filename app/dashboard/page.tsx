@@ -52,20 +52,36 @@ export default function Page() {
   };
 
   const handleRefresh = async () => {
-    setIsRefreshing(true);
-    const resposta = await filtrarVendas(date.from, date.to);
-    setVendaFiltrada(resposta);
-    setIsRefreshing(false);
+    try {
+      setIsRefreshing(true);
+      const resposta = await filtrarVendas(date.from, date.to);
+      setVendaFiltrada(resposta);
+    } catch (error) {
+      console.error("Erro ao atualizar vendas:", error);
+      toast.error(
+        "Não foi possível atualizar as vendas. Por favor, tente novamente."
+      );
+    } finally {
+      setIsRefreshing(false);
+    }
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      const resposta = await filtrarVendas(date.from, date.to);
-      setVendaFiltrada(resposta);
-      setLoading(false);
-      if (refreshRef.current) {
-        refreshRef.current.click();
+      try {
+        setLoading(true);
+        const resposta = await filtrarVendas(date.from, date.to);
+        setVendaFiltrada(resposta);
+      } catch (error) {
+        console.error("Erro ao carregar vendas:", error);
+        toast.error(
+          "Não foi possível carregar as vendas. Por favor, tente novamente mais tarde."
+        );
+      } finally {
+        setLoading(false);
+        if (refreshRef.current) {
+          refreshRef.current.click();
+        }
       }
     };
 

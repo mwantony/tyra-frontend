@@ -18,6 +18,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { setProdutos } from "@/store/slices/produtosSlice";
 import { ProdutosSkeleton } from "./produtos-skeleton";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function ProdutosPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -34,6 +36,9 @@ export default function ProdutosPage() {
       dispatch(setProdutos(resposta));
     } catch (error) {
       console.error("Erro ao buscar produtos:", error);
+      toast.error(
+        "Não foi possível carregar os produtos. Por favor, tente novamente mais tarde."
+      );
     } finally {
       setLoading(false);
     }
@@ -63,18 +68,20 @@ export default function ProdutosPage() {
   });
 
   return (
-    <div className="flex flex-col gap-6 p-4 md:p-6 lg:p-6">
-      {/* Cabeçalho */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Produtos</h1>
-          <p className="text-muted-foreground">
-            Gerencie seu catálogo de produtos
-          </p>
-        </div>
+    <>
+      <Toaster></Toaster>
+      <div className="flex flex-col gap-6 p-4 md:p-6 lg:p-6">
+        {/* Cabeçalho */}
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Produtos</h1>
+            <p className="text-muted-foreground">
+              Gerencie seu catálogo de produtos
+            </p>
+          </div>
 
-        <div className="flex flex-col gap-3 sm:flex-row">
-          {/* <div className="relative">
+          <div className="flex flex-col gap-3 sm:flex-row">
+            {/* <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Buscar produtos..."
@@ -84,64 +91,65 @@ export default function ProdutosPage() {
             />
           </div> */}
 
-          <Link href="/produtos/adicionar">
-            <Button className="w-full sm:w-fit">
-              <Plus className="mr-2 h-4 w-4" />
-              Novo Produto
-            </Button>
-          </Link>
+            <Link href="/produtos/adicionar">
+              <Button className="w-full sm:w-fit">
+                <Plus className="mr-2 h-4 w-4" />
+                Novo Produto
+              </Button>
+            </Link>
+          </div>
         </div>
+
+        {/* Abas de filtro */}
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList>
+            <TabsTrigger value="all">
+              Todos <Badge className="ml-2">{produtos.length}</Badge>
+            </TabsTrigger>
+            <TabsTrigger value="pratos">
+              Pratos{" "}
+              <Badge className="ml-2">
+                {produtos.filter((p) => p.tipo === "prato").length}
+              </Badge>
+            </TabsTrigger>
+            <TabsTrigger value="bebidas">
+              Bebidas{" "}
+              <Badge className="ml-2">
+                {produtos.filter((p) => p.tipo === "bebida").length}
+              </Badge>
+            </TabsTrigger>
+            <TabsTrigger value="outros">
+              Outros{" "}
+              <Badge className="ml-2">
+                {produtos.filter((p) => p.tipo === "outros").length}
+              </Badge>
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+
+        {/* Card principal */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <span>Lista de Produtos</span>
+              <span className="text-sm font-normal text-muted-foreground">
+                {filteredProdutos.length} itens
+              </span>
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent>
+            {loading ? (
+              <ProdutosSkeleton></ProdutosSkeleton>
+            ) : (
+              <DataTableProdutos
+                fetchProdutos={fetchData}
+                data={filteredProdutos}
+              />
+            )}
+          </CardContent>
+        </Card>
       </div>
-
-      {/* Abas de filtro */}
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList>
-          <TabsTrigger value="all">
-            Todos <Badge className="ml-2">{produtos.length}</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="pratos">
-            Pratos{" "}
-            <Badge className="ml-2">
-              {produtos.filter((p) => p.tipo === "prato").length}
-            </Badge>
-          </TabsTrigger>
-          <TabsTrigger value="bebidas">
-            Bebidas{" "}
-            <Badge className="ml-2">
-              {produtos.filter((p) => p.tipo === "bebida").length}
-            </Badge>
-          </TabsTrigger>
-          <TabsTrigger value="outros">
-            Outros{" "}
-            <Badge className="ml-2">
-              {produtos.filter((p) => p.tipo === "outros").length}
-            </Badge>
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
-
-      {/* Card principal */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <span>Lista de Produtos</span>
-            <span className="text-sm font-normal text-muted-foreground">
-              {filteredProdutos.length} itens
-            </span>
-          </CardTitle>
-        </CardHeader>
-
-        <CardContent>
-          {loading ? (
-            <ProdutosSkeleton></ProdutosSkeleton>
-          ) : (
-            <DataTableProdutos
-              fetchProdutos={fetchData}
-              data={filteredProdutos}
-            />
-          )}
-        </CardContent>
-      </Card>
-    </div>
+    </>
   );
 }
