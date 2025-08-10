@@ -137,7 +137,16 @@ export function NavUser() {
             </DialogTitle>
           </DialogHeader>
           <DialogFooter className="flex justify-end gap-4">
-            <Button variant="outline" onClick={() => setOpenDialog(false)}>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setOpenDialog(false);
+                setTimeout(
+                  () => document.body.style.removeProperty("pointer-events"),
+                  500
+                ); // Reativa interações
+              }}
+            >
               Cancelar
             </Button>
             <Button onClick={handleLogout}>Confirmar</Button>
