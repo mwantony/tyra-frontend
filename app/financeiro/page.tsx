@@ -102,7 +102,6 @@ export default function FinancePage() {
     } catch (error) {
       if (!toastShownRef.current) {
         console.error("Erro ao baixar PDF:", error);
-        toast.error("Erro ao baixar relatório financeiro");
         toastShownRef.current = true;
       }
     } finally {
