@@ -40,6 +40,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import DetailsSkeletonMesas from "./details-skeleton";
 
 export default function MesaDetailsPage() {
   const { id } = useParams();
@@ -136,25 +137,7 @@ export default function MesaDetailsPage() {
   };
 
   if (!mesa) {
-    return (
-      <div className="container mx-auto p-4 md:p-6 md:space-y-6">
-        <div className="flex pb-4 md:pb-0 justify-between items-center">
-          <Skeleton className="h-8 w-40" />
-          <Skeleton className="h-8 w-24" />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2 space-y-4">
-            <Skeleton className="h-25 w-full" />
-            <Skeleton className="h-6 w-1/4" />
-            <Skeleton className="h-25 w-full" />
-          </div>
-          <div className="space-y-4">
-            <Skeleton className="h-20 w-full" />
-            <Skeleton className="h-40 w-full" />
-          </div>
-        </div>
-      </div>
-    );
+    return <DetailsSkeletonMesas></DetailsSkeletonMesas>;
   }
 
   return (
@@ -171,9 +154,6 @@ export default function MesaDetailsPage() {
         <Card className="md:col-span-2">
           <CardHeader className="flex flex-row justify-between items-center">
             <CardTitle>Informações da Mesa</CardTitle>
-            <Button variant="outline" onClick={() => setIsEditing(!isEditing)}>
-              {isEditing ? "Cancelar" : "Editar"}
-            </Button>
           </CardHeader>
           <CardContent>
             {isEditing ? (
@@ -241,7 +221,10 @@ export default function MesaDetailsPage() {
                   />
                 </div>
 
-                <Button type="submit" className="w-full md:w-auto">Salvar Alterações</Button>
+                <Button type="submit" className="w-full md:w-auto">
+                  Salvar Alterações
+                </Button>
+              
               </form>
             ) : (
               <div className="space-y-4">
@@ -273,6 +256,7 @@ export default function MesaDetailsPage() {
                     </div>
                   </div>
                 )}
+               
               </div>
             )}
           </CardContent>
