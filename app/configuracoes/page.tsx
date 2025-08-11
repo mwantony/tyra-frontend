@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   Dialog,
@@ -33,16 +33,38 @@ import { toast } from "sonner";
 import { set } from "date-fns";
 import { DeleteAccountDialog } from "./delete-account-dialog";
 import { useDensity } from "@/contexts/density-provider";
+import { Input } from "@/components/ui/input";
 
 export default function SettingsPage() {
   const { theme, toggleTheme } = useTheme();
   const { density, setDensity } = useDensity();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [enabled, setEnabled] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isConfirmDeleteDialogOpen, setIsConfirmDeleteDialogOpen] =
     useState(false);
   const { restaurante } = useAuth();
+
+  // Estados para os campos da integração Sicoob
+  const [sicoobConfig, setSicoobConfig] = useState({
+    clientId: (() => {
+      const config = localStorage.getItem("sicoobConfig");
+      return config ? JSON.parse(config).clientId : "";
+    })(),
+    clientSecret: (() => {
+      const config = localStorage.getItem("sicoobConfig");
+      return config ? JSON.parse(config).clientSecret : "";
+    })(),
+    certPath: (() => {
+      const config = localStorage.getItem("sicoobConfig");
+      return config ? JSON.parse(config).certPath : "";
+    })(),
+    certPassword: (() => {
+      const config = localStorage.getItem("sicoobConfig");
+      return config ? JSON.parse(config).certPassword : "";
+    })(),
+  });
 
   const handleExportData = async () => {
     setIsLoading(true);
@@ -78,14 +100,49 @@ export default function SettingsPage() {
       setIsLoading(false);
       setIsConfirmDeleteDialogOpen(false);
       localStorage.removeItem("restaurante");
+      // Limpar também as configurações do Sicoob ao deletar a conta
+      localStorage.removeItem("sicoobConfig");
       setTimeout(() => {
         window.location.href = "/login";
-      }, 1000); // Redireciona após 2 segundos
+      }, 1000);
     }
   };
+
+  // Carregar configurações do localStorage ao montar o componente
+  useEffect(() => {
+    const storedEnabled = localStorage.getItem("enabledSicoob");
+    if (storedEnabled === "true") {
+      setEnabled(true);
+    }
+
+    const storedConfig = localStorage.getItem("sicoobConfig");
+    if (storedConfig) {
+      setSicoobConfig(JSON.parse(storedConfig));
+    }
+  }, []);
+
+  // Salvar estado enabled no localStorage quando mudar
+  useEffect(() => {
+    localStorage.setItem("enabledSicoob", enabled ? "true" : "false");
+  }, [enabled]);
+
+  // Salvar configurações Sicoob no localStorage quando qualquer campo mudar
+  useEffect(() => {
+    localStorage.setItem("sicoobConfig", JSON.stringify(sicoobConfig));
+  }, [sicoobConfig]);
+
+  const handleSicoobConfigChange = (
+    field: keyof typeof sicoobConfig,
+    value: string
+  ) => {
+    setSicoobConfig((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
   return (
     <div className="flex flex-col h-full">
-      
       <div className="flex items-center justify-between p-6">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Configurações</h1>
@@ -164,31 +221,69 @@ export default function SettingsPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <span>Notificações</span>
+              <span>Integração Sicoob</span>
             </CardTitle>
             <CardDescription>
-              Controle como você recebe notificações
+              Configure sua integração com o banco Sicoob para gerar PIX
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex items-center justify-between rounded-lg border p-4">
               <div className="space-y-0.5">
-                <Label className="text-base">Notificações por e-mail</Label>
+                <Label className="text-base">Ativar integração</Label>
                 <p className="text-sm text-muted-foreground">
-                  Receba atualizações importantes por e-mail
+                  Habilite para configurar o acesso à API Sicoob
                 </p>
               </div>
-              <Switch defaultChecked />
+              <Switch checked={enabled} onCheckedChange={setEnabled} />
             </div>
 
-            <div className="flex items-center justify-between rounded-lg border p-4">
-              <div className="space-y-0.5">
-                <Label className="text-base">Notificações push</Label>
-                <p className="text-sm text-muted-foreground">
-                  Receba alertas em tempo real
-                </p>
+            <div className="space-y-4">
+              <div>
+                <Label>Client ID</Label>
+                <Input
+                  placeholder="Insira seu Client ID"
+                  disabled={!enabled}
+                  value={sicoobConfig.clientId}
+                  onChange={(e) =>
+                    handleSicoobConfigChange("clientId", e.target.value)
+                  }
+                />
               </div>
-              <Switch />
+              <div>
+                <Label>Client Secret</Label>
+                <Input
+                  placeholder="Insira seu Cliente Secret"
+                  disabled={!enabled}
+                  value={sicoobConfig.clientSecret}
+                  onChange={(e) =>
+                    handleSicoobConfigChange("clientSecret", e.target.value)
+                  }
+                />
+              </div>
+              <div>
+                <Label>Caminho do Certificado</Label>
+                <Input
+                  placeholder="Insira o caminho do certificado"
+                  disabled={!enabled}
+                  value={sicoobConfig.certPath}
+                  onChange={(e) =>
+                    handleSicoobConfigChange("certPath", e.target.value)
+                  }
+                />
+              </div>
+              <div>
+                <Label>Senha do Certificado</Label>
+                <Input
+                  type="password"
+                  placeholder="Insira a senha do certificado"
+                  disabled={!enabled}
+                  value={sicoobConfig.certPassword}
+                  onChange={(e) =>
+                    handleSicoobConfigChange("certPassword", e.target.value)
+                  }
+                />
+              </div>
             </div>
           </CardContent>
         </Card>
