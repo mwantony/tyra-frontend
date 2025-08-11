@@ -5,6 +5,9 @@
 
 /* Scrollbar base */
 
+body {
+  pointer-events: all !important;
+}
 @keyframes drawBackground {
   0% {
     transform: scaleX(0);

@@ -141,15 +141,14 @@ export function NavUser() {
               variant="outline"
               onClick={() => {
                 setOpenDialog(false);
-                setTimeout(
-                  () => document.body.style.removeProperty("pointer-events"),
-                  500
-                ); // Reativa interações
+                // Reativa interações
               }}
             >
               Cancelar
             </Button>
-            <Button variant={'destructive'} onClick={handleLogout}>Confirmar</Button>
+            <Button variant={"destructive"} onClick={handleLogout}>
+              Confirmar
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

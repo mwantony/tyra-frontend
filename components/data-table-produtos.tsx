@@ -97,7 +97,6 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
       }
       setConfirmDelete(false);
     }
-    setTimeout(() => document.body.style.removeProperty("pointer-events"), 500);
   };
 
   const renderPageNumbers = () => {
@@ -296,10 +295,7 @@ export const DataTableProdutos: React.FC<DataTableProps> = ({
               variant="outline"
               onClick={() => {
                 setIsModalOpen(false);
-                setTimeout(
-                  () => document.body.style.removeProperty("pointer-events"),
-                  500
-                );
+                
               }}
             >
               Cancelar

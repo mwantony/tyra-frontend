@@ -149,10 +149,7 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
       setConfirmDelete(false);
       toast.error("Erro ao excluir mesa.");
     } finally {
-      setTimeout(
-        () => document.body.style.removeProperty("pointer-events"),
-        500
-      );
+      
     }
   };
 
@@ -196,10 +193,7 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
       console.error("Erro ao reservar mesa:", error);
       toast.error("Erro ao reservar mesa. Por favor, tente novamente.");
     } finally {
-      setTimeout(
-        () => document.body.style.removeProperty("pointer-events"),
-        500
-      );
+      
     }
   };
   const handleLiberarMesa = async (id: string | number) => {
@@ -216,10 +210,7 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
 
       toast.error("Erro ao liberar a mesa.");
     } finally {
-      setTimeout(
-        () => document.body.style.removeProperty("pointer-events"),
-        500
-      );
+      
     }
   };
 
@@ -487,10 +478,7 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
               variant="outline"
               onClick={() => {
                 setModalOpen(false);
-                setTimeout(
-                  () => document.body.style.removeProperty("pointer-events"),
-                  500
-                );
+                
               }}
             >
               Cancelar
@@ -615,10 +603,7 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
                 variant="outline"
                 onClick={() => {
                   setReservarModalOpen(false);
-                  setTimeout(
-                    () => document.body.style.removeProperty("pointer-events"),
-                    500
-                  );
+                  
                 }}
               >
                 Cancelar
@@ -649,10 +634,7 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
               variant="outline"
               onClick={() => {
                 setLiberarModalOpen(false);
-                setTimeout(
-                  () => document.body.style.removeProperty("pointer-events"),
-                  500
-                );
+                
               }}
             >
               Cancelar
