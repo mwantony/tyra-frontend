@@ -283,8 +283,7 @@ export default function SupportPage() {
                 Como cancelar minha assinatura?
               </h3>
               <p className="text-sm text-muted-foreground">
-                Acesse as configurações da sua conta, vá para "Assinatura" e
-                clique em "Cancelar assinatura". O cancelamento será efetivado
+                Entre em contato com o suporte para prosseguir com o cancelamento. O cancelamento será efetivado
                 no final do período atual.
               </p>
             </div>
