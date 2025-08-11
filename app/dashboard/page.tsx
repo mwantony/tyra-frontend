@@ -46,7 +46,6 @@ export default function Page() {
       }
     } catch (error) {
       console.error("Erro ao gerar PDF:", error);
-      toast.error("Erro ao gerar PDF. Por favor, tente novamente.");
     } finally {
       setDownloading(false);
     }
