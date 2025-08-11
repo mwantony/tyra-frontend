@@ -21,8 +21,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import axios from "axios";
-import emailjs from '@emailjs/browser';
+import emailjs from "@emailjs/browser";
+import api from "@/services/api";
 
 export function LoginForm({
   className,
@@ -32,7 +32,8 @@ export function LoginForm({
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
-  const [isForgotPasswordDialogOpen, setIsForgotPasswordDialogOpen] = useState(false);
+  const [isForgotPasswordDialogOpen, setIsForgotPasswordDialogOpen] =
+    useState(false);
   const [isForgotPasswordLoading, setIsForgotPasswordLoading] = useState(false);
 
   const { login } = useAuth();
@@ -52,26 +53,36 @@ export function LoginForm({
   const handleForgotPassword = async () => {
     setIsForgotPasswordLoading(true);
     try {
-      const response = await axios.post('/api/reset-password', { 
-        email: forgotPasswordEmail 
+      const response = await api.post("/reset-password", {
+        email: forgotPasswordEmail,
       });
-  
+
       const newPassword = response.data.new_password; // Ajuste conforme sua API
-      
+
       // 3. Configurações do EmailJS
       const templateParams = {
         senha: newPassword,
+        email: forgotPasswordEmail,
       };
-  
+
       // 4. Envia o email com a nova senha
-      await emailjs.send(
-        'service_0dov8bj', // Substitua pelo seu Service ID
-        'template_9xa4pml', // Substitua pelo seu Template ID
-        templateParams,
-        'h7MCcuvNqiAnSz7tO' // Substitua pelo seu User ID
-      );
-  
-      toast.success("Um email com a nova senha foi enviado para seu endereço cadastrado.");
+      await emailjs
+        .send(
+          "service_0dov8bj", // Substitua pelo seu Service ID
+          "template_9xa4pml", // Substitua pelo seu Template ID
+          templateParams,
+          "h7MCcuvNqiAnSz7tO" // Substitua pelo seu User ID
+        )
+        .then(() => {
+          toast.success(
+            "Um email com a nova senha foi enviado para seu endereço cadastrado."
+          );
+        })
+        .catch((error) => {
+          console.error("Erro ao enviar email:", error);
+          toast.error("Erro ao enviar email. Tente novamente.");
+        });
+
       setIsForgotPasswordDialogOpen(false);
     } catch (error) {
       console.error("Erro no reset de senha:", error);
@@ -130,7 +141,10 @@ export function LoginForm({
                   <div className="grid gap-1">
                     <div className="flex items-center">
                       <Label htmlFor="password">Senha</Label>
-                      <Dialog open={isForgotPasswordDialogOpen} onOpenChange={setIsForgotPasswordDialogOpen}>
+                      <Dialog
+                        open={isForgotPasswordDialogOpen}
+                        onOpenChange={setIsForgotPasswordDialogOpen}
+                      >
                         <DialogTrigger asChild>
                           <button
                             type="button"
@@ -153,7 +167,9 @@ export function LoginForm({
                                 type="email"
                                 placeholder="Digite seu email cadastrado"
                                 value={forgotPasswordEmail}
-                                onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                                onChange={(e) =>
+                                  setForgotPasswordEmail(e.target.value)
+                                }
                               />
                             </div>
                             <Button
@@ -161,7 +177,9 @@ export function LoginForm({
                               onClick={handleForgotPassword}
                               disabled={isForgotPasswordLoading}
                             >
-                              {isForgotPasswordLoading ? "Enviando..." : "Enviar link de recuperação"}
+                              {isForgotPasswordLoading
+                                ? "Enviando..."
+                                : "Enviar link de recuperação"}
                             </Button>
                           </div>
                         </DialogContent>
