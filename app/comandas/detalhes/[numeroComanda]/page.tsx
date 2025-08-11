@@ -54,10 +54,10 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Skeleton } from "@/components/ui/skeleton";
 
 import { PaymentMethodDialog } from "./payment-method-modal";
 import { formatCurrency } from "@/utils/currencyUtils";
+import DetailsSkeleton from "./details-skeleton";
 
 export default function DetalhesComandaPage() {
   const { numeroComanda } = useParams();
@@ -172,19 +172,7 @@ export default function DetalhesComandaPage() {
 
   if (loading) {
     return (
-      <div className="p-4 md:p-6 space-y-4">
-        <Skeleton className="h-8 w-1/3" />
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-1/2" />
-          <Skeleton className="h-4 w-1/3" />
-        </div>
-        <Skeleton className="h-10 w-full" />
-        <div className="grid gap-4">
-          {[...Array(3)].map((_, i) => (
-            <Skeleton key={i} className="h-24 w-full" />
-          ))}
-        </div>
-      </div>
+      <DetailsSkeleton />
     );
   }
 
