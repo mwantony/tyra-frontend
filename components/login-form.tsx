@@ -14,6 +14,16 @@ import lofg from "@/assets/svg/undraw_projections_fhch.svg";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import axios from "axios";
+import emailjs from '@emailjs/browser';
+
 export function LoginForm({
   className,
   ...props
@@ -21,6 +31,9 @@ export function LoginForm({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
+  const [isForgotPasswordDialogOpen, setIsForgotPasswordDialogOpen] = useState(false);
+  const [isForgotPasswordLoading, setIsForgotPasswordLoading] = useState(false);
 
   const { login } = useAuth();
 
@@ -36,6 +49,37 @@ export function LoginForm({
     }
   };
 
+  const handleForgotPassword = async () => {
+    setIsForgotPasswordLoading(true);
+    try {
+      const response = await axios.post('/api/reset-password', { 
+        email: forgotPasswordEmail 
+      });
+  
+      const newPassword = response.data.new_password; // Ajuste conforme sua API
+      
+      // 3. Configurações do EmailJS
+      const templateParams = {
+        senha: newPassword,
+      };
+  
+      // 4. Envia o email com a nova senha
+      await emailjs.send(
+        'service_0dov8bj', // Substitua pelo seu Service ID
+        'template_9xa4pml', // Substitua pelo seu Template ID
+        templateParams,
+        'h7MCcuvNqiAnSz7tO' // Substitua pelo seu User ID
+      );
+  
+      toast.success("Um email com a nova senha foi enviado para seu endereço cadastrado.");
+      setIsForgotPasswordDialogOpen(false);
+    } catch (error) {
+      console.error("Erro no reset de senha:", error);
+      toast.error("Erro ao processar sua solicitação. Tente novamente.");
+    } finally {
+      setIsForgotPasswordLoading(false);
+    }
+  };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <motion.div
@@ -86,13 +130,42 @@ export function LoginForm({
                   <div className="grid gap-1">
                     <div className="flex items-center">
                       <Label htmlFor="password">Senha</Label>
-                      <a
-                        href={`https://wa.me/55${process.env.NEXT_PUBLIC_WHATSAPP}?text=Olá!%20Preciso%20de%20ajuda%20com%20a%20minha%20senha.`}
-                        className="ml-auto text-sm underline-offset-2 hover:underline"
-                        target="_blank"
-                      >
-                        Esqueceu a senha?
-                      </a>
+                      <Dialog open={isForgotPasswordDialogOpen} onOpenChange={setIsForgotPasswordDialogOpen}>
+                        <DialogTrigger asChild>
+                          <button
+                            type="button"
+                            className="ml-auto text-sm underline-offset-2 hover:underline"
+                          >
+                            Esqueceu a senha?
+                          </button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Recuperar senha</DialogTitle>
+                          </DialogHeader>
+                          <div className="grid gap-4 py-4">
+                            <div className="grid gap-2">
+                              <Label htmlFor="forgot-password-email">
+                                Email
+                              </Label>
+                              <Input
+                                id="forgot-password-email"
+                                type="email"
+                                placeholder="Digite seu email cadastrado"
+                                value={forgotPasswordEmail}
+                                onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                              />
+                            </div>
+                            <Button
+                              type="button"
+                              onClick={handleForgotPassword}
+                              disabled={isForgotPasswordLoading}
+                            >
+                              {isForgotPasswordLoading ? "Enviando..." : "Enviar link de recuperação"}
+                            </Button>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
                     </div>
                     <Input
                       id="password"
