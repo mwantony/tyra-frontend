@@ -154,6 +154,9 @@ export default function MesaDetailsPage() {
         <Card className="md:col-span-2">
           <CardHeader className="flex flex-row justify-between items-center">
             <CardTitle>Informações da Mesa</CardTitle>
+            <Button variant="outline" onClick={() => setIsEditing(!isEditing)}>
+              {isEditing ? "Cancelar" : "Editar"}
+            </Button>
           </CardHeader>
           <CardContent>
             {isEditing ? (
@@ -224,7 +227,6 @@ export default function MesaDetailsPage() {
                 <Button type="submit" className="w-full md:w-auto">
                   Salvar Alterações
                 </Button>
-              
               </form>
             ) : (
               <div className="space-y-4">
@@ -256,7 +258,6 @@ export default function MesaDetailsPage() {
                     </div>
                   </div>
                 )}
-               
               </div>
             )}
           </CardContent>
