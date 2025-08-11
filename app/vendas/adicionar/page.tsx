@@ -25,6 +25,7 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatCurrency } from "@/utils/currencyUtils";
+import AddSkeleton from "./add-skeleton";
 
 export default function NovaVendaPage() {
   const [comandas, setComandas] = useState<any[]>([]);
@@ -132,28 +133,11 @@ export default function NovaVendaPage() {
   });
 
   if (loading) {
-    return (
-      <div className="p-4 md:p-8 w-full space-y-6">
-        <Skeleton className="h-10 w-48 mx-auto" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-60 w-full" />
-          </div>
-          <div className="space-y-4">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-60 w-full" />
-          </div>
-        </div>
-      </div>
-    );
+    return <AddSkeleton></AddSkeleton>;
   }
 
   return (
     <div className="p-4 md:p-8 w-full">
-      
       <div className="max-w-7xl mx-auto">
         <Card>
           <CardHeader>
