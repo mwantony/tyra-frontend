@@ -92,6 +92,12 @@ export default function VendasPage() {
           <TabsTrigger value="all">
             Todas <Badge className="ml-2">{vendas.length}</Badge>
           </TabsTrigger>
+          <TabsTrigger value="dinheiro">
+            Dinheiro{" "}
+            <Badge className="ml-2">
+              {vendas.filter((v) => v.metodo_pagamento === "dinheiro").length}
+            </Badge>
+          </TabsTrigger>
           <TabsTrigger value="pix">
             PIX{" "}
             <Badge className="ml-2">
@@ -102,6 +108,12 @@ export default function VendasPage() {
             Cartão{" "}
             <Badge className="ml-2">
               {vendas.filter((v) => v.metodo_pagamento === "cartao").length}
+            </Badge>
+          </TabsTrigger>
+          <TabsTrigger value="outros">
+            Outros{" "}
+            <Badge className="ml-2">
+              {vendas.filter((v) => v.metodo_pagamento === "outros").length}
             </Badge>
           </TabsTrigger>
         </TabsList>
@@ -121,10 +133,32 @@ export default function VendasPage() {
           </Card>
         </TabsContent>
 
+        <TabsContent value="dinheiro">
+          <Card>
+            <CardHeader>
+              <CardTitle>Vendas no Dinheiro</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="space-y-4">
+                  {[...Array(3)].map((_, i) => (
+                    <Skeleton key={i} className="h-12 w-full rounded-lg" />
+                  ))}
+                </div>
+              ) : (
+                <DataTableVendas
+                  data={filteredVendas.filter(
+                    (v) => v.metodo_pagamento === "dinheiro"
+                  )}
+                />
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
         <TabsContent value="pix">
           <Card>
             <CardHeader>
-              <CardTitle>Vendas no PIX</CardTitle>
+              <CardTitle>Vendas no Pix</CardTitle>
             </CardHeader>
             <CardContent>
               {loading ? (
@@ -160,6 +194,28 @@ export default function VendasPage() {
                 <DataTableVendas
                   data={filteredVendas.filter(
                     (v) => v.metodo_pagamento === "cartao"
+                  )}
+                />
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="outros">
+          <Card>
+            <CardHeader>
+              <CardTitle>Vendas com outras formas</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {loading ? (
+                <div className="space-y-4">
+                  {[...Array(6)].map((_, i) => (
+                    <Skeleton key={i} className="h-12 w-full rounded-lg" />
+                  ))}
+                </div>
+              ) : (
+                <DataTableVendas
+                  data={filteredVendas.filter(
+                    (v) => v.metodo_pagamento === "outros"
                   )}
                 />
               )}
