@@ -64,11 +64,11 @@ export async function getComandaCodigo(numeroComanda: string) {
     const response = await api.get(
       `/comandas/${numeroComanda}/codigo-de-barras`,
       {
-        responseType: "blob", // 👈 importante para arquivos
+        responseType: "blob", 
       }
     );
 
-    return response.data; // isso é o Blob
+    return response.data; 
   } catch (error) {
     throw error;
   }
@@ -78,7 +78,7 @@ export async function getComandaCartao(numeroComanda: string) {
     const response = await api.get(
       `/comandas/${numeroComanda}/cartao`,
       {
-        responseType: "blob", // 👈 importante para arquivos
+        responseType: "blob", 
       }
     );
 

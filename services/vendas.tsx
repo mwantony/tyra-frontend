@@ -29,7 +29,7 @@ export async function gerarPdf(inicio: string, fim: string) {
       .post(
         "/vendas/gerar-pdf",
         { inicio, fim },
-        { responseType: "blob" } // importante para receber o PDF como Blob
+        { responseType: "blob" } 
       )
 
     const blob = new Blob([response.data], { type: "application/pdf" });
@@ -41,7 +41,6 @@ export async function gerarPdf(inicio: string, fim: string) {
     document.body.appendChild(link);
     link.click();
 
-    // Limpa o link
     link.remove();
     window.URL.revokeObjectURL(url);
   } catch (error: any) {

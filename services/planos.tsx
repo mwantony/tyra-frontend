@@ -6,7 +6,7 @@ export async function getPlanos() {
     const response = await api.get(`/planos`);
     return response.data;
   } catch (error) {
-    console.error("Erro ao buscar comandas:", error);
+    console.error("Erro ao buscar planos:", error);
     throw error;
   }
 }
@@ -15,7 +15,7 @@ export async function getPlano(id: any) {
     const response = await api.get(`/planos/${id}`);
     return response.data;
   } catch (error) {
-    console.error("Erro ao buscar comandas:", error);
+    console.error("Erro ao buscar plano:", error);
     throw error;
   }
 }
@@ -24,7 +24,7 @@ export async function associarPlano(id: any, plano) {
     const response = await api.put(`/restaurantes/${id}/associar-plano`, plano);
     return response.data;
   } catch (error) {
-    console.error("Erro ao buscar comandas:", error);
+    console.error("Erro ao associar plano:", error);
     throw error;
   }
 }
