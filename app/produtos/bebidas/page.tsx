@@ -26,7 +26,6 @@ export default function BebidasPage() {
     setLoading(true);
     try {
       const resposta = await getProdutos();
-      // Filtra apenas os produtos do tipo "bebida"
       const bebidasFiltradas = resposta.filter(
         (produto) => produto.tipo === "bebida"
       );
@@ -42,7 +41,6 @@ export default function BebidasPage() {
     fetchData();
   }, []);
 
-  // Filtra as bebidas com base no termo de busca e na aba ativa
   const filteredBebidas = bebidas.filter((bebida) => {
     const matchesSearch = Object.values(bebida).some(
       (value) =>

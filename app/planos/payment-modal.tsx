@@ -13,7 +13,6 @@ interface Plan {
   id: string;
   nome: string;
   preco: number;
-  // outras propriedades do plano...
 }
 
 interface PaymentData {
@@ -25,7 +24,6 @@ interface PaymentData {
   };
   id?: string;
   status?: string;
-  // outras propriedades de pagamento...
 }
 
 interface PaymentModalProps {
@@ -165,7 +163,6 @@ export function PaymentModal({
   );
 }
 
-// Função auxiliar para formatar o status
 function formatPaymentStatus(status: string): string {
   const statusMap: Record<string, string> = {
     pending: "Aguardando pagamento",

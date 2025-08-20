@@ -45,10 +45,9 @@ export default function CardapioQRCodePage() {
     setConfirmDownload(true);
 
     try {
-      // Aumente ainda mais o tamanho do QR code para melhor qualidade
       const qrBuffer = qrImage.imageSync(qrValue, {
         type: "png",
-        size: 25, // Aumentado para 25
+        size: 25, 
         margin: 2,
       });
 
@@ -65,17 +64,15 @@ export default function CardapioQRCodePage() {
       logo.src = logoDark.src;
 
       const onAssetsLoaded = () => {
-        // Fator de escala para alta qualidade
         const scale = 2;
         
-        // Aumentei os tamanhos aqui:
-        const padding = 40 * scale;         // Aumentado de 30 para 40
-        const textHeight = 70 * scale;      // Aumentado de 30 para 40
-        const logoHeight = 150 * scale;     // Aumentado de 60 para 100
+        const padding = 40 * scale;         
+        const textHeight = 70 * scale;      
+        const logoHeight = 150 * scale;     
         const totalExtraSpace = padding * 2 + textHeight ;
 
         const canvas = document.createElement("canvas");
-        canvas.width = Math.max(img.width, 400) * scale; // Largura mínima aumentada
+        canvas.width = Math.max(img.width, 400) * scale; 
         canvas.height = (img.height + totalExtraSpace) * scale;
 
         const ctx = canvas.getContext("2d");
@@ -86,16 +83,13 @@ export default function CardapioQRCodePage() {
           return;
         }
 
-        // Configurações de qualidade
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
         ctx.scale(scale, scale);
 
-        // Fundo branco
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width / scale, canvas.height / scale);
 
-        // Logo maior
         const logoRatio = logo.width / logo.height;
         const logoDrawHeight = logoHeight / scale;
         const logoDrawWidth = logoDrawHeight * logoRatio;
@@ -108,11 +102,9 @@ export default function CardapioQRCodePage() {
           logoDrawHeight
         );
 
-        // Texto maior e mais destacado
         ctx.fillStyle = "#000000";
-        ctx.font = `bold ${46 * scale / 1.5}px 'Poppins', sans-serif`; // Aumentado de 24 para 36
+        ctx.font = `bold ${46 * scale / 1.5}px 'Poppins', sans-serif`; 
         
-        // Efeito de sombra para melhor legibilidade
         ctx.shadowColor = "rgba(0,0,0,0.15)";
         ctx.shadowBlur = 4;
         ctx.shadowOffsetY = 2;
@@ -122,13 +114,11 @@ export default function CardapioQRCodePage() {
         ctx.fillText(
           restaurante.nome || "Cardápio Digital",
           canvas.width / scale / 2,
-          padding / scale + logoDrawHeight + 40 / scale // Aumentado espaçamento
+          padding / scale + logoDrawHeight + 40 / scale 
         );
         
-        // Remove sombra para o resto do desenho
         ctx.shadowColor = "transparent";
 
-        // QR Code com bordas arredondadas
         const qrOffsetY = padding / scale + logoDrawHeight + textHeight / scale + 30 / scale;
         const qrX = canvas.width / scale / 2 - img.width / 2;
         const qrY = qrOffsetY;

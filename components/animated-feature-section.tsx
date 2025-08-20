@@ -8,7 +8,6 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 
-// Variantes de animação
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {

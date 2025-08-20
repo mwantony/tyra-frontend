@@ -101,7 +101,6 @@ export default function BillingPage() {
         const paymentId = paymentResponse.payment_id;
         console.log("Pagamento criado:", paymentResponse);
 
-        // Update UI state
         setIsPaymentModalOpen(true);
         setIsConfirmationModalOpen(false);
         setIsPlansModalOpen(false);

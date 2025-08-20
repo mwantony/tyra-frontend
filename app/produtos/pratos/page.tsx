@@ -26,7 +26,6 @@ export default function PratosPage() {
     setLoading(true);
     try {
       const resposta = await getProdutos();
-      // Filtra apenas os produtos do tipo "prato"
       const pratosFiltrados = resposta.filter(
         (produto) => produto.tipo === "prato"
       );
@@ -42,7 +41,6 @@ export default function PratosPage() {
     fetchData();
   }, []);
 
-  // Filtra os pratos com base no termo de busca e na aba ativa
   const filteredPratos = pratos.filter((prato) => {
     const matchesSearch = Object.values(prato).some(
       (value) =>

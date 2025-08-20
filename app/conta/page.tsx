@@ -45,7 +45,6 @@ export default function RestaurantAccountPage() {
   });
   const { restaurante, refreshRestaurante } = useAuth();
 
-  // Carrega os dados iniciais
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);

@@ -26,7 +26,6 @@ export default function SobremesasPage() {
     setLoading(true);
     try {
       const resposta = await getProdutos();
-      // Filtra apenas os produtos do tipo "prato"
       const sobremesasFiltradas = resposta.filter(
         (produto) => produto.tipo === "sobremesa"
       );
@@ -42,7 +41,6 @@ export default function SobremesasPage() {
     fetchData();
   }, []);
 
-  // Filtra os pratos com base no termo de busca e na aba ativa
   const filteredPratos = sobremesas.filter((prato) => {
     const matchesSearch = Object.values(prato).some(
       (value) =>

@@ -73,7 +73,6 @@ export default function NovaMesaPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
-            {/* Identificação */}
             <div className="space-y-2">
               <Label htmlFor="identificacao">Identificação*</Label>
               <Input
@@ -90,7 +89,6 @@ export default function NovaMesaPage() {
               </p>
             </div>
 
-            {/* Capacidade */}
             <div className="space-y-2">
               <Label htmlFor="capacidade">Capacidade*</Label>
               <Input
@@ -108,7 +106,6 @@ export default function NovaMesaPage() {
               </p>
             </div>
 
-            {/* Status */}
             <div className="space-y-2">
               <Label htmlFor="status">Status*</Label>
               <Select
@@ -127,7 +124,6 @@ export default function NovaMesaPage() {
               </Select>
             </div>
 
-            {/* Observações */}
             <div className="space-y-2">
               <Label htmlFor="observacoes">Observações</Label>
               <Textarea

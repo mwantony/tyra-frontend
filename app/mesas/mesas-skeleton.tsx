@@ -17,19 +17,15 @@ import {
 } from "@/components/ui/pagination";
 
 export const MesasSkeleton = () => {
-  // Número de linhas do skeleton
   const rows = Array.from({ length: 10 }, (_, i) => i);
 
   return (
     <div className="space-y-4">
-      {/* Skeleton para o campo de busca */}
       <div className="pb-4">
         <Skeleton className="h-10 w-full rounded-md" />
       </div>
 
-      {/* Skeleton para as abas */}
-      
-      {/* Skeleton para a tabela */}
+    
       <Table>
         <TableHeader>
           <TableRow>
@@ -72,7 +68,6 @@ export const MesasSkeleton = () => {
         </TableBody>
       </Table>
 
-      {/* Skeleton para a paginação */}
       <div className="flex justify-end">
         <Pagination>
           <PaginationContent>

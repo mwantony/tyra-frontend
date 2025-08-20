@@ -10,24 +10,20 @@ import {
 } from "@/components/ui/table";
 
 export const ComandasSkeleton = () => {
-  // Número de linhas do skeleton
   const rows = Array.from({ length: 10 }, (_, i) => i);
 
   return (
     <div className="space-y-4">
-      {/* Skeleton para o campo de busca */}
       <div className="pb-4">
         <Skeleton className="h-10 w-full rounded-md" />
       </div>
 
-      {/* Skeleton para as abas */}
       <div className="flex space-x-2 mb-4">
         {["Todas", "Abertas", "Fechadas", "Canceladas"].map((tab) => (
           <Skeleton key={tab} className="h-10 w-24 rounded-md" />
         ))}
       </div>
 
-      {/* Skeleton para a tabela */}
       <Table>
         <TableHeader>
           <TableRow>

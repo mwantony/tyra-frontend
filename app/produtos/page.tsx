@@ -58,7 +58,6 @@ export default function ProdutosPage() {
     };
   }, [fetchData]);
 
-  // Filtra os produtos com base no termo de busca e na aba ativa
   const filteredProdutos = produtos.filter((produto) => {
     const matchesSearch = Object.values(produto).some(
       (value) =>

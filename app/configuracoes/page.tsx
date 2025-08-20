@@ -46,7 +46,6 @@ export default function SettingsPage() {
     useState(false);
   const { restaurante } = useAuth();
 
-  // Estados para os campos da integração Sicoob
   const [sicoobConfig, setSicoobConfig] = useState({
     clientId: (() => {
       const config = localStorage.getItem("sicoobConfig");
@@ -100,7 +99,6 @@ export default function SettingsPage() {
       setIsLoading(false);
       setIsConfirmDeleteDialogOpen(false);
       localStorage.removeItem("restaurante");
-      // Limpar também as configurações do Sicoob ao deletar a conta
       localStorage.removeItem("sicoobConfig");
       setTimeout(() => {
         window.location.href = "/login";
@@ -108,7 +106,6 @@ export default function SettingsPage() {
     }
   };
 
-  // Carregar configurações do localStorage ao montar o componente
   useEffect(() => {
     const storedEnabled = localStorage.getItem("enabledSicoob");
     if (storedEnabled === "true") {
@@ -121,12 +118,10 @@ export default function SettingsPage() {
     }
   }, []);
 
-  // Salvar estado enabled no localStorage quando mudar
   useEffect(() => {
     localStorage.setItem("enabledSicoob", enabled ? "true" : "false");
   }, [enabled]);
 
-  // Salvar configurações Sicoob no localStorage quando qualquer campo mudar
   useEffect(() => {
     localStorage.setItem("sicoobConfig", JSON.stringify(sicoobConfig));
   }, [sicoobConfig]);
