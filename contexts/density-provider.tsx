@@ -19,7 +19,6 @@ export const DensityProvider = ({ children }: { children: React.ReactNode }) => 
   const [density, setDensity] = useState<Density>("default");
 
   useEffect(() => {
-    // Carrega a densidade salva no localStorage ou usa o valor padrão
     const storedDensity = localStorage.getItem("density") as Density | null;
     if (storedDensity) {
       setDensity(storedDensity);
@@ -28,14 +27,12 @@ export const DensityProvider = ({ children }: { children: React.ReactNode }) => 
   }, []);
 
   const applyDensityClasses = (newDensity: Density) => {
-    // Remove todas as classes de densidade possíveis
     document.documentElement.classList.remove(
       "density-compact",
       "density-default",
       "density-spacious"
     );
     
-    // Adiciona a classe correspondente à densidade selecionada
     document.documentElement.classList.add(`density-${newDensity}`);
   };
 

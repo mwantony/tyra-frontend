@@ -34,17 +34,14 @@ export function SignUpForm({
   const [acceptPrivacy, setAcceptPrivacy] = useState(false);
   const { signup } = useAuth();
 
-  // Password validation states
   const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [passwordValid, setPasswordValid] = useState(true);
 
-  // Handler para mudanças no input de CNPJ
   const handleCnpjChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatCNPJ(e.target.value);
     setCnpj(formatted);
   };
 
-  // Validate password and confirmation
   useEffect(() => {
     if (password && passwordConfirmation) {
       setPasswordsMatch(password === passwordConfirmation);
@@ -52,7 +49,6 @@ export function SignUpForm({
     setPasswordValid(password.length >= 6 || password.length === 0);
   }, [password, passwordConfirmation]);
 
-  // Busca dados do CNPJ quando ele é totalmente digitado (14 caracteres)
   useEffect(() => {
     const cleanedCnpj = cnpj.replace(/\D/g, "");
     if (cleanedCnpj.length === 14) {
@@ -60,7 +56,6 @@ export function SignUpForm({
     }
   }, [cnpj]);
 
-  // Função para buscar dados da empresa
   const fetchCompanyData = async (cnpj: string) => {
     setFetchingCnpj(true);
     try {
@@ -89,7 +84,6 @@ export function SignUpForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Final validation before submit
     if (!acceptTerms || !acceptPrivacy) {
       toast.error("Você deve aceitar os termos e políticas para continuar");
       return;

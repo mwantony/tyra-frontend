@@ -97,12 +97,10 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
   const getFilteredData = () => {
     let filtered = data;
 
-    // Filtro por aba
     if (currentTab !== "todas") {
       filtered = filtered.filter((m) => m.status === currentTab);
     }
 
-    // Filtro por busca
     if (searchTerm) {
       filtered = filtered.filter(
         (m) =>
@@ -156,7 +154,6 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
   const handleReservarMesa = async (id: number, data: any) => {
     setConfirmReserve(true);
     try {
-      // Validar dados antes de enviar
       if (
         !data.nome_reserva ||
         !data.telefone_reserva ||
@@ -166,7 +163,6 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
         return;
       }
 
-      // Formatar data corretamente
       const reservaData = {
         ...data,
         horario_reserva: subHours(
@@ -199,12 +195,11 @@ export const DataTableMesas: React.FC<DataTableProps> = ({
   const handleLiberarMesa = async (id: string | number) => {
     setConfirmLiberacao(true);
     try {
-      await liberarMesa(id); // suponha que você já tenha essa função
+      await liberarMesa(id); 
       toast.success("Mesa liberada com sucesso!");
       setConfirmLiberacao(false);
       recarregarMesas();
       setLiberarModalOpen(false);
-      // Atualize as mesas, se necessário
     } catch {
       setConfirmLiberacao(false);
 

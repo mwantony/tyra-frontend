@@ -84,12 +84,10 @@ export const DataTableComandas: React.FC<DataTableProps> = ({
   const getFilteredData = () => {
     let filtered = data;
 
-    // Filtro por aba
     if (currentTab !== "todas") {
       filtered = filtered.filter((c) => c.status === currentTab);
     }
 
-    // Filtro por busca
     if (searchTerm) {
       filtered = filtered.filter(
         (c) =>

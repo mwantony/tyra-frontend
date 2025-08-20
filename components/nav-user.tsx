@@ -141,7 +141,6 @@ export function NavUser() {
               variant="outline"
               onClick={() => {
                 setOpenDialog(false);
-                // Reativa interações
               }}
             >
               Cancelar

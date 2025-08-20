@@ -115,7 +115,7 @@ export default function BillingPage() {
 
               if (payment.status === "approved") {
                 if (verificationInterval) {
-                  clearInterval(verificationInterval); // Limpa o intervalo aqui
+                  clearInterval(verificationInterval); 
                 }
                 resolve();
                 await finalizePlanChange();
@@ -128,14 +128,14 @@ export default function BillingPage() {
                 )
               ) {
                 if (verificationInterval) {
-                  clearInterval(verificationInterval); // Limpa o intervalo aqui também
+                  clearInterval(verificationInterval); 
                 }
                 reject(new Error(`Pagamento ${payment.status}`));
                 return;
               }
             } catch (error) {
               if (verificationInterval) {
-                clearInterval(verificationInterval); // E aqui também
+                clearInterval(verificationInterval);
               }
               reject(error);
             }
@@ -143,7 +143,7 @@ export default function BillingPage() {
 
           setTimeout(() => {
             if (verificationInterval) {
-              clearInterval(verificationInterval); // Limpa o intervalo no timeout
+              clearInterval(verificationInterval); 
             }
             reject(new Error("Tempo limite para pagamento excedido"));
           }, 1800000);

@@ -57,21 +57,19 @@ export function LoginForm({
         email: forgotPasswordEmail,
       });
 
-      const newPassword = response.data.new_password; // Ajuste conforme sua API
+      const newPassword = response.data.new_password; 
 
-      // 3. Configurações do EmailJS
       const templateParams = {
         senha: newPassword,
         email: forgotPasswordEmail,
       };
 
-      // 4. Envia o email com a nova senha
       await emailjs
         .send(
-          "service_0dov8bj", // Substitua pelo seu Service ID
-          "template_9xa4pml", // Substitua pelo seu Template ID
+          "service_0dov8bj", 
+          "template_9xa4pml", 
           templateParams,
-          "h7MCcuvNqiAnSz7tO" // Substitua pelo seu User ID
+          "h7MCcuvNqiAnSz7tO" 
         )
         .then(() => {
           toast.success(
