@@ -31,7 +31,6 @@ const manrope = Manrope({
   variable: "--font-manrope",
   display: "swap",
 });
-// Exportação de metadata deve estar em um Server Component
 export const metadata: Metadata = {
   title: "Tyra",
   description: "Soluções para Restaurantes",

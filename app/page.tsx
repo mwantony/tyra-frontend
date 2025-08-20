@@ -15,7 +15,6 @@ import { Faq } from "@/components/faq";
 import { Footer } from "@/components/footer";
 import { StartSection } from "@/components/start-section";
 
-// Configurações de animação
 
 export default function LandingPage() {
   const { restaurante } = useAuth();
