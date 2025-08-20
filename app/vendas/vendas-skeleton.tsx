@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/table";
 
 export const VendasSkeleton = () => {
-  // Número de linhas do skeleton
   const rows = Array.from({ length: 10 }, (_, i) => i);
 
   return (

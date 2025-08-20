@@ -129,7 +129,6 @@ export default function FinancePage() {
           setDadosFinanceiro(response);
           console.log(response);
           
-          // Dispara o click no botão de refresh após 100ms
           setTimeout(() => {
             if (refreshRef.current && !signal.aborted) {
               refreshRef.current.click();
